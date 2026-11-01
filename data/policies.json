@@ -1757,30 +1757,30 @@
         "primary": true,
         "source": {
           "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-          "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-          "retrievedAt": "2026-09-09T23:40:39.317Z",
+          "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+          "retrievedAt": "2026-11-01T11:03:02.631Z",
           "contentType": "text/html",
-          "contentHash": "197bf9433a292ca12ef00da62db13cb9c445563b497906c16d8868998cf580dc",
-          "etag": "\"1788996399\"",
-          "lastModified": "Wed, 09 Sep 2026 23:26:39 GMT",
+          "contentHash": "ab6aac49fdfd29bbe3b7f6a365501c0d79824a7a763344c082fc4ab8cc6d4475",
+          "etag": "\"bcea44f2779288f8883b26eaf6efa676\"",
+          "lastModified": "Sat, 31 Oct 2026 14:18:26 GMT",
           "linkedDocuments": [
             {
-              "url": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-              "finalUrl": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-              "retrievedAt": "2026-09-09T23:40:47.927Z",
+              "url": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+              "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+              "retrievedAt": "2026-11-01T11:03:02.702Z",
               "contentType": "application/pdf",
               "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
-              "etag": "\"6a96152f-84676\"",
-              "lastModified": "Mon, 31 Aug 2026 23:58:39 GMT"
+              "etag": "\"61044dcabf9f177f8ce7eed06b686c18\"",
+              "lastModified": "Sat, 31 Oct 2026 16:52:00 GMT"
             }
           ],
           "title": "NSW AI Operational Policy",
           "reviewedDate": {
             "date": "2026-07-30",
             "precision": "day",
-            "reviewedAt": "2026-09-09T23:40:47.928Z",
+            "reviewedAt": "2026-11-01T11:03:02.703Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The official NSW AI Operational Policy and supporting DCS-2026-02 circular identify 30 July 2026 as the first publication and issue date."
+            "notes": "The linked policy PDF, byte-identical to the version verified on 9 September 2026, states \"First published: 30 July 2026.\" and \"Final version 1.1 – 30 July 2026\". The page text changed but stays consistent with the record; only the earlier page hash is stored, so the earlier text cannot be compared."
           }
         }
       }
@@ -1805,42 +1805,42 @@
       "risk-assurance"
     ],
     "createdAt": "2026-09-09T23:26:21.926Z",
-    "updatedAt": "2026-09-09T23:40:47.928Z",
-    "lastReviewedAt": "2026-09-09T23:40:47.928Z",
+    "updatedAt": "2026-11-01T11:03:02.703Z",
+    "lastReviewedAt": "2026-11-01T11:03:02.703Z",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-        "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-        "retrievedAt": "2026-09-09T23:40:39.317Z",
+        "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+        "retrievedAt": "2026-11-01T11:03:02.631Z",
         "contentType": "text/html",
-        "contentHash": "197bf9433a292ca12ef00da62db13cb9c445563b497906c16d8868998cf580dc",
-        "etag": "\"1788996399\"",
-        "lastModified": "Wed, 09 Sep 2026 23:26:39 GMT",
+        "contentHash": "ab6aac49fdfd29bbe3b7f6a365501c0d79824a7a763344c082fc4ab8cc6d4475",
+        "etag": "\"bcea44f2779288f8883b26eaf6efa676\"",
+        "lastModified": "Sat, 31 Oct 2026 14:18:26 GMT",
         "linkedDocuments": [
           {
-            "url": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-            "finalUrl": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-            "retrievedAt": "2026-09-09T23:40:47.927Z",
+            "url": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+            "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+            "retrievedAt": "2026-11-01T11:03:02.702Z",
             "contentType": "application/pdf",
             "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
-            "etag": "\"6a96152f-84676\"",
-            "lastModified": "Mon, 31 Aug 2026 23:58:39 GMT"
+            "etag": "\"61044dcabf9f177f8ce7eed06b686c18\"",
+            "lastModified": "Sat, 31 Oct 2026 16:52:00 GMT"
           }
         ],
         "title": "NSW AI Operational Policy",
         "reviewedDate": {
           "date": "2026-07-30",
           "precision": "day",
-          "reviewedAt": "2026-09-09T23:40:47.928Z",
+          "reviewedAt": "2026-11-01T11:03:02.703Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The official NSW AI Operational Policy and supporting DCS-2026-02 circular identify 30 July 2026 as the first publication and issue date."
+          "notes": "The linked policy PDF, byte-identical to the version verified on 9 September 2026, states \"First published: 30 July 2026.\" and \"Final version 1.1 – 30 July 2026\". The page text changed but stays consistent with the record; only the earlier page hash is stored, so the earlier text cannot be compared."
         }
       },
-      "checkedAt": "2026-09-09T23:40:47.928Z",
+      "checkedAt": "2026-11-01T11:03:02.703Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved from the dedicated NSW AI Operational Policy page and linked final version 1.1 PDF. This is the mandatory all-of-government instrument; the general Digital NSW AI landing page is not a policy instrument. Source content changed during register audit at 2026-11-01T09:48:59.880Z; editorial re-verification is required.",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 691757dd). Proposed by Claude (agent). Register full review through the standard declared-identity path.",
       "lastSourceAuditAt": "2026-11-01T09:48:59.880Z"
     }
   },
@@ -5025,38 +5025,29 @@
       "risk-assurance"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-09-09T23:40:12.513Z",
-    "lastReviewedAt": "2026-09-09T23:40:12.513Z",
+    "updatedAt": "2026-11-01T11:03:04.240Z",
+    "lastReviewedAt": "2026-11-01T11:03:04.240Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "title": "Artificial intelligence governance policy | For government | Queensland Government",
-        "retrievedAt": "2026-09-09T23:33:41.619839Z",
+        "retrievedAt": "2026-11-01T11:03:04.232Z",
         "contentType": "text/html",
-        "contentHash": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c",
-        "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-09-09T23:33:41.619839Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Daniel Alkurdi approved this Firecrawl-backed controlled capture after plain HTTP and direct browser rendering were blocked by the official host. The current official page was reviewed for version, status, effective month and policy requirements.",
-          "pageContentHash": "d419eeb33bb8d28872b24ab2b348516c2ec7393fd5bcc4f3c01116264b5e6e78",
-          "characterCount": 7829
-        },
+        "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
+        "title": "Artificial intelligence governance policy - forgov.qld.gov.au",
         "reviewedDate": {
           "date": "2026-08-01",
           "precision": "month",
-          "reviewedAt": "2026-09-09T23:40:12.513Z",
+          "reviewedAt": "2026-11-01T11:03:04.240Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The official Queensland Government page identifies Policy v2.0.0 as Current/Mandated and effective August 2026–current. Month precision is retained because no day-level effective date is stated."
+          "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
         }
       },
-      "checkedAt": "2026-09-09T23:40:12.513Z",
+      "checkedAt": "2026-11-01T11:03:04.240Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved after reviewing the current official Queensland Government source. The source now identifies Policy v2.0.0, effective August 2026, and adds mandatory FAIRA or agreed-equivalent lifecycle assessment, with FAIRA LITE available for low-risk use cases. The record type, version, primary date and summary were corrected; August 2026 is the sole structured effective date and the superseded 2024 version remains in Git history."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 06d573b0). Proposed by Claude (agent). Register full review through the standard declared-identity path."
     },
     "dates": [
       {
@@ -5067,25 +5058,16 @@
         "source": {
           "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
           "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-          "title": "Artificial intelligence governance policy | For government | Queensland Government",
-          "retrievedAt": "2026-09-09T23:33:41.619839Z",
+          "retrievedAt": "2026-11-01T11:03:04.232Z",
           "contentType": "text/html",
-          "contentHash": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c",
-          "linkedDocuments": [],
-          "browserCapture": {
-            "method": "browser",
-            "capturedAt": "2026-09-09T23:33:41.619839Z",
-            "capturedBy": "Daniel Alkurdi",
-            "notes": "Daniel Alkurdi approved this Firecrawl-backed controlled capture after plain HTTP and direct browser rendering were blocked by the official host. The current official page was reviewed for version, status, effective month and policy requirements.",
-            "pageContentHash": "d419eeb33bb8d28872b24ab2b348516c2ec7393fd5bcc4f3c01116264b5e6e78",
-            "characterCount": 7829
-          },
+          "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
+          "title": "Artificial intelligence governance policy - forgov.qld.gov.au",
           "reviewedDate": {
             "date": "2026-08-01",
             "precision": "month",
-            "reviewedAt": "2026-09-09T23:40:12.513Z",
+            "reviewedAt": "2026-11-01T11:03:04.240Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The official Queensland Government page identifies Policy v2.0.0 as Current/Mandated and effective August 2026–current. Month precision is retained because no day-level effective date is stated."
+            "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
           }
         }
       }
@@ -7303,41 +7285,42 @@
       "risk-assurance"
     ],
     "createdAt": "2026-07-10T00:00:00.000Z",
-    "updatedAt": "2026-09-09T23:40:12.610Z",
-    "lastReviewedAt": "2026-09-09T23:40:12.610Z",
+    "updatedAt": "2026-11-01T11:03:04.744Z",
+    "lastReviewedAt": "2026-11-01T11:03:04.744Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
-        "retrievedAt": "2026-09-09T23:27:30.699Z",
+        "retrievedAt": "2026-11-01T10:50:38.112Z",
         "contentType": "text/html",
-        "contentHash": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e",
+        "contentHash": "f06764aba978257689f78a3344751fd55bb4734dd8f457d3a927ce6f778e1376",
         "linkedDocuments": [
           {
             "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
             "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-            "retrievedAt": "2026-09-09T23:27:30.699Z",
+            "retrievedAt": "2026-11-01T10:50:38.112Z",
             "contentType": "application/pdf",
             "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
           }
         ],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-09-09T23:27:30.699Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Daniel Alkurdi approved this controlled browser capture after reviewing the current official policy page. The hardened retriever was blocked by the host.",
-          "pageContentHash": "45822a32ac5a834887419662c9db20b637d77abae958319c541c18cead84b47e",
-          "characterCount": 5104
+          "capturedAt": "2026-11-01T10:50:38.112Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+          "pageContentHash": "c4c846051a21e2b1ea545b7f6d29496d87d84cc5f75c8c5d98bf6853ec743afd",
+          "characterCount": 13325
         },
         "publishedAt": "2024-03-05",
         "publishedAtPrecision": "day"
       },
-      "checkedAt": "2026-09-09T23:40:12.610Z",
+      "checkedAt": "2026-11-01T11:03:04.744Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved after reviewing the current official WA Government page and linked policy PDF. The page remains first published 5 March 2024 and was last updated 25 August 2026; the unchanged current PDF states Updated June 2025. The record now captures the mandatory lifecycle self-assessment scope and explicit AI Advisory Board referral thresholds. Unsupported day precision and the prior released July 2025 wording were not retained.",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 5529a202). Proposed by Claude (agent). Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
       "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
     },
     "dates": [
@@ -7350,25 +7333,26 @@
           "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
           "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
           "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
-          "retrievedAt": "2026-09-09T23:27:30.699Z",
+          "retrievedAt": "2026-11-01T10:50:38.112Z",
           "contentType": "text/html",
-          "contentHash": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e",
+          "contentHash": "f06764aba978257689f78a3344751fd55bb4734dd8f457d3a927ce6f778e1376",
           "linkedDocuments": [
             {
               "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
               "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-              "retrievedAt": "2026-09-09T23:27:30.699Z",
+              "retrievedAt": "2026-11-01T10:50:38.112Z",
               "contentType": "application/pdf",
               "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
             }
           ],
           "browserCapture": {
             "method": "browser",
-            "capturedAt": "2026-09-09T23:27:30.699Z",
-            "capturedBy": "Daniel Alkurdi",
-            "notes": "Daniel Alkurdi approved this controlled browser capture after reviewing the current official policy page. The hardened retriever was blocked by the host.",
-            "pageContentHash": "45822a32ac5a834887419662c9db20b637d77abae958319c541c18cead84b47e",
-            "characterCount": 5104
+            "capturedAt": "2026-11-01T10:50:38.112Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+            "pageContentHash": "c4c846051a21e2b1ea545b7f6d29496d87d84cc5f75c8c5d98bf6853ec743afd",
+            "characterCount": 13325
           },
           "publishedAt": "2024-03-05",
           "publishedAtPrecision": "day"

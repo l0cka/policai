@@ -1,5 +1,47 @@
 [
   {
+    "id": "mcp-audit-8e22bb18-da89-4702-89e9-b619bc287786",
+    "createdAt": "2026-11-01T11:03:04.790Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c24e029c-433a-4f56-8adc-fd0cddc3ed29",
+    "createdAt": "2026-11-01T11:03:04.720Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b8b754c3-0352-4c1a-bd82-93d8827986a7",
+    "createdAt": "2026-11-01T11:03:03.238Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8f2c51e3-7f8b-4b36-baaf-641c65aeb9ea",
+    "createdAt": "2026-11-01T11:03:01.767Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-bd02728e-eacc-41a9-8a16-132da0e016a9",
+    "createdAt": "2026-11-01T11:03:01.703Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-075574eb-670d-4a1a-a316-a92d36830d44",
+    "createdAt": "2026-11-01T11:03:01.636Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-44c3befb-7132-4477-8dd3-bad4cb91c026",
     "createdAt": "2026-11-01T10:58:44.423Z",
     "actor": "local-mcp-admin",
@@ -3676,50 +3718,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-44e503f2-8c14-4263-8648-05541e7c6b8c",
-    "createdAt": "2026-07-19T01:54:30.067Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-8977890b-2615-499c-8707-b79f068839de",
-    "createdAt": "2026-07-19T01:54:30.054Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-eacbbce7-4fa5-4a45-9109-125c0b5da8c2",
-    "createdAt": "2026-07-19T01:51:54.090Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/australian-public-service-ai-plan-2025",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4d856ada-affb-4fc1-b120-3736598c7339",
-    "createdAt": "2026-07-19T01:35:10.163Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-37cc7a55-546f-4dfc-86d9-c06f9fb4ed20",
-    "createdAt": "2026-07-19T01:34:32.776Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-45a43f1d-f152-49bb-845b-d3e9d719af51",
-    "createdAt": "2026-07-19T01:31:55.495Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.dataanddigital.gov.au/implementation-plan/2025/artificial-intelligence",
     "status": "success"
   }
 ]

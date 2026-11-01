@@ -29247,7 +29247,7 @@
     "entryKind": "policy",
     "targetPolicyId": "wa-ai-policy-assurance-framework",
     "targetPolicyBaseRevisionHash": "72adcf46c8d74be5447330858bfb305017e872c8581f4d89bcce661085748fa9",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:58:04.472Z",
     "createdBy": "local-mcp-admin",
     "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
@@ -29327,7 +29327,7 @@
         "risk-assurance"
       ],
       "createdAt": "2026-07-10T00:00:00.000Z",
-      "updatedAt": "2026-11-01T10:58:04.472Z",
+      "updatedAt": "2026-11-01T11:03:04.744Z",
       "dates": [
         {
           "type": "published",
@@ -29338,25 +29338,26 @@
             "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
             "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
             "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
-            "retrievedAt": "2026-09-09T23:27:30.699Z",
+            "retrievedAt": "2026-11-01T10:50:38.112Z",
             "contentType": "text/html",
-            "contentHash": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e",
+            "contentHash": "f06764aba978257689f78a3344751fd55bb4734dd8f457d3a927ce6f778e1376",
             "linkedDocuments": [
               {
                 "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
                 "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-                "retrievedAt": "2026-09-09T23:27:30.699Z",
+                "retrievedAt": "2026-11-01T10:50:38.112Z",
                 "contentType": "application/pdf",
                 "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
               }
             ],
             "browserCapture": {
               "method": "browser",
-              "capturedAt": "2026-09-09T23:27:30.699Z",
-              "capturedBy": "Daniel Alkurdi",
-              "notes": "Daniel Alkurdi approved this controlled browser capture after reviewing the current official policy page. The hardened retriever was blocked by the host.",
-              "pageContentHash": "45822a32ac5a834887419662c9db20b637d77abae958319c541c18cead84b47e",
-              "characterCount": 5104
+              "capturedAt": "2026-11-01T10:50:38.112Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+              "pageContentHash": "c4c846051a21e2b1ea545b7f6d29496d87d84cc5f75c8c5d98bf6853ec743afd",
+              "characterCount": 13325
             },
             "publishedAt": "2024-03-05",
             "publishedAtPrecision": "day"
@@ -29376,9 +29377,46 @@
             "title": "Artificial Intelligence Policy"
           }
         }
-      ]
+      ],
+      "lastReviewedAt": "2026-11-01T11:03:04.744Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+          "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+          "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+          "retrievedAt": "2026-11-01T10:50:38.112Z",
+          "contentType": "text/html",
+          "contentHash": "f06764aba978257689f78a3344751fd55bb4734dd8f457d3a927ce6f778e1376",
+          "linkedDocuments": [
+            {
+              "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+              "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
+              "retrievedAt": "2026-11-01T10:50:38.112Z",
+              "contentType": "application/pdf",
+              "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:50:38.112Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+            "pageContentHash": "c4c846051a21e2b1ea545b7f6d29496d87d84cc5f75c8c5d98bf6853ec743afd",
+            "characterCount": 13325
+          },
+          "publishedAt": "2024-03-05",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-01T11:03:04.744Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 5529a202). Proposed by Claude (agent). Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+        "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
+      }
     },
-    "updatedAt": "2026-11-01T10:58:04.500Z",
+    "updatedAt": "2026-11-01T11:03:04.778Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -29388,7 +29426,45 @@
       },
       "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
       "proposedAt": "2026-11-01T10:58:04.500Z"
-    }
+    },
+    "targetPolicyRevisionHash": "72adcf46c8d74be5447330858bfb305017e872c8581f4d89bcce661085748fa9",
+    "reviewedAt": "2026-11-01T11:03:04.744Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 5529a202). Proposed by Claude (agent). Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+    "decision": {
+      "proposalHash": "5529a202648246be13374cf5766eb70e37b2d1df633f324d7e9a4daa86e624ca",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T11:00:43.219Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-3:98e1cde45c9c0036e3e54124c36b4a4c3690800292e23d075dae14713d06caea",
+        "receivedAt": "2026-11-01T11:00:43.219Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQzkwUHJTYUdXU0ExRFRRMWo4TDk4MzNaR3ptMVRGMVMwbDJpXzJSTkhTWSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDPAgpy5_tsJM0HSX30roDrHum0Ut_0NR087E37s0PKYQIgSA5whqvUtYqS6nZabm3Gyg9-OQndUxGSPy4xRASInoo",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-3",
+        "entries": [
+          {
+            "id": "source-review-ce258f93-e282-48b7-b9a1-94584fdcd751",
+            "proposalHash": "691757ddadcf5b96cb3e1fa688e498edb760adf31f4fa4e2a623ecc9932b2ac6"
+          },
+          {
+            "id": "source-review-46cda26c-3079-4bf1-8bec-44539d98a3ae",
+            "proposalHash": "06d573b0632781e600f83b6bd3be9d275bd67b4fe6c32e8bca0b6ad1f5eb72c7"
+          },
+          {
+            "id": "source-review-29e10174-82f8-424b-ab3c-b0f16dde013b",
+            "proposalHash": "5529a202648246be13374cf5766eb70e37b2d1df633f324d7e9a4daa86e624ca"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T11:03:04.772Z"
   },
   {
     "id": "source-review-0ac56b15-d946-4ce7-b43d-6cc6ac031a23",
@@ -29397,7 +29473,7 @@
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2024-03-05-wa-ai-policy-and-assurance-framework-published",
     "targetTimelineRevisionHash": "bac786534792490067cef0f86e3579e65a72a65763be0de0c796ab720d8b9f80",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:57:48.278Z",
     "createdBy": "local-mcp-admin",
     "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
@@ -29439,9 +29515,36 @@
       "jurisdiction": "wa",
       "relatedPolicyId": "wa-ai-policy-assurance-framework",
       "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+          "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+          "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+          "retrievedAt": "2026-11-01T10:50:38.112Z",
+          "contentType": "text/html",
+          "contentHash": "e39f3e583ee12bee084c7155eb284e1fe2a0e67b844e9eddd1877bbb26c0addd",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:50:38.112Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+            "pageContentHash": "037368ae740055d2310c871a2ce5d4fc6106d18799c132b18ec726d59d7a6ba8",
+            "characterCount": 13325
+          },
+          "publishedAt": "2024-03-05",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-01T11:03:01.727Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal 45b8fa4a). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture."
+      }
     },
-    "updatedAt": "2026-11-01T10:57:48.292Z",
+    "updatedAt": "2026-11-01T11:03:01.760Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -29462,16 +29565,53 @@
       },
       "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
       "proposedAt": "2026-11-01T10:57:48.292Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T11:03:01.727Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal 45b8fa4a). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+    "decision": {
+      "proposalHash": "45b8fa4a3f742cd5361ec743147625b05de87f88387f88bf2c02f822578ba0a6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T11:00:33.193Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-2:55f238d7fa295c272b24eecd0bd2c20a0befbe37394efaac3cf077acfd2228a8",
+        "receivedAt": "2026-11-01T11:00:33.193Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVVJHNzk4bURNaTROcmkzREwxLWd3QnpQLW8wVXl5ZjByLTZtaDJkTkdyUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIHN2nI_Q0mLDlwnZoOGez21Y4PPUkP-yJFoq6B-uiQvXAiEAmWc_1SKHV5z3lfK02LINouY--B_vrAPMtdpMmVgXQxQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-2",
+        "entries": [
+          {
+            "id": "source-review-99fb1852-b6ed-4ffc-80d5-1136d0a5238f",
+            "proposalHash": "ca4883b2246621862f23e4938ae23c80345e8be39b4d7d9f7692caf0d10acecc"
+          },
+          {
+            "id": "source-review-bde849bd-3867-46c8-86fd-7fc1352dae04",
+            "proposalHash": "141e51cde224b1f04a27e68e178923f94c5757135395a869734ce811c936d0d6"
+          },
+          {
+            "id": "source-review-0ac56b15-d946-4ce7-b43d-6cc6ac031a23",
+            "proposalHash": "45b8fa4a3f742cd5361ec743147625b05de87f88387f88bf2c02f822578ba0a6"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T11:03:01.755Z"
   },
   {
     "id": "source-review-bde849bd-3867-46c8-86fd-7fc1352dae04",
     "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
-    "title": "OAIC publishes twin AI privacy guidance",
+    "title": "OAIC publishes AI privacy guidance",
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2024-10-21-oaic-publishes-twin-ai-privacy-guidance",
     "targetTimelineRevisionHash": "3208c2c174ee9d916974da4a89a259278baf304630a4bd98b8dd03b356116f87",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:53:22.424Z",
     "createdBy": "local-mcp-admin",
     "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
@@ -29513,9 +29653,36 @@
       "jurisdiction": "federal",
       "relatedPolicyId": "oaic-guidance-developing-training-genai",
       "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
-      "datePrecision": "day"
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+          "finalUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
+          "title": "Guidance on privacy and developing and training generative AI models | OAIC",
+          "retrievedAt": "2026-11-01T10:49:29.049Z",
+          "contentType": "text/html",
+          "contentHash": "b5e7bc6146d9a011f07e8c0994e4f695af016bca77dde96601fc577093b38485",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-01T10:49:29.049Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+            "pageContentHash": "6a84117e3dc468fd237f61bcfa17c590acd40497f5054cd51723b88bef260fd7",
+            "characterCount": 88126
+          },
+          "publishedAt": "2024-10-21",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-01T11:03:01.661Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal 141e51cd). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture."
+      }
     },
-    "updatedAt": "2026-11-01T10:53:22.445Z",
+    "updatedAt": "2026-11-01T11:03:01.694Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -29536,7 +29703,44 @@
       },
       "notes": "Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
       "proposedAt": "2026-11-01T10:53:22.445Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T11:03:01.661Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal 141e51cd). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+    "decision": {
+      "proposalHash": "141e51cde224b1f04a27e68e178923f94c5757135395a869734ce811c936d0d6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T11:00:33.193Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-2:55f238d7fa295c272b24eecd0bd2c20a0befbe37394efaac3cf077acfd2228a8",
+        "receivedAt": "2026-11-01T11:00:33.193Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVVJHNzk4bURNaTROcmkzREwxLWd3QnpQLW8wVXl5ZjByLTZtaDJkTkdyUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIHN2nI_Q0mLDlwnZoOGez21Y4PPUkP-yJFoq6B-uiQvXAiEAmWc_1SKHV5z3lfK02LINouY--B_vrAPMtdpMmVgXQxQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-2",
+        "entries": [
+          {
+            "id": "source-review-99fb1852-b6ed-4ffc-80d5-1136d0a5238f",
+            "proposalHash": "ca4883b2246621862f23e4938ae23c80345e8be39b4d7d9f7692caf0d10acecc"
+          },
+          {
+            "id": "source-review-bde849bd-3867-46c8-86fd-7fc1352dae04",
+            "proposalHash": "141e51cde224b1f04a27e68e178923f94c5757135395a869734ce811c936d0d6"
+          },
+          {
+            "id": "source-review-0ac56b15-d946-4ce7-b43d-6cc6ac031a23",
+            "proposalHash": "45b8fa4a3f742cd5361ec743147625b05de87f88387f88bf2c02f822578ba0a6"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T11:03:01.690Z"
   },
   {
     "id": "source-review-46cda26c-3079-4bf1-8bec-44539d98a3ae",
@@ -29545,7 +29749,7 @@
     "entryKind": "policy",
     "targetPolicyId": "queensland-ai-governance-policy",
     "targetPolicyBaseRevisionHash": "a7ccef4a8048c44b24da42291cd3ff97286c6a0255e137671d90f977a5ffa2c1",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:52:52.890Z",
     "createdBy": "local-mcp-admin",
     "notes": "Retrieved through the standard declared-identity path.",
@@ -29564,10 +29768,17 @@
     "sourceEvidence": {
       "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
       "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-      "retrievedAt": "2026-11-01T10:52:52.822Z",
+      "retrievedAt": "2026-11-01T11:03:04.232Z",
       "contentType": "text/html",
       "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
-      "title": "Artificial intelligence governance policy - forgov.qld.gov.au"
+      "title": "Artificial intelligence governance policy - forgov.qld.gov.au",
+      "reviewedDate": {
+        "date": "2026-08-01",
+        "precision": "month",
+        "reviewedAt": "2026-11-01T11:03:04.240Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
+      }
     },
     "proposedRecord": {
       "id": "queensland-ai-governance-policy",
@@ -29597,7 +29808,7 @@
         "risk-assurance"
       ],
       "createdAt": "2026-04-06T16:50:00Z",
-      "updatedAt": "2026-11-01T10:52:52.890Z",
+      "updatedAt": "2026-11-01T11:03:04.240Z",
       "dates": [
         {
           "type": "effective",
@@ -29607,31 +29818,45 @@
           "source": {
             "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
             "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-            "title": "Artificial intelligence governance policy | For government | Queensland Government",
-            "retrievedAt": "2026-09-09T23:33:41.619839Z",
+            "retrievedAt": "2026-11-01T11:03:04.232Z",
             "contentType": "text/html",
-            "contentHash": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c",
-            "linkedDocuments": [],
-            "browserCapture": {
-              "method": "browser",
-              "capturedAt": "2026-09-09T23:33:41.619839Z",
-              "capturedBy": "Daniel Alkurdi",
-              "notes": "Daniel Alkurdi approved this Firecrawl-backed controlled capture after plain HTTP and direct browser rendering were blocked by the official host. The current official page was reviewed for version, status, effective month and policy requirements.",
-              "pageContentHash": "d419eeb33bb8d28872b24ab2b348516c2ec7393fd5bcc4f3c01116264b5e6e78",
-              "characterCount": 7829
-            },
+            "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
+            "title": "Artificial intelligence governance policy - forgov.qld.gov.au",
             "reviewedDate": {
               "date": "2026-08-01",
               "precision": "month",
-              "reviewedAt": "2026-09-09T23:40:12.513Z",
+              "reviewedAt": "2026-11-01T11:03:04.240Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "The official Queensland Government page identifies Policy v2.0.0 as Current/Mandated and effective August 2026–current. Month precision is retained because no day-level effective date is stated."
+              "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
             }
           }
         }
-      ]
+      ],
+      "lastReviewedAt": "2026-11-01T11:03:04.240Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+          "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
+          "retrievedAt": "2026-11-01T11:03:04.232Z",
+          "contentType": "text/html",
+          "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
+          "title": "Artificial intelligence governance policy - forgov.qld.gov.au",
+          "reviewedDate": {
+            "date": "2026-08-01",
+            "precision": "month",
+            "reviewedAt": "2026-11-01T11:03:04.240Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
+          }
+        },
+        "checkedAt": "2026-11-01T11:03:04.240Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 06d573b0). Proposed by Claude (agent). Register full review through the standard declared-identity path."
+      }
     },
-    "updatedAt": "2026-11-01T10:57:47.422Z",
+    "updatedAt": "2026-11-01T11:03:04.712Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -29641,7 +29866,45 @@
       },
       "notes": "Register full review through the standard declared-identity path.",
       "proposedAt": "2026-11-01T10:57:47.422Z"
-    }
+    },
+    "targetPolicyRevisionHash": "a7ccef4a8048c44b24da42291cd3ff97286c6a0255e137671d90f977a5ffa2c1",
+    "reviewedAt": "2026-11-01T11:03:04.240Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 06d573b0). Proposed by Claude (agent). Register full review through the standard declared-identity path.",
+    "decision": {
+      "proposalHash": "06d573b0632781e600f83b6bd3be9d275bd67b4fe6c32e8bca0b6ad1f5eb72c7",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T11:00:43.219Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-3:98e1cde45c9c0036e3e54124c36b4a4c3690800292e23d075dae14713d06caea",
+        "receivedAt": "2026-11-01T11:00:43.219Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQzkwUHJTYUdXU0ExRFRRMWo4TDk4MzNaR3ptMVRGMVMwbDJpXzJSTkhTWSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDPAgpy5_tsJM0HSX30roDrHum0Ut_0NR087E37s0PKYQIgSA5whqvUtYqS6nZabm3Gyg9-OQndUxGSPy4xRASInoo",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-3",
+        "entries": [
+          {
+            "id": "source-review-ce258f93-e282-48b7-b9a1-94584fdcd751",
+            "proposalHash": "691757ddadcf5b96cb3e1fa688e498edb760adf31f4fa4e2a623ecc9932b2ac6"
+          },
+          {
+            "id": "source-review-46cda26c-3079-4bf1-8bec-44539d98a3ae",
+            "proposalHash": "06d573b0632781e600f83b6bd3be9d275bd67b4fe6c32e8bca0b6ad1f5eb72c7"
+          },
+          {
+            "id": "source-review-29e10174-82f8-424b-ab3c-b0f16dde013b",
+            "proposalHash": "5529a202648246be13374cf5766eb70e37b2d1df633f324d7e9a4daa86e624ca"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T11:03:04.703Z"
   },
   {
     "id": "source-review-ce258f93-e282-48b7-b9a1-94584fdcd751",
@@ -29650,7 +29913,7 @@
     "entryKind": "policy",
     "targetPolicyId": "nsw-ai-operational-policy",
     "targetPolicyBaseRevisionHash": "82e22ce8cb94731fa95b0ea588f19ed8ef0af05a6cbba7425c5d3bf2300eaa8f",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:52:50.930Z",
     "createdBy": "local-mcp-admin",
     "notes": "Retrieved through the standard declared-identity path.",
@@ -29669,7 +29932,7 @@
     "sourceEvidence": {
       "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
       "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-      "retrievedAt": "2026-11-01T10:52:50.553Z",
+      "retrievedAt": "2026-11-01T11:03:02.631Z",
       "contentType": "text/html",
       "contentHash": "ab6aac49fdfd29bbe3b7f6a365501c0d79824a7a763344c082fc4ab8cc6d4475",
       "etag": "\"bcea44f2779288f8883b26eaf6efa676\"",
@@ -29678,14 +29941,21 @@
         {
           "url": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
           "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-          "retrievedAt": "2026-11-01T10:52:50.632Z",
+          "retrievedAt": "2026-11-01T11:03:02.702Z",
           "contentType": "application/pdf",
           "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
           "etag": "\"61044dcabf9f177f8ce7eed06b686c18\"",
           "lastModified": "Sat, 31 Oct 2026 16:52:00 GMT"
         }
       ],
-      "title": "NSW AI Operational Policy"
+      "title": "NSW AI Operational Policy",
+      "reviewedDate": {
+        "date": "2026-07-30",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T11:03:02.703Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The linked policy PDF, byte-identical to the version verified on 9 September 2026, states \"First published: 30 July 2026.\" and \"Final version 1.1 – 30 July 2026\". The page text changed but stays consistent with the record; only the earlier page hash is stored, so the earlier text cannot be compared."
+      }
     },
     "proposedRecord": {
       "id": "nsw-ai-operational-policy",
@@ -29703,30 +29973,30 @@
           "primary": true,
           "source": {
             "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-            "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
-            "retrievedAt": "2026-09-09T23:40:39.317Z",
+            "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+            "retrievedAt": "2026-11-01T11:03:02.631Z",
             "contentType": "text/html",
-            "contentHash": "197bf9433a292ca12ef00da62db13cb9c445563b497906c16d8868998cf580dc",
-            "etag": "\"1788996399\"",
-            "lastModified": "Wed, 09 Sep 2026 23:26:39 GMT",
+            "contentHash": "ab6aac49fdfd29bbe3b7f6a365501c0d79824a7a763344c082fc4ab8cc6d4475",
+            "etag": "\"bcea44f2779288f8883b26eaf6efa676\"",
+            "lastModified": "Sat, 31 Oct 2026 14:18:26 GMT",
             "linkedDocuments": [
               {
-                "url": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-                "finalUrl": "https://www.digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
-                "retrievedAt": "2026-09-09T23:40:47.927Z",
+                "url": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+                "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+                "retrievedAt": "2026-11-01T11:03:02.702Z",
                 "contentType": "application/pdf",
                 "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
-                "etag": "\"6a96152f-84676\"",
-                "lastModified": "Mon, 31 Aug 2026 23:58:39 GMT"
+                "etag": "\"61044dcabf9f177f8ce7eed06b686c18\"",
+                "lastModified": "Sat, 31 Oct 2026 16:52:00 GMT"
               }
             ],
             "title": "NSW AI Operational Policy",
             "reviewedDate": {
               "date": "2026-07-30",
               "precision": "day",
-              "reviewedAt": "2026-09-09T23:40:47.928Z",
+              "reviewedAt": "2026-11-01T11:03:02.703Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "The official NSW AI Operational Policy and supporting DCS-2026-02 circular identify 30 July 2026 as the first publication and issue date."
+              "notes": "The linked policy PDF, byte-identical to the version verified on 9 September 2026, states \"First published: 30 July 2026.\" and \"Final version 1.1 – 30 July 2026\". The page text changed but stays consistent with the record; only the earlier page hash is stored, so the earlier text cannot be compared."
             }
           }
         }
@@ -29751,9 +30021,46 @@
         "risk-assurance"
       ],
       "createdAt": "2026-09-09T23:26:21.926Z",
-      "updatedAt": "2026-11-01T10:52:50.930Z"
+      "updatedAt": "2026-11-01T11:03:02.703Z",
+      "lastReviewedAt": "2026-11-01T11:03:02.703Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+          "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy",
+          "retrievedAt": "2026-11-01T11:03:02.631Z",
+          "contentType": "text/html",
+          "contentHash": "ab6aac49fdfd29bbe3b7f6a365501c0d79824a7a763344c082fc4ab8cc6d4475",
+          "etag": "\"bcea44f2779288f8883b26eaf6efa676\"",
+          "lastModified": "Sat, 31 Oct 2026 14:18:26 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+              "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2026-09/nsw-ai-operational-policy-01092026.pdf",
+              "retrievedAt": "2026-11-01T11:03:02.702Z",
+              "contentType": "application/pdf",
+              "contentHash": "cbbabcdb27fb987b0fa3541f489c73bd1359f30b4c6c75b9a6a549990cb87160",
+              "etag": "\"61044dcabf9f177f8ce7eed06b686c18\"",
+              "lastModified": "Sat, 31 Oct 2026 16:52:00 GMT"
+            }
+          ],
+          "title": "NSW AI Operational Policy",
+          "reviewedDate": {
+            "date": "2026-07-30",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T11:03:02.703Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The linked policy PDF, byte-identical to the version verified on 9 September 2026, states \"First published: 30 July 2026.\" and \"Final version 1.1 – 30 July 2026\". The page text changed but stays consistent with the record; only the earlier page hash is stored, so the earlier text cannot be compared."
+          }
+        },
+        "checkedAt": "2026-11-01T11:03:02.703Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 691757dd). Proposed by Claude (agent). Register full review through the standard declared-identity path.",
+        "lastSourceAuditAt": "2026-11-01T09:48:59.880Z"
+      }
     },
-    "updatedAt": "2026-11-01T10:57:46.746Z",
+    "updatedAt": "2026-11-01T11:03:03.227Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -29763,16 +30070,54 @@
       },
       "notes": "Register full review through the standard declared-identity path.",
       "proposedAt": "2026-11-01T10:57:46.746Z"
-    }
+    },
+    "targetPolicyRevisionHash": "82e22ce8cb94731fa95b0ea588f19ed8ef0af05a6cbba7425c5d3bf2300eaa8f",
+    "reviewedAt": "2026-11-01T11:03:02.703Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 691757dd). Proposed by Claude (agent). Register full review through the standard declared-identity path.",
+    "decision": {
+      "proposalHash": "691757ddadcf5b96cb3e1fa688e498edb760adf31f4fa4e2a623ecc9932b2ac6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T11:00:43.219Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-3:98e1cde45c9c0036e3e54124c36b4a4c3690800292e23d075dae14713d06caea",
+        "receivedAt": "2026-11-01T11:00:43.219Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQzkwUHJTYUdXU0ExRFRRMWo4TDk4MzNaR3ptMVRGMVMwbDJpXzJSTkhTWSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDPAgpy5_tsJM0HSX30roDrHum0Ut_0NR087E37s0PKYQIgSA5whqvUtYqS6nZabm3Gyg9-OQndUxGSPy4xRASInoo",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-3",
+        "entries": [
+          {
+            "id": "source-review-ce258f93-e282-48b7-b9a1-94584fdcd751",
+            "proposalHash": "691757ddadcf5b96cb3e1fa688e498edb760adf31f4fa4e2a623ecc9932b2ac6"
+          },
+          {
+            "id": "source-review-46cda26c-3079-4bf1-8bec-44539d98a3ae",
+            "proposalHash": "06d573b0632781e600f83b6bd3be9d275bd67b4fe6c32e8bca0b6ad1f5eb72c7"
+          },
+          {
+            "id": "source-review-29e10174-82f8-424b-ab3c-b0f16dde013b",
+            "proposalHash": "5529a202648246be13374cf5766eb70e37b2d1df633f324d7e9a4daa86e624ca"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T11:03:03.220Z"
   },
   {
     "id": "source-review-99fb1852-b6ed-4ffc-80d5-1136d0a5238f",
     "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-    "title": "Victorian Generative AI Guideline Published",
+    "title": "Victorian Generative AI Guideline Made",
     "entryKind": "timeline_event",
     "targetTimelineEventId": "tl-2024-11-27-victorian-generative-ai-guideline-published",
     "targetTimelineRevisionHash": "79bc464752f753d7eda59b993c2a798a36b89cb288c7d4663f58231e259212c8",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-01T10:52:49.138Z",
     "createdBy": "local-mcp-admin",
     "notes": "Retrieved through the standard declared-identity path.",
@@ -29791,14 +30136,14 @@
     "sourceEvidence": {
       "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
       "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-      "retrievedAt": "2026-11-01T10:52:47.863Z",
+      "retrievedAt": "2026-11-01T11:03:00.905Z",
       "contentType": "text/html",
       "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
       "linkedDocuments": [
         {
           "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
           "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-          "retrievedAt": "2026-11-01T10:52:48.656Z",
+          "retrievedAt": "2026-11-01T11:03:01.029Z",
           "contentType": "application/pdf",
           "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
           "etag": "\"2e976-612c9a53ad71b\"",
@@ -29807,34 +30152,84 @@
         {
           "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
           "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-          "retrievedAt": "2026-11-01T10:52:48.748Z",
+          "retrievedAt": "2026-11-01T11:03:01.048Z",
           "contentType": "application/pdf",
           "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
           "etag": "\"67480ace-1e00c\"",
           "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
         }
       ],
-      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+      "reviewedDate": {
+        "date": "2024-11-27",
+        "precision": "day",
+        "reviewedAt": "2026-11-01T11:03:01.049Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+      }
     },
     "proposedRecord": {
       "id": "tl-2024-11-27-victorian-generative-ai-guideline-published",
       "date": "2024-11-27",
-      "title": "Victorian Generative AI Guideline Published",
-      "description": "Victoria publishes its current administrative guideline for safe and responsible generative AI use in the public sector.",
+      "title": "Victorian Generative AI Guideline Made",
+      "description": "The Secretary of the Department of Premier and Cabinet makes the administrative guideline for safe and responsible generative AI use in the Victorian public sector.",
       "type": "policy_introduced",
       "jurisdiction": "vic",
       "relatedPolicyId": "victoria-genai-guideline-vps",
-      "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps"
+      "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "retrievedAt": "2026-11-01T11:03:00.905Z",
+          "contentType": "text/html",
+          "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
+          "linkedDocuments": [
+            {
+              "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "retrievedAt": "2026-11-01T11:03:01.029Z",
+              "contentType": "application/pdf",
+              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
+              "etag": "\"2e976-612c9a53ad71b\"",
+              "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            },
+            {
+              "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "retrievedAt": "2026-11-01T11:03:01.048Z",
+              "contentType": "application/pdf",
+              "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
+              "etag": "\"67480ace-1e00c\"",
+              "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+            }
+          ],
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "reviewedDate": {
+            "date": "2024-11-27",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T11:03:01.049Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+          }
+        },
+        "checkedAt": "2026-11-01T11:03:01.049Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal ca4883b2). Proposed by Claude (agent). Retrieved through the standard declared-identity path."
+      }
     },
     "linkedDevelopment": {
       "id": "dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
-      "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+      "title": "Victorian Generative AI Guideline Made",
       "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
       "sourceId": "vic-ai",
       "sourceName": "vic.gov.au — generative AI guidance",
       "jurisdiction": "vic",
       "detectedAt": "2026-10-27T19:30:32.288Z",
-      "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "summary": "The Secretary of the Department of Premier and Cabinet makes the administrative guideline for safe and responsible generative AI use in the Victorian public sector.",
       "relevanceScore": 1,
       "classification": "heuristic",
       "assessment": {
@@ -29847,26 +30242,44 @@
         "source": {
           "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
           "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-          "retrievedAt": "2026-10-27T19:30:32.288Z",
+          "retrievedAt": "2026-11-01T11:03:00.905Z",
           "contentType": "text/html",
-          "contentHash": "54775b266d9b146bc47156631b767c2bf901045fb7ee89f0631101dae33fe32f",
+          "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
           "linkedDocuments": [
             {
               "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
               "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-              "retrievedAt": "2026-10-27T19:30:32.288Z",
+              "retrievedAt": "2026-11-01T11:03:01.029Z",
               "contentType": "application/pdf",
               "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
               "etag": "\"2e976-612c9a53ad71b\"",
               "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            },
+            {
+              "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "retrievedAt": "2026-11-01T11:03:01.048Z",
+              "contentType": "application/pdf",
+              "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
+              "etag": "\"67480ace-1e00c\"",
+              "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
             }
           ],
-          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "reviewedDate": {
+            "date": "2024-11-27",
+            "precision": "day",
+            "reviewedAt": "2026-11-01T11:03:01.049Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+          }
         }
       },
-      "status": "detected"
+      "status": "detected",
+      "publishedAt": "2024-11-27",
+      "publishedAtPrecision": "day"
     },
-    "updatedAt": "2026-11-01T10:52:49.167Z",
+    "updatedAt": "2026-11-01T11:03:01.625Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -29887,6 +30300,43 @@
       },
       "notes": "Retrieved through the standard declared-identity path.",
       "proposedAt": "2026-11-01T10:52:49.167Z"
-    }
+    },
+    "reviewedAt": "2026-11-01T11:03:01.049Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal ca4883b2). Proposed by Claude (agent). Retrieved through the standard declared-identity path.",
+    "decision": {
+      "proposalHash": "ca4883b2246621862f23e4938ae23c80345e8be39b4d7d9f7692caf0d10acecc",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-01T11:00:33.193Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-01-2:55f238d7fa295c272b24eecd0bd2c20a0befbe37394efaac3cf077acfd2228a8",
+        "receivedAt": "2026-11-01T11:00:33.193Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiVVJHNzk4bURNaTROcmkzREwxLWd3QnpQLW8wVXl5ZjByLTZtaDJkTkdyUSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIHN2nI_Q0mLDlwnZoOGez21Y4PPUkP-yJFoq6B-uiQvXAiEAmWc_1SKHV5z3lfK02LINouY--B_vrAPMtdpMmVgXQxQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-01-2",
+        "entries": [
+          {
+            "id": "source-review-99fb1852-b6ed-4ffc-80d5-1136d0a5238f",
+            "proposalHash": "ca4883b2246621862f23e4938ae23c80345e8be39b4d7d9f7692caf0d10acecc"
+          },
+          {
+            "id": "source-review-bde849bd-3867-46c8-86fd-7fc1352dae04",
+            "proposalHash": "141e51cde224b1f04a27e68e178923f94c5757135395a869734ce811c936d0d6"
+          },
+          {
+            "id": "source-review-0ac56b15-d946-4ce7-b43d-6cc6ac031a23",
+            "proposalHash": "45b8fa4a3f742cd5361ec743147625b05de87f88387f88bf2c02f822578ba0a6"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-01T11:03:01.620Z"
   }
 ]
