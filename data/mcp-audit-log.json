@@ -1,5 +1,132 @@
 [
   {
+    "id": "mcp-audit-5ac245a7-3c90-4e0f-ace9-ee569d8f14ec",
+    "createdAt": "2026-11-01T10:46:05.830Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3c346b22-f79e-4c45-9832-3f09e875730e",
+    "createdAt": "2026-11-01T10:45:54.093Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5729f2e0-8dcb-473f-9380-cc326b6d08c4",
+    "createdAt": "2026-11-01T10:45:54.081Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/news/australian-governments-interim-response-safe-and-responsible-ai-consultation",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-19cf57d6-8058-4982-b179-b1be97c47781",
+    "createdAt": "2026-11-01T10:45:54.051Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-fc642a84-3ed5-4a61-9690-cfb5460644a1",
+    "createdAt": "2026-11-01T10:45:54.039Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6dd22a5b-a894-44ac-866e-b0008c317923",
+    "createdAt": "2026-11-01T10:45:54.005Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e01319e6-c1a0-493e-83e7-b8792cca3d80",
+    "createdAt": "2026-11-01T10:45:53.990Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1c395cb7-3274-4440-b44b-69fda0dcf1bb",
+    "createdAt": "2026-11-01T10:45:53.956Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1f6cf8c5-c75f-48c1-b6f2-9167011e4826",
+    "createdAt": "2026-11-01T10:45:53.942Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0e7bd1ba-04f2-47b4-8f57-c19ef71dadc4",
+    "createdAt": "2026-11-01T10:45:53.910Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5e9d67b8-c281-4f92-9118-e620d4b789f3",
+    "createdAt": "2026-11-01T10:45:53.898Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-974b8681-151f-4634-a968-6393ac51061c",
+    "createdAt": "2026-11-01T10:45:53.867Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d897afbb-3b20-41c6-9030-d5fee6905a25",
+    "createdAt": "2026-11-01T10:45:53.854Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/voluntary-ai-safety-standard",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-dd5e2ec8-827e-49fd-b35c-5e67a02b8442",
+    "createdAt": "2026-11-01T10:45:53.816Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b35e2098-a17f-4a84-8eb9-b0967b7f3392",
+    "createdAt": "2026-11-01T10:45:53.799Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.industry.gov.au/publications/national-ai-plan",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-99c5bb90-3243-43f9-9136-a5012f32e1a5",
+    "createdAt": "2026-11-01T10:45:42.933Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-811321c1-85dd-46bc-b66c-22139316fec6",
+    "createdAt": "2026-11-01T10:45:42.919Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.finance.gov.au/about-us/news/2025/introducing-aps-ai-plan",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-cd1d23d7-a303-459b-85a8-506e31edbb8d",
     "createdAt": "2026-10-31T23:44:55.726Z",
     "actor": "local-mcp-admin",
