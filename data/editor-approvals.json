@@ -97,5 +97,16 @@
       "signature": "MEYCIQD8HxCdZ4sFw_FzY2Ax7EntpaLp8J97i1dtbXLDP5ItHQIhAOE3dMy_QeFlrkWYjP3j7V_XS3lmTKxFK9uUx0_c2kxq",
       "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
     }
+  },
+  {
+    "subject": "source-review:source-review-dev-2026-10-30-dta-ai-reference-architecture:7571c389ef452874e8ce0a8fa6a089c4c229b2301d2febeb1e5447fd1a96e8b8",
+    "receivedAt": "2026-11-01T23:18:17.329Z",
+    "response": {
+      "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+      "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+      "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoibFFEbzBaZXBHYWpHSWYya3NTVlBFOExLd21BM0NwNnNNd3AwUUtjcEhtWSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+      "signature": "MEUCIEAP9BKTs4P4Rzphb34nswP-qiDUxiJhgKfdvyZbrWoOAiEAjwSHXWI3PxcqZMUsToJwnwRni7qq8ZgzUUq66Z0bfKg",
+      "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+    }
   }
 ]
