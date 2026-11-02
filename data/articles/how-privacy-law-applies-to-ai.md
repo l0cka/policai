@@ -39,7 +39,7 @@ If an organisation uses AI to generate or infer personal information, "this is a
 
 ## Can a business put customer data into an AI tool?
 
-Only within the usual rules. The OAIC says entering personal information into an AI system is a use or disclosure under APP 6. That needs the information's original purpose, consent, or a secondary use the person would reasonably expect ([OAIC deployer guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products)).
+Only within the usual rules. The OAIC says entering personal information into an AI system is a use or disclosure under APP 6. That is allowed for the purpose the information was collected for, with consent, or for a secondary use the person would reasonably expect that is related to that purpose (directly related, for sensitive information) ([OAIC deployer guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products)).
 
 The same guidance says:
 
