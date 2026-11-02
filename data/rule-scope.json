@@ -1811,9 +1811,11 @@
     "kind": "not_a_rule",
     "note": "The Australian Federal Police's own strategy for adopting AI; it directs the AFP's work and sets no obligation on anyone outside it.",
     "review": {
-      "status": "draft",
+      "status": "reviewed",
       "draftedBy": "Claude (agent)",
-      "draftedAt": "2026-11-02"
+      "draftedAt": "2026-11-02",
+      "reviewedBy": "Daniel Alkurdi",
+      "reviewedAt": "2026-11-02"
     }
   }
 ]
