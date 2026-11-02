@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getArticles, getPolicyById, getPolicies, getSiteReuse } from '@/lib/data-service';
+import { getArticles, getPolicyById, getPolicies, getRuleScopes, getSiteReuse } from '@/lib/data-service';
 import { reuseForUrl } from '@/lib/watch-coverage/site-reuse';
 import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import { CitedInAnalysis } from '@/components/related/cited-in-analysis';
+import { KeepTrack } from '@/components/related/keep-track';
 import { RelatedInstruments } from '@/components/related/related-instruments';
+import { WhoThisAppliesTo } from '@/components/related/who-this-applies-to';
+import { followsForRecord } from '@/lib/next-step';
 import { relatedInstruments } from '@/lib/related-policies';
 import { LegislativeProgress } from '@/components/legislation/legislative-progress';
 import {
@@ -70,10 +73,11 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
   const policy = await getPolicyById(id);
   if (!policy) notFound();
 
-  const [publicPolicies, analyses, siteReuse] = await Promise.all([
+  const [publicPolicies, analyses, siteReuse, scopes] = await Promise.all([
     getPolicies(),
     getArticles({ citing: id }),
     getSiteReuse(),
+    getRuleScopes(),
   ]);
   const sourceReuse = policy.sourceUrl ? reuseForUrl(siteReuse, policy.sourceUrl) : undefined;
   const courtRequirements = policy.type === "practice_note" ? await getPublicCourtRequirements({ policyId: id }) : [];
@@ -99,8 +103,10 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
         progress={policy.legislative ? <LegislativeProgress policy={{ ...policy, legislative: policy.legislative }} /> : null}
         related={
           <>
+            <WhoThisAppliesTo scope={scopes.find((scope) => scope.policyId === policy.id)} />
             <CitedInAnalysis articles={analyses} />
             <RelatedInstruments items={relatedInstruments(policy, publicPolicies)} />
+            <KeepTrack follows={followsForRecord(policy)} feed={{ href: '/feed.xml', label: 'New developments by RSS' }} />
           </>
         }
       />

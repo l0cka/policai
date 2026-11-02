@@ -13,8 +13,11 @@ import {
 } from '@/components/analysis';
 import { ArticleFigureView } from '@/components/article-figures';
 import { ArticleTable } from '@/components/article-table';
+import { KeepTrack } from '@/components/related/keep-track';
+import { MoreAnalysis } from '@/components/related/more-analysis';
+import { followsForCitedRecords, moreAnalysis } from '@/lib/next-step';
 import { renderArticleMarkdown } from '@/lib/article-markdown';
-import { getArticleBySlug, getArticles, type ArticleView } from '@/lib/data-service';
+import { getArticleBySlug, getArticles, getPolicies, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { metaDescription, pageAlternates, SITE_SHARE_IMAGE, SITE_URL } from '@/lib/site-seo';
 import { ARTICLE_TYPE_NAMES, type ArticleImage, type PublishedArticle } from '@/types';
@@ -128,6 +131,10 @@ export default async function ArticlePage({ params }: Params) {
     );
   }
 
+  const [articles, policies] = await Promise.all([getArticles(), getPolicies()]);
+  const cited = new Set(article.cites);
+  const citedRecords = policies.filter((policy) => cited.has(policy.id));
+
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: articleJsonLd(article) }} />
@@ -210,6 +217,12 @@ export default async function ArticlePage({ params }: Params) {
           </ul>
         </section>
       ) : null}
+
+      <MoreAnalysis articles={moreAnalysis(article, articles)} />
+      <KeepTrack
+        follows={followsForCitedRecords(citedRecords)}
+        feed={{ href: '/analysis/feed.xml', label: 'New analysis by RSS' }}
+      />
     </article>
   );
 }
