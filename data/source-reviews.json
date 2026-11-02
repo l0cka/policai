@@ -142,7 +142,7 @@
       "createdAt": "2026-11-02T05:18:15.869Z",
       "updatedAt": "2026-11-02T05:18:15.869Z"
     },
-    "updatedAt": "2026-11-02T05:18:16.523Z",
+    "updatedAt": "2026-11-02T05:28:35.382Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -152,7 +152,7 @@
         "jurisdiction": "federal",
         "type": "policy",
         "status": "active",
-        "effectiveDate": "2026-09-02",
+        "effectiveDate": "2026-09-01",
         "agencies": [
           "Australian Federal Police"
         ],
@@ -172,12 +172,12 @@
           "human-oversight"
         ],
         "createdAt": "2026-11-02T05:18:15.869Z",
-        "updatedAt": "2026-11-02T05:18:15.869Z",
+        "updatedAt": "2026-11-02T05:28:35.304Z",
         "dates": [
           {
             "type": "published",
-            "date": "2026-09-02",
-            "precision": "day",
+            "date": "2026-09-01",
+            "precision": "month",
             "primary": true,
             "source": {
               "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
@@ -202,12 +202,12 @@
         ]
       },
       "reviewedDate": {
-        "date": "2026-09-02",
-        "precision": "day",
-        "notes": "The publication page and the PDF text state no day. The PDF metadata records creation and modification on 2 September 2026 (AEST), the server reports the PDF last modified on 2 September 2026 01:18 UTC, and the file sits in the 2026-09 upload folder. The AFP AI Transparency Statement (https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement) says the AFP launched the strategy in September 2026. No AFP media release announcing it was found. The day therefore rests on file metadata, not a stated release date."
+        "date": "2026-09-01",
+        "precision": "month",
+        "notes": "The publication page and the PDF text state no date. The AFP AI Transparency Statement (https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement) says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The PDF sits in the 2026-09 upload folder and its metadata and Last-Modified header read 2 September 2026, but file metadata is not a stated release date, so the record carries month precision (Daniel Alkurdi, 2 Nov 2026)."
       },
       "notes": "Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity.",
-      "proposedAt": "2026-11-02T05:18:16.523Z"
+      "proposedAt": "2026-11-02T05:28:35.382Z"
     }
   },
   {

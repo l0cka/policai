@@ -1,5 +1,12 @@
 [
   {
+    "id": "mcp-audit-7c02fc28-3eba-48e8-a647-99811febaf92",
+    "createdAt": "2026-11-02T05:28:35.517Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-254485eb-5ebf-4d68-af7e-2b218c32bc0a",
     "createdAt": "2026-11-02T05:18:34.988Z",
     "actor": "local-mcp-admin",
@@ -3699,14 +3706,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://consult.industry.gov.au/ai-mandatory-guardrails",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-de06e54b-de9e-4f6d-a555-1bb3ad9ee9ea",
-    "createdAt": "2026-07-19T04:06:28.069Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report",
     "status": "success"
   }
 ]
