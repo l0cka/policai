@@ -1805,5 +1805,15 @@
       "reviewedBy": "Daniel Alkurdi",
       "reviewedAt": "2026-11-01"
     }
+  },
+  {
+    "policyId": "afp-ai-strategy-2026-28",
+    "kind": "not_a_rule",
+    "note": "The Australian Federal Police's own strategy for adopting AI; it directs the AFP's work and sets no obligation on anyone outside it.",
+    "review": {
+      "status": "draft",
+      "draftedBy": "Claude (agent)",
+      "draftedAt": "2026-11-02"
+    }
   }
 ]
