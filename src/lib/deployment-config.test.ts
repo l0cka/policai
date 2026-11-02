@@ -53,4 +53,15 @@ describe("deployment data packaging", () => {
 		expect(directives.get("frame-ancestors")).toEqual(["'none'"]);
 		expect(directives.get("object-src")).toEqual(["'none'"]);
 	});
+
+	it("keeps the analytics beacon off the editor's approve pages", async () => {
+		const rules = (await nextConfig.headers?.()) ?? [];
+		const approve = rules.find(({ source }) => source === "/approve/:path*");
+		const csp = approve?.headers.find(({ key }) => key === "Content-Security-Policy")?.value ?? "";
+
+		expect(rules.at(-1)).toBe(approve);
+		expect(csp).toContain("script-src 'self' 'unsafe-inline'");
+		expect(csp).not.toContain("cloudflareinsights");
+		expect(csp).toContain("frame-ancestors 'none'");
+	});
 });

@@ -36,13 +36,20 @@ for (const route of Object.keys(manifest.routes)) {
 }
 
 // Assets skip next.config's headers(), so they are restated for the asset
-// server. Only site-wide headers are expected; anything narrower would be
-// dropped here without this check.
+// server. Next lets a later rule override a header; the asset server instead
+// joins repeated headers with a comma. Only Content-Security-Policy repeats,
+// and a comma-joined CSP enforces every policy, so a narrower rule can only
+// tighten it, which is what it is for.
 const { headers } = JSON.parse(await readFile(".next/routes-manifest.json", "utf8"));
-if (headers.length !== 1 || headers[0].source !== "/:path*" || headers[0].has || headers[0].missing) {
-	throw new Error("static-pages: next.config headers() changed shape; restate them in _headers");
-}
-const lines = headers[0].headers.map(({ key, value }) => `  ${key}: ${value}`);
-await writeFile(path.join(ASSETS, "_headers"), `/*\n${lines.join("\n")}\n`);
+const rules = headers.map((rule) => {
+	const prefix = rule.source.match(/^(\/[^:]*?)\/?:path\*$/)?.[1];
+	if (prefix === undefined || rule.has || rule.missing) {
+		throw new Error(`static-pages: cannot restate header rule ${rule.source} in _headers`);
+	}
+	const lines = rule.headers.map(({ key, value }) => `  ${key}: ${value}`).join("\n");
+	const paths = prefix === "/" || prefix === "" ? ["/*"] : [prefix, `${prefix}/*`];
+	return paths.map((p) => `${p}\n${lines}\n`).join("");
+});
+await writeFile(path.join(ASSETS, "_headers"), rules.join(""));
 
 console.log(`static-pages: ${pages} pages -> ${ASSETS}`);
