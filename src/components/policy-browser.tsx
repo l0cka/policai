@@ -13,7 +13,7 @@ import { FollowControl } from '@/components/follow-control';
 import { FilterControls, type FilterGroup } from '@/components/filter-sidebar';
 import { PolicyTable } from '@/components/policy-table';
 import { LEGISLATIVE_STAGE_NAMES } from '@/lib/legislation/overview';
-import { registerParams, registerStage, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
+import { registerParams, registerStage, type RegisterPolicy, selectRegisterPolicies, updateRegisterState, type PolicySortDirection, type PolicySortField, type PolicyViewMode } from '@/lib/policy-register';
 import { getThemeLabel, type ThemeId } from '@/lib/themes';
 import { useRegisterState } from '@/hooks/use-register-state';
 import { formatPolicyDate } from '@/lib/format-policy-date';
@@ -30,7 +30,7 @@ import {
 import { cn } from '@/lib/utils';
 
 interface PolicyBrowserProps {
-  policies: Policy[];
+  policies: RegisterPolicy[];
   /** Upcoming recorded dates from public records, soonest first. */
   upcomingDates?: UpcomingPolicyDate[];
   /** Server-rendered upcoming-deadlines rail, placed in the overview column. */

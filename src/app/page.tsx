@@ -3,6 +3,7 @@ import { AnalysisHero } from '@/components/analysis-hero';
 import { PolicyBrowser } from '@/components/policy-browser';
 import { UpcomingDeadlinesRail } from '@/components/upcoming-deadlines-rail';
 import { getArticles, getPolicies } from '@/lib/data-service';
+import { toRegisterPolicy } from '@/lib/policy-register';
 import {
   selectUpcomingPolicyDates,
   splitUpcomingDeadlines,
@@ -40,7 +41,7 @@ export default async function HomePage() {
 
   return (
     <PolicyBrowser
-      policies={policies}
+      policies={policies.map(toRegisterPolicy)}
       upcomingDates={upcomingDates}
       analysisHero={<AnalysisHero articles={articles} />}
       deadlinesRail={<UpcomingDeadlinesRail items={deadlines} today={today} />}

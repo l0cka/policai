@@ -1,6 +1,6 @@
-import type { PublicCourtRequirement } from "@/types";
+import type { ShownCourtRequirement } from "@/types";
 
-const MODALITY_LABELS: Record<PublicCourtRequirement["modality"], string> = {
+const MODALITY_LABELS: Record<ShownCourtRequirement["modality"], string> = {
   must: "Must",
   must_not: "Must not",
   should: "Should",
@@ -11,7 +11,7 @@ const MODALITY_LABELS: Record<PublicCourtRequirement["modality"], string> = {
 
 export function CourtRequirementsList({ title, requirements }: {
   title: string;
-  requirements: PublicCourtRequirement[];
+  requirements: ShownCourtRequirement[];
 }) {
   if (!requirements.length) return null;
   return (

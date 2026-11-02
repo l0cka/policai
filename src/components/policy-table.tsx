@@ -12,7 +12,6 @@ import {
   getPolicyDateTypeName,
   getPolicyTypeName,
   getPrimaryPolicyDate,
-  type Policy,
 } from '@/types';
 import { formatPolicyDate } from '@/lib/format-policy-date';
 import {
@@ -20,7 +19,7 @@ import {
 } from '@/lib/jurisdiction-accent';
 import { cn } from '@/lib/utils';
 
-import { REGISTER_PAGE_SIZE, type PolicySortField, type PolicySortDirection, type PolicyViewMode } from '@/lib/policy-register';
+import { REGISTER_PAGE_SIZE, type RegisterPolicy, type PolicySortField, type PolicySortDirection, type PolicyViewMode } from '@/lib/policy-register';
 
 import { JurisdictionMark, SourceState, StatusPill } from './policy-indicators';
 
@@ -29,7 +28,7 @@ function PolicyCard({
   policy,
   compact = false,
 }: {
-  policy: Policy;
+  policy: RegisterPolicy;
   compact?: boolean;
 }) {
   const primaryDate = getPrimaryPolicyDate(policy);
@@ -92,7 +91,7 @@ export function PolicyTable({
   onPageChange,
   onReset,
 }: {
-  policies: Policy[];
+  policies: RegisterPolicy[];
   viewMode: PolicyViewMode;
   mobileViewMode: PolicyViewMode;
   sortField: PolicySortField;

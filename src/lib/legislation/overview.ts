@@ -20,7 +20,7 @@ export function isLegislativeRecord(policy: Policy): policy is LegislativeRecord
 }
 
 /** A repealed law and a lapsed bill both read as ended. */
-export function legislativeStage(record: LegislativeRecord): LegislativeStage | null {
+export function legislativeStage(record: Pick<LegislativeRecord, 'legislative' | 'jurisdiction'>): LegislativeStage | null {
   const phase = legislativePhase(record.legislative, record.jurisdiction);
   return phase === 'repealed' ? 'ended' : phase;
 }

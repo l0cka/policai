@@ -1,10 +1,22 @@
-import { isLegislativeRecord, LEGISLATIVE_STAGE_NAMES, legislativeStage } from '@/lib/legislation/overview';
+import { LEGISLATIVE_STAGE_NAMES, legislativeStage } from '@/lib/legislation/overview';
+import { datesWithoutSources, statusOnly, type StatusOnly } from '@/lib/client-records';
 import { isThemeId, type ThemeId } from '@/lib/themes';
 import {
   JURISDICTION_NAMES, POLICY_TYPE_NAMES, POLICY_STATUS_NAMES,
   getJurisdictionName, getPolicyTypeName, getPolicyStatusName, getPrimaryPolicyDate,
   type Policy,
 } from '@/types';
+
+/**
+ * A policy as the register's client components receive it. The full text and
+ * summary stay on the server: serialised into the home page with the source
+ * evidence, they were most of its HTML.
+ */
+export type RegisterPolicy = StatusOnly<Omit<Policy, 'content' | 'aiSummary'>>;
+
+export function toRegisterPolicy({ content, aiSummary, ...policy }: Policy): RegisterPolicy {
+  return statusOnly({ ...policy, dates: datesWithoutSources(policy.dates) });
+}
 
 export type PolicySortField = 'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
 export type PolicySortDirection = 'asc' | 'desc';
@@ -70,13 +82,13 @@ export function updateRegisterState(state: RegisterState, patch: Partial<Registe
 }
 
 /** A legislative record's stage, for the register's stage filter. */
-export function registerStage(policy: Policy): string | null {
-  return isLegislativeRecord(policy) ? legislativeStage(policy) : null;
+export function registerStage(policy: RegisterPolicy): string | null {
+  return policy.legislative ? legislativeStage({ ...policy, legislative: policy.legislative }) : null;
 }
 
-export function selectRegisterPolicies(policies: Policy[], state: RegisterState): Policy[] {
+export function selectRegisterPolicies<P extends RegisterPolicy>(policies: P[], state: RegisterState): P[] {
   const query = state.search.trim().toLowerCase();
-  const label = (policy: Policy): string => {
+  const label = (policy: RegisterPolicy): string => {
     switch (state.sortField) {
       case 'jurisdiction': return getJurisdictionName(policy.jurisdiction);
       case 'type': return getPolicyTypeName(policy.type);

@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getArticles, getPolicyById, getPolicies, getRuleScopes, getSiteReuse } from '@/lib/data-service';
 import { reuseForUrl } from '@/lib/watch-coverage/site-reuse';
-import { getPublicCourtRequirements } from '@/lib/court-requirements';
+import { getPublicCourtRequirements, toShownRequirement } from '@/lib/court-requirements';
 import { CitedInAnalysis } from '@/components/related/cited-in-analysis';
 import { KeepTrack } from '@/components/related/keep-track';
 import { RelatedInstruments } from '@/components/related/related-instruments';
@@ -98,7 +98,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
 
       <PolicyDetailTabs
         policy={policy}
-        courtRequirements={courtRequirements}
+        courtRequirements={courtRequirements.map(toShownRequirement)}
         sourceReuse={sourceReuse?.status === 'stated' ? sourceReuse : undefined}
         progress={policy.legislative ? <LegislativeProgress policy={{ ...policy, legislative: policy.legislative }} /> : null}
         related={

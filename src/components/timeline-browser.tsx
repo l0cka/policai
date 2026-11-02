@@ -18,9 +18,12 @@ import {
   JURISDICTION_NAMES,
   POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES,
   getPolicyTypeName,
-  type Policy,
   type TimelineEvent,
 } from '@/types';
+import type { StatusOnly } from '@/lib/client-records';
+import type { RegisterPolicy } from '@/lib/policy-register';
+
+type ClientTimelineEvent = StatusOnly<TimelineEvent>;
 import { MetricStrip, PageIntro } from '@/components/layout';
 import { cn } from '@/lib/utils';
 
@@ -28,12 +31,12 @@ export function TimelineBrowser({
   timelineData,
   policiesData,
 }: {
-  timelineData: TimelineEvent[];
-  policiesData: Policy[];
+  timelineData: ClientTimelineEvent[];
+  policiesData: RegisterPolicy[];
 }) {
   const [jurisdictionFilter, setJurisdictionFilter] = useState<string>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<ClientTimelineEvent | null>(null);
 
   const filteredEvents = useMemo(() => {
     return timelineData.filter((event) => {
@@ -148,7 +151,7 @@ export function TimelineBrowser({
 
           <Timeline
             events={filteredEvents}
-            onEventClick={(event) => setSelectedEvent(event as TimelineEvent)}
+            onEventClick={(event) => setSelectedEvent(event)}
           />
       </div>
 

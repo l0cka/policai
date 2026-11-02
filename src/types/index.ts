@@ -190,6 +190,12 @@ export interface CourtRequirement {
 	};
 }
 
+/** What a page shows of a requirement; provenance stays on the server. */
+export type ShownCourtRequirement = Pick<
+	CourtRequirement,
+	"id" | "policyId" | "actor" | "modality" | "action" | "conditions" | "exceptions" | "topics"
+> & { source: Pick<CourtRequirement["source"], "locator" | "quote"> };
+
 export interface PublicCourtRequirement extends CourtRequirement {
 	policy: Pick<
 		Policy,
