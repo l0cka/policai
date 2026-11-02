@@ -57,8 +57,8 @@ APRA found that "assurance practices are not keeping pace with the scale, speed 
 The letter sets minimum expectations in four areas ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)):
 
 - **Security.** Controls over agentic and autonomous workflows, timely patching, security testing of AI-generated code, and a fallback process where AI supports critical operations.
-- **Governance.** A list of the AI tools and uses in the business, a named owner for each through its life, and "human involvement for high-risk decisions and accountability".
-- **Suppliers.** A map of the AI supply chain, including the supplier's own suppliers, and an exit plan for critical AI providers.
+- **Governance.** A list of the AI tools and uses in the business, ownership and accountability across the AI lifecycle, and "human involvement for high-risk decisions and accountability".
+- **Suppliers.** A map of the AI supply chain, including the supplier's own suppliers, and credible substitution, portability or exit arrangements for critical AI providers.
 - **Assurance.** Ongoing monitoring that fits the use, and risk and audit teams able to check AI systems independently.
 
 APRA says that where entities fail to manage AI risks adequately, it "will take stronger supervisory action and, where appropriate, pursue enforcement" ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)).
