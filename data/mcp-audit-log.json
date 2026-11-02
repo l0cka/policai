@@ -1,5 +1,28 @@
 [
   {
+    "id": "mcp-audit-06f3fab4-90b3-4ba7-8f94-c57006dbf5ab",
+    "createdAt": "2026-11-02T05:49:14.179Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "error",
+    "errorSummary": "The editor has not approved this proposal with their passkey. Send them https://policai.org/approve?subject=source-review%3Asource-review-0f153f0a-a2bb-4508-831b-11990ad1cf64%3A0b6ecd8ca32f4d092a6962501fc18d457c7ab7fb8004f0c211eb4257a46ad5c2"
+  },
+  {
+    "id": "mcp-audit-e05ab452-2f93-4ae9-bd71-ca7a7eef75e3",
+    "createdAt": "2026-11-02T05:49:13.713Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7ce223e0-679c-46ae-803d-dda435c8327a",
+    "createdAt": "2026-11-02T05:49:13.697Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-11d248a1-ee98-4a24-8674-9c87301c5393",
     "createdAt": "2026-11-02T05:32:17.440Z",
     "actor": "local-mcp-admin",
@@ -3680,30 +3703,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.ai.sa.gov.au/artificial-intelligence-ai-strategy-for-the-south-australian-government",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c3dfd820-c0a0-46ad-bfea-e45cd9eb992f",
-    "createdAt": "2026-07-19T04:07:15.912Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e4a5645e-c17c-44c4-a605-f99a9f2db8a6",
-    "createdAt": "2026-07-19T04:07:08.171Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-76007cb5-2a9a-4d86-b6b1-a1496a80423f",
-    "createdAt": "2026-07-19T04:06:58.665Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
     "status": "success"
   }
 ]
