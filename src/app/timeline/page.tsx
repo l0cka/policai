@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { TimelineBrowser } from '@/components/timeline-browser';
+import { statusOnly } from '@/lib/client-records';
+import { toRegisterPolicy } from '@/lib/policy-register';
 import { getPolicies, getTimelineEvents } from '@/lib/data-service';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
 
@@ -28,8 +30,8 @@ export default async function TimelinePage() {
 
   return (
     <TimelineBrowser
-      timelineData={timelineData}
-      policiesData={policiesData}
+      timelineData={timelineData.map(statusOnly)}
+      policiesData={policiesData.map(toRegisterPolicy)}
     />
   );
 }

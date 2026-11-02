@@ -19,7 +19,7 @@ import {
 	getPrimaryPolicyDate,
 	type Policy,
 	type Jurisdiction,
-	type PublicCourtRequirement,
+	type ShownCourtRequirement,
 } from "@/types";
 import { formatPolicyDate } from "@/lib/format-policy-date";
 import { jurisdictionAccent, jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
@@ -42,7 +42,12 @@ const JURISDICTION_ORDER: Jurisdiction[] = [
 	"nt",
 ];
 
-interface CourtNote extends Policy {
+/** A practice note as the courts page sends it: full text, no source evidence. */
+export type CourtPolicy = Omit<Policy, "verification"> & {
+	verification: Pick<Policy["verification"], "status" | "checkedAt">;
+};
+
+interface CourtNote extends CourtPolicy {
 	courtName: string;
 }
 
@@ -60,11 +65,11 @@ const AUDIENCE_TAGS: Record<Exclude<AudienceFilter, "all">, string[]> = {
 	profession: ["legal profession"],
 };
 
-function extractCourtName(policy: Policy): string {
+function extractCourtName(policy: CourtPolicy): string {
 	return policy.agencies[0] || "Unknown Court";
 }
 
-function matchesAudience(note: CourtNote, audience: AudienceFilter, requirements: PublicCourtRequirement[] = []): boolean {
+function matchesAudience(note: CourtNote, audience: AudienceFilter, requirements: ShownCourtRequirement[] = []): boolean {
 	if (audience === "all") return true;
 	const tags = note.tags.map((tag) => tag.toLowerCase());
 	if (AUDIENCE_TAGS[audience].some((tag) => tags.includes(tag))) return true;
@@ -130,8 +135,8 @@ export function CourtsBrowser({
 	relatedByPolicy = {},
 	analysis = null,
 }: {
-	policies: Policy[];
-	requirements?: PublicCourtRequirement[];
+	policies: CourtPolicy[];
+	requirements?: ShownCourtRequirement[];
 	analysesByPolicy?: Record<string, CourtAnalysisLink[]>;
 	relatedByPolicy?: Record<string, RelatedInstrument[]>;
 	analysis?: ReactNode;
@@ -177,7 +182,7 @@ export function CourtsBrowser({
 			.map((p) => ({ ...p, courtName: extractCourtName(p) }));
 	}, [policies]);
 	const requirementsByPolicy = useMemo(() => {
-		const groupedRequirements = new Map<string, PublicCourtRequirement[]>();
+		const groupedRequirements = new Map<string, ShownCourtRequirement[]>();
 		for (const requirement of requirements) {
 			const existing = groupedRequirements.get(requirement.policyId) ?? [];
 			existing.push(requirement);

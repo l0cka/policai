@@ -10,6 +10,8 @@ const eslintConfig = defineConfig([
       // A pages-router rule. It reads .next/server/pages and flags plain
       // <a> links to app-router API routes, which must not be <Link>.
       "@next/next/no-html-link-for-pages": "off",
+      // Lets `const { content, ...rest } = record` drop fields.
+      "@typescript-eslint/no-unused-vars": ["warn", { ignoreRestSiblings: true }],
       "no-restricted-syntax": [
         "error",
         {

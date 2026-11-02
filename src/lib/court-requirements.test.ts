@@ -3,6 +3,7 @@ import { buildPolicy } from '@/test/factories';
 import type { CourtRequirement, PublicCourtRequirement } from '@/types';
 import {
   filterCourtRequirements,
+  getPublicCourtRequirements,
   stageCourtRequirementCandidates,
 } from './court-requirements';
 import { validateCourtRequirements } from './validate-data';
@@ -145,5 +146,17 @@ describe('court requirements', () => {
         expect.stringContaining('needs a reviewer identity'),
       ]),
     );
+  });
+});
+
+describe('getPublicCourtRequirements', () => {
+  it('attaches only the declared policy fields, not the full record', async () => {
+    const requirements = await getPublicCourtRequirements();
+    expect(requirements.length).toBeGreaterThan(0);
+    for (const { policy } of requirements) {
+      expect(Object.keys(policy).sort()).toEqual(
+        ['agencies', 'id', 'jurisdiction', 'lastReviewedAt', 'status', 'title'],
+      );
+    }
   });
 });

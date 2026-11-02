@@ -8,7 +8,10 @@ import {
 } from '@/lib/format-policy-date';
 import { JurisdictionMark, SourceState } from '@/components/policy-indicators';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
-import { type Jurisdiction, type TimelineEvent, type TimelineEventType } from '@/types';
+import { type Jurisdiction, type TimelineEvent as FullTimelineEvent, type TimelineEventType } from '@/types';
+import type { StatusOnly } from '@/lib/client-records';
+
+type TimelineEvent = StatusOnly<FullTimelineEvent>;
 import { ArrowUpRight } from 'lucide-react';
 
 interface TimelineProps {

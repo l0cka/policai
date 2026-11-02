@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseRegisterState, registerParams, selectRegisterPolicies, updateRegisterState } from './policy-register';
+import { parseRegisterState, registerParams, selectRegisterPolicies, toRegisterPolicy, updateRegisterState } from './policy-register';
 import { buildPolicy } from '@/test/factories';
 
 describe('register state', () => {
@@ -44,5 +44,20 @@ describe('register state', () => {
     expect(parseRegisterState(registerParams(state))).toEqual(state);
     expect(selectRegisterPolicies([bill, buildPolicy({ id: 'guideline' })], state).map(p => p.id)).toEqual(['bill']);
     expect(selectRegisterPolicies([bill], { ...state, stages: ['in_force'] })).toEqual([]);
+  });
+});
+
+describe('toRegisterPolicy', () => {
+  it('sends the register what it shows, not the full text or source evidence', () => {
+    const policy = buildPolicy({ content: 'Full text', aiSummary: 'Summary' });
+    const register = toRegisterPolicy({
+      ...policy,
+      dates: [{ type: 'published', date: '2026-10-30', precision: 'day', primary: true, source: policy.verification.source }],
+    });
+    expect(register).not.toHaveProperty('content');
+    expect(register).not.toHaveProperty('aiSummary');
+    expect(register.verification).toEqual({ status: policy.verification.status });
+    expect(register.dates).toEqual([{ type: 'published', date: '2026-10-30', precision: 'day', primary: true }]);
+    expect(register).toMatchObject({ id: policy.id, title: policy.title, description: policy.description, tags: policy.tags });
   });
 });

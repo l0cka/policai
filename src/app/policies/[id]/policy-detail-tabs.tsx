@@ -20,7 +20,7 @@ import {
   getPrimaryPolicyDate,
   isDeadlineDateType,
   type Policy,
-  type PublicCourtRequirement,
+  type ShownCourtRequirement,
 } from '@/types';
 import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { parseSourceUrl } from '@/lib/source-url';
@@ -149,7 +149,7 @@ export function PolicyDetailTabs({
   policy: Policy;
   progress?: ReactNode;
   related?: ReactNode;
-  courtRequirements?: PublicCourtRequirement[];
+  courtRequirements?: ShownCourtRequirement[];
   sourceReuse?: Extract<SiteReuse, { status: 'stated' }>;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>('overview');

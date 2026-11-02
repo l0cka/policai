@@ -11,6 +11,7 @@ import type {
 	Jurisdiction,
 	Policy,
 	PublicCourtRequirement,
+	ShownCourtRequirement,
 } from "@/types";
 
 const COURT_REQUIREMENTS_FILE = path.join(
@@ -149,6 +150,15 @@ export function filterCourtRequirements(
 	});
 }
 
+export function toShownRequirement({
+	id, policyId, actor, modality, action, conditions, exceptions, topics, source,
+}: CourtRequirement): ShownCourtRequirement {
+	return {
+		id, policyId, actor, modality, action, conditions, exceptions, topics,
+		source: { locator: source.locator, quote: source.quote },
+	};
+}
+
 export async function getPublicCourtRequirements(
 	filters: CourtRequirementFilters = {},
 ): Promise<PublicCourtRequirement[]> {
@@ -166,7 +176,11 @@ export async function getPublicCourtRequirements(
 			currentSource?.contentHash !== requirement.source.contentHash ||
 			!sourceUrlsEqual(currentSource.url, requirement.source.url)
 		) return [];
-		return [{ ...requirement, policy } satisfies PublicCourtRequirement];
+		const { id, title, jurisdiction, agencies, status, lastReviewedAt } = policy;
+		return [{
+			...requirement,
+			policy: { id, title, jurisdiction, agencies, status, lastReviewedAt },
+		} satisfies PublicCourtRequirement];
 	});
 
 	return filterCourtRequirements(publicRequirements, filters).sort(

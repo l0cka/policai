@@ -7,7 +7,8 @@ vi.mock('@/lib/data-service', () => ({
   getArticles: vi.fn(),
 }));
 
-vi.mock('@/lib/court-requirements', () => ({
+vi.mock('@/lib/court-requirements', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/court-requirements')>()),
   getPublicCourtRequirements: vi.fn(async () => []),
 }));
 
