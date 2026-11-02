@@ -1,5 +1,42 @@
 [
   {
+    "id": "mcp-audit-254485eb-5ebf-4d68-af7e-2b218c32bc0a",
+    "createdAt": "2026-11-02T05:18:34.988Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a388922b-4458-4d61-aca7-45bd3081ed8f",
+    "createdAt": "2026-11-02T05:18:17.230Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7dee6695-f492-41e9-a55d-af18abc8c5d8",
+    "createdAt": "2026-11-02T05:18:17.214Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3c923932-f281-4799-a8cf-18f5c3901dac",
+    "createdAt": "2026-11-02T05:18:16.537Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d7262d71-0dee-4012-b663-50ab6e0fac2b",
+    "createdAt": "2026-11-02T05:18:16.517Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-6f3b9d65-9970-42dc-a18f-410b82dbdd0e",
     "createdAt": "2026-11-01T23:31:43.540Z",
     "actor": "local-mcp-admin",
@@ -3671,48 +3708,5 @@
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report",
     "status": "success"
-  },
-  {
-    "id": "mcp-audit-32e199b0-25dc-4003-8a84-1ee1b108403b",
-    "createdAt": "2026-07-19T04:06:20.884Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-05c018d2-cf65-49ec-97b1-8afb4f026f77",
-    "createdAt": "2026-07-19T04:05:23.162Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-53e6588f-d3f0-4738-a5a1-353da8c5fca6",
-    "createdAt": "2026-07-19T04:02:08.736Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "error",
-    "errorSummary": "401 User not found."
-  },
-  {
-    "id": "mcp-audit-00fa70ce-714f-4e97-88bd-f5a50d86e3c4",
-    "createdAt": "2026-07-19T04:01:01.854Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "error",
-    "errorSummary": "No AI provider configured. Set ANTHROPIC_API_KEY or OPENROUTER_API_KEY."
-  },
-  {
-    "id": "mcp-audit-f406ca68-1611-4897-bd43-1946530a3784",
-    "createdAt": "2026-07-19T04:01:01.350Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
-    "status": "error",
-    "errorSummary": "Timed out after 60000ms"
   }
 ]
