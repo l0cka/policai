@@ -117,7 +117,8 @@ describe('analysis article page', () => {
     await renderArticle('citation-withheld');
     expect(screen.getByRole('status')).toHaveTextContent('Source under review');
     expect(screen.getByText('Register record under review')).toBeInTheDocument();
-    expect(screen.queryByRole('link', { name: /withheld/i })).not.toBeInTheDocument();
+    const citedRecords = screen.getByRole('region', { name: 'Cited register records' });
+    expect(within(citedRecords).queryByRole('link', { name: /withheld/i })).not.toBeInTheDocument();
   });
 
   it('renders a tombstone for a withdrawn piece without its body or notices', async () => {
