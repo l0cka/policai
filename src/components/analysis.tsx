@@ -164,7 +164,16 @@ export function ArticleLeadImage({ image }: { image: ArticleImage }) {
   );
 }
 
-export function ArticleThumbnail({ image, sizes }: { image: ArticleImage; sizes: string }) {
+export function ArticleThumbnail({
+  image,
+  sizes,
+  priority = false,
+}: {
+  image: ArticleImage;
+  sizes: string;
+  /** For the image that is the page's largest paint. */
+  priority?: boolean;
+}) {
   return (
     <div className="aspect-[3/2] w-full overflow-hidden rounded-md">
       <Image
@@ -173,6 +182,7 @@ export function ArticleThumbnail({ image, sizes }: { image: ArticleImage; sizes:
         width={image.width}
         height={image.height}
         sizes={sizes}
+        priority={priority}
         className="h-full w-full object-cover"
       />
     </div>
