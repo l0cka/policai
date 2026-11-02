@@ -7,13 +7,13 @@ import type { NextConfig } from "next";
 // Analytics is the one third-party origin, in case the zone injects it.
 // next dev evaluates modules with eval; production builds never do.
 const DEV_EVAL = process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : "";
-const CONTENT_SECURITY_POLICY = [
+const contentSecurityPolicy = (analytics: boolean) => [
 	"default-src 'self'",
-	`script-src 'self' 'unsafe-inline'${DEV_EVAL} https://static.cloudflareinsights.com`,
+	`script-src 'self' 'unsafe-inline'${DEV_EVAL}${analytics ? " https://static.cloudflareinsights.com" : ""}`,
 	"style-src 'self' 'unsafe-inline'",
 	"img-src 'self' data: blob:",
 	"font-src 'self' data:",
-	"connect-src 'self' https://cloudflareinsights.com",
+	`connect-src 'self'${analytics ? " https://cloudflareinsights.com" : ""}`,
 	"worker-src 'self' blob:",
 	"frame-src 'none'",
 	"frame-ancestors 'none'",
@@ -30,7 +30,7 @@ const SECURITY_HEADERS = [
 	},
 	{
 		key: "Content-Security-Policy",
-		value: CONTENT_SECURITY_POLICY,
+		value: contentSecurityPolicy(true),
 	},
 	{ key: "X-Frame-Options", value: "DENY" },
 	{ key: "X-Content-Type-Options", value: "nosniff" },
@@ -45,7 +45,15 @@ const nextConfig: NextConfig = {
 	poweredByHeader: false,
 
 	async headers() {
-		return [{ source: "/:path*", headers: SECURITY_HEADERS }];
+		return [
+			{ source: "/:path*", headers: SECURITY_HEADERS },
+			// The editor's passkey pages stay out of the visitor analytics: the
+			// zone still injects the beacon, and this policy stops it loading.
+			{
+				source: "/approve/:path*",
+				headers: [{ key: "Content-Security-Policy", value: contentSecurityPolicy(false) }],
+			},
+		];
 	},
 
 	// data-service resolves these files through runtime path parameters, which
