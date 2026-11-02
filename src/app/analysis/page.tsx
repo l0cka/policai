@@ -48,7 +48,7 @@ export default async function AnalysisPage() {
 
       {articles.length > 0 ? (
         <div>
-          {articles.map((article) => (
+          {articles.map((article, index) => (
             <article
               key={article.slug}
               data-article-type={article.type}
@@ -80,7 +80,11 @@ export default async function AnalysisPage() {
               </div>
               {article.image ? (
                 <Link href={`/analysis/${article.slug}`} tabIndex={-1} aria-hidden="true" className="order-first sm:order-last">
-                  <ArticleThumbnail image={article.image} sizes="(min-width: 640px) 160px, 100vw" />
+                  <ArticleThumbnail
+                    image={article.image}
+                    sizes="(min-width: 640px) 160px, 100vw"
+                    priority={index === articles.findIndex((candidate) => candidate.image)}
+                  />
                 </Link>
               ) : null}
             </article>

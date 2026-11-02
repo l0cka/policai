@@ -93,6 +93,7 @@ describe('article images', () => {
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
     expect(image).toHaveAttribute('sizes', '(min-width: 640px) 160px, 100vw');
+    expect(image).not.toHaveAttribute('loading', 'lazy');
     const frame = image.parentElement as HTMLElement;
     expect(frame).toHaveClass('aspect-[3/2]', 'w-full', 'overflow-hidden');
     expect(frame.className).not.toMatch(/max-w-|sm:w-/);
