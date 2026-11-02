@@ -1,5 +1,100 @@
 [
   {
+    "id": "mcp-audit-02eb424e-a3be-4e17-ae67-fe75792b06d1",
+    "createdAt": "2026-11-02T05:50:14.471Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6aca1096-e113-4b88-bc8c-30880ddd8064",
+    "createdAt": "2026-11-02T05:50:13.892Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-06f3fab4-90b3-4ba7-8f94-c57006dbf5ab",
+    "createdAt": "2026-11-02T05:49:14.179Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "error",
+    "errorSummary": "The editor has not approved this proposal with their passkey. Send them https://policai.org/approve?subject=source-review%3Asource-review-0f153f0a-a2bb-4508-831b-11990ad1cf64%3A0b6ecd8ca32f4d092a6962501fc18d457c7ab7fb8004f0c211eb4257a46ad5c2"
+  },
+  {
+    "id": "mcp-audit-e05ab452-2f93-4ae9-bd71-ca7a7eef75e3",
+    "createdAt": "2026-11-02T05:49:13.713Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7ce223e0-679c-46ae-803d-dda435c8327a",
+    "createdAt": "2026-11-02T05:49:13.697Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-11d248a1-ee98-4a24-8674-9c87301c5393",
+    "createdAt": "2026-11-02T05:32:17.440Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2bd20e3e-e17d-4c03-88a8-ae1d0ee9a5b0",
+    "createdAt": "2026-11-02T05:32:17.424Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7c02fc28-3eba-48e8-a647-99811febaf92",
+    "createdAt": "2026-11-02T05:28:35.517Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-254485eb-5ebf-4d68-af7e-2b218c32bc0a",
+    "createdAt": "2026-11-02T05:18:34.988Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a388922b-4458-4d61-aca7-45bd3081ed8f",
+    "createdAt": "2026-11-02T05:18:17.230Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7dee6695-f492-41e9-a55d-af18abc8c5d8",
+    "createdAt": "2026-11-02T05:18:17.214Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3c923932-f281-4799-a8cf-18f5c3901dac",
+    "createdAt": "2026-11-02T05:18:16.537Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d7262d71-0dee-4012-b663-50ab6e0fac2b",
+    "createdAt": "2026-11-02T05:18:16.517Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-6f3b9d65-9970-42dc-a18f-410b82dbdd0e",
     "createdAt": "2026-11-01T23:31:43.540Z",
     "actor": "local-mcp-admin",
@@ -3607,112 +3702,5 @@
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
     "status": "success"
-  },
-  {
-    "id": "mcp-audit-869be230-1b52-4e51-8b22-ae5cc1ce4aac",
-    "createdAt": "2026-07-19T04:07:45.301Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-8fd9b433-8445-414d-954c-d2dc202664b0",
-    "createdAt": "2026-07-19T04:07:28.006Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.ai.sa.gov.au/artificial-intelligence-ai-strategy-for-the-south-australian-government",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c3dfd820-c0a0-46ad-bfea-e45cd9eb992f",
-    "createdAt": "2026-07-19T04:07:15.912Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://djsir.vic.gov.au/priorities-and-initiatives/ai-mission-statement",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e4a5645e-c17c-44c4-a605-f99a9f2db8a6",
-    "createdAt": "2026-07-19T04:07:08.171Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-76007cb5-2a9a-4d86-b6b1-a1496a80423f",
-    "createdAt": "2026-07-19T04:06:58.665Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-16edc679-1655-4158-abe6-64d7cfcc726f",
-    "createdAt": "2026-07-19T04:06:36.408Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5893d2a3-6939-4258-9432-6acc7c5d3f98",
-    "createdAt": "2026-07-19T04:06:35.601Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://consult.industry.gov.au/ai-mandatory-guardrails",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-de06e54b-de9e-4f6d-a555-1bb3ad9ee9ea",
-    "createdAt": "2026-07-19T04:06:28.069Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-32e199b0-25dc-4003-8a84-1ee1b108403b",
-    "createdAt": "2026-07-19T04:06:20.884Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/australias-ai-ethics-principles",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-05c018d2-cf65-49ec-97b1-8afb4f026f77",
-    "createdAt": "2026-07-19T04:05:23.162Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-53e6588f-d3f0-4738-a5a1-353da8c5fca6",
-    "createdAt": "2026-07-19T04:02:08.736Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "error",
-    "errorSummary": "401 User not found."
-  },
-  {
-    "id": "mcp-audit-00fa70ce-714f-4e97-88bd-f5a50d86e3c4",
-    "createdAt": "2026-07-19T04:01:01.854Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "error",
-    "errorSummary": "No AI provider configured. Set ANTHROPIC_API_KEY or OPENROUTER_API_KEY."
-  },
-  {
-    "id": "mcp-audit-f406ca68-1611-4897-bd43-1946530a3784",
-    "createdAt": "2026-07-19T04:01:01.350Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_url",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/agentic-ai-addendum",
-    "status": "error",
-    "errorSummary": "Timed out after 60000ms"
   }
 ]

@@ -1,5 +1,106 @@
 [
   {
+    "id": "afp-ai-strategy-2026-28",
+    "title": "Artificial Intelligence Strategy 2026-28",
+    "description": "Australian Federal Police strategy for a human-led, responsible approach to adopting AI in policing from 2026 to 2028. It sets five strategic goals and four adoption pillars: People, Process, Technology and Partnerships.",
+    "jurisdiction": "federal",
+    "type": "policy",
+    "status": "active",
+    "effectiveDate": "2026-09-02",
+    "agencies": [
+      "Australian Federal Police"
+    ],
+    "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "content": "The Australian Federal Police (AFP) publishes the Artificial Intelligence Strategy 2026-28 at https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28, with the PDF at https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf. In her foreword, Commissioner Krissy Barrett APM says the strategy commits the AFP to a human-led, responsible and transparent approach to AI, that AI will support, not replace, the judgement of AFP members, and that accountability for decisions always rests with the AFP.\n\nVision: to establish the AFP as a collaborative leader that brings law enforcement and the broader AI community together in applied responsible use of AI.\n\nStrategic goals: counter the criminal threat from AI, including deepfakes, synthetic media and disinformation; strengthen data-driven decision making; safeguard member wellbeing by reducing exposure to harmful material such as child abuse material; empower creativity and workforce engagement; and enhance productivity through services such as transcription, translation, summarisation, video analytics and entity recognition.\n\nAdoption pillars: People (AI knowledge, culture and leadership; human-led decision-making; safeguarding member wellbeing), Process (responsible AI governance and policies; operational alignment), Technology (investment in technology; end-to-end data management) and Partnerships (partnership and collaboration; public trust and transparency).\n\nThe AFP says it has fully adopted the guiding principles of the ANZPAA Responsible and Ethical Artificial Intelligence Framework: transparency, explainability, accountability, human oversight, fairness, skills and knowledge, proportionality and justifiability, reliability, and privacy and security. The strategy also names Australia's AI Ethics Principles, the National Framework for the Assurance of AI in Government, the Policy for the Responsible Use of AI in Government and the Voluntary AI Safety Standard as informing its approach.\n\nThe risks it names are AI system failure; overuse, inappropriate or reckless use; legal, ethical and privacy risk; reputational and public trust risk; and bias and hallucination. It says the AFP will establish mechanisms to measure progress across all strategic pillars. The strategy gives no specific measures.",
+    "aiSummary": "The AFP strategy for 2026 to 2028 commits the agency to human-led, responsible AI use. It sets five goals and four pillars, adopts the ANZPAA police AI principles, and says AI will support, not replace, the judgement of AFP members.",
+    "tags": [
+      "AFP",
+      "law enforcement",
+      "AI strategy",
+      "policing"
+    ],
+    "themes": [
+      "strategy-adoption",
+      "responsible-ai",
+      "public-sector",
+      "human-oversight"
+    ],
+    "createdAt": "2026-11-02T05:18:15.869Z",
+    "updatedAt": "2026-11-02T05:50:13.061Z",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-09-02",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+          "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+          "retrievedAt": "2026-11-02T05:50:12.941Z",
+          "contentType": "text/html",
+          "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
+          "etag": "W/\"1793592645\"",
+          "lastModified": "Mon, 02 Nov 2026 04:10:45 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+              "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+              "retrievedAt": "2026-11-02T05:50:13.058Z",
+              "contentType": "application/pdf",
+              "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
+              "etag": "\"6a977966-33b269\"",
+              "lastModified": "Wed, 02 Sep 2026 01:18:30 GMT"
+            }
+          ],
+          "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
+          "reviewedDate": {
+            "date": "2026-09-02",
+            "precision": "day",
+            "reviewedAt": "2026-11-02T05:50:13.061Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+          }
+        }
+      }
+    ],
+    "lastReviewedAt": "2026-11-02T05:50:13.061Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+        "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+        "retrievedAt": "2026-11-02T05:50:12.941Z",
+        "contentType": "text/html",
+        "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
+        "etag": "W/\"1793592645\"",
+        "lastModified": "Mon, 02 Nov 2026 04:10:45 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+            "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+            "retrievedAt": "2026-11-02T05:50:13.058Z",
+            "contentType": "application/pdf",
+            "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
+            "etag": "\"6a977966-33b269\"",
+            "lastModified": "Wed, 02 Sep 2026 01:18:30 GMT"
+          }
+        ],
+        "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
+        "reviewedDate": {
+          "date": "2026-09-02",
+          "precision": "day",
+          "reviewedAt": "2026-11-02T05:50:13.061Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+        }
+      },
+      "checkedAt": "2026-11-02T05:50:13.061Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 75bb111c). Proposed by Claude (agent). Corrects the published date from month to day precision. Nothing else changes."
+    }
+  },
+  {
     "id": "dta-ai-reference-architecture",
     "title": "AI Reference Architecture",
     "description": "Digital Transformation Agency architectural foundation for designing, implementing and governing AI across the Australian Government. It supports the Policy for the responsible use of AI in government and the AI Plan for the APS 2025. Use is voluntary.",

@@ -308,10 +308,11 @@ carries no tools and nothing leaves the machine. The scheduled wrapper refuses
 the retired cloud classifier (`USE_CLAUDE_CLASSIFIER`, `CLASSIFIER_BASE_URL`,
 `CLASSIFIER_API_KEY`) and passes `USE_CLEF_CLASSIFIER=1` through.
 
-Sources with `bodyRelevance` (currently `aph-hansard-bill-debates`) use a
-third deterministic rule instead of either path above. Their feed items are
-kept when the title matches `bodyRelevance.titlePattern`, because Hansard debate
-titles name the bill, not AI. After the page is fetched, a candidate is
+Sources with `bodyRelevance` (`aph-hansard-bill-debates`, `afp-publications`)
+use a third deterministic rule instead of either path above. Their feed or
+index items are kept when the title matches `bodyRelevance.titlePattern`,
+because Hansard debate titles name the bill, not AI, and AFP publication titles
+are not a reliable signal. After the page is fetched, a candidate is
 relevant only when its body has at least `bodyRelevance.minAiMentions` explicit
 AI mentions (`countAiMentions` in `src/lib/scraper-filter.ts`). Relevant items
 score 0.55 with `promptVersion: 'body-mentions-v1'` and a summary that states

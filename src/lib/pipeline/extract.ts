@@ -190,7 +190,7 @@ export function extractCandidatesFromHtml(
 export function extractFromHtml(
   html: string,
   baseUrl: string,
-  options: { maxCandidates?: number } = {},
+  options: { maxCandidates?: number; titlePattern?: RegExp } = {},
 ): ExtractionResult {
   const maxCandidates = options.maxCandidates ?? DEFAULT_MAX_CANDIDATES;
   const $ = cheerio.load(html);
@@ -269,7 +269,12 @@ export function extractFromHtml(
     if (!url || sourceUrlsEqual(url, baseUrl)) return;
     if (!isAllowedSourceHost(url)) return;
 
-    const title = cleanScrapedLinkTitle(link.text());
+    // Card layouts link a short "View" and name the item in the aria-label.
+    const linkText = cleanScrapedLinkTitle(link.text());
+    const title =
+      linkText.length >= 8
+        ? linkText
+        : cleanScrapedLinkTitle(link.attr('aria-label') ?? '');
     if (!title || title.length < 8) return;
 
     const listItem = link.closest('li');
@@ -318,7 +323,11 @@ export function extractFromHtml(
   return {
     itemCount: deduped.length,
     candidates: deduped
-      .filter(isRelevantScrapedCandidate)
+      .filter((candidate) =>
+        options.titlePattern
+          ? options.titlePattern.test(candidate.title)
+          : isRelevantScrapedCandidate(candidate),
+      )
       .slice(0, maxCandidates),
   };
 }

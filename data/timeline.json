@@ -3167,5 +3167,51 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal f764eb6f). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Event text unchanged from the earlier proposal; verification evidence now points to the new capture."
     }
+  },
+  {
+    "id": "tl-2026-09-afp-ai-strategy-2026-28-launched",
+    "date": "2026-09-01",
+    "datePrecision": "month",
+    "title": "AFP launches its Artificial Intelligence Strategy 2026-28",
+    "description": "The Australian Federal Police launched its Artificial Intelligence Strategy 2026-28 in September 2026, according to its AI Transparency Statement. The strategy sets a direction for human-led, responsible use of AI and rests on four pillars: People, Process, Technology and Partnerships. Strategy: https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "afp-ai-strategy-2026-28",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+        "finalUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+        "retrievedAt": "2026-11-02T05:50:14.012Z",
+        "contentType": "text/html",
+        "contentHash": "dede25f43720da443f45040adb53050ed791970c05079c2454ee7e3cb63d037f",
+        "etag": "W/\"1793592054\"",
+        "lastModified": "Mon, 02 Nov 2026 04:00:54 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://www.afp.gov.au/sites/default/files/2026-10/AI-Transparency-Statement.pdf",
+            "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-10/AI-Transparency-Statement.pdf",
+            "retrievedAt": "2026-11-02T05:50:14.041Z",
+            "contentType": "application/pdf",
+            "contentHash": "e895b1c97d11e051e7466127e5d0a9d00b5ff1bc33aea9d21dd202d07dac1acd",
+            "etag": "\"6ae1696d-32dd8\"",
+            "lastModified": "Wed, 28 Oct 2026 03:18:05 GMT"
+          }
+        ],
+        "title": "Artificial Intelligence (AI) Transparency Statement | Australian Federal Police",
+        "reviewedDate": {
+          "date": "2026-09-01",
+          "precision": "month",
+          "reviewedAt": "2026-11-02T05:50:14.041Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The AFP AI Transparency Statement says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The statement gives no day."
+        }
+      },
+      "checkedAt": "2026-11-02T05:50:14.041Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 0b6ecd8c). Proposed by Claude (agent). Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity. No AFP media release was found."
+    }
   }
 ]
