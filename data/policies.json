@@ -6,7 +6,7 @@
     "jurisdiction": "federal",
     "type": "policy",
     "status": "active",
-    "effectiveDate": "2026-09-01",
+    "effectiveDate": "2026-09-02",
     "agencies": [
       "Australian Federal Police"
     ],
@@ -26,17 +26,17 @@
       "human-oversight"
     ],
     "createdAt": "2026-11-02T05:18:15.869Z",
-    "updatedAt": "2026-11-02T05:32:16.863Z",
+    "updatedAt": "2026-11-02T05:50:13.061Z",
     "dates": [
       {
         "type": "published",
-        "date": "2026-09-01",
-        "precision": "month",
+        "date": "2026-09-02",
+        "precision": "day",
         "primary": true,
         "source": {
           "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
           "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-          "retrievedAt": "2026-11-02T05:32:16.679Z",
+          "retrievedAt": "2026-11-02T05:50:12.941Z",
           "contentType": "text/html",
           "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
           "etag": "W/\"1793592645\"",
@@ -45,7 +45,7 @@
             {
               "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
               "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-              "retrievedAt": "2026-11-02T05:32:16.861Z",
+              "retrievedAt": "2026-11-02T05:50:13.058Z",
               "contentType": "application/pdf",
               "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
               "etag": "\"6a977966-33b269\"",
@@ -54,22 +54,22 @@
           ],
           "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
           "reviewedDate": {
-            "date": "2026-09-01",
-            "precision": "month",
-            "reviewedAt": "2026-11-02T05:32:16.863Z",
+            "date": "2026-09-02",
+            "precision": "day",
+            "reviewedAt": "2026-11-02T05:50:13.061Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The publication page and the PDF text state no date. The AFP AI Transparency Statement (https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement) says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The PDF sits in the 2026-09 upload folder and its metadata and Last-Modified header read 2 September 2026, but file metadata is not a stated release date, so the record carries month precision (Daniel Alkurdi, 2 Nov 2026)."
+            "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
           }
         }
       }
     ],
-    "lastReviewedAt": "2026-11-02T05:32:16.863Z",
+    "lastReviewedAt": "2026-11-02T05:50:13.061Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
         "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-        "retrievedAt": "2026-11-02T05:32:16.679Z",
+        "retrievedAt": "2026-11-02T05:50:12.941Z",
         "contentType": "text/html",
         "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
         "etag": "W/\"1793592645\"",
@@ -78,7 +78,7 @@
           {
             "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
             "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-            "retrievedAt": "2026-11-02T05:32:16.861Z",
+            "retrievedAt": "2026-11-02T05:50:13.058Z",
             "contentType": "application/pdf",
             "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
             "etag": "\"6a977966-33b269\"",
@@ -87,17 +87,17 @@
         ],
         "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
         "reviewedDate": {
-          "date": "2026-09-01",
-          "precision": "month",
-          "reviewedAt": "2026-11-02T05:32:16.863Z",
+          "date": "2026-09-02",
+          "precision": "day",
+          "reviewedAt": "2026-11-02T05:50:13.061Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The publication page and the PDF text state no date. The AFP AI Transparency Statement (https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement) says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The PDF sits in the 2026-09 upload folder and its metadata and Last-Modified header read 2 September 2026, but file metadata is not a stated release date, so the record carries month precision (Daniel Alkurdi, 2 Nov 2026)."
+          "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
         }
       },
-      "checkedAt": "2026-11-02T05:32:16.863Z",
+      "checkedAt": "2026-11-02T05:50:13.061Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal a5c62e55). Proposed by Claude (agent). Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 75bb111c). Proposed by Claude (agent). Corrects the published date from month to day precision. Nothing else changes."
     }
   },
   {

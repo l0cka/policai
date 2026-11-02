@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-02eb424e-a3be-4e17-ae67-fe75792b06d1",
+    "createdAt": "2026-11-02T05:50:14.471Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6aca1096-e113-4b88-bc8c-30880ddd8064",
+    "createdAt": "2026-11-02T05:50:13.892Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-06f3fab4-90b3-4ba7-8f94-c57006dbf5ab",
     "createdAt": "2026-11-02T05:49:14.179Z",
     "actor": "local-mcp-admin",
@@ -3687,22 +3701,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-869be230-1b52-4e51-8b22-ae5cc1ce4aac",
-    "createdAt": "2026-07-19T04:07:45.301Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://digitalterritory.nt.gov.au/digital-government/strategies-and-guidance/policies-standards-and-guidance/artificial-intelligence-assurance-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-8fd9b433-8445-414d-954c-d2dc202664b0",
-    "createdAt": "2026-07-19T04:07:28.006Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.ai.sa.gov.au/artificial-intelligence-ai-strategy-for-the-south-australian-government",
     "status": "success"
   }
 ]

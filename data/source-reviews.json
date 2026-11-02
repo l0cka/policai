@@ -6,7 +6,7 @@
     "entryKind": "policy",
     "targetPolicyId": "afp-ai-strategy-2026-28",
     "targetPolicyBaseRevisionHash": "2c236cd498c60cdbe6136b0e647024c7e59dc24dc046eb36cc315207ab9fa31b",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-02T05:49:13.677Z",
     "createdBy": "local-mcp-admin",
     "notes": "Date correction requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity.",
@@ -24,7 +24,7 @@
     "sourceEvidence": {
       "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
       "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-      "retrievedAt": "2026-11-02T05:49:13.221Z",
+      "retrievedAt": "2026-11-02T05:50:12.941Z",
       "contentType": "text/html",
       "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
       "etag": "W/\"1793592645\"",
@@ -33,14 +33,21 @@
         {
           "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
           "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-          "retrievedAt": "2026-11-02T05:49:13.351Z",
+          "retrievedAt": "2026-11-02T05:50:13.058Z",
           "contentType": "application/pdf",
           "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
           "etag": "\"6a977966-33b269\"",
           "lastModified": "Wed, 02 Sep 2026 01:18:30 GMT"
         }
       ],
-      "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police"
+      "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
+      "reviewedDate": {
+        "date": "2026-09-02",
+        "precision": "day",
+        "reviewedAt": "2026-11-02T05:50:13.061Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+      }
     },
     "proposedRecord": {
       "id": "afp-ai-strategy-2026-28",
@@ -49,7 +56,7 @@
       "jurisdiction": "federal",
       "type": "policy",
       "status": "active",
-      "effectiveDate": "2026-09-01",
+      "effectiveDate": "2026-09-02",
       "agencies": [
         "Australian Federal Police"
       ],
@@ -69,17 +76,17 @@
         "human-oversight"
       ],
       "createdAt": "2026-11-02T05:18:15.869Z",
-      "updatedAt": "2026-11-02T05:49:13.677Z",
+      "updatedAt": "2026-11-02T05:50:13.061Z",
       "dates": [
         {
           "type": "published",
-          "date": "2026-09-01",
-          "precision": "month",
+          "date": "2026-09-02",
+          "precision": "day",
           "primary": true,
           "source": {
             "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
             "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-            "retrievedAt": "2026-11-02T05:32:16.679Z",
+            "retrievedAt": "2026-11-02T05:50:12.941Z",
             "contentType": "text/html",
             "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
             "etag": "W/\"1793592645\"",
@@ -88,7 +95,7 @@
               {
                 "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
                 "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-                "retrievedAt": "2026-11-02T05:32:16.861Z",
+                "retrievedAt": "2026-11-02T05:50:13.058Z",
                 "contentType": "application/pdf",
                 "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
                 "etag": "\"6a977966-33b269\"",
@@ -97,17 +104,53 @@
             ],
             "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
             "reviewedDate": {
-              "date": "2026-09-01",
-              "precision": "month",
-              "reviewedAt": "2026-11-02T05:32:16.863Z",
+              "date": "2026-09-02",
+              "precision": "day",
+              "reviewedAt": "2026-11-02T05:50:13.061Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "The publication page and the PDF text state no date. The AFP AI Transparency Statement (https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement) says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The PDF sits in the 2026-09 upload folder and its metadata and Last-Modified header read 2 September 2026, but file metadata is not a stated release date, so the record carries month precision (Daniel Alkurdi, 2 Nov 2026)."
+              "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
             }
           }
         }
-      ]
+      ],
+      "lastReviewedAt": "2026-11-02T05:50:13.061Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+          "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+          "retrievedAt": "2026-11-02T05:50:12.941Z",
+          "contentType": "text/html",
+          "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
+          "etag": "W/\"1793592645\"",
+          "lastModified": "Mon, 02 Nov 2026 04:10:45 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+              "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+              "retrievedAt": "2026-11-02T05:50:13.058Z",
+              "contentType": "application/pdf",
+              "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
+              "etag": "\"6a977966-33b269\"",
+              "lastModified": "Wed, 02 Sep 2026 01:18:30 GMT"
+            }
+          ],
+          "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
+          "reviewedDate": {
+            "date": "2026-09-02",
+            "precision": "day",
+            "reviewedAt": "2026-11-02T05:50:13.061Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+          }
+        },
+        "checkedAt": "2026-11-02T05:50:13.061Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 75bb111c). Proposed by Claude (agent). Corrects the published date from month to day precision. Nothing else changes."
+      }
     },
-    "updatedAt": "2026-11-02T05:49:13.702Z",
+    "updatedAt": "2026-11-02T05:50:13.875Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -175,14 +218,35 @@
       },
       "notes": "Corrects the published date from month to day precision. Nothing else changes.",
       "proposedAt": "2026-11-02T05:49:13.702Z"
-    }
+    },
+    "targetPolicyRevisionHash": "2c236cd498c60cdbe6136b0e647024c7e59dc24dc046eb36cc315207ab9fa31b",
+    "reviewedAt": "2026-11-02T05:50:13.061Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 75bb111c). Proposed by Claude (agent). Corrects the published date from month to day precision. Nothing else changes.",
+    "decision": {
+      "proposalHash": "75bb111c7673737b8e126f722a08b7c60e4a98bdffef302a98afc2fda051b380",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-02T05:49:48.965Z",
+      "approval": {
+        "subject": "source-review:source-review-631246cb-9b7c-4d8a-801d-c787ceffc2f7:75bb111c7673737b8e126f722a08b7c60e4a98bdffef302a98afc2fda051b380",
+        "receivedAt": "2026-11-02T05:49:48.965Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiUzV6aWdCczdsVV91N2Ntci1fLTNFVUY3Y0haNW42N1JVd2tzOGYxdXN3TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEYCIQDdSnOBHhzWsx8nzBewkdTlKWBqDt4TJO3V0PK3W2W0PgIhAJezNq0uC24gxPfLz8FjcsrWhatMCTsQZb7QRIe4ZsB_",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-02T05:50:13.865Z"
   },
   {
     "id": "source-review-0f153f0a-a2bb-4508-831b-11990ad1cf64",
     "sourceUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
-    "title": "Artificial Intelligence (AI) Transparency Statement | Australian Federal Police",
+    "title": "AFP launches its Artificial Intelligence Strategy 2026-28",
     "entryKind": "timeline_event",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-02T05:18:17.196Z",
     "createdBy": "local-mcp-admin",
     "notes": "Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity. No AFP media release was found, and one source URL holds one review, so the event cites the AFP AI Transparency Statement.",
@@ -198,7 +262,7 @@
     "sourceEvidence": {
       "url": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
       "finalUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
-      "retrievedAt": "2026-11-02T05:18:17.009Z",
+      "retrievedAt": "2026-11-02T05:50:14.012Z",
       "contentType": "text/html",
       "contentHash": "dede25f43720da443f45040adb53050ed791970c05079c2454ee7e3cb63d037f",
       "etag": "W/\"1793592054\"",
@@ -207,14 +271,21 @@
         {
           "url": "https://www.afp.gov.au/sites/default/files/2026-10/AI-Transparency-Statement.pdf",
           "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-10/AI-Transparency-Statement.pdf",
-          "retrievedAt": "2026-11-02T05:18:17.031Z",
+          "retrievedAt": "2026-11-02T05:50:14.041Z",
           "contentType": "application/pdf",
           "contentHash": "e895b1c97d11e051e7466127e5d0a9d00b5ff1bc33aea9d21dd202d07dac1acd",
           "etag": "\"6ae1696d-32dd8\"",
           "lastModified": "Wed, 28 Oct 2026 03:18:05 GMT"
         }
       ],
-      "title": "Artificial Intelligence (AI) Transparency Statement | Australian Federal Police"
+      "title": "Artificial Intelligence (AI) Transparency Statement | Australian Federal Police",
+      "reviewedDate": {
+        "date": "2026-09-01",
+        "precision": "month",
+        "reviewedAt": "2026-11-02T05:50:14.041Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The AFP AI Transparency Statement says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The statement gives no day."
+      }
     },
     "proposedRecord": {
       "id": "tl-2026-09-afp-ai-strategy-2026-28-launched",
@@ -225,9 +296,44 @@
       "type": "announcement",
       "jurisdiction": "federal",
       "relatedPolicyId": "afp-ai-strategy-2026-28",
-      "sourceUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement"
+      "sourceUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+          "finalUrl": "https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement",
+          "retrievedAt": "2026-11-02T05:50:14.012Z",
+          "contentType": "text/html",
+          "contentHash": "dede25f43720da443f45040adb53050ed791970c05079c2454ee7e3cb63d037f",
+          "etag": "W/\"1793592054\"",
+          "lastModified": "Mon, 02 Nov 2026 04:00:54 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://www.afp.gov.au/sites/default/files/2026-10/AI-Transparency-Statement.pdf",
+              "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-10/AI-Transparency-Statement.pdf",
+              "retrievedAt": "2026-11-02T05:50:14.041Z",
+              "contentType": "application/pdf",
+              "contentHash": "e895b1c97d11e051e7466127e5d0a9d00b5ff1bc33aea9d21dd202d07dac1acd",
+              "etag": "\"6ae1696d-32dd8\"",
+              "lastModified": "Wed, 28 Oct 2026 03:18:05 GMT"
+            }
+          ],
+          "title": "Artificial Intelligence (AI) Transparency Statement | Australian Federal Police",
+          "reviewedDate": {
+            "date": "2026-09-01",
+            "precision": "month",
+            "reviewedAt": "2026-11-02T05:50:14.041Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The AFP AI Transparency Statement says \"In September 2026, the AFP launched the Artificial Intelligence Strategy 2026-28\". The statement gives no day."
+          }
+        },
+        "checkedAt": "2026-11-02T05:50:14.041Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 0b6ecd8c). Proposed by Claude (agent). Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity. No AFP media release was found."
+      }
     },
-    "updatedAt": "2026-11-02T05:32:17.432Z",
+    "updatedAt": "2026-11-02T05:50:14.450Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -248,7 +354,27 @@
       },
       "notes": "Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity. No AFP media release was found.",
       "proposedAt": "2026-11-02T05:32:17.432Z"
-    }
+    },
+    "reviewedAt": "2026-11-02T05:50:14.041Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 0b6ecd8c). Proposed by Claude (agent). Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity. No AFP media release was found.",
+    "decision": {
+      "proposalHash": "0b6ecd8ca32f4d092a6962501fc18d457c7ab7fb8004f0c211eb4257a46ad5c2",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-02T05:49:56.490Z",
+      "approval": {
+        "subject": "source-review:source-review-0f153f0a-a2bb-4508-831b-11990ad1cf64:0b6ecd8ca32f4d092a6962501fc18d457c7ab7fb8004f0c211eb4257a46ad5c2",
+        "receivedAt": "2026-11-02T05:49:56.490Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoic0xINUtZU1FKTVZOYUowYUhsamU5YTRzbWZFM1VGbHhrX3BqQV9FeE85dyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIBC9R3HXrufpTepB3Lj901yosmMjOWFZqWkO0ZrF9N8yAiB_0LgJb6Zr9QhNAWhiugwJqg7FiXOADPmvJsZ5kJEp8Q",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-02T05:50:14.423Z"
   },
   {
     "id": "source-review-f9e0a662-ecc2-43a0-a7a4-84ef53c30bb9",
