@@ -13,6 +13,7 @@ vi.mock('next/navigation', () => ({
   notFound: () => {
     throw new Error('NEXT_NOT_FOUND');
   },
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 const SLUG = 'fixture-illustrated';
@@ -87,7 +88,7 @@ describe('article images', () => {
 
   it('shows a thumbnail on the index', async () => {
     const { default: AnalysisPage } = await import('./page');
-    render(await AnalysisPage({ searchParams: Promise.resolve({}) }));
+    render(await AnalysisPage());
     const image = screen.getByRole('img', { hidden: true });
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
