@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-11d248a1-ee98-4a24-8674-9c87301c5393",
+    "createdAt": "2026-11-02T05:32:17.440Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2bd20e3e-e17d-4c03-88a8-ae1d0ee9a5b0",
+    "createdAt": "2026-11-02T05:32:17.424Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-7c02fc28-3eba-48e8-a647-99811febaf92",
     "createdAt": "2026-11-02T05:28:35.517Z",
     "actor": "local-mcp-admin",
@@ -3690,22 +3704,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-16edc679-1655-4158-abe6-64d7cfcc726f",
-    "createdAt": "2026-07-19T04:06:36.408Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5893d2a3-6939-4258-9432-6acc7c5d3f98",
-    "createdAt": "2026-07-19T04:06:35.601Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://consult.industry.gov.au/ai-mandatory-guardrails",
     "status": "success"
   }
 ]
