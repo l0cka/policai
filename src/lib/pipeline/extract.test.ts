@@ -591,6 +591,48 @@ describe('extractDocumentCandidate', () => {
   });
 });
 
+describe('extractFromHtml with AFP publication cards', () => {
+  const card = (slug: string, title: string, date: string) => `
+    <div class="views-row multi-column--item">
+      <div class="node node__publication card--secondary card">
+        <div class="card--readmore">
+          <a href="/news-centre/publications/${slug}" aria-label="${title}" hreflang="en">View</a>
+        </div>
+        <div class="card--date">${date}</div>
+        <div class="card--title"><span>${title}</span></div>
+        <div class="card--link">
+          <a href="/news-centre/publications/${slug}" aria-label="${title}" hreflang="en">View</a>
+        </div>
+      </div>
+    </div>`;
+  const LISTING = `<main>${card(
+    'artificial-intelligence-strategy-2026-28',
+    'Artificial Intelligence Strategy 2026-28',
+    '02 Sep 2026',
+  )}${card('corporate-plan-2026-27', 'Corporate Plan 2026-27', '31 Aug 2026')}</main>`;
+  const INDEX = 'https://www.afp.gov.au/news-centre?field_article_type_target_id=10';
+
+  it('titles a card from the aria-label of its short View link', () => {
+    const result = extractFromHtml(LISTING, INDEX, { titlePattern: /Intelligence/ });
+    expect(result.itemCount).toBe(2);
+    expect(result.candidates).toHaveLength(1);
+    expect(result.candidates[0]).toMatchObject({
+      url: 'https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28',
+      title: 'Artificial Intelligence Strategy 2026-28',
+      dateHint: '2026-09-02',
+      dateHintPrecision: 'day',
+    });
+  });
+
+  it('keeps items matching a title pattern even when their titles carry no AI signal', () => {
+    const result = extractFromHtml(LISTING, INDEX, { titlePattern: /./ });
+    expect(result.candidates.map((c) => c.title)).toEqual([
+      'Artificial Intelligence Strategy 2026-28',
+      'Corporate Plan 2026-27',
+    ]);
+  });
+});
+
 describe('extractFromRss with a title pattern', () => {
   const HANSARD_XML = `<?xml version="1.0"?>
 <rss version="2.0"><channel>

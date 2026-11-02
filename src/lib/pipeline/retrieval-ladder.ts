@@ -155,7 +155,9 @@ export function retrievalLadder({
                 ? extractFromVicBillSearch(retrieval.body)
                 : source.kind === 'bill-list' && source.billList
                   ? extractFromBillList(source.billList, retrieval.body, source.url)
-                  : extractFromHtml(retrieval.body, source.url);
+                  : extractFromHtml(retrieval.body, source.url, {
+                      titlePattern: source.bodyRelevance?.titlePattern,
+                    });
     return { retrieval, extracted };
   };
   // Index pages climb the same ladder as candidate pages: Firecrawl, still
@@ -181,7 +183,9 @@ export function retrievalLadder({
       () => now,
       'text/html; charset=utf-8',
     );
-    const extracted = extractFromHtml(retrieval.body, source.url);
+    const extracted = extractFromHtml(retrieval.body, source.url, {
+      titlePattern: source.bodyRelevance?.titlePattern,
+    });
     if (extracted.itemCount === 0) {
       log(
         `[collect] ${source.id}: empty Firecrawl index, retrying with the browser retriever`,

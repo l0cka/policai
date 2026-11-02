@@ -94,8 +94,8 @@ export interface WatchSource {
    */
   minimumItemCount?: number;
   /**
-   * For feeds whose query already matches AI in full text but whose item
-   * titles never carry the signal (Hansard debate titles name the bill).
+   * For feeds and indexes whose item titles do not reliably carry the signal
+   * (Hansard debate titles name the bill; AFP publications are mostly not AI).
    * Items are kept when their title matches `titlePattern`; after the page is
    * fetched, a candidate counts as relevant only with at least
    * `minAiMentions` explicit AI mentions in its body. Classification stays
@@ -663,6 +663,40 @@ export const WATCH_SOURCES: WatchSource[] = [
       evidence:
         'The host and its robots.txt return an Akamai “Access Denied” 403 to the declared Policai identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
     },
+  },
+  {
+    id: 'afp-publications',
+    name: 'Australian Federal Police — publications',
+    bodyId: 'afp',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.afp.gov.au/news-centre?field_article_type_target_id=10',
+    kind: 'html-index',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-11-02',
+    bodyRelevance: {
+      titlePattern: /./,
+      minAiMentions: 10,
+    },
+    notes:
+      'News centre filtered to publications. 200 under the declared identity (probed 2026-11-02); robots.txt allows /news-centre; rss.xml returns 401, so there is no feed, and sitemap.xml returns 404. Most publications are not about AI, so relevance is 10+ explicit AI mentions in the body (set 2026-11-02 from a probe: AI pages 58 and 151 mentions, 17 non-AI pages 0, highest other pages about 6).',
+  },
+  {
+    id: 'afp-ai-transparency-statement',
+    name: 'Australian Federal Police — AI transparency statement',
+    bodyId: 'afp',
+    jurisdiction: 'federal',
+    category: 'government',
+    url: 'https://www.afp.gov.au/news-centre/feature/artificial-intelligence-ai-transparency-statement',
+    kind: 'document',
+    schedule: 'weekly',
+    enabled: true,
+    automation: 'automatic',
+    admittedAt: '2026-11-02',
+    notes:
+      'Revised in place and not surfaced as new in a listing, so the page is fingerprinted. 200 under the declared identity (probed 2026-11-02); robots.txt allows /news-centre; rss.xml returns 401 and sitemap.xml returns 404.',
   },
   // --- Federal: regulators ---
   {
