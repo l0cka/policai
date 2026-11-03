@@ -1,10 +1,10 @@
 name: Auto-merge
 
-# Arms GitHub auto-merge (squash) on non-draft PRs opened by l0cka. GitHub
-# then merges once the "Protect main" ruleset passes: required checks green
-# and every review thread resolved. There is no automated review; reviews
-# are requested by hand. A `hold` label disarms it, for PRs gated on a date or an
-# event, or waiting on a review. Merging to main deploys policai.org.
+# Arms GitHub auto-merge (squash) on the collector's daily collection PRs
+# (`automation/collection-*` branches), which the PR review routine skips.
+# GitHub then merges once the "Protect main" ruleset passes. Every other PR
+# waits for its review and is merged by hand. A `hold` label disarms it.
+# Merging to main deploys policai.org.
 #
 # pull_request_target runs this file from main, so a PR cannot rewrite its own
 # arming policy. The job never checks out PR code.
@@ -24,7 +24,7 @@ concurrency:
 jobs:
   arm:
     name: arm auto-merge
-    if: ${{ github.event.pull_request.user.login == 'l0cka' && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event.pull_request.user.login == 'l0cka' && startsWith(github.event.pull_request.head.ref, 'automation/collection-') && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: [self-hosted, linux, argus]
 
     steps:
