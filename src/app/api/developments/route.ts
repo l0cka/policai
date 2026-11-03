@@ -49,10 +49,9 @@ export async function GET(request: Request) {
     status,
     search,
     since,
-    limit,
   });
   return publicApiJson({
-    data: developments,
+    data: developments.slice(0, limit),
     total: developments.length,
     success: true,
   });

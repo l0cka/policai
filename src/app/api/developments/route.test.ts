@@ -54,7 +54,6 @@ describe("/api/developments", () => {
       status: "detected",
       search: "policy",
       since: "2026-08-01",
-      limit: 25,
     });
     expect(response.headers.get("Access-Control-Allow-Origin")).toBeTruthy();
     expect(response.headers.get("Cache-Control")).toContain("s-maxage=300");
@@ -63,6 +62,18 @@ describe("/api/developments", () => {
       total: 1,
       success: true,
     });
+  });
+
+  it("reports the matching total, not the page size", async () => {
+    getDevelopments.mockResolvedValue([{ id: "a" }, { id: "b" }, { id: "c" }]);
+
+    const response = await GET(
+      new Request("https://example.com/api/developments?limit=2"),
+    );
+    const body = await response.json();
+
+    expect(body.data.map((d: { id: string }) => d.id)).toEqual(["a", "b"]);
+    expect(body.total).toBe(3);
   });
 
   it("rejects invalid public filters", async () => {
