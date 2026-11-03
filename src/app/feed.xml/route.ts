@@ -20,12 +20,16 @@ function verificationLabel(status: string): string {
 // The route reuses the public read path (getDevelopments), so dismissed or
 // editorially withheld entries can never reach the feed.
 export async function GET(): Promise<Response> {
-	const developments = await getDevelopments({ limit: 40 });
+	const developments = await getDevelopments({ orderBy: 'detected' });
 	const items = developments
 		.filter((development) => development.status !== 'dismissed')
 		.slice(0, 40);
 
-	const updated = items[0] ? xmlDate(items[0].detectedAt) : new Date().toISOString();
+	const updated = items.length
+		? new Date(
+				Math.max(...items.map((item) => new Date(item.detectedAt).getTime())),
+			).toISOString()
+		: new Date().toISOString();
 
 	const entries = items
 		.map((development) => {

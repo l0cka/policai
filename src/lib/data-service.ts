@@ -1090,6 +1090,8 @@ export async function getDevelopments(filters?: {
 	search?: string;
 	since?: string;
 	limit?: number;
+	/** "detected" lists the most recent detections first, for feeds and status. */
+	orderBy?: "published" | "detected";
 }, options: DataServiceOptions = {}): Promise<Development[]> {
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
@@ -1205,11 +1207,13 @@ export async function getDevelopments(filters?: {
 		);
 	}
 
-	developments = developments.sort(
-		(a, b) =>
-			new Date(b.publishedAt || b.detectedAt).getTime() -
-			new Date(a.publishedAt || a.detectedAt).getTime(),
-	);
+	const sortKey = (d: Development) =>
+		new Date(
+			filters?.orderBy === "detected"
+				? d.detectedAt
+				: d.publishedAt || d.detectedAt,
+		).getTime();
+	developments = developments.sort((a, b) => sortKey(b) - sortKey(a));
 
 	return filters?.limit ? developments.slice(0, filters.limit) : developments;
 }

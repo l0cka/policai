@@ -194,7 +194,7 @@ describe("/api/status", () => {
 			success: true,
 		});
 
-		expect(getDevelopments).toHaveBeenCalledWith({ limit: 1 });
+		expect(getDevelopments).toHaveBeenCalledWith({ limit: 1, orderBy: "detected" });
 	});
 
 	it("counts an automatic source with a stale completed check as overdue", async () => {

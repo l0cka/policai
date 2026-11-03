@@ -1267,6 +1267,45 @@ describe("data-service file store", () => {
 		expect(result[0].id).toBe("dev-newer");
 	});
 
+	it("orders developments by detection time when asked", async () => {
+		const base = {
+			url: "https://example.gov.au/x",
+			sourceId: "s",
+			sourceName: "S",
+			jurisdiction: "federal",
+			relevanceScore: 0.9,
+			classification: "heuristic",
+			status: "detected",
+			verification: {
+				status: "needs_review",
+				source: { url: "https://example.gov.au/x" },
+			},
+		};
+		readJsonFile.mockResolvedValue([
+			{
+				...base,
+				id: "dev-new-detection-old-doc",
+				title: "Old document found today",
+				publishedAt: "2020-01-01",
+				detectedAt: "2026-10-30T00:00:00.000Z",
+			},
+			{
+				...base,
+				id: "dev-old-detection-new-doc",
+				title: "Newer document found earlier",
+				publishedAt: "2026-07-01",
+				detectedAt: "2026-07-02T00:00:00.000Z",
+			},
+		]);
+
+		const { getDevelopments } = await loadDataServiceModule();
+		const byDetection = await getDevelopments({ orderBy: "detected" });
+		const byPublication = await getDevelopments();
+
+		expect(byDetection[0].id).toBe("dev-new-detection-old-doc");
+		expect(byPublication[0].id).toBe("dev-old-detection-new-doc");
+	});
+
 	it("projects non-register editorial timeline records into developments without duplicates", async () => {
 		const policy = buildPolicy({ id: "registered-policy" });
 		const announcement = buildTimelineEvent({

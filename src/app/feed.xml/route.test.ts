@@ -68,3 +68,17 @@ it('serves an Atom feed of public developments with on-site related links', asyn
 	expect(body).toContain('/api/developments');
 	expect(body).toContain('rel="self"/>');
 });
+
+it('asks for detection order and stamps the feed with the latest detection', async () => {
+	const { getDevelopments } = await import('@/lib/data-service');
+	const { GET } = await import('./route');
+	vi.mocked(getDevelopments).mockResolvedValueOnce([
+		{ ...developments[1], detectedAt: '2026-10-09T01:00:00.000Z' },
+		{ ...developments[0], detectedAt: '2026-10-12T01:00:00.000Z' },
+	] as Development[]);
+
+	const body = await (await GET()).text();
+
+	expect(getDevelopments).toHaveBeenCalledWith({ orderBy: 'detected' });
+	expect(body).toMatch(/<\/id>\n  <updated>2026-10-12T01:00:00.000Z<\/updated>/);
+});
