@@ -110,4 +110,28 @@ describe('assessSourceFreshness', () => {
     expect(messages[0]).toContain('limit 2 days');
     expect(messages[4]).toContain('limit 8 days');
   });
+
+  it('ages a manual source from its last hand review, not the watch-state check', () => {
+    const source = { ...base, id: 'cyber-news', automation: buildManualDecision() };
+    const now = new Date('2026-11-13T00:00:00.000Z');
+    const monitoring = {
+      manualReviews: [
+        {
+          sourceId: 'cyber-news',
+          status: 'checked',
+          reviewedAt: '2026-10-22T00:00:00.000Z',
+          reviewedBy: 'Daniel',
+        } satisfies ManualSourceReview,
+      ],
+    };
+    const lastChecked = { 'cyber-news': '2026-10-22T00:00:00.000Z' };
+    const watchStateOnly = { 'cyber-news': '2026-10-17T00:00:00.000Z' };
+
+    const [row] = assessSourceFreshness([source], watchStateOnly, now, monitoring);
+    expect(row.ageDays).toBe(22);
+    expect(row.lastCheckedAt).toBe('2026-10-22T00:00:00.000Z');
+    expect(uncheckedSourceErrors([source], lastChecked, monitoring, now)[0]).toContain(
+      'last checked 22 days ago',
+    );
+  });
 });

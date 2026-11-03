@@ -51,16 +51,21 @@ export function assessSourceFreshness(
   return sources
     .filter((source) => source.enabled)
     .map((source): SourceFreshness => {
-      const raw = lastCheckedBySource[source.id];
+      const review = monitoring.manualReviews.find(
+        (entry) => entry.sourceId === source.id,
+      );
+      // The collector never fetches a manual source, so its watch-state
+      // check time is not the age that matters: a person's last review is.
+      const raw =
+        source.automation === 'automatic'
+          ? lastCheckedBySource[source.id]
+          : review?.reviewedAt;
       const parsed = raw ? Date.parse(raw) : Number.NaN;
-      const lastCheckedAt = Number.isNaN(parsed) ? null : raw;
+      const lastCheckedAt = Number.isNaN(parsed) ? null : raw!;
       const ageDays =
         lastCheckedAt === null
           ? null
           : Math.floor((now.getTime() - parsed) / DAY_MS);
-      const review = monitoring.manualReviews.find(
-        (entry) => entry.sourceId === source.id,
-      );
       const manualCurrent =
         source.automation !== 'automatic' &&
         review !== undefined &&
