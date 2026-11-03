@@ -2,8 +2,8 @@ import { getDevelopments } from '@/lib/data-service';
 import { getJurisdictionName } from '@/types';
 import { escapeXml } from '@/lib/xml';
 
-// Served through ISR like the other data routes: at most one regeneration per
-// window, so data-only commits reach the feed without a rebuild.
+// Prerendered at build time. Production serves static output rebuilt on every
+// push to main and nightly at 00:05 Sydney, so the feed changes only then.
 export const revalidate = 300;
 
 const SITE_URL = 'https://policai.org';

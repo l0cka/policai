@@ -17,7 +17,7 @@ on:
       - package-lock.json
       - .github/workflows/record-freshness.yml
   schedule:
-    - cron: "0 22 * * 0" # Monday 08:00 AEST
+    - cron: "0 22 * * 0" # Sunday 22:00 UTC: Monday 08:00 AEST, 09:00 AEDT
   workflow_dispatch:
 
 permissions:

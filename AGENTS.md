@@ -47,7 +47,6 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Framework:** Next.js 16 (App Router) with React 19
 - **Language:** TypeScript 5 (strict mode)
 - **Styling:** Tailwind CSS 4 with CSS variables; shadcn/ui (New York) on Radix
-- **Visualisations:** D3.js
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for `html-index` listing pages and candidate pages, falling back to headless Chromium (Playwright); RSS, register and document sources never read their own page through Firecrawl. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below) and passes through one `HostGate` (`src/lib/pipeline/host-gate.ts`: robots.txt, a 2 s gap per host, `Retry-After`, a per-run breaker; docs/collector.md "Politeness"). Firecrawl `map` and `crawl` are not used.
@@ -166,12 +165,11 @@ and still serves `buildNetworkData` nodes and edges.
   original threshold of 6 filtered free-form tags. Raise it if the
   vocabulary grows past what one table can show; uncharted themes are then
   counted in the footnote.
-- **Rendering:** the route is `force-dynamic`. It reads `searchParams` to
-  server-render the selected drill-down, so it is dynamic by nature, and the
-  export says so; a `revalidate` would have no effect. Each request reads
-  `policies.json` and `source-reviews.json` through the public `getPolicies()`
-  projection and builds the matrix, which is small (one pass over the public
-  records). `src/app/coverage/page.test.tsx` guards the export, asserts SSR
+- **Rendering:** the route is prerendered (`revalidate = 3600`, no `dynamic`
+  export). It never reads `searchParams` on the server: `CoverageMap` reads
+  the selection from the query string in the browser. Build time reads
+  `policies.json` through the public `getPolicies()` projection and builds
+  the matrix, which is small (one pass over the public records). `src/app/coverage/page.test.tsx` guards the export, asserts SSR
   table HTML, and asserts that withheld, unverified and trashed records never
   reach a cell or a drill-down list.
 - **Copy:** every count and sentence on the page (standfirst, footnote, empty
