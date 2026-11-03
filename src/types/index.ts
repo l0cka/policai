@@ -806,6 +806,18 @@ export function getPolicyDateTypeName(type: PolicyDateType): string {
 	return POLICY_DATE_TYPE_NAMES[type];
 }
 
+/** Labels for a date that has not happened yet; other types read the same either way. */
+const UPCOMING_DATE_TYPE_NAMES: Partial<Record<PolicyDateType, string>> = {
+	effective: "Takes effect",
+	commenced: "Commences",
+	consultation_opened: "Consultation opens",
+	consultation_closed: "Consultation closes",
+};
+
+export function getUpcomingDateTypeName(type: PolicyDateType): string {
+	return UPCOMING_DATE_TYPE_NAMES[type] ?? POLICY_DATE_TYPE_NAMES[type];
+}
+
 export function isDeadlineDateType(
 	value: string | null | undefined,
 ): value is DeadlineDateType {
