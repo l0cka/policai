@@ -225,14 +225,19 @@ function host(u: string): string {
 /**
  * Same site, allowing a source to sit on a subdomain of the organisation's
  * domain (consultations.ag.gov.au belongs to ag.gov.au). The suffix rule needs
- * three or more labels on the shorter host, so a public suffix like gov.au can
- * never claim every source beneath it.
+ * three or more labels on the shorter host, and a state government's shared
+ * host (wa.gov.au) is never a parent, so neither a public suffix like gov.au
+ * nor a state portal can claim every source beneath it.
  */
+const SHARED_STATE_HOST = /^(act|nsw|nt|qld|sa|tas|vic|wa)\.gov\.au$/;
+
 function sameSite(a: string, b: string): boolean {
   if (!a || !b) return false;
   if (a === b) return true;
   const [short, long] = a.length < b.length ? [a, b] : [b, a];
-  return (short.match(/\./g) ?? []).length >= 2 && long.endsWith('.' + short);
+  return (
+    (short.match(/\./g) ?? []).length >= 2 && !SHARED_STATE_HOST.test(short) && long.endsWith('.' + short)
+  );
 }
 
 // Fallback for the handful of sources whose feed lives on a different domain

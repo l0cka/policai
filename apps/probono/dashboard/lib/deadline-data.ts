@@ -12,8 +12,8 @@ export type { DeadlineCard, DeadlineView } from './deadline-model';
  * match a bare 'appl' and read as an action.) Postgres regexes use \y for a
  * word boundary.
  */
-const NON_DEADLINE_SQL =
-  `'\\y(open(s|ed|ing)?|launch(es|ed|ing)?|meeting|webinar|event|forum|conference|symposium|summit|info(rmation)? session|workshop|hearing|agm|general meeting)\\y'`;
+export const NON_DEADLINE_SQL =
+  `'\\y(open(s|ed|ing)?|launch(es|ed|ing)?|commenc(e|es|ed|ement|ing)|takes? effect|comes? into (force|effect)|meeting|webinar|event|expo|forum|conference|symposium|summit|info(rmation)? session|workshop|hearing|election|agm|general meeting)\\y'`;
 const CLOSE_VERB_SQL =
   `'\\y(close[sd]?|closing|due|deadline|lodge[sd]?|lodg(e|ing|ement)|apply by|register by|until|no later than|before [0-9]|by ([0-9]|5 ?pm|midnight|cob|close|mon|tue|wed|thu|fri|sat|sun))'`;
 const ACTION_LABEL_SQL =
@@ -48,6 +48,7 @@ export const OPEN_OPPORTUNITY_SQL = `
    ) OR EXISTS (
      SELECT 1 FROM jsonb_array_elements(coalesce(i.entities->'deadlines', '[]'::jsonb)) d
      WHERE ${KIND_SQL} = 'action'
+       AND coalesce(d->>'status', '') NOT IN ('closed', 'not_found')
        AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
        AND ${END_SQL} >= to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
    ))`;

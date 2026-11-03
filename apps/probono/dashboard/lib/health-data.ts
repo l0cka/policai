@@ -292,6 +292,5 @@ export async function getItemCompleteness(db: Queryable) {
   return {
     total,
     missing,
-    complete: total - ITEM_EXPECTED_FIELDS.filter((field) => missing[`missing_${field}`] > 0).length,
   };
 }
