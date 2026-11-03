@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { startAuthentication } from '@simplewebauthn/browser';
 import { Button } from '@/components/ui/button';
-import { APPROVAL_RP_ID, parseApprovalSubject, type ApprovalSubject } from '@/lib/approval-subject';
+import { APPROVAL_RP_ID, formatProposalCode, parseApprovalSubject, type ApprovalSubject } from '@/lib/approval-subject';
 
 type Status =
   | { state: 'idle' }
@@ -22,11 +22,11 @@ async function challengeFor(subject: string): Promise<string> {
 
 function describe(subject: ApprovalSubject) {
   if (subject.kind === 'source-review')
-    return { what: 'Publish source review', id: subject.id, code: subject.proposalHash.slice(0, 8) };
+    return { what: 'Publish source review', id: subject.id, code: formatProposalCode(subject.proposalHash) };
   return {
     what: subject.kind === 'reconfirm' ? 'Re-confirm register batch' : 'Publish source review batch',
     id: subject.batchId,
-    code: subject.entriesHash.slice(0, 8),
+    code: formatProposalCode(subject.entriesHash),
   };
 }
 

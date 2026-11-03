@@ -63,7 +63,10 @@ import {
 	validatePolicyThemes,
 	validateTimeline,
 } from "@/lib/validate-data";
-import type { EditorApproval } from "@/lib/approval-subject";
+import {
+	formatProposalCode,
+	type EditorApproval,
+} from "@/lib/approval-subject";
 import type { SourceReviewBatchRef } from "@/lib/source-review-batch";
 import {
 	isVerificationCurrent,
@@ -3060,7 +3063,7 @@ export async function describeSourceProposal(id: string) {
 				: {}),
 		},
 		proposalHash,
-		proposalCode: proposalHash.slice(0, 8),
+		proposalCode: formatProposalCode(proposalHash),
 		/** Approval checks that would refuse this proposal today. Post a card only when empty. */
 		blockers,
 	};
@@ -3099,8 +3102,8 @@ async function decideSourceReviewUnlocked(input: {
 	const { attestation } = input;
 	const approvalNotes = [
 		attestation.kind === "passkey"
-			? `Approved by ${input.reviewer} with a passkey on policai.org (${attestation.batch ? `batch ${attestation.batch.id}, ` : ""}proposal ${input.proposalHash.slice(0, 8)}).`
-			: `Approved by ${input.reviewer} on decision card ${attestation.attestationUrl} (proposal ${input.proposalHash.slice(0, 8)}).`,
+			? `Approved by ${input.reviewer} with a passkey on policai.org (${attestation.batch ? `batch ${attestation.batch.id}, ` : ""}proposal ${formatProposalCode(input.proposalHash)}).`
+			: `Approved by ${input.reviewer} on decision card ${attestation.attestationUrl} (proposal ${formatProposalCode(input.proposalHash)}).`,
 		`Proposed by ${review.proposal?.proposedBy ?? review.createdBy}.`,
 		review.proposal?.notes?.trim(),
 	]

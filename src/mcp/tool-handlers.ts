@@ -1,3 +1,4 @@
+import { formatProposalCode } from "@/lib/approval-subject";
 import {
 	analyseSourceUrl,
 	auditMcpTool,
@@ -290,7 +291,7 @@ async function batchForDecision(batchId: string, entry: { id: string; proposalHa
   const batch = (await readSourceReviewBatches()).batches.find((candidate) => candidate.id === batchId);
   if (!batch) throw new Error(`Unknown source review batch ${batchId}`);
   if (!batchCovers(batch, entry)) {
-    throw new Error(`Batch ${batchId} does not include proposal ${entry.proposalHash.slice(0, 8)} of ${entry.id}`);
+    throw new Error(`Batch ${batchId} does not include proposal ${formatProposalCode(entry.proposalHash)} of ${entry.id}`);
   }
   return { id: batch.id, entries: batch.entries };
 }

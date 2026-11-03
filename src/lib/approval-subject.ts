@@ -4,6 +4,14 @@
  * cannot be moved to another proposal, and only the editor's authenticator
  * can produce one. Agents hold every other credential in the pipeline.
  */
+/**
+ * The code an editor compares across the approval page, the decision card and
+ * the batch message: the first 16 hex characters of the hash, in groups of four.
+ */
+export function formatProposalCode(hash: string): string {
+  return (hash.slice(0, 16).match(/.{1,4}/g) ?? []).join(' ');
+}
+
 export const APPROVAL_RP_ID = 'policai.org';
 export const APPROVAL_ORIGIN = 'https://policai.org';
 export const APPROVAL_MAILBOX_BRANCH = 'editor-approvals';
