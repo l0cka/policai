@@ -42,6 +42,14 @@ export function isPubliclyEstablished(
 	);
 }
 
+/** True once more than the editorial review interval has passed since `checkedAtMs`. */
+export function isReviewIntervalElapsed(checkedAtMs: number, now: Date): boolean {
+	return (
+		Math.max(0, now.getTime() - checkedAtMs) >
+		EDITORIAL_REVIEW_INTERVAL_DAYS * DAY_MS
+	);
+}
+
 /** Established and reviewed within the editorial review interval. */
 export function isVerificationCurrent(
 	verification: RecordVerification,
@@ -49,10 +57,7 @@ export function isVerificationCurrent(
 ): boolean {
 	if (!isPubliclyEstablished(verification, now)) return false;
 	const checkedAt = new Date(verification.checkedAt!).getTime();
-	return (
-		Math.max(0, now.getTime() - checkedAt) <=
-		EDITORIAL_REVIEW_INTERVAL_DAYS * DAY_MS
-	);
+	return !isReviewIntervalElapsed(checkedAt, now);
 }
 
 export function projectVerificationForPublic(
