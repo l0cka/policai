@@ -39,9 +39,11 @@ const END_SQL = `
     ELSE d->>'date'
   END`;
 
-/* An opportunity stays open until every action date it carries has passed. */
+/* An opportunity stays open until every action date it carries has passed.
+ * Only items enrichment marked as opportunities count: a consultation with a
+ * closing date is not one. */
 export const OPEN_OPPORTUNITY_SQL = `
-  (i.opportunity AND NOT EXISTS (
+  (i.opportunity AND (NOT EXISTS (
      SELECT 1 FROM jsonb_array_elements(coalesce(i.entities->'deadlines', '[]'::jsonb)) d
      WHERE ${KIND_SQL} = 'action'
        AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
@@ -51,7 +53,7 @@ export const OPEN_OPPORTUNITY_SQL = `
        AND coalesce(d->>'status', '') NOT IN ('closed', 'not_found')
        AND d->>'date' ~ '^\\d{4}-\\d{2}-\\d{2}$'
        AND ${END_SQL} >= to_char(now() AT TIME ZONE 'Australia/Sydney', 'YYYY-MM-DD')
-   ))`;
+   )))`;
 
 export function sydneyToday(): string {
   return new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
