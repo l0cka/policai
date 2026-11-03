@@ -89,6 +89,12 @@ describe('/coverage page', () => {
     ]);
   });
 
+  it('puts the section eyebrow directly above the h1', async () => {
+    render(await coveragePage());
+    const heading = screen.getByRole('heading', { level: 1 });
+    expect(heading.previousElementSibling).toHaveTextContent('Register · coverage');
+  });
+
   it('prerenders, so a first visit is a static file; the map reads the query string after hydration', async () => {
     const page = await import('./page');
     expect('dynamic' in page).toBe(false);
