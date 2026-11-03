@@ -115,7 +115,8 @@ The systemd user units in `ops/collector/systemd/` are the source for
   bundled build, which trails Chrome security releases.
 - The collector loads untrusted pages, so the unit confines it. Home and the
   runtime directory are empty read-only file systems, and the unit binds back
-  only what a run needs: the wrapper, the CA, mise and its lock file, Git and
+  only what a run needs: the wrapper, the `gh` launcher that the checkout's
+  credential helper calls, the CA, mise and its lock file, Git and
   `gh` configuration (read-only), and the collector checkout, worktree, state
   and npm cache (writable). Chromium gets private config and cache
   directories, because its crash handler aborts the browser when it cannot
