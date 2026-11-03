@@ -183,6 +183,28 @@ export function sourceHealthHeadline(counts: SourceHealthCounts): SourceHealthHe
   return { tone: 'warn', label, note: `${ok} of ${total} active sources reporting${overdueNote}` };
 }
 
+export type HeaderStatus = {
+  state: 'ok' | 'warn' | 'unknown';
+  /** The word beside the dot. */
+  label: string;
+  /** What the status stands for, for the title and accessible name. */
+  detail: string;
+};
+
+/**
+ * The masthead dot. It reuses the landing-page headline's thresholds, and a
+ * collector that cannot be read (database down) is "unknown", never "Live".
+ */
+export function headerStatus(counts: SourceHealthCounts | null): HeaderStatus {
+  if (!counts) {
+    return { state: 'unknown', label: 'Unknown', detail: 'Collection status is unavailable' };
+  }
+  const headline = sourceHealthHeadline(counts);
+  return headline.tone === 'ok'
+    ? { state: 'ok', label: 'Live', detail: headline.label }
+    : { state: 'warn', label: 'Degraded', detail: headline.label };
+}
+
 /**
  * Sources and their health, ordered the way /health lists them: failures
  * first, then sources that have never run, then overdue, then the rest, with

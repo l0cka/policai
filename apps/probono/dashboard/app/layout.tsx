@@ -4,6 +4,7 @@ import Nav from './nav';
 import ThemeToggle, { themeInitScript } from './theme-toggle';
 import CompanionMark from './companion-mark';
 import { getPool } from '../lib/db';
+import { getLastHealthyAt, getRadarSourceStats, headerStatus, type SourceHealthCounts } from '../lib/health-data';
 import './globals.css';
 import './editorial.css';
 import { auDate } from '../lib/au-date';
@@ -34,17 +35,17 @@ export const metadata: Metadata = {
 
 /**
  * The dateline reports when the collector last ran, in the manner of a
- * masthead's edition line. A database that is down should dim the line, not
- * take the page with it.
+ * masthead's edition line, and the header dot reports whether the sources are
+ * reporting. A database that is down should dim both, not take the page with
+ * it: the dateline goes blank and the dot reads "Unknown".
  */
-async function lastIngestAt(): Promise<string | null> {
+async function collectionStatus(): Promise<{ at: string | null; counts: SourceHealthCounts | null }> {
   try {
-    const { rows } = await getPool().query(
-      `SELECT max(created_at) AS at FROM ingest_runs WHERE status = 'ok'`,
-    );
-    return rows[0]?.at ? new Date(rows[0].at).toISOString() : null;
+    const db = getPool();
+    const [at, counts] = await Promise.all([getLastHealthyAt(db), getRadarSourceStats(db)]);
+    return { at, counts };
   } catch {
-    return null;
+    return { at: null, counts: null };
   }
 }
 
@@ -77,8 +78,9 @@ const FOOTER_GROUPS: Array<{ label: string; links: Array<[string, string]> }> = 
 ];
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const dataCurrentAt = await lastIngestAt();
+  const { at: dataCurrentAt, counts } = await collectionStatus();
   const dataCurrent = formatDataDate(dataCurrentAt);
+  const status = headerStatus(counts);
 
   return (
     <html
@@ -109,11 +111,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Link
               href="/health"
               className="header-status"
-              title={dataCurrent}
-              aria-label={`Source health: ${dataCurrent.toLowerCase()}`}
+              data-state={status.state}
+              title={`${status.detail}. ${dataCurrent}`}
+              aria-label={`Source health: ${status.detail.toLowerCase()}. ${dataCurrent.toLowerCase()}`}
             >
               <i aria-hidden="true" />
-              <span>Live</span>
+              <span>{status.label}</span>
             </Link>
           </div>
         </header>
