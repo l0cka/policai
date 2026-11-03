@@ -512,21 +512,6 @@ export async function updatePolicy(
 	return policies[idx];
 }
 
-export async function deletePolicy(id: string): Promise<boolean> {
-	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	const idx = policies.findIndex((p) => p.id === id);
-	if (idx === -1) return false;
-	policies.splice(idx, 1);
-	await writeJsonFile(POLICIES_FILE, policies);
-	return true;
-}
-
-/** Check if a policy with a given ID already exists. */
-export async function policyExists(id: string): Promise<boolean> {
-	const policy = await getPolicyById(id, { access: "admin" });
-	return policy !== null;
-}
-
 export async function policyExistsBySourceUrl(
 	sourceUrl: string,
 ): Promise<boolean> {
@@ -669,14 +654,6 @@ export async function updateSourceReview(
 	});
 	await writeJsonFile(SOURCE_REVIEWS_FILE, reviews);
 	return reviews[idx];
-}
-
-export async function deleteSourceReview(id: string): Promise<boolean> {
-	const reviews = await readSourceReviewsFromJson();
-	const filtered = reviews.filter((review) => review.id !== id);
-	if (filtered.length === reviews.length) return false;
-	await writeJsonFile(SOURCE_REVIEWS_FILE, filtered);
-	return true;
 }
 
 /**
