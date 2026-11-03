@@ -1,5 +1,3 @@
-import type { ContentAnalysis } from '@/lib/analysis';
-
 interface ScrapedLinkLike {
   url: string;
   title: string;
@@ -80,22 +78,6 @@ const GENERIC_URL_PATTERNS = [
   /\/policies\/privacy(?:\/|$)/i,
 ];
 
-const HUB_TITLE_PATTERNS = [
-  /^learn about\b/i,
-  /^identifying\b/i,
-  /\band tools\b/i,
-  /\band frameworks?\b/i,
-  /\bresponsibilit(?:y|ies)\b/i,
-];
-
-const SUBSECTION_URL_PATTERNS = [
-  /\/node\/\d+(?:\/|$)/i,
-  /\/responsibilities(?:\/|$)/i,
-  /\/identifying-ai(?:\/|$)/i,
-  /\/ai-guidance-and-tools(?:\/|$)/i,
-  /\/ai-governance-assurance-and-frameworks(?:\/|$)/i,
-];
-
 export function cleanScrapedLinkTitle(title: string): string {
   return title
     .replace(/(?:\s+|_)?(?:north_?east|north_?west|south_?east|south_?west|east|west|north|south)$/i, '')
@@ -164,20 +146,6 @@ function isGenericPage(title: string, url: string): boolean {
   );
 }
 
-function isStrongDocumentCandidate(link: ScrapedLinkLike): boolean {
-  const normalizedTitle = normalize(link.title);
-
-  if (HUB_TITLE_PATTERNS.some((pattern) => pattern.test(normalizedTitle))) {
-    return false;
-  }
-
-  if (SUBSECTION_URL_PATTERNS.some((pattern) => pattern.test(link.url))) {
-    return false;
-  }
-
-  return hasGovernanceSignal(`${link.title} ${link.url}`);
-}
-
 export function isRelevantScrapedCandidate(link: ScrapedLinkLike): boolean {
   const context = `${link.title} ${link.url} ${link.text}`;
   const titleOrUrlHasAiSignal = hasAiSignalInTitleOrUrl(link.title, link.url);
@@ -191,34 +159,4 @@ export function isRelevantScrapedCandidate(link: ScrapedLinkLike): boolean {
   }
 
   return hasGovernanceSignal(context) || isLegislativeTitle(link.title) || isPdfUrl(link.url);
-}
-
-export function shouldCreatePolicyFromAnalysis(
-  link: ScrapedLinkLike,
-  analysis: ContentAnalysis,
-): boolean {
-  if (!analysis.isRelevant || analysis.relevanceScore < 0.8 || !isStrongDocumentCandidate(link)) {
-    return false;
-  }
-
-  const analysisContext = normalize(
-    `${analysis.summary} ${analysis.tags.join(' ')} ${analysis.relatedTopics.join(' ')}`,
-  );
-
-  return hasAiSignalInTitleOrUrl(link.title, link.url) || hasAiSignal(analysisContext);
-}
-
-export function shouldQueuePolicyForReview(
-  link: ScrapedLinkLike,
-  analysis: ContentAnalysis,
-): boolean {
-  if (!analysis.isRelevant || analysis.relevanceScore < 0.5) {
-    return false;
-  }
-
-  const analysisContext = normalize(
-    `${analysis.summary} ${analysis.tags.join(' ')} ${analysis.relatedTopics.join(' ')}`,
-  );
-
-  return hasAiSignalInTitleOrUrl(link.title, link.url) || hasAiSignal(analysisContext);
 }

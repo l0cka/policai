@@ -31,7 +31,8 @@ export default async function HomePage() {
   const [policies, articles] = await Promise.all([getPolicies(), getArticles()]);
 
   // Coming up is measured from the Sydney calendar day of this render; the page
-  // revalidates hourly, so a countdown is at most an hour behind. Deadlines get
+  // is prerendered at build time, which runs on every push to main and nightly
+  // at 00:05 Sydney, so a countdown is at most a day behind. Deadlines get
   // their own rail; commencements stay in Coming up, so no date shows twice.
   const renderedAt = new Date();
   const today = renderedAt.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });

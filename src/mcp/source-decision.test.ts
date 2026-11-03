@@ -109,7 +109,7 @@ describe('propose, then decide on a decision card', () => {
       capturedBy: 'Claude (agent)',
       requestedBy: 'Daniel Alkurdi',
     });
-    expect(card.proposalCode).toBe(card.proposalHash.slice(0, 8));
+    expect(card.proposalCode).toBe(card.proposalHash.slice(0, 16).replace(/(.{4})(?=.)/g, '$1 '));
     expect(card.blockers).toEqual([]);
     expect((await readEvent()).description).toBe(oldDescription);
     expect(readReview().status).toBe('pending_review');

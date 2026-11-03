@@ -80,6 +80,12 @@ const nextConfig: NextConfig = {
 				destination: "/coverage",
 				permanent: true,
 			},
+			// The register moved to the home page; /policies/:id is unaffected.
+			{
+				source: "/policies",
+				destination: "/",
+				permanent: true,
+			},
 			// Habit path for the developments Atom feed; canonical remains /feed.xml.
 			{
 				source: "/developments/feed.xml",

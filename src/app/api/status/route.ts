@@ -28,7 +28,7 @@ export async function GET(request?: Request) {
 	const [meta, recentDevelopments, monitoring, checkTimes, policies] =
 		await Promise.all([
 			getCollectionMeta(),
-			getDevelopments({ limit: 1 }),
+			getDevelopments({ limit: 1, orderBy: "detected" }),
 			getSourceMonitoring(),
 			getSourceCheckTimes(),
 			getPolicies(),

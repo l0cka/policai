@@ -210,9 +210,9 @@ describe('Editorial register', () => {
     );
     const section = screen.getByRole('heading', { name: 'Coming up' }).closest('section') as HTMLElement;
     expect(within(section).getByRole('link', { name: 'Federal framework' })).toHaveAttribute('href', '/policies/record-0');
-    expect(section).toHaveTextContent('Effective · 20 October 2026 · in 27 days');
-    expect(section).toHaveTextContent('Consultation closed · 23 September 2026 · today');
-    expect(section).toHaveTextContent('Commenced · December 2026');
+    expect(section).toHaveTextContent('Takes effect · 20 October 2026 · in 27 days');
+    expect(section).toHaveTextContent('Consultation closes · 23 September 2026 · today');
+    expect(section).toHaveTextContent('Commences · December 2026');
     expect(section).not.toHaveTextContent(/December 2026 ·/);
     expect(within(section).getByRole('link', { name: /All upcoming dates/ })).toHaveAttribute('href', '/this-week');
   });

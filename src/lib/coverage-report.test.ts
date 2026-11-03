@@ -117,6 +117,18 @@ describe('buildRecordReviewSchedule', () => {
   });
 });
 
+describe('buildRecordReviewSchedule overdue boundary', () => {
+  it('flips to overdue at the same instant the Review due badge does', () => {
+    const checkedAt = '2026-07-01T00:00:00.000Z';
+    const policy = buildPolicy({ id: 'edge' });
+    policy.verification.checkedAt = checkedAt;
+    const exactly = new Date(Date.parse(checkedAt) + 90 * 24 * 3600 * 1000);
+    const later = new Date(exactly.getTime() + 60 * 60 * 1000);
+    expect(buildRecordReviewSchedule([policy], exactly)[0].overdue).toBe(false);
+    expect(buildRecordReviewSchedule([policy], later)[0].overdue).toBe(true);
+  });
+});
+
 describe('summarizeRecordCompleteness', () => {
   it('reports each missing expected field without failing the record', () => {
     const full = buildPolicy({ id: 'full', lastReviewedAt: '2026-09-01T00:00:00.000Z' });

@@ -13,10 +13,9 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html'],
       include: [
-        'src/lib/{auth,data-service,file-store,rate-limit,utils}.ts',
+        'src/lib/{data-service,file-store,rate-limit,utils}.ts',
         'src/app/api/{agencies,status,timeline}/route.ts',
         'src/app/api/policies/**/*.ts',
-        'src/components/auth/**/*.tsx',
       ],
       exclude: [
         'src/test/**',

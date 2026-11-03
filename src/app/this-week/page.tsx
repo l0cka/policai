@@ -23,7 +23,7 @@ import {
 } from '@/lib/this-week';
 import {
   getJurisdictionName,
-  getPolicyDateTypeName,
+  getUpcomingDateTypeName,
   getPolicyStatusName,
   getPolicyTypeName,
   type Development,
@@ -170,7 +170,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
       </div>
       <div className="min-w-0">
         <p className="text-xs text-muted-foreground">
-          {getPolicyDateTypeName(item.dateType)} ·{' '}
+          {getUpcomingDateTypeName(item.dateType)} ·{' '}
           {getJurisdictionName(item.jurisdiction)} ·{' '}
           {getPolicyTypeName(item.type)} ·{' '}
           {getPolicyStatusName(item.status)}

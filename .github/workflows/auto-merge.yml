@@ -3,7 +3,8 @@ name: Auto-merge
 # Arms GitHub auto-merge (squash) on the collector's daily collection PRs
 # (`automation/collection-*` branches), which the PR review routine skips.
 # GitHub then merges once the "Protect main" ruleset passes. Every other PR
-# waits for its review and is merged by hand. A `hold` label disarms it.
+# waits for its review and is merged by hand. A `hold` label disarms it, and so
+# does any changed file outside the collector's four output files.
 # Merging to main deploys policai.org.
 #
 # pull_request_target runs this file from main, so a PR cannot rewrite its own
@@ -39,6 +40,35 @@ jobs:
               ...context.repo,
               pull_number: context.payload.pull_request.number,
             });
+            // The collector commits only these files (docs/collector.md).
+            // A branch named like a collection PR that changes anything else
+            // is not armed, and is disarmed if it was.
+            const ALLOWED_FILES = new Set([
+              'data/developments.json',
+              'data/source-reviews.json',
+              'data/watch-state.json',
+              'public/data/meta.json',
+            ]);
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              ...context.repo,
+              pull_number: pr.number,
+              per_page: 100,
+            });
+            const unexpected = files
+              .flatMap((file) => [file.filename, file.previous_filename])
+              .filter((name) => name && !ALLOWED_FILES.has(name));
+            if (unexpected.length > 0) {
+              if (pr.auto_merge) {
+                await github.graphql(
+                  'mutation($id: ID!) { disablePullRequestAutoMerge(input: { pullRequestId: $id }) { clientMutationId } }',
+                  { id: pr.node_id },
+                );
+              }
+              return core.info(
+                'Not armed: PR changes files outside the collector allow-list: ' +
+                  unexpected.slice(0, 10).join(', '),
+              );
+            }
             const held = pr.labels.some((label) => label.name === 'hold');
             if (held) {
               if (!pr.auto_merge) return core.info('Held, auto-merge already off.');

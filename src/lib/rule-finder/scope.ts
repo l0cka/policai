@@ -93,10 +93,6 @@ export function isAudience(value: string): value is Audience {
   return AUDIENCE_KEYS.has(value);
 }
 
-export function legalForceLabel(force: LegalForce): string {
-  return LEGAL_FORCES.find(({ key }) => key === force)!.label;
-}
-
 export function audienceLabel(audience: Audience): string {
   return AUDIENCES.find(({ key }) => key === audience)!.label;
 }

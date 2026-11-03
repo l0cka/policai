@@ -30,6 +30,7 @@ export default async function CoveragePage() {
   return (
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <header className="coverage-header">
+        <p className="page-eyebrow mb-2.5">Register · coverage</p>
         <h1 className="page-title">What Australian AI policy covers</h1>
         <p className="coverage-standfirst">
           {['Which themes each jurisdiction has a verified instrument for.', ...coverageStandfirst(data)].join(' ')}

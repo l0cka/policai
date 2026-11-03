@@ -13,7 +13,7 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
 
   return (
     <AnalysisHeroCarousel slides={slides.map((article) => ({ slug: article.slug, title: article.title }))}>
-      {slides.map((article) => (
+      {slides.map((article, index) => (
         <div
           key={article.slug}
           className={article.image ? 'analysis-hero-layout' : 'analysis-hero-layout analysis-hero-layout-text'}
@@ -43,6 +43,7 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
             <div className="analysis-hero-figure" aria-hidden="true">
               <ArticleThumbnail
                 image={article.image}
+                priority={index === 0}
                 sizes="(min-width: 64rem) 208px, 176px"
               />
             </div>

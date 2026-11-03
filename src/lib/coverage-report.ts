@@ -1,7 +1,7 @@
 import { JURISDICTIONS } from '@/types';
 import type { Jurisdiction, Policy, PolicyType, SourceReview } from '@/types';
 import type { WatchSource } from '@/lib/pipeline/sources';
-import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
+import { EDITORIAL_REVIEW_INTERVAL_DAYS, isReviewIntervalElapsed } from '@/lib/verification';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const BINDING_TYPES: ReadonlySet<PolicyType> = new Set([
@@ -148,7 +148,7 @@ export function buildRecordReviewSchedule(
       reviewedAt,
       dueAt: new Date(dueTime).toISOString(),
       daysLeft: limitDays - ageDays,
-      overdue: ageDays > limitDays,
+      overdue: isReviewIntervalElapsed(reviewedTime, now),
     };
   });
   return rows.sort(

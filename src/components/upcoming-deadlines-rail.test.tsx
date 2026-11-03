@@ -38,7 +38,7 @@ describe('UpcomingDeadlinesRail', () => {
 
     expect(within(rail()).getByRole('link', { name: 'Fixture consultation paper' }))
       .toHaveAttribute('href', '/policies/fixture-consultation');
-    expect(rail()).toHaveTextContent('Consultation closed · 20 October 2026 · in 14 days');
+    expect(rail()).toHaveTextContent('Consultation closes · 20 October 2026 · in 14 days');
     expect(rail().querySelector('time')).toHaveAttribute('datetime', '2026-10-20');
     expect(rail()).not.toHaveTextContent('No upcoming deadlines recorded');
   });

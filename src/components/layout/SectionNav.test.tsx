@@ -32,6 +32,13 @@ describe('SectionNav', () => {
     ]);
   });
 
+  it('wraps tabs onto a second row instead of clipping them, and keeps 44px targets', () => {
+    const { container } = renderAt('/status/reuse');
+    expect(container.querySelector('.overflow-x-auto')).toBeNull();
+    expect(container.querySelector('.flex-wrap')).not.toBeNull();
+    for (const link of screen.getAllByRole('link')) expect(link).toHaveClass('min-h-11');
+  });
+
   it.each(['/policies/some-record', '/legislation', '/courts', '/analysis', '/analysis/some-piece', '/following'])(
     'renders nothing on %s',
     (path) => {

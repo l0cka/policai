@@ -23,7 +23,7 @@ import {
   POLICY_STATUS_NAMES,
   POLICY_TYPE_NAMES,
   getJurisdictionName,
-  getPolicyDateTypeName,
+  getUpcomingDateTypeName,
   type Jurisdiction,
   type Policy,
 } from '@/types';
@@ -460,7 +460,7 @@ export function PolicyBrowser({
                   return (
                     <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
                       <p className="text-xs text-muted-foreground">
-                        {getPolicyDateTypeName(item.dateType)} ·{' '}
+                        {getUpcomingDateTypeName(item.dateType)} ·{' '}
                         {formatPolicyDate({ type: item.dateType, date: item.date, precision: item.precision })}
                         {countdown ? ` · ${countdown}` : ''}
                       </p>

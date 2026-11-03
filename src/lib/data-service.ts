@@ -512,21 +512,6 @@ export async function updatePolicy(
 	return policies[idx];
 }
 
-export async function deletePolicy(id: string): Promise<boolean> {
-	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
-	const idx = policies.findIndex((p) => p.id === id);
-	if (idx === -1) return false;
-	policies.splice(idx, 1);
-	await writeJsonFile(POLICIES_FILE, policies);
-	return true;
-}
-
-/** Check if a policy with a given ID already exists. */
-export async function policyExists(id: string): Promise<boolean> {
-	const policy = await getPolicyById(id, { access: "admin" });
-	return policy !== null;
-}
-
 export async function policyExistsBySourceUrl(
 	sourceUrl: string,
 ): Promise<boolean> {
@@ -669,14 +654,6 @@ export async function updateSourceReview(
 	});
 	await writeJsonFile(SOURCE_REVIEWS_FILE, reviews);
 	return reviews[idx];
-}
-
-export async function deleteSourceReview(id: string): Promise<boolean> {
-	const reviews = await readSourceReviewsFromJson();
-	const filtered = reviews.filter((review) => review.id !== id);
-	if (filtered.length === reviews.length) return false;
-	await writeJsonFile(SOURCE_REVIEWS_FILE, filtered);
-	return true;
 }
 
 /**
@@ -1090,6 +1067,8 @@ export async function getDevelopments(filters?: {
 	search?: string;
 	since?: string;
 	limit?: number;
+	/** "detected" lists the most recent detections first, for feeds and status. */
+	orderBy?: "published" | "detected";
 }, options: DataServiceOptions = {}): Promise<Development[]> {
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
@@ -1205,11 +1184,13 @@ export async function getDevelopments(filters?: {
 		);
 	}
 
-	developments = developments.sort(
-		(a, b) =>
-			new Date(b.publishedAt || b.detectedAt).getTime() -
-			new Date(a.publishedAt || a.detectedAt).getTime(),
-	);
+	const sortKey = (d: Development) =>
+		new Date(
+			filters?.orderBy === "detected"
+				? d.detectedAt
+				: d.publishedAt || d.detectedAt,
+		).getTime();
+	developments = developments.sort((a, b) => sortKey(b) - sortKey(a));
 
 	return filters?.limit ? developments.slice(0, filters.limit) : developments;
 }
