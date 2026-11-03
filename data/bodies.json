@@ -945,7 +945,8 @@
     "jurisdiction": "wa",
     "tier": "A",
     "hosts": [
-      "www.mediastatements.wa.gov.au"
+      "www.mediastatements.wa.gov.au",
+      "www.wa.gov.au"
     ],
     "scope": {
       "status": "unassessed"
