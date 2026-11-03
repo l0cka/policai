@@ -1,11 +1,12 @@
 /* @vitest-environment node */
 
 import { describe, expect, it, vi } from "vitest";
-import { buildPolicy } from "@/test/factories";
+import { buildPolicy, buildTimelineEvent } from "@/test/factories";
 import {
   handleSearchDevelopments,
   handleSearchCourtRequirements,
   handleSearchPolicies,
+  handleListTimeline,
 } from "./public-tool-handlers";
 
 function client(response: unknown, status = 200) {
@@ -146,5 +147,22 @@ describe("public MCP tool handlers", () => {
         },
       ),
     ).rejects.toThrow("invalid JSON (HTTP 502)");
+  });
+
+  it("lists timeline events newest first before applying the limit", async () => {
+    const { options } = client({
+      data: [
+        buildTimelineEvent({ id: "old", date: "2019-01-01" }),
+        buildTimelineEvent({ id: "new", date: "2026-10-01" }),
+        buildTimelineEvent({ id: "mid", date: "2024-05-01" }),
+      ],
+      total: 3,
+      success: true,
+    });
+
+    const result = await handleListTimeline({ limit: 2 }, options);
+
+    expect(result.events.map((event) => event.id)).toEqual(["new", "mid"]);
+    expect(result.total).toBe(3);
   });
 });

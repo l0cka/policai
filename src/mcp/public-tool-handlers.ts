@@ -238,10 +238,13 @@ export async function handleListTimeline(
     options,
   );
   const limit = input.limit ?? 20;
+  const newestFirst = [...response.data].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
   return {
     total: response.total,
-    count: Math.min(response.data.length, limit),
-    events: response.data.slice(0, limit).map((event) => ({
+    count: Math.min(newestFirst.length, limit),
+    events: newestFirst.slice(0, limit).map((event) => ({
       id: event.id,
       date: event.date,
       datePrecision: event.datePrecision,
