@@ -208,6 +208,8 @@ export function extractFromHtml(
     '.views-row',
     '.bu-updates__item',
     '.bu-link',
+    // UIkit cards (VCAT news) hold one entry each inside an untyped grid.
+    '.uk-card',
     // The Parliament of Tasmania lists current bills as one bare div per bill.
     'div:has(> a[href*="/bills/bills"])',
     // Drupal views tables render one entry per body row; header rows carry
@@ -269,14 +271,6 @@ export function extractFromHtml(
     if (!url || sourceUrlsEqual(url, baseUrl)) return;
     if (!isAllowedSourceHost(url)) return;
 
-    // Card layouts link a short "View" and name the item in the aria-label.
-    const linkText = cleanScrapedLinkTitle(link.text());
-    const title =
-      linkText.length >= 8
-        ? linkText
-        : cleanScrapedLinkTitle(link.attr('aria-label') ?? '');
-    if (!title || title.length < 8) return;
-
     const listItem = link.closest('li');
     const tableRow = link.closest(
       `${rippleTableRowSelector}, ${dataTableRowSelector}`,
@@ -289,6 +283,16 @@ export function extractFromHtml(
           ? listItem
           : link.closest(entryContainerSelector);
     if (container.length === 0) return;
+
+    // Card layouts link a short "View" or the bare path, and name the item
+    // in the aria-label or the card heading.
+    const linkText = cleanScrapedLinkTitle(link.text());
+    const title = [
+      /^(?:\/|https?:\/\/)\S*$/i.test(linkText) ? '' : linkText,
+      cleanScrapedLinkTitle(link.attr('aria-label') ?? ''),
+      cleanScrapedLinkTitle(container.find('h2, h3, h4').first().text()),
+    ].find((text) => text.length >= 8);
+    if (!title) return;
 
     // One primary link represents one publication/result entry. Related tags
     // and utility links inside the same container do not establish coverage.
