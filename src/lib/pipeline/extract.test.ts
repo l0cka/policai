@@ -231,6 +231,21 @@ describe('extractCandidatesFromHtml', () => {
     ]);
   });
 
+  it('extracts VCAT news cards titled by their heading, not their path link', () => {
+    const result = extractFromHtml(
+      `<main><article class="node"><div class="item-list item-list-card"><div class="uk-grid"><div class="uk-width-1-3@s"> <div class="uk-card uk-card-default uk-card-body uk-card-default-hover layout layout--one-col"> <div class="layout__region layout__region--main"> <h3 class="uk-card-title">What to expect when you visit VCAT at 308 La Trobe Street</h3> <div class="item-list-card__link-body"><p>Learn what to expect before you arrive.</p></div> <div class="item-list-card__link"> <a href="/news/plan-your-vcat-visit" class="uk-card-default-link">/news/plan-your-vcat-visit</a> </div> </div> </div> </div><div class="uk-width-1-3@s"> <div class="uk-card uk-card-default uk-card-body uk-card-default-hover layout layout--one-col"> <div class="layout__region layout__region--main"> <h3 class="uk-card-title">Understanding fees for hearings</h3> <div class="item-list-card__link-body"><p>VCAT fees are set by the Victorian Government.</p></div> <div class="item-list-card__link"> <a href="/news/hearing-fees" class="uk-card-default-link">/news/hearing-fees</a> </div> </div> </div> </div><div class="uk-width-1-3@s"> <div class="uk-card uk-card-default uk-card-body uk-card-default-hover layout layout--one-col"> <div class="layout__region layout__region--main"> <h3 class="uk-card-title">VCAT guidance on artificial intelligence in hearings</h3> <div class="item-list-card__link-body"><p>How parties may use generative AI.</p></div> <div class="item-list-card__link"> <a href="/news/ai-in-hearings" class="uk-card-default-link">/news/ai-in-hearings</a> </div> </div> </div> </div></div></div></article></main>`,
+      'https://www.vcat.vic.gov.au/news',
+    );
+
+    expect(result.itemCount).toBe(3);
+    expect(result.candidates).toEqual([
+      expect.objectContaining({
+        title: 'VCAT guidance on artificial intelligence in hearings',
+        url: 'https://www.vcat.vic.gov.au/news/ai-in-hearings',
+      }),
+    ]);
+  });
+
   it('keeps semantic entry links inside article headers', () => {
     const result = extractFromHtml(
       `<main>

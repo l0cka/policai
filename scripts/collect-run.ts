@@ -368,8 +368,9 @@ async function followTrackedLegislation(
             gate,
             timeoutMs: 60_000,
             transport: 'browser',
+            hashLinkedDocuments: false,
           })
-        : retrieveSource(url, { fetchImpl: run.fetchImpl, now, gate }),
+        : retrieveSource(url, { fetchImpl: run.fetchImpl, now, gate, hashLinkedDocuments: false }),
     now: now(),
     log: (message) => console.log(message),
   });

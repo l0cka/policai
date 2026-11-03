@@ -1158,13 +1158,13 @@ export const WATCH_SOURCES: WatchSource[] = [
     bodyId: 'vcat',
     jurisdiction: 'vic',
     category: 'court',
-    url: 'https://www.vcat.vic.gov.au/rss.xml',
-    kind: 'rss',
+    url: 'https://www.vcat.vic.gov.au/news',
+    kind: 'html-index',
     schedule: 'daily',
     enabled: true,
     automation: 'automatic',
     notes:
-      'Victorian Civil and Administrative Tribunal sitewide news RSS; verified 2026-09-24 with 10 items and pubDates over plain HTTP. Catches AI-related tribunal announcements rather than practice notes; the practice note itself is watched separately.',
+      'Victorian Civil and Administrative Tribunal news index, server-rendered. The sitewide RSS at /rss.xml was removed around 29 Oct 2026 (HTTP 404, and no replacement feed linked on 3 Nov 2026), so the index is read instead; it carries no dates, which each item page gives. Catches AI-related tribunal announcements rather than practice notes; the practice note itself is watched separately.',
   },
   {
     id: 'vcat-pnvcat11-generative-ai',
@@ -1586,14 +1586,14 @@ export const WATCH_SOURCES: WatchSource[] = [
     bodyId: 'wa-government',
     jurisdiction: 'wa',
     category: 'government',
-    url: 'https://www.mediastatements.wa.gov.au/',
+    url: 'https://www.wa.gov.au/government/media-statements',
     kind: 'html-index',
     schedule: 'daily',
     enabled: true,
     automation: 'automatic',
     fetchStrategy: 'browser',
     notes:
-      'Whole-of-government WA announcements, including AI policy and digital government decisions.',
+      'Whole-of-government WA announcements, including AI policy and digital government decisions. mediastatements.wa.gov.au redirects here since about 30 Oct 2026; Firecrawl refuses a redirected URL as conflicting provenance, so the source names the destination. The list is rendered client-side, so it needs the Firecrawl or browser rung.',
   },
   {
     id: 'wa-ai-policy',

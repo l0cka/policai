@@ -41,7 +41,13 @@ export async function retrievedSourceFromFirecrawl(
     Object.defineProperty(response, 'url', { value: finalUrl });
     return response;
   };
-  return retrieveSource(requestedUrl, { fetchImpl: replayFetch, now });
+  // The replay answers every URL with this one body, so it cannot fetch a
+  // linked document; callers that need them fold them over a real client.
+  return retrieveSource(requestedUrl, {
+    fetchImpl: replayFetch,
+    now,
+    hashLinkedDocuments: false,
+  });
 }
 
 export interface RetrievalLadderOptions {

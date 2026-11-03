@@ -3866,6 +3866,33 @@ describe('collect browser fallback', () => {
     );
   });
 
+  it('reads a Firecrawl index that links a policy document', async () => {
+    const indexWithDocument = INDEX_HTML.replace(
+      '</main>',
+      '<p><a href="/files/ai-policy-guidance.pdf">AI policy guidance (PDF)</a></p></main>',
+    );
+    expect(indexWithDocument).toContain('ai-policy-guidance.pdf');
+    scrapeWithFirecrawl.mockImplementation(async (url: string) => ({
+      ok: true,
+      markdown: url === HTML_SOURCE.url ? '# News' : '# New AI policy framework released\n\nBody.',
+      rawHtml: url === HTML_SOURCE.url ? indexWithDocument : '<html><body><h1>New AI policy framework released</h1></body></html>',
+      title: null,
+      finalUrl: url,
+    }));
+
+    const result = await collect({
+      sources: [{ ...HTML_SOURCE, fetchStrategy: 'browser' }],
+      state: emptyWatchState(),
+      existingDevelopments: [],
+      fetchImpl: fakeFetch({}),
+      browserFetchImpl: fakeFetch({}),
+      now: () => new Date('2026-07-10T00:00:00.000Z'),
+    });
+
+    expect(result.errors).toEqual([]);
+    expect(result.meta.collector.sourceResults[0].status).toBe('success');
+  });
+
   it('tries Firecrawl for an index the plain client cannot read, then the browser', async () => {
     const browserFetchImpl = fakeFetch({ [HTML_SOURCE.url]: INDEX_HTML });
 

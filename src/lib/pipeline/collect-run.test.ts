@@ -282,6 +282,60 @@ describe('collection CLI write path', () => {
     expect(digest(registerFile())).toBe(before);
   });
 
+  it('reads a bill page that links more policy documents than a document source may fold', async () => {
+    const billUrl = aphBillPage('r7249');
+    const bill = buildPolicy({
+      id: 'privacy-bill',
+      type: 'legislation',
+      status: 'proposed',
+      sourceUrl: billUrl,
+      legislative: {
+        kind: 'bill',
+        ref: { register: 'aph', billId: 'r7249' },
+        origin: 'government',
+        events: [{ date: '2024-09-12', precision: 'day', event: { kind: 'introduced', chamber: 'lower' }, source: { url: billUrl } }],
+      },
+    });
+    writeFileSync(registerFile(), JSON.stringify([bill], null, 2) + '\n');
+    const documents = Array.from(
+      { length: 12 },
+      (_, index) => `<a href="https://parlinfo.aph.gov.au/legislation/ems/r7249_em_${index}.pdf">Explanatory memorandum to the legislation ${index}</a>`,
+    ).join('');
+    const page = readFileSync(path.join(__dirname, '../legislation/__fixtures__/aph/r7249.html'), 'utf8')
+      + documents;
+    expect(page).toContain('r7249_em_11.pdf');
+    const fetchImpl = vi.fn(async () => new Response('not found', { status: 404 })) as unknown as typeof fetch;
+    const browserFetchImpl = vi.fn(async (input: RequestInfo | URL) =>
+      String(input) === billUrl
+        ? new Response(page, { status: 200, headers: { 'content-type': 'text/html' } })
+        : new Response('not found', { status: 404 }),
+    ) as unknown as typeof fetch;
+
+    await runCollection({
+      rootDir,
+      sources: [],
+      dryRun: false,
+      fetchImpl,
+      browserFetchImpl,
+      now: () => new Date('2026-10-22T05:00:00.000Z'),
+      hostGate: createHostGate({
+        hosts: {},
+        refused: new Map(),
+        fetchRobots: robotsFetcher({ fetchImpl }),
+        now: Date.now,
+        sleep: async () => {},
+      }),
+    });
+
+    expect(readJson<CollectionMeta>('public', 'data', 'meta.json').collector.lastRunErrors).not.toEqual(
+      expect.arrayContaining([expect.stringContaining('track:privacy-bill')]),
+    );
+    expect(readJson<SourceReview[]>('data', 'source-reviews.json')[0]).toMatchObject({
+      targetPolicyId: 'privacy-bill',
+      status: 'pending_review',
+    });
+  });
+
   describe('with host state and an outbox', () => {
     let stateDir: string;
     const outbox = (dir = path.join(stateDir, 'next')) =>
