@@ -164,6 +164,7 @@ describe('AnalysisHero', () => {
     expect(image).toHaveAttribute('width', '2048');
     expect(image).toHaveAttribute('height', '1365');
     expect(image).toHaveAttribute('sizes', '(min-width: 64rem) 208px, 176px');
+    expect(image).not.toHaveAttribute('loading', 'lazy');
     expect(image.closest('.analysis-hero-figure')).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getByText('Explainer')).toBeInTheDocument();
     expect(container.innerHTML).not.toContain('status-amended');
