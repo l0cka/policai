@@ -22,6 +22,15 @@ describe("deployment data packaging", () => {
 		});
 	});
 
+	it("permanently redirects /policies to the register on the home page", async () => {
+		const redirects = await nextConfig.redirects?.();
+		expect(redirects).toContainEqual({
+			source: "/policies",
+			destination: "/",
+			permanent: true,
+		});
+	});
+
 	it("permanently redirects /developments/feed.xml to the canonical Atom feed", async () => {
 		const redirects = await nextConfig.redirects?.();
 		expect(redirects).toContainEqual({
