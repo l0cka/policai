@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type FocusEvent } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight } from './icons';
@@ -53,6 +53,15 @@ export default function Nav() {
     return () => document.removeEventListener('keydown', closeOnEscape);
   }, [open]);
 
+  // Tabbing out of the open menu closes it, so aria-expanded does not stay
+  // true over a panel the reader has left. Focus returning to the toggle keeps it.
+  const closeOnFocusLeave = (event: FocusEvent<HTMLElement>) => {
+    const next = event.relatedTarget as Node | null;
+    if (!next || event.currentTarget.contains(next)) return;
+    if (menuButton.current?.contains(next)) return;
+    setOpen(false);
+  };
+
   return (
     <>
       <nav className="site-nav" aria-label="Primary">
@@ -77,7 +86,7 @@ export default function Nav() {
       </button>
 
       {open ? (
-        <div id="mobile-navigation" className="mobile-nav-panel">
+        <div id="mobile-navigation" className="mobile-nav-panel" onBlur={closeOnFocusLeave}>
           <nav className="mobile-nav-links" aria-label="Mobile">
             <NavLinks path={path} onNavigate={() => setOpen(false)} />
             <a href="https://policai.org" className="property-link" onClick={() => setOpen(false)}>

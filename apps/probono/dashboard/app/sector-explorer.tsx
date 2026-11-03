@@ -346,7 +346,7 @@ export default function SectorExplorer({
 
           {/* Live announcements stay short: the card is read by navigation,
               not re-announced on every selection change. */}
-          <aside className="sector-map-card" aria-label="Selected organisation">
+          <section className="sector-map-card" aria-label="Selected organisation">
             <p className="sr-only" role="status">
               {selectedOrg ? `${selectedOrg.name} selected` : 'No organisations match this view.'}
             </p>
@@ -522,7 +522,7 @@ export default function SectorExplorer({
             ) : (
               <p className="sector-evidence-empty">No organisations match this view.</p>
             )}
-          </aside>
+          </section>
         </div>
       )}
     </div>

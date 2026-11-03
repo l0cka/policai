@@ -33,6 +33,9 @@ const CLOSED_RE = /\b(has|have|had) (now )?closed|\bnow closed|\bis closed|\bclo
 // that from "the period extends to 20.11.2026" is the same judgement, so it
 // counts too.
 const EXTENSION_RE = /\b(extend(s|ed|ing)|extensions?|postpon\w*|defer(red|rals?|ments?)|re[-–—]?schedul\w*|new closing date)\b/i;
+// "Call 1300 000 000 extension 2": a phone extension, not a deadline one. A
+// date or month name after the number means a real extension ("extension 20 December").
+const PHONE_EXTENSION_RE = new RegExp(`\\bextension\\s*(?:no\\.?|number|#)?\\s*\\d{1,5}\\b(?!\\s*(?:${MON})\\b)`, 'gi');
 // A close word a "Date:" heading yields to; "until" there is usually a clock time.
 const HEADER_ACTION_RE = /\b(close[sd]?|closing|submi|deadline|due\b(?!\s+to)|lodg|apply|register(ed)? by|registrations? close|rsvp)/i;
 
@@ -41,7 +44,7 @@ const BEFORE_REACH = 40;
 const AFTER_REACH = 30;
 const QUOTE_LIMIT = 300;
 
-type Hit = { index: number; end: number; precision: 'day' | 'month' | 'year' };
+type Hit = { index: number; end: number; precision: 'day' | 'month' | 'year'; yearless?: boolean };
 type Span = { start: number; end: number };
 
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -54,9 +57,9 @@ function findDate(text: string, date: string, precision: 'day' | 'month' | 'year
   const [y, m, d] = date.split('-').map(Number);
   const lower = text.toLowerCase();
   const hits: Hit[] = [];
-  const add = (re: RegExp, matches: (mm: RegExpMatchArray) => boolean) => {
+  const add = (re: RegExp, matches: (mm: RegExpMatchArray) => boolean, yearGroup?: number) => {
     for (const mm of lower.matchAll(re)) {
-      if (matches(mm)) hits.push({ index: mm.index!, end: mm.index! + mm[0].length, precision });
+      if (matches(mm)) hits.push({ index: mm.index!, end: mm.index! + mm[0].length, precision, yearless: yearGroup !== undefined && !mm[yearGroup] });
     }
   };
   const yearOk = (year: string | undefined, end: number) => {
@@ -70,11 +73,11 @@ function findDate(text: string, date: string, precision: 'day' | 'month' | 'year
     add(/\b(\d{1,2})[/.](\d{1,2})[/.](\d{4}|\d{2})\b/g, (mm) =>
       Number(mm[1]) === d && Number(mm[2]) === m && (Number(mm[3]) === y || Number(mm[3]) === y % 100));
     add(new RegExp(`\\b${WEEKDAY}(\\d{1,2})${ORD}(?:\\s+of)?\\s+(${MON})\\b\\.?(?:,?\\s+(\\d{4}))?`, 'g'), (mm) =>
-      Number(mm[1]) === d && MONTHS[mm[2]] === m && yearOk(mm[3], mm.index! + mm[0].length));
+      Number(mm[1]) === d && MONTHS[mm[2]] === m && yearOk(mm[3], mm.index! + mm[0].length), 3);
     add(new RegExp(`\\b${WEEKDAY}(${MON})\\.?\\s+(\\d{1,2})${ORD}\\b(?:,?\\s+(\\d{4}))?`, 'g'), (mm) =>
-      Number(mm[2]) === d && MONTHS[mm[1]] === m && yearOk(mm[3], mm.index! + mm[0].length));
+      Number(mm[2]) === d && MONTHS[mm[1]] === m && yearOk(mm[3], mm.index! + mm[0].length), 3);
     add(new RegExp(`\\b(\\d{1,2})${ORD}\\s*(?:[–—-]|to)\\s*(\\d{1,2})${ORD}\\s+(${MON})\\b(?:,?\\s+(\\d{4}))?`, 'g'), (mm) =>
-      (Number(mm[1]) === d || Number(mm[2]) === d) && MONTHS[mm[3]] === m && yearOk(mm[4], mm.index! + mm[0].length));
+      (Number(mm[1]) === d || Number(mm[2]) === d) && MONTHS[mm[3]] === m && yearOk(mm[4], mm.index! + mm[0].length), 4);
   } else if (precision === 'month') {
     add(new RegExp(`\\b(${MON})\\.?,?\\s+(\\d{4})\\b`, 'g'), (mm) => MONTHS[mm[1]] === m && Number(mm[2]) === y);
   } else {
@@ -143,8 +146,9 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
   // Which date a page moved, and whether it moved this one ("the forum was
   // postponed", "cannot be extended"), is judgement this checker can't make
   // reliably, and a wrong date is worse than an unconfirmed one. A page that
-  // talks about an extension anywhere is left for the next run.
-  if (EXTENSION_RE.test(text)) {
+  // talks about an extension anywhere is left for the next run, except a
+  // telephone extension ("extension 2"), which says nothing about dates.
+  if (EXTENSION_RE.test(text.replace(PHONE_EXTENSION_RE, ' '))) {
     return item.deadlines.map((s) => ({ verdict: null, uncertain: `${s.date} left unchanged: the page mentions an extension or postponement` }));
   }
   const storedPrimary = primaryAction(item.deadlines);
@@ -177,7 +181,13 @@ export function checkDeadlines(item: VerifyItem, pageText: string, today: string
     const pick = read.find((r) => r.kind === (actions > milestones ? 'action' : 'milestone'))!;
     const quote = text.slice(pick.sentence.start, pick.sentence.end).trim();
     const passed = effectiveEnd(s.date, pick.hit.precision) < today;
-    const status = passed || CLOSED_RE.test(quote) ? 'closed' : 'open';
+    // "closed on 20 November" with no year could be last year's round; only
+    // the stored year beside it, or the stored date having passed, makes it ours.
+    const closedByWords = !passed && CLOSED_RE.test(quote);
+    if (closedByWords && pick.hit.yearless && !quote.includes(String(Number(s.date.slice(0, 4))))) {
+      return { verdict: null, uncertain: `${s.date} left unchanged: the page says closed but gives no year` };
+    }
+    const status = passed || closedByWords ? 'closed' : 'open';
     return {
       verdict: { ...base, kind: pick.kind!, precision: pick.hit.precision, primary: false, quote, status },
       uncertain: null,

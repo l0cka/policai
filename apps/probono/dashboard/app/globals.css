@@ -321,6 +321,14 @@ time,
   opacity: 0.75;
 }
 
+.header-status[data-state='warn'] {
+  color: var(--caution);
+}
+
+.header-status[data-state='unknown'] {
+  color: var(--muted-foreground);
+}
+
 .header-status i {
   display: block;
   width: 0.5rem;
@@ -1574,6 +1582,7 @@ main {
 }
 
 .item-title {
+  overflow-wrap: anywhere;
   display: inline-flex;
   align-items: flex-start;
   gap: 0.375rem;
@@ -2194,8 +2203,8 @@ main {
 /* MapLibre's canvas takes keyboard focus for panning; ring the frame instead
    of the canvas, whose own outline the map clips. */
 .sector-maplibre:has(canvas:focus-visible) {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .sector-maplibre canvas:focus-visible {
@@ -2233,6 +2242,20 @@ main {
   color: var(--foreground);
   cursor: pointer;
   white-space: nowrap;
+}
+
+/* On touch screens the 24px chip keeps its look; an invisible extension of the
+   button brings its hit area to 44px. */
+@media (pointer: coarse) {
+  .sector-maplibre-state-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: 44px;
+    transform: translate(-50%, -50%);
+  }
 }
 
 .sector-maplibre-state-label.is-current {
@@ -3670,7 +3693,7 @@ tbody th[scope='row'] {
     display: none;
   }
 
-  .header-status span {
+  .header-status[data-state='ok'] span {
     position: absolute;
     width: 1px;
     height: 1px;

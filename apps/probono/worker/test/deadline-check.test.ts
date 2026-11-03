@@ -252,3 +252,35 @@ describe('checkDeadlines on cases the real batch lacked', () => {
     expect(saved.deadlines[0]).toEqual(stored[0]);
   });
 });
+
+describe('checkDeadlines extension and year handling', () => {
+  it('an unrelated "extension" (phone) elsewhere does not block verification', () => {
+    const { verdicts } = check([action('2026-11-20')],
+      'Call us on 1300 000 000 extension 2 ... Submissions close 20 November 2026');
+    expect(verdicts[0]).toMatchObject({ status: 'open', kind: 'action', primary: true });
+  });
+
+  it('a real extension beside the date is still uncertain', () => {
+    const { checks, verdicts } = check([action('2026-11-20')],
+      'The deadline has been extended. Submissions close 20 November 2026, extended to 4 December 2026.');
+    expect(verdicts).toHaveLength(0);
+    expect(checks[0].uncertain).toMatch(/extension/);
+  });
+
+  it('a date missing from a page that mentions an extension stays uncertain', () => {
+    const { checks } = check([action('2026-11-20')], 'Submissions now close 4 December 2026 after an extension.');
+    expect(checks[0].verdict).toBeNull();
+    expect(checks[0].uncertain).toMatch(/extension/);
+  });
+
+  it('"closed on 20 November" with no year does not close a stored 2026 date', () => {
+    const { checks } = check([action('2026-11-20')], 'Submissions closed on 20 November.');
+    expect(checks[0].verdict).toBeNull();
+    expect(checks[0].uncertain).toMatch(/no year/);
+  });
+
+  it('"closed on 20 November 2026" with the matching year still reads closed', () => {
+    const { verdicts } = check([action('2026-11-20')], 'Submissions closed on 20 November 2026.');
+    expect(verdicts[0]).toMatchObject({ status: 'closed' });
+  });
+});

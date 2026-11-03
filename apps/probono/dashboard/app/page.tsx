@@ -241,7 +241,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
           <RadarPagination state={state} pagination={pagination} position="bottom" />
         </div>
 
-        <aside className="rail">
+        <section className="rail" aria-label="Deadlines and source health">
           <section>
             <h2>Upcoming deadlines</h2>
             <RailDeadlines rows={deadlines} today={today} />
@@ -279,7 +279,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
               Source health <ArrowRight />
             </Link>
           </section>
-        </aside>
+        </section>
           </div>
         </div>
       </section>

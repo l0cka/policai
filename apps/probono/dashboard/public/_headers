@@ -1,0 +1,6 @@
+# Cloudflare Workers static assets read this file; Next's headers() never
+# reaches them. The MapLibre worker files are copied from node_modules at build
+# time under fixed names, so they are not content-hashed: cache for a day and
+# revalidate in the background rather than for a year.
+/maplibre/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=86400

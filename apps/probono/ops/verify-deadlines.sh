@@ -47,12 +47,18 @@ if [[ "$count" == "0" ]]; then
   exit 0
 fi
 
+failed=0
 for ((index = 0; index < count; index++)); do
   item_id="$(printf '%s' "$checked" | jq -er ".[$index].item_id")"
   payload="$(printf '%s' "$checked" | jq -ce ".[$index] | {model, output}")"
   printf '%s' "$payload" \
     | "$PROBONO_DOCKER_BIN" compose --profile worker run --rm -T worker src/save-deadline-verification.ts "$item_id" \
-    || echo "[verify-deadlines] item $item_id not saved" >&2
+    || { echo "[verify-deadlines] item $item_id not saved" >&2; failed=$((failed + 1)); }
 done
+
+if ((failed > 0)); then
+  echo "[verify-deadlines] failed: $failed of $count item(s) not saved $(date -Is)" >&2
+  exit 1
+fi
 
 echo "[verify-deadlines] done: $count item(s) $(date -Is)"
