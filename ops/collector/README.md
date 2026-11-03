@@ -110,7 +110,19 @@ The systemd user units in `ops/collector/systemd/` are the source for
 `~/.config/systemd/user/` on Argus:
 
 - `policai-collect.service` sets `USE_CLEF_CLASSIFIER=1` and a 4 GiB memory
-  ceiling.
+  ceiling. It points the browser at the distribution's patched Chromium
+  (`POLICAI_CHROMIUM_PATH=/usr/bin/chromium`) rather than Playwright's
+  bundled build, which trails Chrome security releases.
+- The collector loads untrusted pages, so the unit confines it. Home and the
+  runtime directory are empty read-only file systems, and the unit binds back
+  only what a run needs: the wrapper, the CA, mise and its lock file, Git and
+  `gh` configuration (read-only), and the collector checkout, worktree, state
+  and npm cache (writable). Chromium gets private config and cache
+  directories, because its crash handler aborts the browser when it cannot
+  write them. There is no session bus, so a compromised process cannot ask
+  systemd or another daemon to run code outside the unit. `gh`'s token stays
+  readable because the run pushes and opens the PR. A new path a run needs
+  must be added here as a bind.
 - `policai-collect.timer` runs it daily at 19:30 UTC.
 - `policai-collect-alert.service` runs `policai-collect-alert.sh` on failure.
 

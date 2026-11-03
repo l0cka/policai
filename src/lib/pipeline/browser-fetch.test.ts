@@ -2,6 +2,7 @@
 
 import { describe, expect, it, vi } from 'vitest';
 import {
+  chromiumLaunchOptions,
   createBrowserFetch as createBrowserFetchRaw,
   type BrowserLike,
   type BrowserPageLike,
@@ -780,5 +781,20 @@ describe('createBrowserFetch', () => {
     );
     expect(retrieved.evidence.contentHash).toMatch(/^[a-f0-9]{64}$/);
     expect(retrieved.body).toContain('AI policy item');
+  });
+});
+
+describe('chromiumLaunchOptions', () => {
+  it('keeps the Chromium sandbox on and uses the bundled browser by default', () => {
+    expect(chromiumLaunchOptions({})).toMatchObject({
+      chromiumSandbox: true,
+      executablePath: undefined,
+    });
+  });
+
+  it('launches the browser named by POLICAI_CHROMIUM_PATH', () => {
+    expect(
+      chromiumLaunchOptions({ POLICAI_CHROMIUM_PATH: '/usr/bin/chromium' }),
+    ).toMatchObject({ chromiumSandbox: true, executablePath: '/usr/bin/chromium' });
   });
 });
