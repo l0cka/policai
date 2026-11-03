@@ -383,10 +383,14 @@ self-hosted Firecrawl instance first (`src/lib/pipeline/firecrawl.ts`),
 falling back to the browser when Firecrawl is unavailable, times out, or
 returns no usable markdown or raw HTML. Sources carrying an identity exception bypass
 Firecrawl and use the scoped browser (see Collector identity below). Every other source falls back to the browser when
-the plain HTTP client is blocked or an index renders no extractable items. CI
-installs the browser with `npx playwright-core install --with-deps chromium`
-(cached between runs); without it the collector still runs, minus the
-fallback. The browser is closed before each source and relaunched on first
+the plain HTTP client is blocked or an index renders no extractable items.
+The browser always runs with Chromium's sandbox on (`chromiumSandbox: true`;
+Playwright's default is off), because candidate pages are untrusted.
+`POLICAI_CHROMIUM_PATH` names the executable; Argus sets it to the
+distribution's Chromium, which receives Chrome security releases before
+Playwright's bundled build. Unset, Playwright's bundled Chromium is used
+(`npx playwright-core install chromium`); without either, the collector still
+runs, minus the fallback. The browser is closed before each source and relaunched on first
 use, so one source's memory, open pages or a crashed renderer never carry into
 the next.
 

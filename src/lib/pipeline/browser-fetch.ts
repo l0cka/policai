@@ -120,18 +120,26 @@ const BROWSER_LOCALE = 'en-AU';
 /** Statuses WAF interstitials return before a challenge cookie is granted. */
 const CHALLENGE_STATUSES = new Set([403, 429, 503]);
 
-async function launchPlaywrightChromium(): Promise<BrowserLike> {
-  const playwright = await import('playwright-core');
+export function chromiumLaunchOptions(
+  env: Record<string, string | undefined> = process.env,
+) {
   // Full Chromium in new-headless mode: the lighter headless shell trips
   // HTTP2 protocol errors and WAF blocks on Akamai-fronted GovCMS hosts.
-  const browser = await playwright.chromium.launch({
+  return {
     headless: true,
     channel: 'chromium',
+    chromiumSandbox: true,
+    executablePath: env.POLICAI_CHROMIUM_PATH || undefined,
     args: [
       '--disable-background-networking',
       '--disable-blink-features=AutomationControlled',
     ],
-  });
+  };
+}
+
+async function launchPlaywrightChromium(): Promise<BrowserLike> {
+  const playwright = await import('playwright-core');
+  const browser = await playwright.chromium.launch(chromiumLaunchOptions());
   return {
     newContext: (options) => browser.newContext(options),
     version: () => browser.version(),
