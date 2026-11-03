@@ -126,6 +126,11 @@ export function followTargets(policies: readonly Policy[]): FollowTarget[] {
 export interface FollowRun {
   targets: FollowTarget[];
   existingReviews: readonly SourceReview[];
+  /**
+   * Stages are read from the register page itself, so callers retrieve
+   * without folding linked documents: a bill page gains a PDF at every stage
+   * and would otherwise outgrow the linked-document cap mid-passage.
+   */
   retrieve: (url: string, register: FollowRegister) => Promise<{ body: string; evidence: SourceEvidence }>;
   now: Date;
   log?: (message: string) => void;

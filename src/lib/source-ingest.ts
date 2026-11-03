@@ -1555,7 +1555,11 @@ async function assertRegisterStillShows(
 	const followed = await followLegislation({
 		targets: followTargets([targetPolicy]),
 		existingReviews: [],
-		retrieve: (url) => retrieveEditorialSource(url),
+		retrieve: (url) =>
+			retrieveSource(url, {
+				timeoutMs: EDITORIAL_SOURCE_TIMEOUT_MS,
+				hashLinkedDocuments: false,
+			}),
 		now: new Date(),
 	});
 	if (followed.errors.length > 0) {
