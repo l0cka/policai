@@ -914,13 +914,19 @@ describe('validateSourceReviews', () => {
         notes: 'Confirmed the amended month in the changed source.',
       },
     };
-    const pendingReview = (dates: Policy['dates']) => {
-      const proposedRecord: Partial<Policy> = {
-        ...target,
-        effectiveDate: '2026-08-01',
-        dates,
+    const pendingReview = (
+      dates: Policy['dates'],
+      proposalDates?: Policy['dates'],
+    ) => {
+      const recordWith = (recordDates: Policy['dates']) => {
+        const record: Partial<Policy> = {
+          ...target,
+          effectiveDate: '2026-08-01',
+          dates: recordDates,
+        };
+        delete record.verification;
+        return record as Policy;
       };
-      delete proposedRecord.verification;
       return validateSourceReviews(
         [
           {
@@ -945,7 +951,16 @@ describe('validateSourceReviews', () => {
               retrievedAt: '2026-10-15T00:00:00.000Z',
               contentHash: 'b'.repeat(64),
             },
-            proposedRecord: proposedRecord as Policy,
+            proposedRecord: recordWith(dates),
+            ...(proposalDates
+              ? {
+                  proposal: {
+                    proposedBy: 'Claude (agent)',
+                    proposedRecord: recordWith(proposalDates),
+                    proposedAt: '2026-10-16T00:00:00.000Z',
+                  },
+                }
+              : {}),
             updatedAt: '2026-10-15T00:00:00.000Z',
           },
         ],
@@ -996,6 +1011,13 @@ describe('validateSourceReviews', () => {
         },
         { ...target.dates[0], primary: false },
       ]);
+
+      expect(report.errors).toEqual([]);
+    });
+
+    it('judges the proposed decision when one supplies the date evidence', () => {
+      const staged = { type: 'amended' as const, date: '2026-08-01', precision: 'month' as const, primary: true };
+      const report = pendingReview([staged], [{ ...staged, source: freshEvidence }]);
 
       expect(report.errors).toEqual([]);
     });

@@ -1946,14 +1946,15 @@ export function validateSourceReviews(
         ),
       );
     }
+    const decidedRecord = review.proposal?.proposedRecord ?? review.proposedRecord;
     if (
       review.status === 'pending_review' &&
       review.entryKind === 'policy' &&
-      isRecord(review.proposedRecord)
+      isRecord(decidedRecord)
     ) {
       errors.push(
         ...proposedDateEvidenceErrors(
-          review.proposedRecord as Policy,
+          decidedRecord as Policy,
           review.targetPolicyId ? policiesById.get(review.targetPolicyId) : undefined,
         ).map(
           (error) => `${label}: proposedRecord: ${error}`,
