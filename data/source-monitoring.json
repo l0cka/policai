@@ -2,63 +2,63 @@
   "manualReviews": [
     {
       "sourceId": "aph-hansard-bill-debates",
-      "status": "source_unavailable",
-      "reviewedAt": "2026-11-04T00:07:58Z",
+      "status": "checked",
+      "reviewedAt": "2026-11-04T00:34:37Z",
       "reviewedBy": "Claude (agent)",
       "evidence": {
         "url": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100",
         "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100",
-        "retrievedAt": "2026-11-04T00:07:58Z"
+        "retrievedAt": "2026-11-04T00:34:37Z"
       },
-      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:07:58Z: HTTP 403 (8 kB text/html block page). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+      "notes": "One-off read authorised by Daniel Alkurdi on 4 Nov 2026 through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), after the plain HTTP read with the Policai identity was refused. HTTP 200, application/rss+xml, 100 Hansard items. From 1 Aug onward the AI items are the AI Kill Switch and Data Centre Control Bill 2026 second reading (7 Sep; on the register as federal-ai-kill-switch-and-data-centre-control-bill-2026) and the Joint Select Committee on Artificial Intelligence (appointed 20 Aug, early advice 12 Oct; both on the timeline). The rest are motions, questions, statements and petitions, not instruments. Nothing staged."
     },
     {
       "sourceId": "aph-bills-digests",
-      "status": "source_unavailable",
-      "reviewedAt": "2026-11-04T00:08:00Z",
+      "status": "checked",
+      "reviewedAt": "2026-11-04T00:34:37Z",
       "reviewedBy": "Claude (agent)",
       "evidence": {
         "url": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100",
         "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100",
-        "retrievedAt": "2026-11-04T00:08:00Z"
+        "retrievedAt": "2026-11-04T00:34:37Z"
       },
-      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:08:00Z: HTTP 403 (8 kB text/html block page). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+      "notes": "One-off read authorised by Daniel Alkurdi on 4 Nov 2026 through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), after the plain HTTP read with the Policai identity was refused. HTTP 200, application/rss+xml, bills digests for 2026. From 1 Aug onward the only AI-adjacent digest is the Online Safety Amendment (Digital Duty of Care) Bill 2026 (23 Oct), already tracked on the register. No new AI bill digest. Nothing staged."
     },
     {
       "sourceId": "agd-ministers-media",
-      "status": "source_unavailable",
-      "reviewedAt": "2026-11-04T00:08:03Z",
+      "status": "checked",
+      "reviewedAt": "2026-11-04T00:35:56Z",
       "reviewedBy": "Claude (agent)",
       "evidence": {
         "url": "https://ministers.ag.gov.au/media-centre",
         "finalUrl": "https://ministers.ag.gov.au/media-centre",
-        "retrievedAt": "2026-11-04T00:08:03Z"
+        "retrievedAt": "2026-11-04T00:35:56Z"
       },
-      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:08:03Z: no HTTP status: the server reset the HTTP/2 stream (INTERNAL_ERROR). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+      "notes": "One-off read authorised by Daniel Alkurdi on 4 Nov 2026 through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), after the plain HTTP read with the Policai identity was refused. HTTP 200 on listing pages 1 to 4 (results 1 to 40 of 181), covering 20 Jul to 30 Oct 2026. Not staged: 29 Sep ABC RN transcript (subjects AI, copyright) is an interview, not an instrument; 7 Aug smart glasses letter to the Privacy Commissioner is not AI-specific. Unsure, left out: 31 Aug \"Modernising Australia's privacy laws for the digital age\" (Privacy Act tranche 2 consultation paper and draft legislation, submissions closed 18 Sep 2026), which cites AI risks but whose listed measures are general privacy reforms."
     },
     {
       "sourceId": "acma-media",
-      "status": "source_unavailable",
-      "reviewedAt": "2026-11-04T00:07:56Z",
+      "status": "checked",
+      "reviewedAt": "2026-11-04T00:35:23Z",
       "reviewedBy": "Claude (agent)",
       "evidence": {
         "url": "https://www.acma.gov.au/media-releases",
-        "finalUrl": "https://www.acma.gov.au/media-releases",
-        "retrievedAt": "2026-11-04T00:07:56Z"
+        "finalUrl": "https://www.acma.gov.au/media-releases?year=2026",
+        "retrievedAt": "2026-11-04T00:35:23Z"
       },
-      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:07:56Z: no HTTP status: the server reset the HTTP/2 stream (INTERNAL_ERROR). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+      "notes": "One-off read authorised by Daniel Alkurdi on 4 Nov 2026 through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), after the plain HTTP read with the Policai identity was refused. HTTP 200 on pages 1 and 2 of the 2026 listing (redirected to ?year=2026), covering 22 May to 4 Nov 2026. The 10 releases from 1 Aug onward cover spam, gambling, telco consumer protection, broadcasting and fraud. None is AI policy, regulation or guidance. Nothing staged."
     },
     {
       "sourceId": "accc-rss",
       "status": "source_unavailable",
-      "reviewedAt": "2026-11-04T00:07:54Z",
+      "reviewedAt": "2026-11-04T00:35:23Z",
       "reviewedBy": "Claude (agent)",
       "evidence": {
         "url": "https://www.accc.gov.au/rss/media_releases.xml",
         "finalUrl": "https://www.accc.gov.au/rss/media_releases.xml",
-        "retrievedAt": "2026-11-04T00:07:54Z"
+        "retrievedAt": "2026-11-04T00:35:23Z"
       },
-      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:07:54Z: HTTP 403 (405-byte text/html block page). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+      "notes": "One-off read authorised by Daniel Alkurdi on 4 Nov 2026 through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), after the plain HTTP read with the Policai identity was refused. Firecrawl failed twice (00:34:37Z and 00:35:23Z UTC): \"All scraping engines failed\" (engines pdf, document). No items could be reviewed."
     },
     {
       "sourceId": "cyber-news",
