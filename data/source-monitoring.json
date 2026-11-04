@@ -1,6 +1,66 @@
 {
   "manualReviews": [
     {
+      "sourceId": "aph-hansard-bill-debates",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-11-04T00:07:58Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100",
+        "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=%22artificial%20intelligence%22%20Date%3AthisYear%20Dataset%3Ahansardr,hansards;resCount=100",
+        "retrievedAt": "2026-11-04T00:07:58Z"
+      },
+      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:07:58Z: HTTP 403 (8 kB text/html block page). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+    },
+    {
+      "sourceId": "aph-bills-digests",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-11-04T00:08:00Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100",
+        "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/feeds/rss.w3p;adv=yes;orderBy=date-eFirst;page=0;query=Date%3AthisYear%20Dataset%3Abillsdgs;resCount=100",
+        "retrievedAt": "2026-11-04T00:08:00Z"
+      },
+      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:08:00Z: HTTP 403 (8 kB text/html block page). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+    },
+    {
+      "sourceId": "agd-ministers-media",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-11-04T00:08:03Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://ministers.ag.gov.au/media-centre",
+        "finalUrl": "https://ministers.ag.gov.au/media-centre",
+        "retrievedAt": "2026-11-04T00:08:03Z"
+      },
+      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:08:03Z: no HTTP status: the server reset the HTTP/2 stream (INTERNAL_ERROR). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+    },
+    {
+      "sourceId": "acma-media",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-11-04T00:07:56Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://www.acma.gov.au/media-releases",
+        "finalUrl": "https://www.acma.gov.au/media-releases",
+        "retrievedAt": "2026-11-04T00:07:56Z"
+      },
+      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:07:56Z: no HTTP status: the server reset the HTTP/2 stream (INTERNAL_ERROR). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+    },
+    {
+      "sourceId": "accc-rss",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-11-04T00:07:54Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://www.accc.gov.au/rss/media_releases.xml",
+        "finalUrl": "https://www.accc.gov.au/rss/media_releases.xml",
+        "retrievedAt": "2026-11-04T00:07:54Z"
+      },
+      "notes": "Plain HTTP GET with User-Agent \"Policai/1.0 (+https://policai.org)\" (curl -L) on 2026-11-04T00:07:54Z: HTTP 403 (405-byte text/html block page). The declared Policai identity was refused, so no items from 1 Aug 2026 onward could be reviewed. A headless-browser read with a Chrome UA plus the Policai token was not run because this session was not permitted to use it."
+    },
+    {
       "sourceId": "cyber-news",
       "status": "checked",
       "reviewedAt": "2026-10-22T01:11:15.591Z",
