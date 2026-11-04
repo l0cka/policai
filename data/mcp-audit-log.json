@@ -1,5 +1,117 @@
 [
   {
+    "id": "mcp-audit-df215209-5ec2-4f8e-b47a-b4cc87ed2599",
+    "createdAt": "2026-11-04T23:04:05.570Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a817f55a-a716-4b67-a831-b14c768b82c1",
+    "createdAt": "2026-11-04T23:03:41.174Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8d75c9cf-4717-4208-b7be-b800336d5cfa",
+    "createdAt": "2026-11-04T23:03:41.156Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-dbf29b62-d248-4bb7-886e-3d967abb9d3b",
+    "createdAt": "2026-11-04T23:03:39.214Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-09d61e8e-444d-4762-81ae-d1b7b4a630fb",
+    "createdAt": "2026-11-04T23:03:39.199Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a4b9602b-e9ec-42ec-9b0c-2668b76491e0",
+    "createdAt": "2026-11-04T23:03:38.554Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-54c5b655-84bf-447a-9d76-e0dbea015c52",
+    "createdAt": "2026-11-04T23:03:38.541Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-74dfb92a-08ce-4499-87d7-76b850b09f67",
+    "createdAt": "2026-11-04T23:03:35.373Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-004ad964-2c53-4402-a00b-308a98633811",
+    "createdAt": "2026-11-04T23:03:35.353Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-346e2458-545a-48a9-bc47-8f678b3cdef0",
+    "createdAt": "2026-11-04T23:03:31.707Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5356ddd1-6b9f-4951-956b-f780efc724a9",
+    "createdAt": "2026-11-04T23:03:31.692Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9d482958-e9f3-4226-8572-0b6552df685c",
+    "createdAt": "2026-11-04T23:03:30.684Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1fd838ca-2447-4991-bb85-ddb1af18788a",
+    "createdAt": "2026-11-04T23:03:30.665Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6f46e4fb-8991-4c32-b75e-2a6eb57291bb",
+    "createdAt": "2026-11-04T23:02:15.724Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b729474e-fe48-427a-b042-32808ed36509",
+    "createdAt": "2026-11-04T23:02:15.706Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-0998d50c-bd15-46c7-bd2e-e11e403cc457",
     "createdAt": "2026-11-04T01:47:12.673Z",
     "actor": "local-mcp-admin",
@@ -3579,126 +3691,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0028/416647/Use-of-generative-AI-in-government-v1.0.1.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c836c7e1-005d-405f-a603-e38d74417daa",
-    "createdAt": "2026-07-19T04:10:46.903Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4a17dedc-3c80-4fd4-8851-cfecaf469b24",
-    "createdAt": "2026-07-19T04:10:39.908Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-abaaddd5-f3af-4ae4-817e-5b833700ccde",
-    "createdAt": "2026-07-19T04:10:33.803Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-714670ea-1dab-4977-af0b-588b6442b03c",
-    "createdAt": "2026-07-19T04:09:59.261Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-df5a68ac-db76-40f5-b9c2-1cf0d0a9760d",
-    "createdAt": "2026-07-19T04:09:50.211Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-09dba94b-0928-4e4f-93d0-db138fb27bc0",
-    "createdAt": "2026-07-19T04:09:33.707Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-04e73fab-bde4-4652-9d18-46d200f7b242",
-    "createdAt": "2026-07-19T04:09:25.579Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4fc9a6b7-0f4e-475e-8915-15f43602285a",
-    "createdAt": "2026-07-19T04:09:19.383Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e2830046-0ad1-4089-a4c3-95d6fc0a06f6",
-    "createdAt": "2026-07-19T04:09:13.153Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c33f1bca-78ea-491a-b85a-85ca64239506",
-    "createdAt": "2026-07-19T04:09:12.121Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-a5f112d5-11d2-46ea-b171-2b2293b319db",
-    "createdAt": "2026-07-19T04:08:48.832Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.finance.gov.au/government/public-data/data-and-digital-ministers-meeting/national-framework-assurance-artificial-intelligence-government",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e3572ff2-0d62-403b-8ab1-9ec2f7664501",
-    "createdAt": "2026-07-19T04:08:41.563Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-technical-standard",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c3e6bf10-e721-4634-a0ea-e2cbb518b77e",
-    "createdAt": "2026-07-19T04:08:35.800Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/guidance-for-ai-adoption",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f84d31df-f924-498f-b636-907a3dc410e8",
-    "createdAt": "2026-07-19T04:08:25.670Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5fbd17d2-0329-4b0f-8f89-cfa50ee6dcc4",
-    "createdAt": "2026-07-19T04:08:18.867Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
     "status": "success"
   }
 ]

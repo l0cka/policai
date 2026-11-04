@@ -1,5 +1,527 @@
 [
   {
+    "id": "source-review-5ac3d424-c467-416e-8b12-af24afff11c8",
+    "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+    "title": "Joint Select Committee on AI sends early advice to the Prime Minister",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-10-12-joint-select-committee-ai-early-advice",
+    "targetTimelineRevisionHash": "f180b9387a17a4771cfa95fdb84b0d68f5867c0e49b35312c218ec2e691efc53",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:03:41.145Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Joint Select Committee on Artificial Intelligence PO Box 6100, Parliament House, Canberra ACT 2600 PHONE: (02) 6277 3863 EMAIL: ai.joint@aph.gov.au WEBSITE: aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence 12 October 2026 The Honourable Anthony Albanese MP Prime Minister By email: The Hon Anthony Albanese MP, Prime Minister cc: Senator the Hon Tim Ayres, Minister for Industry & Innovation and Minister for Science; The Hon Dr Andrew Charlton MP, Assistant Minister for Science, Technology and the Digital Economy Dear Prime Minister We write following the recent hearings…",
+      "tags": [
+        "assurance",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+      "finalUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+      "retrievedAt": "2026-11-04T23:03:41.012Z",
+      "contentType": "application/pdf",
+      "contentHash": "72ee1aff342ac218155037849fed59dea2b7692241043f2f816523a0292fb055",
+      "etag": "a5b7961c4ba441fbb7b06b79b57ab91f",
+      "lastModified": "Mon, 12 Oct 2026 22:43:21 GMT",
+      "title": "Joint Select Committee on Artificial Intelligence"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-10-12-joint-select-committee-ai-early-advice",
+      "date": "2026-10-12",
+      "datePrecision": "day",
+      "title": "Joint Select Committee on AI sends early advice to the Prime Minister",
+      "description": "The committee's letter of 12 October 2026 recommends a Parliamentary Joint Standing Committee, additional funding for the AI Safety Institute, timely incident reporting by frontier labs, independent evaluators embedded in frontier labs, and early access to new models for agencies such as the Australian Signals Directorate. These are recommendations to the government, not adopted policy. The letter follows the unauthorised access by an AI agent to data in Australia's Medicare system.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835"
+    },
+    "updatedAt": "2026-11-04T23:03:41.162Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-10-12-joint-select-committee-ai-early-advice",
+        "date": "2026-10-12",
+        "datePrecision": "day",
+        "title": "Joint Select Committee on AI sends early advice to the Prime Minister",
+        "description": "The committee's letter of 12 October 2026 recommends a Parliamentary Joint Standing Committee, additional funding for the AI Safety Institute, timely incident reporting by frontier labs, independent evaluators embedded in frontier labs, and early access to new models for agencies such as the Australian Signals Directorate. These are recommendations to the government, not adopted policy. The letter follows the unauthorised access by an AI agent to data in Australia's Medicare system.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835"
+      },
+      "reviewedDate": {
+        "date": "2026-10-12",
+        "precision": "day",
+        "notes": "The committee letter is headed \"Joint Select Committee on Artificial Intelligence 12 October 2026\" and addressed to the Prime Minister, and \"provides early advice and recommendations to the Australian Government\"."
+      },
+      "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+      "proposedAt": "2026-11-04T23:03:41.162Z"
+    }
+  },
+  {
+    "id": "source-review-44df4c9f-4de9-4668-879e-0130b9ba1e60",
+    "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+    "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-09-24-pm-discloses-openai-medicare-portal-access",
+    "targetTimelineRevisionHash": "bc2c3e2b943c1ad1e8f82856b28a0ce94f1ae7d0eea12ead7f1502e0fed29042",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:03:39.188Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+      "finalUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+      "retrievedAt": "2026-11-04T23:03:39.178Z",
+      "contentType": "text/html",
+      "contentHash": "083096d469612918a9a0598d9551f49226183834382c5ff7e4be533ac913a6fd",
+      "title": "PM Transcripts"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-09-24-pm-discloses-openai-medicare-portal-access",
+      "date": "2026-09-24",
+      "datePrecision": "day",
+      "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
+      "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. He also announced a taskforce led by his department to review arrangements for AI-related cyber incidents, recorded separately as tl-2026-09-24-pmc-rapid-review-ai-cyber.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+      "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026"
+    },
+    "updatedAt": "2026-11-04T23:03:39.203Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-09-24-pm-discloses-openai-medicare-portal-access",
+        "date": "2026-09-24",
+        "datePrecision": "day",
+        "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
+        "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. He also announced a taskforce led by his department to review arrangements for AI-related cyber incidents, recorded separately as tl-2026-09-24-pmc-rapid-review-ai-cyber.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+        "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026"
+      },
+      "reviewedDate": {
+        "date": "2026-09-24",
+        "precision": "day",
+        "notes": "The transcript lists \"Release Date: 24/09/2026\" and the Prime Minister says the incident \"occurred in June of this year and involved an OpenAI agent gaining unauthorised access into the public-facing Medicare statistics reporting service portal, which is administered by Services Australia.\""
+      },
+      "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+      "proposedAt": "2026-11-04T23:03:39.203Z"
+    }
+  },
+  {
+    "id": "source-review-f861fdce-ae17-4576-998d-dcea06d51cde",
+    "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+    "title": "ASIC opens CS 63 consultation on RG 265 and RG 266 updates",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-09-24-asic-cs-63-rg-265-266",
+    "targetTimelineRevisionHash": "1716aca15ca2e898ffdb436102091d6fc1b27c60cc8e642bf351cd4f851460f0",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:03:38.527Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+      "finalUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+      "retrievedAt": "2026-11-04T23:03:38.513Z",
+      "contentType": "text/html",
+      "contentHash": "eb1782f08f538e177c874ab4c4a038e663c770f822167ff67cd02706918561fe",
+      "title": "CS 63 Proposed updates to RG 265 and RG 266 and withdrawal of RG 241 | ASIC"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-09-24-asic-cs-63-rg-265-266",
+      "date": "2026-09-24",
+      "datePrecision": "day",
+      "title": "ASIC opens CS 63 consultation on RG 265 and RG 266 updates",
+      "description": "ASIC released consultation CS 63 on proposed updates to RG 265 and RG 266 (and withdrawal of RG 241) on 24 September 2026, reflecting September 2026 amendments to the securities and futures Market Integrity Rules for trading systems and automated trading. Submissions close at 5 pm AEDT on 5 November 2026. The amended rules commence on 18 March 2028.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "asic-market-integrity-rules-ai-trading-2026",
+      "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241"
+    },
+    "updatedAt": "2026-11-04T23:03:38.546Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-09-24-asic-cs-63-rg-265-266",
+        "date": "2026-09-24",
+        "datePrecision": "day",
+        "title": "ASIC opens CS 63 consultation on RG 265 and RG 266 updates",
+        "description": "ASIC released consultation CS 63 on proposed updates to RG 265 and RG 266 (and withdrawal of RG 241) on 24 September 2026, reflecting September 2026 amendments to the securities and futures Market Integrity Rules for trading systems and automated trading. Submissions close at 5 pm AEDT on 5 November 2026. The amended rules commence on 18 March 2028.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "asic-market-integrity-rules-ai-trading-2026",
+        "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241"
+      },
+      "reviewedDate": {
+        "date": "2026-09-24",
+        "precision": "day",
+        "notes": "The consultation page states \"Released 24 September 2026. Comments close 5 November 2026.\""
+      },
+      "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+      "proposedAt": "2026-11-04T23:03:38.546Z"
+    }
+  },
+  {
+    "id": "source-review-1493acb0-e343-4502-a710-c4d4f95e3709",
+    "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+    "title": "SA courts generative AI guidelines take effect",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-01-01-sa-courts-generative-ai-guidelines-take-effect",
+    "targetTimelineRevisionHash": "e88833484d8bf1b39a27516bafde707f4f6988577043a3173e233a2c14f29758",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:03:35.341Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "sa",
+      "summary": "[Document 1: Supreme Court issues guidelines for the use of Generative AI - CAA] Supreme Court issues guidelines for the use of Generative AI In May 2025 the Chief Justice of South Australia launched a survey and invited submissions about the use of Generative AI (Gen AI) in Courts.Following consultation with the broader profession, the Judges of the Supreme Court have approved guidelines for the use of Gen AI.",
+      "tags": [
+        "generative-ai"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+      "finalUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+      "retrievedAt": "2026-11-04T23:03:33.835Z",
+      "contentType": "text/html",
+      "contentHash": "bab4f445c0be8775bd2cc9a4123a7e03a423f58b5177b6ba1683d9b663c5428c",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+          "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+          "retrievedAt": "2026-11-04T23:03:34.282Z",
+          "contentType": "application/pdf",
+          "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+        },
+        {
+          "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=696d5be17c4871768774625&wpdmdl=25796",
+          "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=696d5be17c4871768774625&wpdmdl=25796",
+          "retrievedAt": "2026-11-04T23:03:34.914Z",
+          "contentType": "application/pdf",
+          "contentHash": "3bae44872330ebb1ae8d19bb901c00b748188e98bf3a8636e9914e8ae7ab4204"
+        }
+      ],
+      "title": "Supreme Court issues guidelines for the use of Generative AI - CAA",
+      "publishedAt": "2026-01-19",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-01-01-sa-courts-generative-ai-guidelines-take-effect",
+      "date": "2026-01-01",
+      "title": "SA courts generative AI guidelines take effect",
+      "description": "Guidelines for the use of generative AI, approved by the Judges of the Supreme Court, are adopted from 1 January 2026 for proceedings in the Supreme, District, Magistrates, Youth, Environment, Resources and Development Courts and the Court of Disputed Returns.",
+      "type": "policy_introduced",
+      "jurisdiction": "sa",
+      "relatedPolicyId": "sa-courts-genai-guidelines",
+      "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-04T23:03:35.359Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-01-01-sa-courts-generative-ai-guidelines-take-effect",
+        "date": "2026-01-01",
+        "title": "SA courts generative AI guidelines take effect",
+        "description": "Guidelines for the use of generative AI, approved by the Judges of the Supreme Court, are adopted from 1 January 2026 for proceedings in the Supreme, District, Magistrates, Youth, Environment, Resources and Development Courts and the Court of Disputed Returns.",
+        "type": "policy_introduced",
+        "jurisdiction": "sa",
+        "relatedPolicyId": "sa-courts-genai-guidelines",
+        "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2026-01-01",
+        "precision": "day",
+        "notes": "The Courts Administration Authority news item states \"The guidelines have been adopted from 1 January 2026 and will shortly be given force under Rules of the Court that apply to practitioners and litigants.\""
+      },
+      "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+      "proposedAt": "2026-11-04T23:03:35.359Z"
+    }
+  },
+  {
+    "id": "source-review-6f0155ca-ae06-4d9d-aa32-84e3e9ee9c1a",
+    "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+    "title": "Productivity Commission final report released",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-12-19-productivity-commission-final-report-released",
+    "targetTimelineRevisionHash": "0a970ea00b9a60675d93975513dc3e1f0b0f379ce8e8403f5b1a6105aacfd639",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:03:31.677Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.pc.gov.au/inquiries/current/data-digital",
+      "finalUrl": "https://www.pc.gov.au/inquiries-and-research/data-digital",
+      "retrievedAt": "2026-11-04T23:03:31.650Z",
+      "contentType": "text/html",
+      "contentHash": "3674dce610a487ceb0093aa262e16c61839c39988dabd070afb6e7edeb214237",
+      "etag": "\"17d1w8wxd032xtq\"",
+      "title": "Harnessing data and digital technology - Public inquiry"
+    },
+    "proposedRecord": {
+      "id": "tl-2025-12-19-productivity-commission-final-report-released",
+      "date": "2025-12-19",
+      "title": "Productivity Commission final report released",
+      "description": "The Productivity Commission releases its final \"Harnessing data and digital technology\" inquiry report, handed to the Government on 10 December 2025 and tabled in Parliament on 29 January 2026.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-04T23:03:31.697Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2025-12-19-productivity-commission-final-report-released",
+        "date": "2025-12-19",
+        "title": "Productivity Commission final report released",
+        "description": "The Productivity Commission releases its final \"Harnessing data and digital technology\" inquiry report, handed to the Government on 10 December 2025 and tabled in Parliament on 29 January 2026.",
+        "type": "milestone",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2025-12-19",
+        "precision": "day",
+        "notes": "The inquiry page states \"This inquiry report was handed to the Australian Government on 10 December 2025 and released on 19 December 2025. It was later tabled in Parliament on 29 January 2026.\""
+      },
+      "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+      "proposedAt": "2026-11-04T23:03:31.697Z"
+    }
+  },
+  {
+    "id": "source-review-b5a06850-ecc7-4513-8046-4e15e6ace216",
+    "sourceUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+    "title": "Responsible AI Network publishes its first major report",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2023-06-22-responsible-ai-network-first-report",
+    "targetTimelineRevisionHash": "3488b044c3ff85fe54db946816ef5584c5797aa872910c8033e307422f2c46cf",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:03:30.645Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": null,
+      "summary": "22 June 2023 News Release 3 Photos Practices such as impact assessments, data curation, fairness measures, pilot studies and organisational training are some of the simple but effective approaches described in a new report that can help Australian businesses develop robust and responsible artificial intelligence (AI). Released today, the new AI report for Australia’s National AI Centre, coordinated by CSIRO, explores practical steps to implement the Australian Government’s eight AI ethics principles.",
+      "tags": [
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+      "finalUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+      "retrievedAt": "2026-11-04T23:03:30.610Z",
+      "contentType": "text/html",
+      "contentHash": "1dbe1971902a767d58a963b0f035c724220f5c14893d2d83bf9b891e1435adfa",
+      "title": "New report to help businesses implement responsible AI"
+    },
+    "proposedRecord": {
+      "id": "tl-2023-06-22-responsible-ai-network-first-report",
+      "date": "2023-06-22",
+      "title": "National AI Centre report on implementing the AI Ethics Principles released",
+      "description": "A report for Australia's National AI Centre, coordinated by CSIRO and developed by Gradient Institute, sets out practical steps to implement Australia's eight AI Ethics Principles.",
+      "type": "milestone",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+      "datePrecision": "day"
+    },
+    "updatedAt": "2026-11-04T23:03:30.671Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2023-06-22-responsible-ai-network-first-report",
+        "date": "2023-06-22",
+        "title": "National AI Centre report on implementing the AI Ethics Principles released",
+        "description": "A report for Australia's National AI Centre, coordinated by CSIRO and developed by Gradient Institute, sets out practical steps to implement Australia's eight AI Ethics Principles.",
+        "type": "milestone",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2023-06-22",
+        "precision": "day",
+        "notes": "The CSIRO news release is dated \"22 June 2023\" and states \"Released today, the new AI report for Australia's National AI Centre, coordinated by CSIRO, explores practical steps to implement the Australian Government's eight AI ethics principles.\""
+      },
+      "notes": "Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026.",
+      "proposedAt": "2026-11-04T23:03:30.671Z"
+    }
+  },
+  {
+    "id": "source-review-aa63e0fc-6d88-45d1-9699-927ecb8e9a8b",
+    "sourceUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+    "title": "Guidance Note: Use of Generative Artificial Intelligence in Commission Cases",
+    "entryKind": "policy",
+    "targetPolicyId": "fwc-genai-guidance-note",
+    "targetPolicyBaseRevisionHash": "05284d50a1feed75af899062484b45d440f14ffea5427633ebdf0dfa59961965",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T23:02:15.688Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Register full review. Plain HTTP read of the guidance note PDF with the declared Policai identity on 5 Nov 2026; the PDF is byte-identical to the version verified on 24 Aug 2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Published: 24 August 2026 www.fwc.gov.au 1/9 Guidance note Use of generative artificial intelligence in Commission cases Introduction 1. This Guidance Note explains what you must do if you use generative artificial intelligence ( GenAI ) to help you prepare an application to the Fair Work Commission or any other document to be lodged in a Commission case. 2. The Fair Work Commission’s Artificial intelligence transparency statement outlines how the Commission itself may use artificial intelligence ( AI ). 3.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+      "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+      "retrievedAt": "2026-11-04T23:02:15.464Z",
+      "contentType": "application/pdf",
+      "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+      "etag": "W/\"0x8DF018222EA6529\"",
+      "lastModified": "Mon, 24 Aug 2026 01:50:55 GMT",
+      "title": "Guidance note - Use of generative artificial intelligence in Commission cases"
+    },
+    "proposedRecord": {
+      "id": "fwc-genai-guidance-note",
+      "title": "Guidance Note: Use of Generative Artificial Intelligence in Commission Cases",
+      "description": "Fair Work Commission guidance note setting mandatory disclosure and verification requirements for generative AI used to prepare documents lodged in Commission cases, commencing 20 October 2026.",
+      "jurisdiction": "federal",
+      "type": "practice_note",
+      "status": "active",
+      "effectiveDate": "2026-10-20",
+      "agencies": [
+        "Fair Work Commission"
+      ],
+      "sourceUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+      "content": "Published on 24 August 2026 and commencing on 20 October 2026, following an exposure draft released for consultation on 24 March 2026. The guidance note applies whenever generative AI is used to create, write, edit, modify or otherwise prepare an application to the Commission or any other document to be lodged in a Commission case; using generative AI only to check spelling or grammar, or to format a document, is excluded. Three requirements apply. Requirement 1: the document must state that generative AI was used and how it was used. Requirement 2: the person must check the document and make any necessary changes so that all details are correct and relevant, and must state in the document that this was done — the checks cover whether references to facts and evidence are correct and the facts and evidence exist, whether cases, legislation, textbooks and articles cited exist and support the legal positions claimed, and whether extracts and quotes are accurate and come from the stated sources. The Commission states the checking must be done by a person and cannot be delegated to the same or a different generative AI tool. Requirement 3: where the document is a witness statement or declaration, the witness or declarant must check that it is based on their own knowledge, reflects their own words and is true to the best of their knowledge, and must state that in the document. Professional representatives — lawyers, paid agents, employed human resources advisers, and union or employer organisation officers — must additionally include hyperlinks to all case law referred to in a document prepared using generative AI, where hyperlinks are available. Personal information about other people involved in a case and confidential case information should not be given to public generative AI tools. Non-compliance may result in documents being given less weight or disregarded, costs orders against the non-complying party, or dismissal of the case. The guidance note records that knowingly giving false or misleading information to the Commission is an offence under section 137.1 of the Criminal Code and that giving false or misleading sworn evidence is an offence under section 678 of the Fair Work Act, each punishable by up to 12 months' imprisonment. The Commission states the guidance note will be amended from time to time and that users are responsible for keeping up to date with its requirements. From 20 October 2026 some Commission forms will include a question about generative AI use.",
+      "aiSummary": "Fair Work Commission guidance note requiring disclosure of generative AI use, human verification of every document detail, and witness-statement attestations in all Commission matters from 20 October 2026.",
+      "tags": [
+        "practice note",
+        "guidance note",
+        "generative AI",
+        "Fair Work Commission",
+        "tribunals",
+        "disclosure",
+        "employment",
+        "courts"
+      ],
+      "themes": [
+        "courts-tribunals",
+        "employment",
+        "generative-ai",
+        "transparency-disclosure"
+      ],
+      "createdAt": "2026-08-24T00:00:00Z",
+      "updatedAt": "2026-11-04T23:02:15.688Z",
+      "dates": [
+        {
+          "type": "effective",
+          "date": "2026-10-20",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+            "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+            "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+            "publisher": "Fair Work Commission",
+            "retrievedAt": "2026-08-24T23:30:00.000Z",
+            "publishedAt": "2026-08-24",
+            "publishedAtPrecision": "day",
+            "contentType": "application/pdf",
+            "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+            "reviewedDate": {
+              "date": "2026-10-20",
+              "precision": "day",
+              "reviewedAt": "2026-08-24T23:32:02.000Z",
+              "reviewedBy": "Policai editorial source review",
+              "notes": "Paragraph 5 of the guidance note states that it commences on 20 October 2026, and the Commission's GenAI page states the requirements apply to all Commission matters from that date."
+            }
+          }
+        },
+        {
+          "type": "published",
+          "date": "2026-08-24",
+          "precision": "day",
+          "source": {
+            "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+            "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
+            "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+            "publisher": "Fair Work Commission",
+            "retrievedAt": "2026-08-24T23:30:00.000Z",
+            "publishedAt": "2026-08-24",
+            "publishedAtPrecision": "day",
+            "contentType": "application/pdf",
+            "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+            "reviewedDate": {
+              "date": "2026-08-24",
+              "precision": "day",
+              "reviewedAt": "2026-08-24T23:32:02.000Z",
+              "reviewedBy": "Policai editorial source review",
+              "notes": "Every page footer of the guidance note PDF carries the line 'Published: 24 August 2026', supporting the publication date at day precision."
+            }
+          }
+        }
+      ]
+    },
+    "updatedAt": "2026-11-04T23:02:15.713Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-10-20",
+        "precision": "day",
+        "notes": "Paragraph 5 of the guidance note states \"This Guidance Note commences on 20 October 2026.\" Every page footer reads \"Published: 24 August 2026\"."
+      },
+      "notes": "Register full review. Plain HTTP read of the guidance note PDF with the declared Policai identity on 5 Nov 2026; the PDF is byte-identical to the version verified on 24 Aug 2026.",
+      "proposedAt": "2026-11-04T23:02:15.713Z"
+    }
+  },
+  {
     "id": "source-review-2587070e-121a-479d-ba8d-c64cfa7ed363",
     "sourceUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
     "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
