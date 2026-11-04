@@ -1,5 +1,27 @@
 [
   {
+    "id": "mcp-audit-0998d50c-bd15-46c7-bd2e-e11e403cc457",
+    "createdAt": "2026-11-04T01:47:12.673Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-dea6a437-4984-46ec-bf8f-556567c59210",
+    "createdAt": "2026-11-04T01:45:44.914Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-35fd3a96-efd4-44c9-a6e2-9cb1853df82d",
+    "createdAt": "2026-11-04T01:45:30.612Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform/",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-02eb424e-a3be-4e17-ae67-fe75792b06d1",
     "createdAt": "2026-11-02T05:50:14.471Z",
     "actor": "local-mcp-admin",
@@ -3677,30 +3699,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-2d0e1fa1-15d6-45cb-8fef-64166ef364a0",
-    "createdAt": "2026-07-19T04:08:03.806Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-6c5501d1-05d7-43a9-867c-050a03dd445a",
-    "createdAt": "2026-07-19T04:07:58.706Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.supremecourt.vic.gov.au/law-and-practice/practice-notes",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f06f881e-d567-462c-8635-797773f4e472",
-    "createdAt": "2026-07-19T04:07:51.344Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
     "status": "success"
   }
 ]
