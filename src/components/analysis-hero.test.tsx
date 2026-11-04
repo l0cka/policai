@@ -26,9 +26,10 @@ async function renderHero(fixtures: string) {
   vi.resetModules();
   const { getArticles } = await import('@/lib/data-service');
   const { AnalysisHero } = await import('@/components/analysis-hero');
-  const articles = await getArticles();
-  const view = render(<AnalysisHero articles={articles} />);
-  return { ...view, articles };
+  const { ANALYSIS_HERO_LIMIT } = await import('@/lib/analysis-hero');
+  const published = await getArticles();
+  const view = render(<AnalysisHero articles={published} />);
+  return { ...view, published, articles: published.slice(0, ANALYSIS_HERO_LIMIT) };
 }
 
 describe('AnalysisHero', () => {
@@ -55,10 +56,12 @@ describe('AnalysisHero', () => {
     expect(within(hero).queryAllByRole('heading')).toHaveLength(0);
   });
 
-  it('shows the newest published piece first and keeps drafts and withdrawn pieces out', async () => {
-    const { container, articles } = await renderHero('articles');
+  it('shows the five newest published pieces, newest first, and keeps drafts and withdrawn pieces out', async () => {
+    const { container, articles, published } = await renderHero('articles');
     const hero = screen.getByRole('region', { name: 'Analysis' });
     const lead = articles[0];
+    expect(published.length).toBeGreaterThan(articles.length);
+    expect(container.innerHTML).not.toContain(published[articles.length].title);
     expect(within(hero).getByRole('link', { name: lead.title })).toHaveAttribute(
       'href',
       `/analysis/${lead.slug}`,
@@ -70,7 +73,7 @@ describe('AnalysisHero', () => {
     expect(within(hero).getByText(lead.summary)).toHaveClass('analysis-hero-teaser');
     expect(hero.querySelector('.analysis-hero-count')).toHaveTextContent(`Showing article 1 of ${articles.length}`);
     expect(within(hero).queryByText('By Policai')).not.toBeInTheDocument();
-    expect(container.innerHTML).toContain('Fixture weekly: 8–14 October 2026');
+    expect(container.innerHTML).toContain(articles[articles.length - 1].title);
     expect(container.innerHTML).not.toContain('Fixture explainer in draft');
     expect(container.innerHTML).not.toContain('Fixture note on a misidentified instrument');
     expect(within(hero).getByRole('link', { name: 'All analysis' })).toHaveAttribute('href', '/analysis');

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { analysisHeroIndex, analysisHeroSlides } from '@/lib/analysis-hero';
+import { ANALYSIS_HERO_LIMIT, analysisHeroIndex, analysisHeroSlides } from '@/lib/analysis-hero';
 import type { Article, ArticleType, PublishedArticle } from '@/types';
 
 function piece(slug: string, type: ArticleType): PublishedArticle {
@@ -23,6 +23,13 @@ describe('analysisHeroSlides', () => {
     const note = piece('note', 'instrument_note');
     const weekly = piece('weekly', 'weekly_briefing');
     expect(analysisHeroSlides([note, weekly])).toEqual([note, weekly]);
+  });
+
+  it('keeps only the first five published pieces', () => {
+    const pieces = Array.from({ length: 29 }, (_, i) => piece(`p${i}`, 'instrument_note'));
+    const draft = { ...piece('draft', 'explainer'), status: 'draft' } as Article;
+    expect(ANALYSIS_HERO_LIMIT).toBe(5);
+    expect(analysisHeroSlides([draft, ...pieces])).toEqual(pieces.slice(0, 5));
   });
 
   it('returns an empty list when there are no pieces', () => {
