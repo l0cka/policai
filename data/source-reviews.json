@@ -31830,5 +31830,255 @@
       }
     },
     "publishedAt": "2026-11-01T23:18:42.179Z"
+  },
+  {
+    "id": "source-review-dev-education-ministers-digital-detox-2026",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "title": "A Digital Detox for rebalancing technology use in Australian schools",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T21:19:19.864Z",
+    "createdBy": "cursor-agent",
+    "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. The PDF (https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf) and the resource page (https://www.education.gov.au/schooling/resources/digital-detox) were read as rendered text. No lastReviewedAt is set.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "Education Ministers agreed to restrict student use of generative AI applications in primary schools and in secondary school assessments, with timing, scope and application set by each jurisdiction or sector. The Department of Education published the decisions in \"A Digital Detox\" on 4 November 2026.",
+      "tags": [
+        "education",
+        "generative AI",
+        "schools",
+        "Education Ministers"
+      ],
+      "agencies": [
+        "Department of Education"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "retrievedAt": "2026-11-04T21:19:19.864Z",
+      "contentType": "text/html",
+      "title": "A Digital Detox for rebalancing technology use in Australian schools",
+      "publishedAt": "2026-11-04",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "education-ministers-digital-detox-2026",
+      "title": "A Digital Detox: Education Ministers’ decisions on technology and generative AI in schools",
+      "description": "Decisions of the Education Ministers Meeting, published by the Department of Education on 4 November 2026, restricting student use of generative AI in primary schools and in secondary assessments, with timing, scope and application set by each jurisdiction or sector.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "active",
+      "effectiveDate": "2026-11-04",
+      "agencies": [
+        "Department of Education"
+      ],
+      "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "content": "On 4 November 2026 the Department of Education published \"A Digital Detox\", a paper setting out decisions of the Education Ministers Meeting. The announcement page is dated 4 November 2026. The paper says ministers adopted the policy at their meeting on 2 November 2026.\n\nIn the section \"The next steps: digital detox\", ministers agreed to restrict student use of generative AI applications in primary schools, recognising this may involve the continued use of some AI features built into technologies currently in use, with the timing, scope and application of potential limits to be determined by each jurisdiction or sector.\n\nMinisters agreed to restrict student use of generative AI in secondary school assessments, with the same timing, scope and application caveat for each jurisdiction or sector.\n\nMinisters agreed to introduce, trial or consider limits for screen use in schools, again with timing, scope and application determined by each jurisdiction or sector.\n\nMinisters agreed to establish the Australian Schools Digital Detox Taskforce to collect evidence, consult students, teachers and parents, and advise ministers on further action. The paper says the taskforce will provide preliminary advice by mid-2027 and conclude its work by the end of 2027, unless Education Ministers determine otherwise. The agreed list also says the taskforce will advise ministers on further actions next year.\n\nMinisters agreed the Year 5 NAPLAN writing assessment would return to handwritten completion in 2028, subject to further advice from ACARA on feasibility, costs and workload. ACARA is also to advise on handwritten NAPLAN writing for Years 7 and 9.\n\nThe paper recaps the Australian Framework for Generative Artificial Intelligence in Schools (National AI in Schools Taskforce, released late 2023, reviewed in 2024, review endorsed by Education Ministers in June 2025) and Education Services Australia product standards for generative AI.",
+      "aiSummary": "Published 4 November 2026. Education Ministers agreed to restrict generative AI use by primary students and in secondary assessments, with each jurisdiction or sector setting timing, scope and application. They also agreed screen-use limits, a Digital Detox Taskforce to the end of 2027, and a return of Year 5 NAPLAN writing to handwriting in 2028 subject to ACARA advice.",
+      "tags": [
+        "education",
+        "generative AI",
+        "schools",
+        "Education Ministers"
+      ],
+      "themes": [
+        "generative-ai",
+        "strategy-adoption",
+        "responsible-ai"
+      ],
+      "createdAt": "2026-11-04T21:19:19.864Z",
+      "updatedAt": "2026-11-04T21:19:19.864Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-education-ministers-digital-detox-2026",
+      "title": "A Digital Detox: Education Ministers restrict generative AI in schools",
+      "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "sourceId": "editorial-staging",
+      "sourceName": "Department of Education — schooling announcements",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-11-04",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-04T21:19:19.864Z",
+      "summary": "Education Ministers agreed to restrict student use of generative AI applications in primary schools and in secondary school assessments, with timing, scope and application set by each jurisdiction or sector. The Department of Education published the decisions in \"A Digital Detox\" on 4 November 2026.",
+      "relevanceScore": 0.65,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-11-04T21:19:19.864Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "retrievedAt": "2026-11-04T21:19:19.864Z",
+          "contentType": "text/html",
+          "title": "A Digital Detox for rebalancing technology use in Australian schools",
+          "publishedAt": "2026-11-04",
+          "publishedAtPrecision": "day"
+        },
+        "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-04T21:19:19.864Z"
+  },
+  {
+    "id": "source-review-dev-australian-framework-generative-ai-in-schools",
+    "sourceUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+    "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T21:19:19.864Z",
+    "createdBy": "cursor-agent",
+    "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Release date is taken from the department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools, which says it was published on 1 December 2023 and that ministers approved the framework on 5 October 2023. The resource page states the June 2025 endorsement of the 2024 review and does not itself state 1 December 2023.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "framework",
+      "suggestedJurisdiction": "federal",
+      "summary": "National framework, approved by Education Ministers on 5 October 2023 and published on 1 December 2023, for responsible use of generative AI in schools. Education Ministers endorsed the 2024 review in June 2025.",
+      "tags": [
+        "education",
+        "generative AI",
+        "schools",
+        "framework"
+      ],
+      "agencies": [
+        "Department of Education"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+      "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+      "retrievedAt": "2026-11-04T21:19:19.864Z",
+      "contentType": "text/html",
+      "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools"
+    },
+    "proposedRecord": {
+      "id": "australian-framework-generative-ai-in-schools",
+      "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+      "description": "National framework guiding responsible and ethical use of generative AI in Australian schools. Education Ministers approved it on 5 October 2023; the department published it on 1 December 2023. Ministers endorsed the 2024 review in June 2025.",
+      "jurisdiction": "federal",
+      "type": "framework",
+      "status": "active",
+      "effectiveDate": "2023-12-01",
+      "agencies": [
+        "Department of Education"
+      ],
+      "sourceUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+      "content": "The Australian Framework for Generative Artificial Intelligence (AI) in Schools guides responsible and ethical use of generative AI in school education. The Department of Education resource page says it supports school leaders, teachers, support staff, service providers, parents, guardians, students and policy makers.\n\nThe department announcement of the framework, published 1 December 2023, says Education Ministers approved it on 5 October 2023. It names six principles: Teaching and Learning; Human and Social Wellbeing; Transparency; Fairness; Accountability; and Privacy, Security and Safety. It says implementation is from Term 1 2024, and that the National AI in Schools Taskforce developed it with the Commonwealth, jurisdictions, school sectors and the national agencies (ESA, ACARA, AITSL and AERO).\n\nThe resource page states that in June 2025 Education Ministers endorsed the 2024 Framework Review, undertaken by the National AI in Schools Taskforce with jurisdictions, school sectors and national agencies. The page links a PDF and DOCX of the framework, a resource poster, and the 2024 review. This staging does not transcribe those files; they were not retrieved as bytes.",
+      "aiSummary": "The national school generative-AI framework, published 1 December 2023 after Education Ministers approved it on 5 October 2023. Six principles cover teaching and learning, wellbeing, transparency, fairness, accountability, and privacy, security and safety. Ministers endorsed the 2024 review in June 2025.",
+      "tags": [
+        "education",
+        "generative AI",
+        "schools",
+        "framework"
+      ],
+      "themes": [
+        "generative-ai",
+        "responsible-ai",
+        "strategy-adoption"
+      ],
+      "createdAt": "2026-11-04T21:19:19.864Z",
+      "updatedAt": "2026-11-04T21:19:19.864Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-australian-framework-generative-ai-in-schools",
+      "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+      "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+      "sourceId": "editorial-staging",
+      "sourceName": "Department of Education — schooling resources",
+      "jurisdiction": "federal",
+      "publishedAt": "2023-12-01",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-04T21:19:19.864Z",
+      "summary": "The department resource page publishes the Australian Framework for Generative AI in Schools. The 1 December 2023 announcement says ministers approved it on 5 October 2023. The resource page says ministers endorsed the 2024 review in June 2025.",
+      "relevanceScore": 0.65,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "keyword-rules-v1",
+        "assessedAt": "2026-11-04T21:19:19.864Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+          "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+          "retrievedAt": "2026-11-04T21:19:19.864Z",
+          "contentType": "text/html",
+          "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+          "publishedAt": "2023-12-01",
+          "publishedAtPrecision": "day"
+        },
+        "notes": "publishedAt is the date on the separate announcement page, not metadata of this resource URL. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-04T21:19:19.864Z"
+  },
+  {
+    "id": "source-review-tl-education-ministers-digital-detox-2026",
+    "sourceUrl": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
+    "title": "Education Ministers agree a digital detox for schools",
+    "entryKind": "timeline_event",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-04T21:19:19.864Z",
+    "createdBy": "cursor-agent",
+    "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Timeline proposal only. It is not written to data/timeline.json. relatedPolicyId is the staged policy id and is not on the register until that review is approved.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "announcement",
+      "suggestedJurisdiction": "federal",
+      "summary": "On 4 November 2026 the Department of Education published ministers’ agreement to restrict generative AI in primary schools and in secondary assessments.",
+      "tags": [
+        "education",
+        "generative AI"
+      ],
+      "agencies": [
+        "Department of Education"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
+      "finalUrl": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
+      "retrievedAt": "2026-11-04T21:19:19.864Z",
+      "contentType": "application/pdf",
+      "title": "A Digital Detox",
+      "publishedAt": "2026-11-04",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-11-04-education-ministers-digital-detox",
+      "date": "2026-11-04",
+      "datePrecision": "day",
+      "title": "Education Ministers publish school generative-AI restrictions",
+      "description": "The Department of Education publishes \"A Digital Detox\". Ministers agreed to restrict student use of generative AI in primary schools and in secondary assessments, with timing, scope and application set by each jurisdiction or sector.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "education-ministers-digital-detox-2026",
+      "sourceUrl": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
+          "finalUrl": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
+          "retrievedAt": "2026-11-04T21:19:19.864Z",
+          "contentType": "application/pdf",
+          "title": "A Digital Detox",
+          "publishedAt": "2026-11-04",
+          "publishedAtPrecision": "day"
+        },
+        "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
+      }
+    },
+    "updatedAt": "2026-11-04T21:19:19.864Z"
   }
 ]
