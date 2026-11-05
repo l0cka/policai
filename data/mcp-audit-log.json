@@ -1,5 +1,54 @@
 [
   {
+    "id": "mcp-audit-f7c70475-5f1b-4c1d-b6fd-587cd4839701",
+    "createdAt": "2026-11-05T00:22:12.450Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3f52b20e-d598-4e6c-a74e-2630a454e883",
+    "createdAt": "2026-11-05T00:22:12.077Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b3b22319-462d-4fc4-881c-abee5521d3ca",
+    "createdAt": "2026-11-05T00:22:10.422Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ec91d72f-e556-4d86-88f6-4d5cee7529ce",
+    "createdAt": "2026-11-05T00:22:08.048Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7b11bb36-e178-4e10-b2ec-5b63cb4769a6",
+    "createdAt": "2026-11-05T00:22:07.752Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-32ce949e-e727-42b3-b3f1-7bcd131d6bde",
+    "createdAt": "2026-11-05T00:22:00.101Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-99559348-6a1b-469b-a688-e1aefbc0c42e",
+    "createdAt": "2026-11-05T00:21:59.377Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-df215209-5ec2-4f8e-b47a-b4cc87ed2599",
     "createdAt": "2026-11-04T23:04:05.570Z",
     "actor": "local-mcp-admin",
@@ -3635,62 +3684,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4cf4ec7d-39de-4fac-b40e-69eb20b2df81",
-    "createdAt": "2026-07-19T04:19:53.852Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/ai-review-committee",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-03dec7c7-057f-43ef-b3d1-2921946035ec",
-    "createdAt": "2026-07-19T04:19:48.493Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-a1629ab8-0c54-4bbf-8018-7bce1efda41b",
-    "createdAt": "2026-07-19T04:19:31.398Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f1bab15a-c73e-4c4c-9457-2792cb44f758",
-    "createdAt": "2026-07-19T04:19:29.847Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e2ac934c-6b36-4e51-afb4-2083517416f9",
-    "createdAt": "2026-07-19T04:13:32.318Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0007/936745/Guideline-13.1-Use-of-Large-Language-Model-AI-Tools-Utilities.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4d9c6bb3-2a4b-4e6d-b1ea-0367074d8ba7",
-    "createdAt": "2026-07-19T04:12:46.940Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0004/1194340/AI_Ethics_Policy.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-9f13fe40-f598-4950-a3b2-f1c32bcd3ea7",
-    "createdAt": "2026-07-19T04:11:54.024Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0028/416647/Use-of-generative-AI-in-government-v1.0.1.pdf",
     "status": "success"
   }
 ]

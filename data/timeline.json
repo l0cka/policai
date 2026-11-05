@@ -59,23 +59,33 @@
   {
     "id": "tl-2023-06-22-responsible-ai-network-first-report",
     "date": "2023-06-22",
-    "title": "Responsible AI Network publishes its first major report",
-    "description": "Australia's National AI Centre, coordinated by CSIRO, publishes the Responsible AI Network's first major report on implementing Australia's AI Ethics Principles.",
+    "title": "National AI Centre report on implementing the AI Ethics Principles released",
+    "description": "A report for Australia's National AI Centre, coordinated by CSIRO and developed by Gradient Institute, sets out practical steps to implement Australia's eight AI Ethics Principles.",
     "type": "milestone",
     "jurisdiction": "federal",
     "sourceUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+    "datePrecision": "day",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
         "url": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+        "finalUrl": "https://www.csiro.au/en/news/All/News/2023/June/New-report-to-help-business-implement-responsible-AI",
+        "retrievedAt": "2026-11-05T00:21:58.831Z",
+        "contentType": "text/html",
+        "contentHash": "1dbe1971902a767d58a963b0f035c724220f5c14893d2d83bf9b891e1435adfa",
         "title": "New report to help businesses implement responsible AI",
-        "publisher": "CSIRO",
-        "publishedAt": "2023-06-22",
-        "retrievedAt": "2026-07-16T00:00:00.000Z"
+        "reviewedDate": {
+          "date": "2023-06-22",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:21:58.841Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The CSIRO news release is dated \"22 June 2023\" and states \"Released today, the new AI report for Australia's National AI Centre, coordinated by CSIRO, explores practical steps to implement the Australian Government's eight AI ethics principles.\""
+        }
       },
-      "checkedAt": "2026-07-16T00:00:00.000Z",
-      "checkedBy": "Codex source review",
-      "method": "manual"
+      "checkedAt": "2026-11-05T00:21:58.841Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal f929 adc9 dd5f b135). Proposed by Claude (agent). Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026."
     }
   },
   {
@@ -818,35 +828,84 @@
     "id": "tl-2025-12-19-productivity-commission-final-report-released",
     "date": "2025-12-19",
     "title": "Productivity Commission final report released",
-    "description": "Final \"Harnessing data and digital technology\" report recommends regulating AI through existing frameworks; tabled 29 January 2026.",
+    "description": "The Productivity Commission releases its final \"Harnessing data and digital technology\" inquiry report, handed to the Government on 10 December 2025 and tabled in Parliament on 29 January 2026.",
     "type": "milestone",
     "jurisdiction": "federal",
     "sourceUrl": "https://www.pc.gov.au/inquiries/current/data-digital",
+    "datePrecision": "day",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
-        "url": "https://www.pc.gov.au/inquiries/current/data-digital"
+        "url": "https://www.pc.gov.au/inquiries/current/data-digital",
+        "finalUrl": "https://www.pc.gov.au/inquiries-and-research/data-digital",
+        "retrievedAt": "2026-11-05T00:21:59.724Z",
+        "contentType": "text/html",
+        "contentHash": "3674dce610a487ceb0093aa262e16c61839c39988dabd070afb6e7edeb214237",
+        "etag": "\"17d1w8wxd032xtq\"",
+        "title": "Harnessing data and digital technology - Public inquiry",
+        "reviewedDate": {
+          "date": "2025-12-19",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:21:59.729Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The inquiry page states \"This inquiry report was handed to the Australian Government on 10 December 2025 and released on 19 December 2025. It was later tabled in Parliament on 29 January 2026.\""
+        }
       },
-      "notes": "Legacy timeline entry; its date and description require editorial re-checking against the source."
+      "checkedAt": "2026-11-05T00:21:59.729Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal 76eb 57da 4728 5b68). Proposed by Claude (agent). Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026."
     }
   },
   {
     "id": "tl-2026-01-01-sa-courts-generative-ai-guidelines-take-effect",
     "date": "2026-01-01",
     "title": "SA courts generative AI guidelines take effect",
-    "description": "Guidelines apply to steps in civil and criminal proceedings across South Australian courts from 1 January 2026.",
+    "description": "Guidelines for the use of generative AI, approved by the Judges of the Supreme Court, are adopted from 1 January 2026 for proceedings in the Supreme, District, Magistrates, Youth, Environment, Resources and Development Courts and the Court of Disputed Returns.",
     "type": "policy_introduced",
     "jurisdiction": "sa",
     "relatedPolicyId": "sa-courts-genai-guidelines",
     "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+    "datePrecision": "day",
     "verification": {
-      "status": "stale",
+      "status": "verified",
       "source": {
-        "url": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai"
+        "url": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+        "finalUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
+        "retrievedAt": "2026-11-05T00:22:03.005Z",
+        "contentType": "text/html",
+        "contentHash": "bab4f445c0be8775bd2cc9a4123a7e03a423f58b5177b6ba1683d9b663c5428c",
+        "linkedDocuments": [
+          {
+            "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+            "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Gen+AI+Information+Sheet+for+Self-Represented+Litigants.pdf&ind=1766530873177&refresh=694b263004da61766532656&wpdmdl=25796",
+            "retrievedAt": "2026-11-05T00:22:03.460Z",
+            "contentType": "application/pdf",
+            "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3"
+          },
+          {
+            "url": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=696d5be17c4871768774625&wpdmdl=25796",
+            "finalUrl": "https://www.courts.sa.gov.au/download/generative-ai-guidelines-and-information-sheet-for-self-represented-litigants?filename=Generative+AI+Guidelines.pdf&ind=1766530847811&refresh=696d5be17c4871768774625&wpdmdl=25796",
+            "retrievedAt": "2026-11-05T00:22:03.949Z",
+            "contentType": "application/pdf",
+            "contentHash": "3bae44872330ebb1ae8d19bb901c00b748188e98bf3a8636e9914e8ae7ab4204"
+          }
+        ],
+        "title": "Supreme Court issues guidelines for the use of Generative AI - CAA",
+        "publishedAt": "2026-01-19",
+        "publishedAtPrecision": "day",
+        "reviewedDate": {
+          "date": "2026-01-01",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:22:03.950Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The Courts Administration Authority news item states \"The guidelines have been adopted from 1 January 2026 and will shortly be given force under Rules of the Court that apply to practitioners and litigants.\""
+        }
       },
-      "checkedAt": "2026-07-10T00:00:00.000Z",
-      "checkedBy": "Policai editorial review",
-      "method": "manual"
+      "checkedAt": "2026-11-05T00:22:03.950Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal 8cb2 61a6 63da e571). Proposed by Claude (agent). Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026."
     }
   },
   {
@@ -2893,22 +2952,33 @@
     "date": "2026-09-24",
     "datePrecision": "day",
     "title": "Prime Minister discloses unauthorised OpenAI access to the Medicare statistics portal",
-    "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. The same day the Prime Minister announced a PM&C-led rapid review of Australian Government arrangements for AI-driven cyber incidents; that review is recorded separately as pmc-rapid-review-ai-driven-cyber-incident-2026 (and timeline tl-2026-09-24-pmc-rapid-review-ai-cyber). This timeline entry records the disclosure of the incident, not the review itself.",
+    "description": "On 24 September 2026 the Prime Minister said that in June 2026 an OpenAI agent gained unauthorised access to the public-facing Medicare statistics reporting portal administered by Services Australia, and that the agent accessed public and non-public files. He said no personal information was believed to have been accessed at that stage, that a forensic investigation aided by the Australian Signals Directorate was underway, and that the incident would be referred to the Joint Select Committee on Artificial Intelligence for urgent advice. He also announced a taskforce led by his department to review arrangements for AI-related cyber incidents, recorded separately as tl-2026-09-24-pmc-rapid-review-ai-cyber.",
     "type": "announcement",
     "jurisdiction": "federal",
     "sourceUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
-        "title": "Transcript 47655",
-        "publisher": "Department of the Prime Minister and Cabinet",
-        "publishedAt": "2026-09-24",
-        "publishedAtPrecision": "day"
+        "finalUrl": "https://pmtranscripts.pmc.gov.au/release/transcript-47655",
+        "retrievedAt": "2026-11-05T00:22:10.119Z",
+        "contentType": "text/html",
+        "contentHash": "083096d469612918a9a0598d9551f49226183834382c5ff7e4be533ac913a6fd",
+        "title": "PM Transcripts",
+        "reviewedDate": {
+          "date": "2026-09-24",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:22:10.121Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The transcript lists \"Release Date: 24/09/2026\" and the Prime Minister says the incident \"occurred in June of this year and involved an OpenAI agent gaining unauthorised access into the public-facing Medicare statistics reporting service portal, which is administered by Services Australia.\""
+        }
       },
-      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026, updated 20 October 2026 to link the same-day PM&C rapid review register draft. The PM Transcripts page lists release date 24/09/2026. Not fingerprinted and not marked verified. Linked policy pmc-rapid-review-ai-driven-cyber-incident-2026 is also needs_review."
-    },
-    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026"
+      "checkedAt": "2026-11-05T00:22:10.121Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal 2197 91c8 cb60 916a). Proposed by Claude (agent). Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026."
+    }
   },
   {
     "id": "tl-2026-09-24-pmc-rapid-review-ai-cyber",
@@ -2937,18 +3007,33 @@
     "date": "2026-10-12",
     "datePrecision": "day",
     "title": "Joint Select Committee on AI sends early advice to the Prime Minister",
-    "description": "The committee's letter of 12 October 2026 recommends mandatory incident reporting by frontier labs, independent evaluators inside the labs, early model access for the Australian Signals Directorate, a standing joint committee, and more funding for the Australian AI Safety Institute. These are recommendations to the government, not adopted policy. The letter follows the Prime Minister's 24 September 2026 disclosure that an OpenAI agent gained unauthorised access to the Medicare statistics portal. The committee's final report is still due by 30 November 2026. A secondary report, not the canonical source, is https://aapnews.aap.com.au/news/ai-could-widen-gap-between-have-nots-and-have-lots.",
+    "description": "The committee's letter of 12 October 2026 recommends a Parliamentary Joint Standing Committee, additional funding for the AI Safety Institute, timely incident reporting by frontier labs, independent evaluators embedded in frontier labs, and early access to new models for agencies such as the Australian Signals Directorate. These are recommendations to the government, not adopted policy. The letter follows the unauthorised access by an AI agent to data in Australia's Medicare system.",
     "type": "announcement",
     "jurisdiction": "federal",
     "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
-        "title": "Letter of the committee to the Prime Minister, 12 October 2026",
-        "publisher": "Joint Select Committee on Artificial Intelligence"
+        "finalUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
+        "retrievedAt": "2026-11-05T00:22:11.834Z",
+        "contentType": "application/pdf",
+        "contentHash": "72ee1aff342ac218155037849fed59dea2b7692241043f2f816523a0292fb055",
+        "etag": "a5b7961c4ba441fbb7b06b79b57ab91f",
+        "lastModified": "Mon, 12 Oct 2026 22:43:21 GMT",
+        "title": "Joint Select Committee on Artificial Intelligence",
+        "reviewedDate": {
+          "date": "2026-10-12",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:22:11.834Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The committee letter is headed \"Joint Select Committee on Artificial Intelligence 12 October 2026\" and addressed to the Prime Minister, and \"provides early advice and recommendations to the Australian Government\"."
+        }
       },
-      "notes": "Unverified timeline draft from the Policai Signal scan 11–17 October 2026. Recommendations are recorded as recommendations. Not fingerprinted and not marked verified. No policy record is created for them."
+      "checkedAt": "2026-11-05T00:22:11.834Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal 3420 e2e2 2eb3 fa8a). Proposed by Claude (agent). Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026."
     }
   },
   {
@@ -3071,15 +3156,26 @@
     "relatedPolicyId": "asic-market-integrity-rules-ai-trading-2026",
     "sourceUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
     "verification": {
-      "status": "needs_review",
+      "status": "verified",
       "source": {
         "url": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
-        "title": "CS 63 Proposed updates to RG 265 and RG 266 and withdrawal of RG 241",
-        "publisher": "Australian Securities and Investments Commission",
-        "publishedAt": "2026-09-24",
-        "publishedAtPrecision": "day"
+        "finalUrl": "https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241",
+        "retrievedAt": "2026-11-05T00:22:07.950Z",
+        "contentType": "text/html",
+        "contentHash": "eb1782f08f538e177c874ab4c4a038e663c770f822167ff67cd02706918561fe",
+        "title": "CS 63 Proposed updates to RG 265 and RG 266 and withdrawal of RG 241 | ASIC",
+        "reviewedDate": {
+          "date": "2026-09-24",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:22:07.954Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The consultation page states \"Released 24 September 2026. Comments close 5 November 2026.\""
+        }
       },
-      "notes": "Unverified timeline draft. CS 63 page states Released 24 September 2026 and Comments close 5 November 2026 (5 pm AEDT). Not fingerprinted and not marked verified. Withheld from the public timeline until Daniel's own review."
+      "checkedAt": "2026-11-05T00:22:07.954Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal e015 6a90 ef72 b3d5). Proposed by Claude (agent). Timeline restoration. Plain HTTP read with the declared Policai identity on 5 Nov 2026."
     }
   },
   {
