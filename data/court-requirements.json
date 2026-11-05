@@ -11055,7 +11055,7 @@
       "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
       "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
       "locator": "paragraph 2.3",
-      "quote": "In particular, the use of Generative AI must not undermine the Tribunal&#39;s objective in section 9 of the Act or, where relevant, the making of the correct or preferable decision in a proceeding."
+      "quote": "In particular, the use of Generative AI must not undermine the Tribunal's objective in section 9 of the Act or, where relevant, the making of the correct or preferable decision in a proceeding."
     },
     "extraction": {
       "method": "ai",
@@ -11066,7 +11066,7 @@
       "status": "verified",
       "reviewedAt": "2026-08-26T14:18:00.144Z",
       "reviewedBy": "Claude Fable",
-      "notes": "Passive construction; actor implied. The saved text contains the HTML entity '&#39;' for the apostrophe, retained verbatim. Second pass confirmed."
+      "notes": "Passive construction; actor implied. Second pass confirmed. Quote corrected on 5 Nov 2026: the stored HTML entity '&#39;' was replaced with the apostrophe the PDF prints, checked against the PDF (sha256 0c870bd4…)."
     }
   },
   {
@@ -11524,7 +11524,7 @@
       "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
       "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
       "locator": "paragraph 3.6(a)-(g)",
-      "quote": "If Generative AI tools have been used in the preparation of documents, the person responsible for the document must check, so far as relevant, that: (a) facts stated in an application for review or documents in support of an application for review are based on what the party reasonably considers can be proved and statements setting out the outcome sought from the Tribunal are based on proper legal principles; (b) legal authorities cited in submissions exist and support the proposition stated; Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026 Page 6 (c) evidence cited in submissions exists, is or will be in the materials before the Tribunal and is reasonably likely to be relevant and of assistance to the Tribunal, and references to that evidence are accurate and reliable; (d) statements about what the evidence proves are findings reasonably open for the Tribunal to make; (e) chronologies are accurate and reliable; (f) documents comply with any requirements in the Act, other applicable legislation and any applicable practice direction of the Tribunal; and (g) country information, research, and other external source material can be traced to an actual existing source that can be identified, located and reviewed."
+      "quote": "If Generative AI tools have been used in the preparation of documents, the person responsible for the document must check, so far as relevant, that: (a) facts stated in an application for review or documents in support of an application for review are based on what the party reasonably considers can be proved and statements setting out the outcome sought from the Tribunal are based on proper legal principles; (b) legal authorities cited in submissions exist and support the proposition stated; Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026 Page 5 (c) evidence cited in submissions exists, is or will be in the materials before the Tribunal and is reasonably likely to be relevant and of assistance to the Tribunal, and references to that evidence are accurate and reliable; (d) statements about what the evidence proves are findings reasonably open for the Tribunal to make; (e) chronologies are accurate and reliable; (f) documents comply with any requirements in the Act, other applicable legislation and any applicable practice direction of the Tribunal; and (g) country information, research, and other external source material can be traced to an actual existing source that can be identified, located and reviewed."
     },
     "extraction": {
       "method": "ai",
@@ -11535,7 +11535,7 @@
       "status": "verified",
       "reviewedAt": "2026-08-26T14:18:00.144Z",
       "reviewedBy": "Claude Fable",
-      "notes": "The list crosses a PDF page break; the running page header 'Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026 Page 6' sits between (b) and (c) in the extracted text and is retained so the quote stays contiguous. Second pass confirmed all seven sub-items."
+      "notes": "The list crosses a PDF page break; the running page header 'Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026 Page 6' sits between (b) and (c) in the extracted text and is retained so the quote stays contiguous. Second pass confirmed all seven sub-items. Quote corrected on 5 Nov 2026: the embedded page footer read 'Page 6' where the PDF prints 'Page 5', checked against the PDF (sha256 0c870bd4…)."
     }
   },
   {
@@ -11646,7 +11646,7 @@
       "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
       "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
       "locator": "paragraph 3.9",
-      "quote": "Accordingly, Generative AI must not be used to make up, exaggerate, change, or add to a person&#39;s evidence."
+      "quote": "Accordingly, Generative AI must not be used to make up, exaggerate, change, or add to a person's evidence."
     },
     "extraction": {
       "method": "ai",
@@ -11657,7 +11657,7 @@
       "status": "verified",
       "reviewedAt": "2026-08-26T14:18:00.144Z",
       "reviewedBy": "Claude Fable",
-      "notes": "Passive construction; actor implied. HTML entity '&#39;' retained verbatim from the saved text. Second pass confirmed."
+      "notes": "Passive construction; actor implied. Second pass confirmed. Quote corrected on 5 Nov 2026: the stored HTML entity '&#39;' was replaced with the apostrophe the PDF prints, checked against the PDF (sha256 0c870bd4…)."
     }
   },
   {
@@ -11712,7 +11712,7 @@
       "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
       "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
       "locator": "paragraph 3.11(a)-(d)",
-      "quote": "The use of Generative AI must be disclosed where Generative AI tools were used: (a) to summarise or analyse information upon which a witness relies to make a statement of fact or express an opinion; (b) to translate a statutory declaration, witness statement or other document which is relied upon as evidence in a proceeding; Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026 Page 7 (c) to create images, video recordings, sound recordings or other multimedia that are presented to the Tribunal, which should be clearly identified as having been produced using Generative AI in the highly special circumstances where the creation of such materials using Generative AI has been considered necessary for some purpose relevant to the proceedings before the Tribunal; or (d) in any other manner that might reasonably be expected to affect the relevance of that evidence or any document that is intended that the Tribunal will use or rely upon."
+      "quote": "The use of Generative AI must be disclosed where Generative AI tools were used: (a) to summarise or analyse information upon which a witness relies to make a statement of fact or express an opinion; (b) to translate a statutory declaration, witness statement or other document which is relied upon as evidence in a proceeding; Administrative Review Tribunal (Use of Generative AI) Practice Direction 2026 Page 6 (c) to create images, video recordings, sound recordings or other multimedia that are presented to the Tribunal, which should be clearly identified as having been produced using Generative AI in the highly special circumstances where the creation of such materials using Generative AI has been considered necessary for some purpose relevant to the proceedings before the Tribunal; or (d) in any other manner that might reasonably be expected to affect the relevance of that evidence or any document that is intended that the Tribunal will use or rely upon."
     },
     "extraction": {
       "method": "ai",
@@ -11723,7 +11723,7 @@
       "status": "verified",
       "reviewedAt": "2026-08-26T14:18:00.144Z",
       "reviewedBy": "Claude Fable",
-      "notes": "Passive 'must be disclosed'; actor implied. The running page header 'Page 7' sits between (b) and (c) in the extracted text and is retained for contiguity. Second pass confirmed all four triggers."
+      "notes": "Passive 'must be disclosed'; actor implied. The running page header 'Page 7' sits between (b) and (c) in the extracted text and is retained for contiguity. Second pass confirmed all four triggers. Quote corrected on 5 Nov 2026: the embedded page footer read 'Page 7' where the PDF prints 'Page 6', checked against the PDF (sha256 0c870bd4…)."
     }
   },
   {
