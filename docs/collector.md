@@ -873,6 +873,24 @@ agent, which runs `npm run passkey:add`. Until a key is registered,
 `record_decision` takes `reviewer` and the claude.ai card link as
 `attestationUrl` instead.
 
+The same gate ties published records to those signatures
+(`validateSignedRecordChanges` in `src/lib/signed-record-changes.ts`). A
+pull request that changes what readers see of a published policy, timeline
+event or development fails unless a decision signed on that branch covers the
+record. A signed source review covers the record it approved, and the record
+must match its `proposedRecord` exactly; it also covers the developments it
+promotes. A signed reconfirm batch covers its records, and may change only
+`lastReviewedAt` and the verification's `checkedAt`, `checkedBy` and `notes`.
+A record is published when the public read path would serve it as
+editorially verified (`src/lib/published-records.ts`). What readers see is
+the record's editorial revision hash, which leaves out
+`verification.lastSourceAuditAt` and source retrieval metadata. New
+unpublished records, staged reviews, collector detections, and withdrawals
+(trashed, stale or removed records) need no signature. So a correction to a
+published record needs a new staged review and a fresh passkey signature.
+Replay merged history through the rule with
+`npx tsx scripts/replay-signed-record-check.ts --limit=15`.
+
 Server-fetchable sources are fetched again at decision time, and approval
 refuses if their fingerprint moved since staging. When that re-fetch is
 refused by the host (HTTP 403, HTTP 429, or an equivalent `identity_refused`
