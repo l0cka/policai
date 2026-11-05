@@ -8005,7 +8005,7 @@
     ],
     "createdAt": "2026-08-20T00:00:00Z",
     "updatedAt": "2026-08-24T23:32:02.000Z",
-    "lastReviewedAt": "2026-08-24T23:32:02.000Z",
+    "lastReviewedAt": "2026-11-05T03:51:26.703Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8019,10 +8019,11 @@
         "contentType": "application/pdf",
         "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
       },
-      "checkedAt": "2026-08-24T23:32:02.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T03:51:26.703Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the signed practice direction PDF from the Tribunal's official site, fingerprinted it, and read it in full against the Tribunal's announcement of 24 August 2026 before creating this record."
+      "notes": "Retrieved the signed practice direction PDF from the Tribunal's official site, fingerprinted it, and read it in full against the Tribunal's announcement of 24 August 2026 before creating this record. Re-confirmed in batch 2026-11-05-1 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-24.",
+      "lastSourceAuditAt": "2026-11-05T02:53:42.541Z"
     },
     "dates": [
       {
@@ -8082,25 +8083,31 @@
       "transparency-disclosure"
     ],
     "createdAt": "2026-08-24T00:00:00Z",
-    "updatedAt": "2026-08-24T23:32:02.000Z",
-    "lastReviewedAt": "2026-08-24T23:32:02.000Z",
+    "updatedAt": "2026-11-05T00:22:12.222Z",
+    "lastReviewedAt": "2026-11-05T00:22:12.222Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
         "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
-        "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
-        "publisher": "Fair Work Commission",
-        "retrievedAt": "2026-08-24T23:30:00.000Z",
-        "publishedAt": "2026-08-24",
-        "publishedAtPrecision": "day",
+        "retrievedAt": "2026-11-05T00:22:12.222Z",
         "contentType": "application/pdf",
-        "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55"
+        "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+        "etag": "W/\"0x8DF018222EA6529\"",
+        "lastModified": "Mon, 24 Aug 2026 01:50:55 GMT",
+        "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
+        "reviewedDate": {
+          "date": "2026-10-20",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T00:22:12.222Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Paragraph 5 of the guidance note states \"This Guidance Note commences on 20 October 2026.\" Every page footer reads \"Published: 24 August 2026\"."
+        }
       },
-      "checkedAt": "2026-08-24T23:32:02.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T00:22:12.222Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the published guidance note PDF from the Commission's official site, fingerprinted it, and read it in full against the Commission's GenAI landing page at fwc.gov.au/genai before creating this record."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-04-1, proposal 78a6 4c0c 637b 8f04). Proposed by Claude (agent). Register full review. Plain HTTP read of the guidance note PDF with the declared Policai identity on 5 Nov 2026; the PDF is byte-identical to the version verified on 24 Aug 2026."
     },
     "dates": [
       {
@@ -8111,19 +8118,18 @@
         "source": {
           "url": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
           "finalUrl": "https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf",
-          "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
-          "publisher": "Fair Work Commission",
-          "retrievedAt": "2026-08-24T23:30:00.000Z",
-          "publishedAt": "2026-08-24",
-          "publishedAtPrecision": "day",
+          "retrievedAt": "2026-11-05T00:22:12.222Z",
           "contentType": "application/pdf",
           "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+          "etag": "W/\"0x8DF018222EA6529\"",
+          "lastModified": "Mon, 24 Aug 2026 01:50:55 GMT",
+          "title": "Guidance note - Use of generative artificial intelligence in Commission cases",
           "reviewedDate": {
             "date": "2026-10-20",
             "precision": "day",
-            "reviewedAt": "2026-08-24T23:32:02.000Z",
-            "reviewedBy": "Policai editorial source review",
-            "notes": "Paragraph 5 of the guidance note states that it commences on 20 October 2026, and the Commission's GenAI page states the requirements apply to all Commission matters from that date."
+            "reviewedAt": "2026-11-05T00:22:12.222Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Paragraph 5 of the guidance note states \"This Guidance Note commences on 20 October 2026.\" Every page footer reads \"Published: 24 August 2026\"."
           }
         }
       },
