@@ -88,18 +88,18 @@
   },
   {
     "id": "dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
-    "title": "Victorian Generative AI Guideline Made",
+    "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
     "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
     "sourceId": "vic-ai",
     "sourceName": "vic.gov.au — generative AI guidance",
     "jurisdiction": "vic",
     "detectedAt": "2026-10-27T19:30:32.288Z",
-    "summary": "The Secretary of the Department of Premier and Cabinet makes the administrative guideline for safe and responsible generative AI use in the Victorian public sector.",
+    "summary": "Current Victorian public-sector guidance on the safe and responsible use of generative AI.",
     "relevanceScore": 1,
     "classification": "curated",
     "assessment": {
       "method": "editorial",
-      "assessedAt": "2026-11-01T11:03:01.049Z",
+      "assessedAt": "2026-11-05T22:01:42.878Z",
       "promptVersion": "editorial-review-v1"
     },
     "verification": {
@@ -107,42 +107,48 @@
       "source": {
         "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
         "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-        "retrievedAt": "2026-11-01T11:03:00.905Z",
+        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "retrievedAt": "2026-11-05T02:05:08.991Z",
         "contentType": "text/html",
-        "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
+        "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
         "linkedDocuments": [
           {
             "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
             "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-            "retrievedAt": "2026-11-01T11:03:01.029Z",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "application/pdf",
-            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
-            "etag": "\"2e976-612c9a53ad71b\"",
-            "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
           },
           {
             "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
             "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-            "retrievedAt": "2026-11-01T11:03:01.048Z",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "application/pdf",
-            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
-            "etag": "\"67480ace-1e00c\"",
-            "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
           }
         ],
-        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-05T02:05:08.991Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+          "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+          "characterCount": 15157
+        },
         "reviewedDate": {
           "date": "2024-11-27",
           "precision": "day",
-          "reviewedAt": "2026-11-01T11:03:01.049Z",
+          "reviewedAt": "2026-11-05T22:01:42.878Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+          "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
         }
       },
-      "checkedAt": "2026-11-01T11:03:01.049Z",
+      "checkedAt": "2026-11-05T22:01:42.878Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal ca4883b2). Proposed by Claude (agent). Retrieved through the standard declared-identity path."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal f5dd 1941 32ed d850). Proposed by Claude (agent). Republish unchanged: the live source matches the verified baseline; the 27 Oct change was a reading without the guideline PDF.",
+      "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2024-11-27-victorian-generative-ai-guideline-published",

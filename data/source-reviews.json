@@ -4341,7 +4341,7 @@
     "entryKind": "policy",
     "targetPolicyId": "victoria-genai-guideline-vps",
     "targetPolicyBaseRevisionHash": "c739a70646eb436494ea27e54f5ec91388855cbfea634b590724a431846a7147",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-10-27T19:30:32.288Z",
     "createdBy": "collector",
     "notes": "Re-verification of the 27 Oct 2026 collector change (3 Nov 2026 audit; Daniel approved resolving it on 5 Nov 2026). The 27 Oct reading lacked the guideline PDF. On 5 Nov 2026 the page again reads 'Updated 12 February 2025', links the same guideline PDF and PROV policy, and the live fingerprint matches the verified baseline (6013a3f6). Both PDFs hash-match the verified evidence. Record republished unchanged with fresh evidence. Prepared by Claude (agent).",
@@ -4392,6 +4392,13 @@
         "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
         "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
         "characterCount": 15157
+      },
+      "reviewedDate": {
+        "date": "2024-11-27",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:42.878Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
       }
     },
     "proposedRecord": {
@@ -4419,7 +4426,7 @@
         "public-sector"
       ],
       "createdAt": "2026-04-06T16:50:00Z",
-      "updatedAt": "2026-08-07T05:10:38.082Z",
+      "updatedAt": "2026-11-05T22:01:42.878Z",
       "dates": [
         {
           "type": "published",
@@ -4429,40 +4436,94 @@
           "source": {
             "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
             "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-            "retrievedAt": "2026-08-07T05:10:37.597Z",
+            "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "text/html",
-            "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
+            "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
             "linkedDocuments": [
               {
                 "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
                 "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-                "retrievedAt": "2026-08-07T05:10:37.989Z",
+                "retrievedAt": "2026-11-05T02:05:08.991Z",
                 "contentType": "application/pdf",
-                "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
-                "etag": "\"2e976-612c9a53ad71b\"",
-                "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+                "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
               },
               {
                 "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
                 "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-                "retrievedAt": "2026-08-07T05:10:38.082Z",
+                "retrievedAt": "2026-11-05T02:05:08.991Z",
                 "contentType": "application/pdf",
-                "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
-                "etag": "\"67480ace-1e00c\"",
-                "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+                "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
               }
             ],
-            "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-05T02:05:08.991Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+              "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+              "characterCount": 15157
+            },
             "reviewedDate": {
               "date": "2024-11-27",
               "precision": "day",
-              "reviewedAt": "2026-08-07T05:10:38.082Z",
-              "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-              "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
+              "reviewedAt": "2026-11-05T22:01:42.878Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
             }
           }
         }
-      ]
+      ],
+      "lastReviewedAt": "2026-11-05T22:01:42.878Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "retrievedAt": "2026-11-05T02:05:08.991Z",
+          "contentType": "text/html",
+          "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
+          "linkedDocuments": [
+            {
+              "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
+              "retrievedAt": "2026-11-05T02:05:08.991Z",
+              "contentType": "application/pdf",
+              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
+            },
+            {
+              "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "retrievedAt": "2026-11-05T02:05:08.991Z",
+              "contentType": "application/pdf",
+              "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:05:08.991Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+            "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+            "characterCount": 15157
+          },
+          "reviewedDate": {
+            "date": "2024-11-27",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:42.878Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:42.878Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal f5dd 1941 32ed d850). Proposed by Claude (agent). Republish unchanged: the live source matches the verified baseline; the 27 Oct change was a reading without the guideline PDF.",
+        "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
+      }
     },
     "linkedDevelopment": {
       "id": "dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
@@ -4472,7 +4533,7 @@
       "sourceName": "vic.gov.au — generative AI guidance",
       "jurisdiction": "vic",
       "detectedAt": "2026-10-27T19:30:32.288Z",
-      "summary": "The official source content for \"Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "summary": "Current Victorian public-sector guidance on the safe and responsible use of generative AI.",
       "relevanceScore": 1,
       "classification": "heuristic",
       "assessment": {
@@ -4485,27 +4546,50 @@
         "source": {
           "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
           "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-          "retrievedAt": "2026-10-27T19:30:32.288Z",
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "retrievedAt": "2026-11-05T02:05:08.991Z",
           "contentType": "text/html",
-          "contentHash": "54775b266d9b146bc47156631b767c2bf901045fb7ee89f0631101dae33fe32f",
+          "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
           "linkedDocuments": [
             {
               "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
               "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-              "retrievedAt": "2026-10-27T19:30:32.288Z",
+              "retrievedAt": "2026-11-05T02:05:08.991Z",
               "contentType": "application/pdf",
-              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
-              "etag": "\"2e976-612c9a53ad71b\"",
-              "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
+            },
+            {
+              "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
+              "retrievedAt": "2026-11-05T02:05:08.991Z",
+              "contentType": "application/pdf",
+              "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
             }
           ],
-          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector"
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:05:08.991Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+            "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+            "characterCount": 15157
+          },
+          "reviewedDate": {
+            "date": "2024-11-27",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:42.878Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
+          }
         }
       },
-      "status": "detected"
+      "status": "detected",
+      "publishedAt": "2024-11-27",
+      "publishedAtPrecision": "day"
     },
     "sourceVersionSequence": 2,
-    "updatedAt": "2026-11-05T02:05:22.112Z",
+    "updatedAt": "2026-11-05T22:01:42.937Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -4515,7 +4599,61 @@
       },
       "notes": "Republish unchanged: the live source matches the verified baseline; the 27 Oct change was a reading without the guideline PDF.",
       "proposedAt": "2026-11-05T02:05:22.112Z"
-    }
+    },
+    "targetPolicyRevisionHash": "c739a70646eb436494ea27e54f5ec91388855cbfea634b590724a431846a7147",
+    "reviewedAt": "2026-11-05T22:01:42.878Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal f5dd 1941 32ed d850). Proposed by Claude (agent). Republish unchanged: the live source matches the verified baseline; the 27 Oct change was a reading without the guideline PDF.",
+    "decision": {
+      "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:42.927Z"
   },
   {
     "id": "source-review-follow-federal-online-safety-relevant-electronic-services-industry-standard-2024-e714ea14ecf93702",
@@ -33117,7 +33255,7 @@
     "entryKind": "policy",
     "targetPolicyId": "vic-ovic-enterprise-generative-ai-guidance",
     "targetPolicyBaseRevisionHash": "543401e1f05350d80cec5d2846885ebf260810f8dc587f2853c8ea8cf5d1642d",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-05T02:07:21.174Z",
     "createdBy": "local-mcp-admin",
     "notes": "Correction from the 3 Nov 2026 audit, approved by Daniel on 5 Nov 2026: bare URLs removed from the reader-facing content (replaced with words; the page renders content as plain text, so links would not be clickable). No other change. Prepared by Claude (agent).",
@@ -33137,14 +33275,14 @@
     "sourceEvidence": {
       "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
       "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
-      "retrievedAt": "2026-11-05T02:07:20.913Z",
+      "retrievedAt": "2026-11-05T22:01:46.862Z",
       "contentType": "text/html",
       "contentHash": "d5caad2d61c1560c9790e8355d7d10c13ce6291843ae1ca694da232dc1b28d53",
       "linkedDocuments": [
         {
           "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
           "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-          "retrievedAt": "2026-11-05T02:07:20.967Z",
+          "retrievedAt": "2026-11-05T22:01:46.921Z",
           "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774",
           "etag": "\"2fd30-65522f10ab252\"",
@@ -33153,14 +33291,21 @@
         {
           "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
           "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-          "retrievedAt": "2026-11-05T02:07:20.995Z",
+          "retrievedAt": "2026-11-05T22:01:46.968Z",
           "contentType": "application/pdf",
           "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910",
           "etag": "\"2d1ce-65522ef7bfb50\"",
           "lastModified": "Fri, 26 Jun 2026 07:19:55 GMT"
         }
       ],
-      "title": "Use of enterprise Generative AI tools in the Victorian public sector"
+      "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+      "reviewedDate": {
+        "date": "2026-06-26",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:46.968Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
+      }
     },
     "proposedRecord": {
       "id": "vic-ovic-enterprise-generative-ai-guidance",
@@ -33179,40 +33324,36 @@
           "source": {
             "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
             "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
-            "title": "Use of enterprise Generative AI tools in the Victorian public sector",
-            "retrievedAt": "2026-07-24T02:35:46.125Z",
+            "retrievedAt": "2026-11-05T22:01:46.862Z",
             "contentType": "text/html",
-            "contentHash": "bb501314ff02225c567f97f1dd0eb76090f43bf3641272147ffd6f4f4f9f9848",
+            "contentHash": "d5caad2d61c1560c9790e8355d7d10c13ce6291843ae1ca694da232dc1b28d53",
             "linkedDocuments": [
               {
                 "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
                 "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-                "retrievedAt": "2026-07-24T02:35:46.125Z",
+                "retrievedAt": "2026-11-05T22:01:46.921Z",
                 "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774"
+                "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774",
+                "etag": "\"2fd30-65522f10ab252\"",
+                "lastModified": "Fri, 26 Jun 2026 07:20:21 GMT"
               },
               {
                 "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
                 "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-                "retrievedAt": "2026-07-24T02:35:46.125Z",
+                "retrievedAt": "2026-11-05T22:01:46.968Z",
                 "contentType": "application/pdf",
-                "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910"
+                "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910",
+                "etag": "\"2d1ce-65522ef7bfb50\"",
+                "lastModified": "Fri, 26 Jun 2026 07:19:55 GMT"
               }
             ],
-            "browserCapture": {
-              "method": "browser",
-              "capturedAt": "2026-07-24T02:35:46.125Z",
-              "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-              "notes": "Fresh official OVIC source revalidation on 24 July 2026; the displayed guidance and exact linked DOCX and PDF bytes were inspected before applying the approved restoration.",
-              "pageContentHash": "424d93904d0fddc5bc546328b05cd7a0e57d8560bc4c2ee8ce2c804a3e032aa2",
-              "characterCount": 22404
-            },
+            "title": "Use of enterprise Generative AI tools in the Victorian public sector",
             "reviewedDate": {
               "date": "2026-06-26",
               "precision": "day",
-              "reviewedAt": "2026-07-24T02:35:49.530Z",
-              "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-              "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
+              "reviewedAt": "2026-11-05T22:01:46.968Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
             }
           }
         }
@@ -33237,9 +33378,52 @@
         "public-sector"
       ],
       "createdAt": "2026-07-22T12:48:46.496Z",
-      "updatedAt": "2026-07-24T02:35:49.530Z"
+      "updatedAt": "2026-11-05T22:01:46.968Z",
+      "lastReviewedAt": "2026-11-05T22:01:46.968Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+          "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+          "retrievedAt": "2026-11-05T22:01:46.862Z",
+          "contentType": "text/html",
+          "contentHash": "d5caad2d61c1560c9790e8355d7d10c13ce6291843ae1ca694da232dc1b28d53",
+          "linkedDocuments": [
+            {
+              "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+              "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+              "retrievedAt": "2026-11-05T22:01:46.921Z",
+              "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774",
+              "etag": "\"2fd30-65522f10ab252\"",
+              "lastModified": "Fri, 26 Jun 2026 07:20:21 GMT"
+            },
+            {
+              "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+              "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+              "retrievedAt": "2026-11-05T22:01:46.968Z",
+              "contentType": "application/pdf",
+              "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910",
+              "etag": "\"2d1ce-65522ef7bfb50\"",
+              "lastModified": "Fri, 26 Jun 2026 07:19:55 GMT"
+            }
+          ],
+          "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+          "reviewedDate": {
+            "date": "2026-06-26",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:46.968Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:46.968Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 5bd8 5e9d f7cc fab8). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
+      }
     },
-    "updatedAt": "2026-11-05T02:09:57.547Z",
+    "updatedAt": "2026-11-05T22:01:47.987Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -33249,7 +33433,61 @@
       },
       "notes": "Text correction only: bare URLs removed from content.",
       "proposedAt": "2026-11-05T02:09:57.547Z"
-    }
+    },
+    "targetPolicyRevisionHash": "543401e1f05350d80cec5d2846885ebf260810f8dc587f2853c8ea8cf5d1642d",
+    "reviewedAt": "2026-11-05T22:01:46.968Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 5bd8 5e9d f7cc fab8). Proposed by Claude (agent). Text correction only: bare URLs removed from content.",
+    "decision": {
+      "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:47.978Z"
   },
   {
     "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
@@ -33258,7 +33496,7 @@
     "entryKind": "policy",
     "targetPolicyId": "asic-market-integrity-rules-ai-trading-2026",
     "targetPolicyBaseRevisionHash": "51d7448718e1ec332b07c05de30cfff2295765ad5fd71c3b0b97f46c6f9c1184",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-05T02:09:07.886Z",
     "createdBy": "local-mcp-admin",
     "notes": "Correction from the 3 Nov 2026 audit, approved by Daniel on 5 Nov 2026: bare URLs removed from the reader-facing content (replaced with words; the page renders content as plain text, so links would not be clickable). No other change. Prepared by Claude (agent).",
@@ -33274,10 +33512,17 @@
     "sourceEvidence": {
       "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
       "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-      "retrievedAt": "2026-11-05T02:09:07.877Z",
+      "retrievedAt": "2026-11-05T22:01:48.129Z",
       "contentType": "text/html",
       "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
-      "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC"
+      "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
+      "reviewedDate": {
+        "date": "2026-09-15",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:48.131Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Unchanged from the verified record: the Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026; the media release reports ASIC has made the amendments."
+      }
     },
     "proposedRecord": {
       "id": "asic-market-integrity-rules-ai-trading-2026",
@@ -33296,16 +33541,16 @@
           "source": {
             "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
             "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-            "retrievedAt": "2026-10-22T06:08:03.318Z",
+            "retrievedAt": "2026-11-05T22:01:48.129Z",
             "contentType": "text/html",
             "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
             "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
             "reviewedDate": {
               "date": "2026-09-15",
               "precision": "day",
-              "reviewedAt": "2026-10-22T06:08:03.324Z",
+              "reviewedAt": "2026-11-05T22:01:48.131Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "The media release reports ASIC has made amendments to both sets of rules. The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026."
+              "notes": "Unchanged from the verified record: the Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026; the media release reports ASIC has made the amendments."
             }
           }
         },
@@ -33414,7 +33659,7 @@
         "automated-decisions"
       ],
       "createdAt": "2026-10-19T08:35:00.000Z",
-      "updatedAt": "2026-10-22T06:08:03.324Z",
+      "updatedAt": "2026-11-05T22:01:48.131Z",
       "legislative": {
         "kind": "instrument",
         "ref": {
@@ -33460,9 +33705,32 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-11-05T22:01:48.131Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+          "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+          "retrievedAt": "2026-11-05T22:01:48.129Z",
+          "contentType": "text/html",
+          "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
+          "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
+          "reviewedDate": {
+            "date": "2026-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:48.131Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Unchanged from the verified record: the Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026; the media release reports ASIC has made the amendments."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:48.131Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 47c8 7d1d 3cf9 fea9). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
       }
     },
-    "updatedAt": "2026-11-05T02:09:58.553Z",
+    "updatedAt": "2026-11-05T22:01:48.207Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -33472,7 +33740,61 @@
       },
       "notes": "Text correction only: bare URLs removed from content.",
       "proposedAt": "2026-11-05T02:09:58.553Z"
-    }
+    },
+    "targetPolicyRevisionHash": "51d7448718e1ec332b07c05de30cfff2295765ad5fd71c3b0b97f46c6f9c1184",
+    "reviewedAt": "2026-11-05T22:01:48.131Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 47c8 7d1d 3cf9 fea9). Proposed by Claude (agent). Text correction only: bare URLs removed from content.",
+    "decision": {
+      "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:48.200Z"
   },
   {
     "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
@@ -33481,7 +33803,7 @@
     "entryKind": "policy",
     "targetPolicyId": "afp-ai-strategy-2026-28",
     "targetPolicyBaseRevisionHash": "a5fa40f94ba00226be73ac722073cc1e1a61c44303ec3b9c4cdb22e56fd88466",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-05T02:05:31.798Z",
     "createdBy": "local-mcp-admin",
     "notes": "Correction from the 3 Nov 2026 audit, approved by Daniel on 5 Nov 2026: bare URLs removed from the reader-facing content (replaced with words; the page renders content as plain text, so links would not be clickable). No other change. Prepared by Claude (agent).",
@@ -33499,23 +33821,30 @@
     "sourceEvidence": {
       "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
       "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-      "retrievedAt": "2026-11-05T02:05:31.372Z",
+      "retrievedAt": "2026-11-05T22:01:43.100Z",
       "contentType": "text/html",
       "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
-      "etag": "W/\"1793840423\"",
-      "lastModified": "Thu, 05 Nov 2026 01:00:23 GMT",
+      "etag": "W/\"1793915822\"",
+      "lastModified": "Thu, 05 Nov 2026 21:57:02 GMT",
       "linkedDocuments": [
         {
           "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
           "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-          "retrievedAt": "2026-11-05T02:05:31.474Z",
+          "retrievedAt": "2026-11-05T22:01:43.237Z",
           "contentType": "application/pdf",
           "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
           "etag": "\"6a977966-33b269\"",
           "lastModified": "Wed, 02 Sep 2026 01:18:30 GMT"
         }
       ],
-      "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police"
+      "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
+      "reviewedDate": {
+        "date": "2026-09-02",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:43.239Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Rechecked 5 Nov 2026: the AFP publications listing shows '02 Sep 2026' on the Artificial Intelligence Strategy 2026-28 card; the publication page itself states no date. Unchanged from the verified record."
+      }
     },
     "proposedRecord": {
       "id": "afp-ai-strategy-2026-28",
@@ -33544,7 +33873,7 @@
         "human-oversight"
       ],
       "createdAt": "2026-11-02T05:18:15.869Z",
-      "updatedAt": "2026-11-02T05:50:13.061Z",
+      "updatedAt": "2026-11-05T22:01:43.239Z",
       "dates": [
         {
           "type": "published",
@@ -33554,16 +33883,16 @@
           "source": {
             "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
             "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-            "retrievedAt": "2026-11-02T05:50:12.941Z",
+            "retrievedAt": "2026-11-05T22:01:43.100Z",
             "contentType": "text/html",
             "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
-            "etag": "W/\"1793592645\"",
-            "lastModified": "Mon, 02 Nov 2026 04:10:45 GMT",
+            "etag": "W/\"1793915822\"",
+            "lastModified": "Thu, 05 Nov 2026 21:57:02 GMT",
             "linkedDocuments": [
               {
                 "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
                 "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-                "retrievedAt": "2026-11-02T05:50:13.058Z",
+                "retrievedAt": "2026-11-05T22:01:43.237Z",
                 "contentType": "application/pdf",
                 "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
                 "etag": "\"6a977966-33b269\"",
@@ -33574,15 +33903,51 @@
             "reviewedDate": {
               "date": "2026-09-02",
               "precision": "day",
-              "reviewedAt": "2026-11-02T05:50:13.061Z",
+              "reviewedAt": "2026-11-05T22:01:43.239Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+              "notes": "Rechecked 5 Nov 2026: the AFP publications listing shows '02 Sep 2026' on the Artificial Intelligence Strategy 2026-28 card; the publication page itself states no date. Unchanged from the verified record."
             }
           }
         }
-      ]
+      ],
+      "lastReviewedAt": "2026-11-05T22:01:43.239Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+          "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+          "retrievedAt": "2026-11-05T22:01:43.100Z",
+          "contentType": "text/html",
+          "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
+          "etag": "W/\"1793915822\"",
+          "lastModified": "Thu, 05 Nov 2026 21:57:02 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+              "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
+              "retrievedAt": "2026-11-05T22:01:43.237Z",
+              "contentType": "application/pdf",
+              "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
+              "etag": "\"6a977966-33b269\"",
+              "lastModified": "Wed, 02 Sep 2026 01:18:30 GMT"
+            }
+          ],
+          "title": "Artificial Intelligence Strategy 2026-28 | Australian Federal Police",
+          "reviewedDate": {
+            "date": "2026-09-02",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:43.239Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 5 Nov 2026: the AFP publications listing shows '02 Sep 2026' on the Artificial Intelligence Strategy 2026-28 card; the publication page itself states no date. Unchanged from the verified record."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:43.239Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal b91d b0fe 132d 137b). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
+      }
     },
-    "updatedAt": "2026-11-05T02:09:55.774Z",
+    "updatedAt": "2026-11-05T22:01:43.787Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -33592,7 +33957,61 @@
       },
       "notes": "Text correction only: bare URLs removed from content.",
       "proposedAt": "2026-11-05T02:09:55.774Z"
-    }
+    },
+    "targetPolicyRevisionHash": "a5fa40f94ba00226be73ac722073cc1e1a61c44303ec3b9c4cdb22e56fd88466",
+    "reviewedAt": "2026-11-05T22:01:43.239Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal b91d b0fe 132d 137b). Proposed by Claude (agent). Text correction only: bare URLs removed from content.",
+    "decision": {
+      "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:43.777Z"
   },
   {
     "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
@@ -33601,7 +34020,7 @@
     "entryKind": "policy",
     "targetPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
     "targetPolicyBaseRevisionHash": "7c1976b61e89e03b39b3ce26c3c9cd6b1c324394c46b245fe1c719b56c67fa28",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-05T02:11:55.155Z",
     "createdBy": "local-mcp-admin",
     "notes": "Correction from the 3 Nov 2026 audit, approved by Daniel on 5 Nov 2026: bare URLs removed from the reader-facing content (replaced with words). The bill page still shows the progress the record states (third reading agreed 28 Oct 2026 with amendments). No other change. Prepared by Claude (agent).",
@@ -33639,6 +34058,13 @@
         "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
         "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
         "characterCount": 5793
+      },
+      "reviewedDate": {
+        "date": "2026-10-15",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:48.258Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
       }
     },
     "proposedRecord": {
@@ -33658,26 +34084,26 @@
           "source": {
             "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
             "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
-            "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
-            "retrievedAt": "2026-10-29T21:08:00.000Z",
+            "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+            "retrievedAt": "2026-11-05T02:11:55.127Z",
             "contentType": "text/html",
-            "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
+            "contentHash": "ce61339ed67cbb14bdd0fbd32ccfa39908ad71e52d276ca2ccdb37849ffd97a5",
             "linkedDocuments": [],
             "browserCapture": {
               "method": "browser",
-              "capturedAt": "2026-10-29T21:08:00.000Z",
-              "capturedBy": "Cursor agent",
-              "requestedBy": "Policai Signal",
-              "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
-              "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
-              "characterCount": 6528
+              "capturedAt": "2026-11-05T02:11:55.127Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+              "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
+              "characterCount": 5793
             },
             "reviewedDate": {
               "date": "2026-10-15",
               "precision": "day",
-              "reviewedAt": "2026-10-31T05:30:43.928Z",
+              "reviewedAt": "2026-11-05T22:01:48.258Z",
               "reviewedBy": "Daniel Alkurdi",
-              "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
+              "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
             }
           }
         },
@@ -33733,7 +34159,7 @@
         "ai-governance"
       ],
       "createdAt": "2026-10-17T09:00:00.000Z",
-      "updatedAt": "2026-10-31T05:30:43.928Z",
+      "updatedAt": "2026-11-05T22:01:48.258Z",
       "legislative": {
         "kind": "bill",
         "ref": {
@@ -33782,9 +34208,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-11-05T22:01:48.258Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+          "retrievedAt": "2026-11-05T02:11:55.127Z",
+          "contentType": "text/html",
+          "contentHash": "ce61339ed67cbb14bdd0fbd32ccfa39908ad71e52d276ca2ccdb37849ffd97a5",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:11:55.127Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+            "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
+            "characterCount": 5793
+          },
+          "reviewedDate": {
+            "date": "2026-10-15",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:48.258Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:48.258Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal dced fc81 db25 9bdd). Proposed by Claude (agent)."
       }
     },
-    "updatedAt": "2026-11-05T02:12:03.849Z",
+    "updatedAt": "2026-11-05T22:01:48.298Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -33793,7 +34252,61 @@
         "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
       },
       "proposedAt": "2026-11-05T02:12:03.849Z"
-    }
+    },
+    "targetPolicyRevisionHash": "7c1976b61e89e03b39b3ce26c3c9cd6b1c324394c46b245fe1c719b56c67fa28",
+    "reviewedAt": "2026-11-05T22:01:48.258Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal dced fc81 db25 9bdd). Proposed by Claude (agent).",
+    "decision": {
+      "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:48.292Z"
   },
   {
     "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
@@ -33802,7 +34315,7 @@
     "entryKind": "policy",
     "targetPolicyId": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025",
     "targetPolicyBaseRevisionHash": "50a505e307ae4eb8c9863bc3b8d54bc934e6d51fe765d8d7417e9cda55231093",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-05T02:11:55.819Z",
     "createdBy": "local-mcp-admin",
     "notes": "Correction from the 3 Nov 2026 audit, approved by Daniel on 5 Nov 2026: the primary date was the 25 June 2026 Hansard debate; it is now the introduction date, 24 November 2025, from the bill home page Progress table. Content replaced: it held scraped ParlInfo navigation instead of a summary; it now states the bill page summary and current stage (Before Senate). Prepared by Claude (agent).",
@@ -33839,6 +34352,13 @@
         "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
         "pageContentHash": "08dc0404b44a9220371831180b52f5a0dd6d25f63ab909c686eaec1abbbbff98",
         "characterCount": 4002
+      },
+      "reviewedDate": {
+        "date": "2025-11-24",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:48.350Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Bill home page (bId s1471) captured 5 Nov 2026: Progress, Senate, 'Introduced and read a first time 24 Nov 2025'; 'Second reading moved 24 Nov 2025'; 'Second reading debate 25 Jun 2026'; Status 'Before Senate'. The primary date is the introduction day, replacing the 25 June 2026 debate date."
       }
     },
     "proposedRecord": {
@@ -33854,7 +34374,32 @@
           "type": "published",
           "date": "2025-11-24",
           "precision": "day",
-          "primary": true
+          "primary": true,
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+            "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+            "retrievedAt": "2026-11-05T02:11:55.793Z",
+            "contentType": "text/html",
+            "contentHash": "0f0cf060bf5df0ea7e64216713c8092fa38759ca062aaaa5260739a0e643d5a0",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-05T02:11:55.793Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+              "pageContentHash": "08dc0404b44a9220371831180b52f5a0dd6d25f63ab909c686eaec1abbbbff98",
+              "characterCount": 4002
+            },
+            "reviewedDate": {
+              "date": "2025-11-24",
+              "precision": "day",
+              "reviewedAt": "2026-11-05T22:01:48.350Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Bill home page (bId s1471) captured 5 Nov 2026: Progress, Senate, 'Introduced and read a first time 24 Nov 2025'; 'Second reading moved 24 Nov 2025'; 'Second reading debate 25 Jun 2026'; Status 'Before Senate'. The primary date is the introduction day, replacing the 25 June 2026 debate date."
+            }
+          }
         }
       ],
       "agencies": [
@@ -33871,7 +34416,7 @@
         "Parliament"
       ],
       "createdAt": "2026-10-07T19:33:43.055Z",
-      "updatedAt": "2026-10-19T09:22:36.725Z",
+      "updatedAt": "2026-11-05T22:01:48.350Z",
       "themes": [
         "online-safety",
         "privacy-data"
@@ -33897,9 +34442,42 @@
             }
           }
         ]
+      },
+      "lastReviewedAt": "2026-11-05T22:01:48.350Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+          "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
+          "retrievedAt": "2026-11-05T02:11:55.793Z",
+          "contentType": "text/html",
+          "contentHash": "0f0cf060bf5df0ea7e64216713c8092fa38759ca062aaaa5260739a0e643d5a0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:11:55.793Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+            "pageContentHash": "08dc0404b44a9220371831180b52f5a0dd6d25f63ab909c686eaec1abbbbff98",
+            "characterCount": 4002
+          },
+          "reviewedDate": {
+            "date": "2025-11-24",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:48.350Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Bill home page (bId s1471) captured 5 Nov 2026: Progress, Senate, 'Introduced and read a first time 24 Nov 2025'; 'Second reading moved 24 Nov 2025'; 'Second reading debate 25 Jun 2026'; Status 'Before Senate'. The primary date is the introduction day, replacing the 25 June 2026 debate date."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:48.350Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 42cd 2ff9 27c2 43ce). Proposed by Claude (agent). Introduction date and current stage corrected."
       }
     },
-    "updatedAt": "2026-11-05T02:14:01.520Z",
+    "updatedAt": "2026-11-05T22:01:48.392Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -33992,7 +34570,61 @@
       },
       "notes": "Introduction date and current stage corrected.",
       "proposedAt": "2026-11-05T02:14:01.520Z"
-    }
+    },
+    "targetPolicyRevisionHash": "50a505e307ae4eb8c9863bc3b8d54bc934e6d51fe765d8d7417e9cda55231093",
+    "reviewedAt": "2026-11-05T22:01:48.350Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 42cd 2ff9 27c2 43ce). Proposed by Claude (agent). Introduction date and current stage corrected.",
+    "decision": {
+      "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:48.385Z"
   },
   {
     "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
@@ -34001,7 +34633,7 @@
     "entryKind": "policy",
     "targetPolicyId": "vic-ovic-public-generative-ai-guidance",
     "targetPolicyBaseRevisionHash": "43fa61f9fb3fd32761579129149f6adf74fbb26d52e2559ea7c9f2fd15a8c3ef",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-05T02:07:19.151Z",
     "createdBy": "local-mcp-admin",
     "notes": "Correction from the 3 Nov 2026 audit, approved by Daniel on 5 Nov 2026: bare URLs removed from the reader-facing content (replaced with words; the page renders content as plain text, so links would not be clickable). No other change. Prepared by Claude (agent).",
@@ -34020,14 +34652,14 @@
     "sourceEvidence": {
       "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
       "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
-      "retrievedAt": "2026-11-05T02:07:18.777Z",
+      "retrievedAt": "2026-11-05T22:01:44.877Z",
       "contentType": "text/html",
       "contentHash": "f6a64e4609f4d294176e3f169dd9716e12e0ff5039372dc779cfc312d5df276f",
       "linkedDocuments": [
         {
           "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
           "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-          "retrievedAt": "2026-11-05T02:07:18.898Z",
+          "retrievedAt": "2026-11-05T22:01:44.938Z",
           "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39",
           "etag": "\"2f32d-655233e362291\"",
@@ -34036,14 +34668,21 @@
         {
           "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
           "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-          "retrievedAt": "2026-11-05T02:07:18.976Z",
+          "retrievedAt": "2026-11-05T22:01:44.992Z",
           "contentType": "application/pdf",
           "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f",
           "etag": "\"2573e-655233d17d633\"",
           "lastModified": "Fri, 26 Jun 2026 07:41:37 GMT"
         }
       ],
-      "title": "Use of publicly available Generative AI tools in the Victorian public sector"
+      "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+      "reviewedDate": {
+        "date": "2026-06-26",
+        "precision": "day",
+        "reviewedAt": "2026-11-05T22:01:44.992Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
+      }
     },
     "proposedRecord": {
       "id": "vic-ovic-public-generative-ai-guidance",
@@ -34062,40 +34701,36 @@
           "source": {
             "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
             "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
-            "title": "Use of publicly available Generative AI tools in the Victorian public sector",
-            "retrievedAt": "2026-07-24T02:36:16.190Z",
+            "retrievedAt": "2026-11-05T22:01:44.877Z",
             "contentType": "text/html",
-            "contentHash": "ae252cfac000de29f5b376184568db75217d23979a7d68c7ec09ed7b88fd86e0",
+            "contentHash": "f6a64e4609f4d294176e3f169dd9716e12e0ff5039372dc779cfc312d5df276f",
             "linkedDocuments": [
               {
                 "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
                 "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-                "retrievedAt": "2026-07-24T02:36:16.190Z",
+                "retrievedAt": "2026-11-05T22:01:44.938Z",
                 "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39"
+                "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39",
+                "etag": "\"2f32d-655233e362291\"",
+                "lastModified": "Fri, 26 Jun 2026 07:41:56 GMT"
               },
               {
                 "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
                 "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-                "retrievedAt": "2026-07-24T02:36:16.190Z",
+                "retrievedAt": "2026-11-05T22:01:44.992Z",
                 "contentType": "application/pdf",
-                "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f"
+                "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f",
+                "etag": "\"2573e-655233d17d633\"",
+                "lastModified": "Fri, 26 Jun 2026 07:41:37 GMT"
               }
             ],
-            "browserCapture": {
-              "method": "browser",
-              "capturedAt": "2026-07-24T02:36:16.190Z",
-              "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-              "notes": "Fresh official OVIC source revalidation on 24 July 2026; the displayed guidance and exact linked DOCX and PDF bytes were inspected before applying the approved restoration.",
-              "pageContentHash": "564d3150c31e46150e152c095831929603c37202ef13647680fc4e59929c49c7",
-              "characterCount": 17585
-            },
+            "title": "Use of publicly available Generative AI tools in the Victorian public sector",
             "reviewedDate": {
               "date": "2026-06-26",
               "precision": "day",
-              "reviewedAt": "2026-07-24T02:36:19.291Z",
-              "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-              "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
+              "reviewedAt": "2026-11-05T22:01:44.992Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
             }
           }
         }
@@ -34120,9 +34755,52 @@
         "public-sector"
       ],
       "createdAt": "2026-07-22T12:48:46.496Z",
-      "updatedAt": "2026-07-24T02:36:19.291Z"
+      "updatedAt": "2026-11-05T22:01:44.992Z",
+      "lastReviewedAt": "2026-11-05T22:01:44.992Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+          "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+          "retrievedAt": "2026-11-05T22:01:44.877Z",
+          "contentType": "text/html",
+          "contentHash": "f6a64e4609f4d294176e3f169dd9716e12e0ff5039372dc779cfc312d5df276f",
+          "linkedDocuments": [
+            {
+              "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+              "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+              "retrievedAt": "2026-11-05T22:01:44.938Z",
+              "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+              "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39",
+              "etag": "\"2f32d-655233e362291\"",
+              "lastModified": "Fri, 26 Jun 2026 07:41:56 GMT"
+            },
+            {
+              "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+              "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+              "retrievedAt": "2026-11-05T22:01:44.992Z",
+              "contentType": "application/pdf",
+              "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f",
+              "etag": "\"2573e-655233d17d633\"",
+              "lastModified": "Fri, 26 Jun 2026 07:41:37 GMT"
+            }
+          ],
+          "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+          "reviewedDate": {
+            "date": "2026-06-26",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:44.992Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
+          }
+        },
+        "checkedAt": "2026-11-05T22:01:44.992Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 06fa 16f4 23b7 c390). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
+      }
     },
-    "updatedAt": "2026-11-05T02:09:56.470Z",
+    "updatedAt": "2026-11-05T22:01:46.112Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -34132,6 +34810,60 @@
       },
       "notes": "Text correction only: bare URLs removed from content.",
       "proposedAt": "2026-11-05T02:09:56.470Z"
-    }
+    },
+    "targetPolicyRevisionHash": "43fa61f9fb3fd32761579129149f6adf74fbb26d52e2559ea7c9f2fd15a8c3ef",
+    "reviewedAt": "2026-11-05T22:01:44.992Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 06fa 16f4 23b7 c390). Proposed by Claude (agent). Text correction only: bare URLs removed from content.",
+    "decision": {
+      "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-05T22:01:29.182Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+        "receivedAt": "2026-11-05T22:01:29.182Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-05-1",
+        "entries": [
+          {
+            "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+            "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+          },
+          {
+            "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+            "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+          },
+          {
+            "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+            "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+          },
+          {
+            "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+            "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+          },
+          {
+            "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+            "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+          },
+          {
+            "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+            "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+          },
+          {
+            "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+            "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-05T22:01:46.105Z"
   }
 ]

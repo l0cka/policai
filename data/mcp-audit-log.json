@@ -1,5 +1,62 @@
 [
   {
+    "id": "mcp-audit-b1f69971-c6aa-43b1-9e76-1f1851a6935d",
+    "createdAt": "2026-11-05T22:01:48.405Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b1a82b44-8f81-41ef-9047-388235c6fd87",
+    "createdAt": "2026-11-05T22:01:48.311Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-591fc5b5-c5ee-4b30-a31d-0758b8938890",
+    "createdAt": "2026-11-05T22:01:48.219Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cda65fce-a431-4afa-bdf3-8b07f15b5a76",
+    "createdAt": "2026-11-05T22:01:48.005Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4cdc664e-8ab8-4bd9-be3f-e4d0ddc37356",
+    "createdAt": "2026-11-05T22:01:46.125Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-adc4c8b2-59a8-47ce-9a59-13951dbde543",
+    "createdAt": "2026-11-05T22:01:43.798Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2cf08792-fc64-46ec-abb2-be20bbdde999",
+    "createdAt": "2026-11-05T22:01:42.950Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9c0e3bf5-a194-4a0c-a382-9a438a1ba757",
+    "createdAt": "2026-11-05T21:57:36.863Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "error",
+    "errorSummary": "The editor has not approved this proposal with their passkey. Send them https://policai.org/approve?subject=source-review-batch%3A2026-11-05-1%3A8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8"
+  },
+  {
     "id": "mcp-audit-b6d14793-6533-401d-a6f5-257ac85c4a8a",
     "createdAt": "2026-11-05T02:14:16.338Z",
     "actor": "local-mcp-admin",
@@ -3623,66 +3680,6 @@
   {
     "id": "mcp-audit-cf771449-997e-436b-8a66-5f091c028068",
     "createdAt": "2026-07-19T06:14:28.886Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f724471b-1732-41ac-a1c3-cd71b0e64e6e",
-    "createdAt": "2026-07-19T06:14:28.878Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b08dc192-b4a0-4d51-b222-4bf84e4a8396",
-    "createdAt": "2026-07-19T06:14:28.870Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-70f4676f-22aa-4009-b1f8-8903b6208669",
-    "createdAt": "2026-07-19T06:14:28.863Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-33273ae2-4d7d-4fc1-9ad9-28e06c57fab7",
-    "createdAt": "2026-07-19T06:14:28.856Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-973a889a-9c40-4f26-acb7-933f89ec80bd",
-    "createdAt": "2026-07-19T06:14:28.847Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/foundational-artificial-intelligence-risk-assessment-guideline",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-17b67ed5-aa53-4a6c-8255-e6a80adf3467",
-    "createdAt": "2026-07-19T06:14:28.838Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-650380b7-8da7-4ee3-be62-4876dd91f5d0",
-    "createdAt": "2026-07-19T06:14:28.737Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/__data/assets/pdf_file/0028/416647/Use-of-generative-AI-in-government-v1.0.1.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-60a39f83-fc8d-4eb7-b44b-e139fc80242f",
-    "createdAt": "2026-07-19T06:14:28.636Z",
     "actor": "local-mcp-admin",
     "toolName": "approve_staged_source",
     "status": "success"
