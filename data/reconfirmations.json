@@ -313,7 +313,22 @@
           "contentHash": "1177d0ce865a13d6f02144b2e94c0f5f91b756b479cbd44d3d05702fb3a5c8bf",
           "auditedAt": "2026-11-05T22:11:04.810Z"
         }
-      ]
+      ],
+      "decision": {
+        "approvedBy": "Daniel Alkurdi",
+        "approvedAt": "2026-11-05T22:44:37.356Z",
+        "approval": {
+          "subject": "reconfirm:2026-11-05-2:058df62ffd17fa76895802da5ef4e92c141036d17c34cec977ecb3203b58aaa3",
+          "receivedAt": "2026-11-05T22:44:37.356Z",
+          "response": {
+            "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+            "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoidEZHcXd5NVFXM0ZaZ0w4Mm1pdWdmaTdCUjhsNU5nNzZUUUZSQzJHVWY4NCIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+            "signature": "MEYCIQC4WG9gbetXmM1qVncK-figzMU7LmIg0T9tN0dN3WjdkQIhAMwvXiLvz64-7IFDI1kwxEovFTn_ghhWXWTzFuI1bdPd",
+            "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+          }
+        }
+      }
     },
     {
       "id": "2026-11-05-3",
@@ -400,7 +415,22 @@
           "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3",
           "auditedAt": "2026-11-05T22:11:07.684Z"
         }
-      ]
+      ],
+      "decision": {
+        "approvedBy": "Daniel Alkurdi",
+        "approvedAt": "2026-11-05T22:44:43.274Z",
+        "approval": {
+          "subject": "reconfirm:2026-11-05-3:1b523243ad2b0d7a541d69b182476dfdc20d49e4a6ee426e4cdee6c8450b05a4",
+          "receivedAt": "2026-11-05T22:44:43.274Z",
+          "response": {
+            "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+            "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiNDZubjlxTkJGa2lDTU13N0M2UF9LQXM2bmVNWjBMYVc3SVFaSFMxMmhUZyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+            "signature": "MEUCIQDfdiz8T8LfxRT6iXjJd47zRZAGKSZLB6xT2GVzCOcJcAIgV2vx3tNd335nbyguRF0iS9nuSUJIA3cqkrxaibZ3H5s",
+            "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+          }
+        }
+      }
     },
     {
       "id": "2026-11-05-4",
@@ -431,7 +461,22 @@
           "contentHash": "ae252cfac000de29f5b376184568db75217d23979a7d68c7ec09ed7b88fd86e0",
           "auditedAt": "2026-11-05T22:14:16.361Z"
         }
-      ]
+      ],
+      "decision": {
+        "approvedBy": "Daniel Alkurdi",
+        "approvedAt": "2026-11-05T22:44:48.914Z",
+        "approval": {
+          "subject": "reconfirm:2026-11-05-4:db4ee0a08d67c7b5f45635679963ec7b46269ab1a52541cd9ee04bcd4ef05b38",
+          "receivedAt": "2026-11-05T22:44:48.914Z",
+          "response": {
+            "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+            "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiMTZqTTZmelV3bUd1dmRRa3hGTVh2ZzlzWXlKYTNzVHVXR053TUNsX0JVTSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+            "signature": "MEUCIC6ym2-MackjAk959PPeQGsovy7p3gs9wR7VsjxDLUCtAiEAz_weN3FBZr-DeoCbpTEyfdTa5ROHGfodIWgK5p3ehY8",
+            "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+          }
+        }
+      }
     }
   ]
 }
