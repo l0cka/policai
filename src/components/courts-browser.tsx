@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore, useMemo, useEffect, useRef, type ReactNode } from "react";
+import { useSyncExternalStore, useMemo, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { CourtRequirementsList } from "./court-requirements-list";
 import {
@@ -20,6 +20,7 @@ import {
 	type Policy,
 	type Jurisdiction,
 	type ShownCourtRequirement,
+	type CourtRequirementActor,
 } from "@/types";
 import { formatPolicyDate } from "@/lib/format-policy-date";
 import { jurisdictionAccent, jurisdictionRailStyle } from "@/lib/jurisdiction-accent";
@@ -69,7 +70,7 @@ function extractCourtName(policy: CourtPolicy): string {
 	return policy.agencies[0] || "Unknown Court";
 }
 
-function matchesAudience(note: CourtNote, audience: AudienceFilter, requirements: ShownCourtRequirement[] = []): boolean {
+function matchesAudience(note: CourtNote, audience: AudienceFilter, requirements: CourtRequirementActor[] = []): boolean {
 	if (audience === "all") return true;
 	const tags = note.tags.map((tag) => tag.toLowerCase());
 	if (AUDIENCE_TAGS[audience].some((tag) => tags.includes(tag))) return true;
@@ -115,6 +116,10 @@ function subscribeToCourtUrl(onChange: () => void) {
 const courtUrlSnapshot = () => window.location.search;
 const serverCourtUrlSnapshot = () => "";
 
+/** Prerendered by `app/courts/requirements.json/route.ts`; fetched once, on first need. */
+export const COURT_REQUIREMENT_DETAILS_URL = "/courts/requirements.json";
+type DetailsStatus = "idle" | "loading" | "ready" | "error";
+
 function updateCourtUrl(values: Record<string, string | null>) {
 	const url = new URL(window.location.href);
 	for (const [key, value] of Object.entries(values)) {
@@ -136,7 +141,8 @@ export function CourtsBrowser({
 	analysis = null,
 }: {
 	policies: CourtPolicy[];
-	requirements?: ShownCourtRequirement[];
+	/** Who each verified requirement binds; the text loads when a note opens or a search starts. */
+	requirements?: CourtRequirementActor[];
 	analysesByPolicy?: Record<string, CourtAnalysisLink[]>;
 	relatedByPolicy?: Record<string, RelatedInstrument[]>;
 	analysis?: ReactNode;
@@ -176,13 +182,25 @@ export function CourtsBrowser({
 	const audience = ["judicial", "self-represented", "profession"].includes(audienceParam) ? audienceParam : "all";
 	const sortMode: SortMode = params.get("sort") === "newest" ? "newest" : "jurisdiction";
 
+	const needsDetails = expandedId !== null || search.trim() !== "";
+	const [details, setDetails] = useState<{ status: DetailsStatus; requirements: ShownCourtRequirement[] }>({ status: "idle", requirements: [] });
+	const detailsRequested = useRef(false);
+	useEffect(() => {
+		if (!needsDetails || detailsRequested.current) return;
+		detailsRequested.current = true;
+		fetch(COURT_REQUIREMENT_DETAILS_URL)
+			.then((response) => (response.ok ? response.json() : Promise.reject(new Error(String(response.status)))))
+			.then((body: { requirements: ShownCourtRequirement[] }) => setDetails({ status: "ready", requirements: body.requirements }))
+			.catch(() => setDetails({ status: "error", requirements: [] }));
+	}, [needsDetails]);
+
 	const practiceNotes: CourtNote[] = useMemo(() => {
 		return policies
 			.filter((p) => p.type === "practice_note" && p.status !== "trashed")
 			.map((p) => ({ ...p, courtName: extractCourtName(p) }));
 	}, [policies]);
 	const requirementsByPolicy = useMemo(() => {
-		const groupedRequirements = new Map<string, ShownCourtRequirement[]>();
+		const groupedRequirements = new Map<string, CourtRequirementActor[]>();
 		for (const requirement of requirements) {
 			const existing = groupedRequirements.get(requirement.policyId) ?? [];
 			existing.push(requirement);
@@ -190,6 +208,15 @@ export function CourtsBrowser({
 		}
 		return groupedRequirements;
 	}, [requirements]);
+	const detailsByPolicy = useMemo(() => {
+		const grouped = new Map<string, ShownCourtRequirement[]>();
+		for (const requirement of details.requirements) {
+			const existing = grouped.get(requirement.policyId) ?? [];
+			existing.push(requirement);
+			grouped.set(requirement.policyId, existing);
+		}
+		return grouped;
+	}, [details.requirements]);
 
 	const filteredNotes = useMemo(() => {
 		const query = search.trim().toLowerCase();
@@ -204,8 +231,9 @@ export function CourtsBrowser({
 				note.description,
 				note.aiSummary,
 				...note.tags,
-				...(requirementsByPolicy.get(note.id) ?? []).flatMap((requirement) => [
-					requirement.actor, requirement.action, requirement.source.quote, requirement.source.locator,
+				...(requirementsByPolicy.get(note.id) ?? []).map(({ actor }) => actor),
+				...(detailsByPolicy.get(note.id) ?? []).flatMap((requirement) => [
+					requirement.action, requirement.source.quote, requirement.source.locator,
 					...requirement.conditions, ...requirement.exceptions, ...requirement.topics,
 				]),
 			]
@@ -214,7 +242,7 @@ export function CourtsBrowser({
 				.toLowerCase()
 				.includes(query);
 		});
-	}, [audience, jurisdiction, practiceNotes, search, requirementsByPolicy]);
+	}, [audience, jurisdiction, practiceNotes, search, requirementsByPolicy, detailsByPolicy]);
 
 	const grouped = useMemo(() => {
 		const map = new Map<Jurisdiction, CourtNote[]>();
@@ -352,7 +380,7 @@ export function CourtsBrowser({
 							{section.notes.map((note) => {
 								const isExpanded = expandedId === note.id;
 								const primaryDate = getPrimaryPolicyDate(note);
-								const noteRequirements = requirementsByPolicy.get(note.id) ?? [];
+								const noteRequirementCount = requirementsByPolicy.get(note.id)?.length ?? 0;
 								const noteRelated = relatedByPolicy[note.id] ?? [];
 								const noteAnalyses = analysesByPolicy[note.id] ?? [];
 								return (
@@ -434,7 +462,15 @@ export function CourtsBrowser({
 												{note.verification.checkedAt && (
 													<p className="text-xs leading-5 text-muted-foreground">Record source checked: {new Date(note.verification.checkedAt).toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney" })}. Collection freshness is not a new editorial review of this record. Always check the official source.</p>
 												)}
-												<CourtRequirementsList title={note.title} requirements={noteRequirements} />
+												{noteRequirementCount > 0 && details.status !== "ready" ? (
+													<p className="text-xs text-muted-foreground" role="status">
+														{details.status === "error"
+															? "The verified requirements could not be loaded. They are on the full record."
+															: `Loading ${noteRequirementCount} verified requirements…`}
+													</p>
+												) : (
+													<CourtRequirementsList title={note.title} requirements={detailsByPolicy.get(note.id) ?? []} />
+												)}
 
 												{noteRelated.length > 0 ? (
 													<div>

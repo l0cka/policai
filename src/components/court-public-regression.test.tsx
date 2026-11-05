@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, within } from '@testing-library/react';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { getPublicCourtRequirements } from '@/lib/court-requirements';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { getPublicCourtRequirements, toShownRequirement } from '@/lib/court-requirements';
 import { getPolicies } from '@/lib/data-service';
 import { CourtsBrowser } from './courts-browser';
 import { StatusPill } from './policy-indicators';
@@ -10,16 +10,18 @@ beforeEach(() => {
   window.history.replaceState({}, '', '/courts');
   Object.defineProperty(window, 'matchMedia', { writable: true, value: () => ({ matches: true }) });
 });
+afterEach(() => vi.unstubAllGlobals());
 
 describe('public court regression evidence', () => {
   it('finds actual NSW and federal practitioner guidance using only public records', async () => {
     const [policies, requirements] = await Promise.all([getPolicies({ type: 'practice_note' }), getPublicCourtRequirements()]);
+    vi.stubGlobal('fetch', vi.fn(async () => Response.json({ requirements: requirements.map(toShownRequirement) })));
     render(<CourtsBrowser policies={policies} requirements={requirements} />);
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter by audience' }), { target: { value: 'profession' } });
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter by jurisdiction' }), { target: { value: 'nsw' } });
     fireEvent.click(screen.getByRole('button', { name: /SC Gen 23 —/ }));
     const para9A = requirements.find(r => r.policyId === 'nsw-supreme-court-sc-gen-23' && r.source.locator === 'paragraph 9A')!;
-    const exception = screen.getByText(`Exception: ${para9A.exceptions[0]}`);
+    const exception = await screen.findByText(`Exception: ${para9A.exceptions[0]}`);
     expect(exception.closest('blockquote')).toBeNull();
     expect(exception).toHaveTextContent('(a)');
     expect(exception).toHaveTextContent('(b)');
