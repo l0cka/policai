@@ -6,7 +6,7 @@ import {
   upcomingDateCountdown,
   type UpcomingPolicyDate,
 } from '@/lib/this-week';
-import { getJurisdictionName, getUpcomingDateTypeName } from '@/types';
+import { getJurisdictionName } from '@/types';
 
 /*
  * The homepage deadlines rail. It has no client state, so the page renders it
@@ -43,7 +43,7 @@ export function UpcomingDeadlinesRail({
             return (
               <li key={`${item.policyId}-${item.dateType}-${item.date}`}>
                 <p className="text-xs text-muted-foreground">
-                  {getUpcomingDateTypeName(item.dateType)} ·{' '}
+                  {item.label} ·{' '}
                   <time dateTime={precisionDateTime(item.date, item.precision)}>
                     {formatPolicyDate({
                       type: item.dateType,

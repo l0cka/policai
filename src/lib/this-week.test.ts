@@ -188,6 +188,31 @@ describe('selectUpcomingPolicyDates', () => {
     ], window).map(i => i.policyId)).toEqual(['amended', 'today']);
   });
 
+  it('labels a bill\'s committee report date as such, and other scheduled reviews as reviews', () => {
+    const referred = (reportDue: string): Policy['legislative'] => ({
+      kind: 'bill',
+      ref: { register: 'aph', billId: 'r0000' },
+      origin: 'government',
+      events: [
+        {
+          date: '2026-09-01',
+          precision: 'day',
+          source: { url: 'https://example.gov.au/bill' },
+          event: { kind: 'referred', committee: 'A committee', inquiryUrl: 'https://example.gov.au/inquiry', reportDue },
+        },
+      ],
+    });
+    const dates: Policy['dates'] = [{ type: 'scheduled_review', date: '2026-11-20', precision: 'day' }];
+    const items = selectUpcomingPolicyDates([
+      policy({ id: 'bill', dates, legislative: referred('2026-11-20') }),
+      policy({ id: 'plain', dates }),
+    ], upcomingWindow);
+    expect(items.map(i => [i.policyId, i.label])).toEqual([
+      ['bill', 'Committee report due'],
+      ['plain', 'Scheduled review'],
+    ]);
+  });
+
   it('retains a current month or year without inventing an exact date', () => {
     const items = [
       policy({ id: 'month', dates: [{ type: 'effective', date: '2026-09-01', precision: 'month' }] }),

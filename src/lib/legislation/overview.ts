@@ -90,6 +90,8 @@ export function madeLaws(records: LegislativeRecord[]): MadeLaw[] {
     );
 }
 
+export const COMMITTEE_REPORT_DUE = 'Committee report due';
+
 function upcomingDates(record: LegislativeRecord): DatedEntry[] {
   const stage = legislativeStage(record);
   if (stage === null || stage === 'ended') return [];
@@ -98,7 +100,7 @@ function upcomingDates(record: LegislativeRecord): DatedEntry[] {
   for (const dated of record.legislative.events) {
     const { event } = dated;
     if (event.kind === 'referred' && event.reportDue && stage === 'before_parliament') {
-      found.push({ record, date: event.reportDue, precision: 'day', label: 'Committee report due', detail: event.committee, sourceUrl: event.inquiryUrl });
+      found.push({ record, date: event.reportDue, precision: 'day', label: COMMITTEE_REPORT_DUE, detail: event.committee, sourceUrl: event.inquiryUrl });
     }
     if (event.kind === 'tabled' && event.disallowanceEnds && !disallowanceEnds.has(event.disallowanceEnds)) {
       disallowanceEnds.add(event.disallowanceEnds);
