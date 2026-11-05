@@ -161,6 +161,20 @@
     "status": "success"
   },
   {
+    "id": "mcp-audit-9d518ed2-0652-40da-811e-85e8f0ae8391",
+    "createdAt": "2026-11-04T22:48:54.434Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-132a1231-5008-4460-98cc-a78003e8a10d",
+    "createdAt": "2026-11-04T22:06:12.635Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-0998d50c-bd15-46c7-bd2e-e11e403cc457",
     "createdAt": "2026-11-04T01:47:12.673Z",
     "actor": "local-mcp-admin",
@@ -3668,22 +3682,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/western-australian-artificial-intelligence-advisory-board",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-927f6ed4-7a80-4d70-8359-8ce5a05d8255",
-    "createdAt": "2026-07-19T04:20:18.577Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://forms.digital.wa.gov.au/250231755970861",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-671ec8ce-69db-467a-90ac-48e6714977fe",
-    "createdAt": "2026-07-19T04:20:10.875Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
     "status": "success"
   }
 ]

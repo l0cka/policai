@@ -1122,9 +1122,9 @@
   {
     "id": "source-review-2587070e-121a-479d-ba8d-c64cfa7ed363",
     "sourceUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
-    "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
+    "title": "Privacy Reform – Consultation on Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026",
     "entryKind": "policy",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-04T01:45:30.590Z",
     "createdBy": "local-mcp-admin",
     "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
@@ -1163,6 +1163,13 @@
         "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
         "pageContentHash": "25cb20f0a1b59b3c6088b89f9c1a94a2377eca4c35ed85d828f2fdbb77fe1453",
         "characterCount": 2331
+      },
+      "reviewedDate": {
+        "date": "2026-08-31",
+        "precision": "day",
+        "reviewedAt": "2026-11-04T22:48:54.154Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
       }
     },
     "proposedRecord": {
@@ -1178,12 +1185,62 @@
           "type": "consultation_opened",
           "date": "2026-08-31",
           "precision": "day",
-          "primary": true
+          "primary": true,
+          "source": {
+            "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
+            "retrievedAt": "2026-11-04T01:44:41.241Z",
+            "contentType": "text/html",
+            "contentHash": "1f54441380b0ccec142bda107d9457a3c393526b78ac0635fd52559a06c1c969",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-04T01:44:41.241Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
+              "pageContentHash": "25cb20f0a1b59b3c6088b89f9c1a94a2377eca4c35ed85d828f2fdbb77fe1453",
+              "characterCount": 2331
+            },
+            "reviewedDate": {
+              "date": "2026-08-31",
+              "precision": "day",
+              "reviewedAt": "2026-11-04T22:48:54.154Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
+            }
+          }
         },
         {
           "type": "consultation_closed",
           "date": "2026-09-18",
-          "precision": "day"
+          "precision": "day",
+          "source": {
+            "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
+            "retrievedAt": "2026-11-04T01:44:41.241Z",
+            "contentType": "text/html",
+            "contentHash": "1f54441380b0ccec142bda107d9457a3c393526b78ac0635fd52559a06c1c969",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-04T01:44:41.241Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
+              "pageContentHash": "25cb20f0a1b59b3c6088b89f9c1a94a2377eca4c35ed85d828f2fdbb77fe1453",
+              "characterCount": 2331
+            },
+            "reviewedDate": {
+              "date": "2026-09-18",
+              "precision": "day",
+              "reviewedAt": "2026-11-04T01:47:12.645Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
+            }
+          }
         }
       ],
       "agencies": [
@@ -1206,9 +1263,42 @@
         "ai-governance"
       ],
       "createdAt": "2026-11-04T01:45:30.552Z",
-      "updatedAt": "2026-11-04T01:45:30.552Z"
+      "updatedAt": "2026-11-04T22:48:54.154Z",
+      "lastReviewedAt": "2026-11-04T22:48:54.154Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+          "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+          "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
+          "retrievedAt": "2026-11-04T01:44:41.241Z",
+          "contentType": "text/html",
+          "contentHash": "1f54441380b0ccec142bda107d9457a3c393526b78ac0635fd52559a06c1c969",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-04T01:44:41.241Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
+            "pageContentHash": "25cb20f0a1b59b3c6088b89f9c1a94a2377eca4c35ed85d828f2fdbb77fe1453",
+            "characterCount": 2331
+          },
+          "reviewedDate": {
+            "date": "2026-08-31",
+            "precision": "day",
+            "reviewedAt": "2026-11-04T22:48:54.154Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
+          }
+        },
+        "checkedAt": "2026-11-04T22:48:54.154Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal bc55 b0f4 f21c c206). Proposed by Claude (agent). Re-proposed 4 Nov 2026 so the secondary consultation_closed date (18 Sep 2026) carries its own reviewed date evidence from the same hub page (\"Closed 18 Sep 2026\"); validate:data counted it as unevidenced. Primary date and every other field unchanged."
+      }
     },
-    "updatedAt": "2026-11-04T01:47:12.654Z",
+    "updatedAt": "2026-11-04T22:48:54.361Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "proposedRecord": {
@@ -1254,7 +1344,32 @@
           {
             "type": "consultation_closed",
             "date": "2026-09-18",
-            "precision": "day"
+            "precision": "day",
+            "source": {
+              "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+              "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+              "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
+              "retrievedAt": "2026-11-04T01:44:41.241Z",
+              "contentType": "text/html",
+              "contentHash": "1f54441380b0ccec142bda107d9457a3c393526b78ac0635fd52559a06c1c969",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-11-04T01:44:41.241Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
+                "pageContentHash": "25cb20f0a1b59b3c6088b89f9c1a94a2377eca4c35ed85d828f2fdbb77fe1453",
+                "characterCount": 2331
+              },
+              "reviewedDate": {
+                "date": "2026-09-18",
+                "precision": "day",
+                "reviewedAt": "2026-11-04T01:47:12.645Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
+              }
+            }
           }
         ],
         "agencies": [
@@ -1284,9 +1399,29 @@
         "precision": "day",
         "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
       },
-      "notes": "Primary date is consultation_opened 31 Aug 2026 from the hub page text, backed by reviewedDate evidence on the primary date source; consultation_closed 18 Sep 2026 from the same page.",
-      "proposedAt": "2026-11-04T01:47:12.654Z"
-    }
+      "notes": "Re-proposed 4 Nov 2026 so the secondary consultation_closed date (18 Sep 2026) carries its own reviewed date evidence from the same hub page (\"Closed 18 Sep 2026\"); validate:data counted it as unevidenced. Primary date and every other field unchanged.",
+      "proposedAt": "2026-11-04T22:06:12.553Z"
+    },
+    "reviewedAt": "2026-11-04T22:48:54.154Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal bc55 b0f4 f21c c206). Proposed by Claude (agent). Re-proposed 4 Nov 2026 so the secondary consultation_closed date (18 Sep 2026) carries its own reviewed date evidence from the same hub page (\"Closed 18 Sep 2026\"); validate:data counted it as unevidenced. Primary date and every other field unchanged.",
+    "decision": {
+      "proposalHash": "bc55b0f4f21cc206c900ca2674a5818b3d813a4c9ce982f2d5660eb2b73f7d5f",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-04T22:47:28.546Z",
+      "approval": {
+        "subject": "source-review:source-review-2587070e-121a-479d-ba8d-c64cfa7ed363:bc55b0f4f21cc206c900ca2674a5818b3d813a4c9ce982f2d5660eb2b73f7d5f",
+        "receivedAt": "2026-11-04T22:47:28.546Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiZFZuYUk5YWVra01ONzlDT1plc2Q0UUpRYk50N2dHbC16UjEycUY4b3pYcyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIGwdgHoeTKw5alAuURQ9P7kjv7gmt39q7cZK4LNGnThwAiEAnkt0sPuJWn1jgsdo07OQfGXfgSYyS4zaDy6c_KQRSK8",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-04T22:48:54.305Z"
   },
   {
     "id": "source-review-631246cb-9b7c-4d8a-801d-c787ceffc2f7",
