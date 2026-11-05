@@ -194,6 +194,7 @@ describe('Editorial register', () => {
   it('lists upcoming recorded dates with an honest countdown', () => {
     const upcoming = (policyId: string, policyTitle: string, dateType: 'effective' | 'consultation_closed' | 'commenced', date: string, precision: 'day' | 'month') => ({
       policyId, policyTitle, dateType, date, precision,
+      label: { effective: 'Takes effect', consultation_closed: 'Consultation closes', commenced: 'Commences' }[dateType],
       jurisdiction: 'federal' as const, type: 'guideline' as const, status: 'active' as const,
       sourceUrl: 'https://example.gov.au/policy',
     });

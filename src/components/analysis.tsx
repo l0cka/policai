@@ -52,7 +52,7 @@ export function ArticleBreadcrumb({ type }: { type: ArticleType }) {
       <Link href="/analysis" className="hover:text-primary">
         {ARTICLE_TIER_LABEL}
       </Link>
-      <span aria-hidden="true">/</span>
+      <span aria-hidden="true">·</span>
       <span>{ARTICLE_TYPE_NAMES[type]}</span>
     </nav>
   );

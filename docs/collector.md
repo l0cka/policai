@@ -497,6 +497,14 @@ remove the exception after allow-listing, or move a still-refusing source to
 manual tracking. The collector never automatically changes canonical source
 status; `cyber-news` remains manual without an exception.
 
+A manual source is current for 8 days after its last hand review, whatever its
+nominal `daily` or `weekly` cadence, matching the weekly manual-source routine
+(`MANUAL_REVIEW_LIMIT_DAYS`). One that falls behind shows as overdue in the
+`/status` source table and in the manual-coverage count, but it adds no run
+error and does not degrade collector health, so a person's review backlog
+cannot hide a real failure. Automatic sources that miss their check, and
+`track:*` follow trackers that fail, still degrade the run.
+
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
 reviewer's identity, substantive notes that
@@ -1409,6 +1417,13 @@ a fingerprint baseline.
   PDF sits under vic.gov.au's disallowed `/sites/default/files/`). A source
   or candidate page that robots.txt disallows still fails as
   `robots_disallowed`.
+- **A linked document returns no bytes** — an empty 200 response for an
+  attached document is skipped the same way: it is listed under
+  `skippedLinked` with `because: 'no_document_bytes'` and the page stays
+  watched (`ovic-privacy-resources`). Only the empty body is skipped. A
+  linked document of the wrong type or one that fails byte validation, an
+  HTTP error, and any failure of the source's own page still fail the
+  source.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect

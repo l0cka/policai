@@ -150,11 +150,9 @@ describe('collection CLI write path', () => {
     const written = readJson<CollectionMeta>('public', 'data', 'meta.json');
     expect(written.collector.lastRunSources).not.toContain('accc-rss');
     expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/accc-rss: HTTP 403/);
-    expect(written.collector.lastRunErrors).toContainEqual(
-      expect.stringMatching(/^dta-media: unchecked \(/),
-    );
-    expect(written.collector.health).toBe('degraded');
-    expect(written.lastHealthyAt).not.toBe('2026-07-10T00:00:00.000Z');
+    // dta-media is an unreviewed manual source: /status shows it, but it
+    // adds no run error and does not degrade health.
+    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/dta-media: unchecked/);
     expect(publicAutomaticCollectionMeta(written, WATCH_SOURCES)).toEqual(written);
     expect(
       written.collector.sourceResults.some(

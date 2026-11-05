@@ -16,7 +16,7 @@ import { ArticleTable } from '@/components/article-table';
 import { KeepTrack } from '@/components/related/keep-track';
 import { MoreAnalysis } from '@/components/related/more-analysis';
 import { followsForCitedRecords, moreAnalysis } from '@/lib/next-step';
-import { renderArticleMarkdown } from '@/lib/article-markdown';
+import { linkOnlyToPublicRecords, renderArticleMarkdown } from '@/lib/article-markdown';
 import { getArticleBySlug, getArticles, getPolicies, type ArticleView } from '@/lib/data-service';
 import { ARTICLE_BYLINE, articleEditorialDate } from '@/lib/articles';
 import { metaDescription, pageAlternates, SITE_SHARE_IMAGE, SITE_URL } from '@/lib/site-seo';
@@ -134,6 +134,10 @@ export default async function ArticlePage({ params }: Params) {
   const [articles, policies] = await Promise.all([getArticles(), getPolicies()]);
   const cited = new Set(article.cites);
   const citedRecords = policies.filter((policy) => cited.has(policy.id));
+  const bodyComponents = {
+    ...linkOnlyToPublicRecords(new Set(policies.map((policy) => policy.id))),
+    table: ArticleTable,
+  };
 
   return (
     <article className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-10">
@@ -160,7 +164,7 @@ export default async function ArticlePage({ params }: Params) {
         {article.blocks.map((block, index) =>
           block.kind === 'prose' ? (
             <Fragment key={index}>
-              {renderArticleMarkdown(block.markdown, { components: { table: ArticleTable } })}
+              {renderArticleMarkdown(block.markdown, { components: bodyComponents })}
             </Fragment>
           ) : (
             <ArticleFigureView

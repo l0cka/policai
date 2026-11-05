@@ -8,6 +8,7 @@ const readJsonFile = vi.fn();
 
 vi.mock('@/lib/file-store', () => ({ readJsonFile, writeJsonFile: vi.fn() }));
 vi.mock('@/lib/article-markdown', () => ({
+  linkOnlyToPublicRecords: () => ({}),
   renderArticleMarkdown: (markdown: string) => <div data-testid="body">{markdown}</div>,
 }));
 vi.mock('next/navigation', () => ({
