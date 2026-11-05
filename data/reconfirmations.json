@@ -197,6 +197,21 @@
           }
         }
       }
+    },
+    {
+      "id": "2026-11-05-1",
+      "proposedAt": "2026-11-05T02:53:42.532Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "policyId": "art-generative-ai-practice-direction",
+          "title": "Administrative Review Tribunal (Generative AI) Practice Direction 2026",
+          "verifiedAt": "2026-08-24T23:32:02.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
+          "auditedAt": "2026-11-05T02:53:42.541Z"
+        }
+      ]
     }
   ]
 }
