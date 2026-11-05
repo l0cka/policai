@@ -544,7 +544,9 @@ export type SkippedLinked =
 			/** The source whose manual decision records the host's refusal. */
 			decidedBy: string;
 	  }
-	| { url: string; because: "robots_disallowed" };
+	| { url: string; because: "robots_disallowed" }
+	/** The linked document answered without a body; the page stays watched. */
+	| { url: string; because: "no_document_bytes" };
 
 export interface CollectionMeta {
 	lastCollectedAt: string | null;

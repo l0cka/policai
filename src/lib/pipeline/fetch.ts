@@ -777,6 +777,13 @@ export async function foldLinkedDocuments(
       }
       throw error;
     }
+    // An attachment that answers without a body cannot be fingerprinted, but
+    // the landing page is still watched. Every other byte problem (wrong
+    // type, failed validation) stays a failure of the source.
+    if (!linked.bytes || linked.bytes.length === 0) {
+      skippedLinked.push({ url, because: 'no_document_bytes' });
+      continue;
+    }
     try {
       assertLinkedDocumentBytes(linked, url);
     } catch (error) {

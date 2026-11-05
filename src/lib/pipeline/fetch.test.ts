@@ -1775,6 +1775,59 @@ describe('retrieveSource host gate', () => {
     ).rejects.toMatchObject({ code: 'gate_refused', url: 'https://example.gov.au/private/closed.pdf' });
   });
 
+  it('skips a linked document that returns no bytes and keeps watching the page', async () => {
+    const page = `<html><body><main><h1>AI policy</h1>
+      <a href="/files/open.pdf">AI policy PDF</a>
+      <a href="/files/empty.pdf">AI framework PDF</a></main></body></html>`;
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.endsWith('/empty.pdf')) {
+        return new Response('', { status: 200, headers: { 'content-type': 'application/pdf' } });
+      }
+      if (url.endsWith('.pdf')) {
+        return new Response('%PDF-1.4\npolicy', { status: 200, headers: { 'content-type': 'application/pdf' } });
+      }
+      return new Response(page, { status: 200, headers: { 'content-type': 'text/html' } });
+    });
+    const retrieved = await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: fetchImpl as unknown as typeof fetch,
+    });
+    expect(retrieved.skippedLinked).toEqual([
+      { url: 'https://example.gov.au/files/empty.pdf', because: 'no_document_bytes' },
+    ]);
+    expect(retrieved.evidence.linkedDocuments?.map((document) => document.url)).toEqual([
+      'https://example.gov.au/files/open.pdf',
+    ]);
+
+    const onlyEmpty = await retrieveSource('https://example.gov.au/policy', {
+      fetchImpl: vi.fn(async (input: RequestInfo | URL) =>
+        String(input).endsWith('.pdf')
+          ? new Response('', { status: 200, headers: { 'content-type': 'application/pdf' } })
+          : new Response(`<html><body><main><h1>AI policy</h1><a href="/files/empty.pdf">AI policy PDF</a></main></body></html>`, {
+              status: 200,
+              headers: { 'content-type': 'text/html' },
+            }),
+      ) as unknown as typeof fetch,
+    });
+    expect(onlyEmpty.skippedLinked).toEqual([
+      { url: 'https://example.gov.au/files/empty.pdf', because: 'no_document_bytes' },
+    ]);
+  });
+
+  it('still fails the source when a linked document is not a valid document', async () => {
+    const fetchImpl = vi.fn(async (input: RequestInfo | URL) =>
+      String(input).endsWith('.pdf')
+        ? new Response('not a pdf', { status: 200, headers: { 'content-type': 'application/pdf' } })
+        : new Response(`<html><body><main><h1>AI policy</h1><a href="/files/bad.pdf">AI policy PDF</a></main></body></html>`, {
+            status: 200,
+            headers: { 'content-type': 'text/html' },
+          }),
+    );
+    await expect(
+      retrieveSource('https://example.gov.au/policy', { fetchImpl: fetchImpl as unknown as typeof fetch }),
+    ).rejects.toThrow(/byte validation/);
+  });
+
   it('gates the HTTP/1.1 path per hop and observes its statuses', async () => {
     const { gate, admitted, observed } = buildRecordingHostGate();
     const requestImpl = vi.fn(

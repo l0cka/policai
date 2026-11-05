@@ -1347,6 +1347,13 @@ a fingerprint baseline.
   PDF sits under vic.gov.au's disallowed `/sites/default/files/`). A source
   or candidate page that robots.txt disallows still fails as
   `robots_disallowed`.
+- **A linked document returns no bytes** — an empty 200 response for an
+  attached document is skipped the same way: it is listed under
+  `skippedLinked` with `because: 'no_document_bytes'` and the page stays
+  watched (`ovic-privacy-resources`). Only the empty body is skipped. A
+  linked document of the wrong type or one that fails byte validation, an
+  HTTP error, and any failure of the source's own page still fail the
+  source.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect

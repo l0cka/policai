@@ -503,7 +503,9 @@ export default async function StatusPage() {
                       {row.url},{' '}
                       {row.because === 'decided_block'
                         ? `host decided by ${row.decidedBy}`
-                        : 'disallowed by robots.txt'}
+                        : row.because === 'no_document_bytes'
+                          ? 'returned no document bytes'
+                          : 'disallowed by robots.txt'}
                     </span>
                   </li>
                 ))}
