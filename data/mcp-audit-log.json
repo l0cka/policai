@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-9d518ed2-0652-40da-811e-85e8f0ae8391",
+    "createdAt": "2026-11-04T22:48:54.434Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-132a1231-5008-4460-98cc-a78003e8a10d",
+    "createdAt": "2026-11-04T22:06:12.635Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-0998d50c-bd15-46c7-bd2e-e11e403cc457",
     "createdAt": "2026-11-04T01:47:12.673Z",
     "actor": "local-mcp-admin",
@@ -3683,22 +3697,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.industry.gov.au/publications/guidance-for-ai-adoption",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f84d31df-f924-498f-b636-907a3dc410e8",
-    "createdAt": "2026-07-19T04:08:25.670Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5fbd17d2-0329-4b0f-8f89-cfa50ee6dcc4",
-    "createdAt": "2026-07-19T04:08:18.867Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/frontier-models-and-their-impact-on-cyber-security",
     "status": "success"
   }
 ]
