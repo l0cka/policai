@@ -6,6 +6,7 @@
 
 import {
   DEADLINE_DATE_TYPES,
+  getUpcomingDateTypeName,
   isDeadlineDateType,
   type CollectionMeta,
   type DatePrecision,
@@ -16,6 +17,8 @@ import {
   type PolicyType,
   type Jurisdiction,
 } from "@/types";
+
+import { COMMITTEE_REPORT_DUE } from "@/lib/legislation/overview";
 
 export const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -135,6 +138,8 @@ export interface UpcomingPolicyDate {
   status: PolicyStatus;
   sourceUrl: string;
   dateType: PolicyDateType;
+  /** What the date is called on screen; a committee report date is stored as scheduled_review. */
+  label: string;
   date: string;
   precision: DatePrecision;
 }
@@ -145,6 +150,15 @@ function calendarDay(value: Date | string): string | null {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return null;
   const parsed = new Date(`${day}T00:00:00Z`);
   return Number.isFinite(parsed.getTime()) && parsed.toISOString().slice(0, 10) === day ? day : null;
+}
+
+function upcomingDateLabel(policy: Policy, type: PolicyDateType, day: string): string {
+  const reportDue =
+    type === 'scheduled_review' &&
+    policy.legislative?.events.some(
+      ({ event }) => event.kind === 'referred' && event.reportDue === day,
+    );
+  return reportDue ? COMMITTEE_REPORT_DUE : getUpcomingDateTypeName(type);
 }
 
 /**
@@ -184,6 +198,7 @@ export function selectUpcomingPolicyDates(
         status: policy.status,
         sourceUrl: policy.sourceUrl,
         dateType: policyDate.type,
+        label: upcomingDateLabel(policy, policyDate.type, day),
         date: day,
         precision: policyDate.precision,
       });

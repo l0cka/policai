@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import path from 'path';
 import { readArticleSources } from './articles';
 import { validateArticles } from './validate-data';
-import { renderArticleMarkdown } from './article-markdown';
+import { linkOnlyToPublicRecords, renderArticleMarkdown } from './article-markdown';
 import { ArticleTable } from '@/components/article-table';
 import { buildPolicy } from '@/test/factories';
 
@@ -82,5 +82,31 @@ describe('table cell links', () => {
     expect(validateArticles([unlisted], [], targets).errors).toEqual([
       expect.stringContaining('body links https://www.example.gov.au/other but sources does not list it'),
     ]);
+  });
+});
+
+describe('linkOnlyToPublicRecords', () => {
+  const markdown =
+    'See [the open record](/policies/open-record), [a withheld one](/policies/withheld-record#part), ' +
+    '[the weekly](/this-week/2026-10-14) and [source](https://example.gov.au/x).';
+
+  function renderWith(publicIds: string[]) {
+    const content = renderArticleMarkdown(markdown, {
+      components: linkOnlyToPublicRecords(new Set(publicIds)),
+    });
+    return renderToStaticMarkup(createElement('div', null, content));
+  }
+
+  it('keeps the words but drops the anchor for a record that is not public', () => {
+    const html = renderWith(['open-record']);
+    expect(html).toContain('<a href="/policies/open-record">the open record</a>');
+    expect(html).toContain('a withheld one,');
+    expect(html).not.toContain('withheld-record');
+  });
+
+  it('leaves non-record and external links alone', () => {
+    const html = renderWith([]);
+    expect(html).toContain('<a href="/this-week/2026-10-14">the weekly</a>');
+    expect(html).toContain('<a href="https://example.gov.au/x">source</a>');
   });
 });

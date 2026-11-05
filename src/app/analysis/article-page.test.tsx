@@ -8,9 +8,15 @@ import type { Policy } from '@/types';
 const readJsonFile = vi.fn();
 
 vi.mock('@/lib/file-store', () => ({ readJsonFile, writeJsonFile: vi.fn() }));
-vi.mock('@/lib/article-markdown', () => ({
-  renderArticleMarkdown: (markdown: string) => <div data-testid="body">{markdown}</div>,
-}));
+vi.mock('@/lib/article-markdown', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/article-markdown')>();
+  return {
+    ...actual,
+    renderArticleMarkdown: (...args: Parameters<typeof actual.renderArticleMarkdown>) => (
+      <div data-testid="body">{actual.renderArticleMarkdown(...args)}</div>
+    ),
+  };
+});
 vi.mock('next/navigation', () => ({
   notFound: () => {
     throw new Error('NEXT_NOT_FOUND');
@@ -119,6 +125,8 @@ describe('analysis article page', () => {
     expect(screen.getByText('Register record under review')).toBeInTheDocument();
     const citedRecords = screen.getByRole('region', { name: 'Cited register records' });
     expect(within(citedRecords).queryByRole('link', { name: /withheld/i })).not.toBeInTheDocument();
+    expect(screen.getByTestId('body')).toHaveTextContent('See the withheld record.');
+    expect(within(screen.getByTestId('body')).queryByRole('link')).not.toBeInTheDocument();
   });
 
   it('renders a tombstone for a withdrawn piece without its body or notices', async () => {
