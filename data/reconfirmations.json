@@ -211,7 +211,22 @@
           "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051",
           "auditedAt": "2026-11-05T02:53:42.541Z"
         }
-      ]
+      ],
+      "decision": {
+        "approvedBy": "Daniel Alkurdi",
+        "approvedAt": "2026-11-05T03:51:26.703Z",
+        "approval": {
+          "subject": "reconfirm:2026-11-05-1:b41dc6077c588ec9917d7ea010b9ac99970c53ca35dc3b7d832a6b878610e08b",
+          "receivedAt": "2026-11-05T03:51:26.703Z",
+          "response": {
+            "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+            "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+            "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiM0o5dzllTjFyNVBndGVMQXBKTDFJb0xPcWF0RXlYZFNuUF9LeC1uci1kSSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+            "signature": "MEYCIQDh_bYg63Iq1TzHJpyoMPbzL79fLs5_z2dtD9Jqo_dA1gIhAPMvozRjVhTirfOfSotsiy3oflaC3d2a9_1Bxd2Sc5HO",
+            "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+          }
+        }
+      }
     }
   ]
 }
