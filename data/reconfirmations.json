@@ -227,6 +227,211 @@
           }
         }
       }
+    },
+    {
+      "id": "2026-11-05-2",
+      "proposedAt": "2026-11-05T22:08:46.096Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "timelineEventId": "tl-2026-06-26-saet-adopts-supreme-court-genai-guidelines",
+          "title": "SAET adopts Supreme Court generative AI guidelines",
+          "verifiedAt": "2026-07-24T02:50:46.440Z",
+          "verifiedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "contentHash": "eacecc1ae79302601c4498861b06b02e5d8fa3222480688da20d4997d365f57c",
+          "auditedAt": "2026-11-05T22:10:18.184Z"
+        },
+        {
+          "timelineEventId": "tl-2026-08-24-fwc-publishes-genai-guidance-note",
+          "title": "Fair Work Commission publishes its generative AI guidance note",
+          "verifiedAt": "2026-08-24T23:32:02.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55",
+          "auditedAt": "2026-11-05T22:11:03.769Z"
+        },
+        {
+          "timelineEventId": "tl-2025-04-07-nsw-ncat-procedural-direction-7-genai",
+          "title": "NCAT issues Procedural Direction 7 on generative AI",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "16166188601235ed6a416d6e1354e0960301995a6b484ceab52f365d59178e97",
+          "auditedAt": "2026-11-05T22:11:03.862Z"
+        },
+        {
+          "timelineEventId": "tl-2025-02-03-nsw-district-court-genai-practice-note",
+          "title": "NSW District Court adopts SC Gen 23 by General Practice Note 2",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "ebdf82f866f587516787eff5a13c59b279afc57ba62a9615fc6d3354c5656987",
+          "auditedAt": "2026-11-05T22:11:03.975Z"
+        },
+        {
+          "timelineEventId": "tl-2025-02-19-nsw-irc-practice-note-33-genai",
+          "title": "NSW Industrial Relations Commission issues Practice Note No 33 on generative AI",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "e97652ed1b4b4a41d4d91fc8dee9175a5b77a0290eff42f60b199c1964d47fc8",
+          "auditedAt": "2026-11-05T22:11:04.105Z"
+        },
+        {
+          "timelineEventId": "tl-2025-02-12-nsw-lec-practice-note-genai",
+          "title": "NSW Land and Environment Court replaces its generative AI practice note",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+          "auditedAt": "2026-11-05T22:11:04.208Z"
+        },
+        {
+          "timelineEventId": "tl-2026-01-12-nsw-local-court-practice-note-genai",
+          "title": "NSW Local Court adopts SC Gen 23 for all proceedings",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "88cb86d71bfe7f53dc757383692f4245257b502ffe0d3da02280dfc757ec77d2",
+          "auditedAt": "2026-11-05T22:11:04.338Z"
+        },
+        {
+          "timelineEventId": "tl-2026-01-01-nsw-pic-procedural-direction-pic13-genai",
+          "title": "Personal Injury Commission commences Procedural Direction PIC13",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "cbdd2cb402101038b5e0a52eb83e4ed67671c71d9a5cb0699050573a0b5550e4",
+          "auditedAt": "2026-11-05T22:11:04.487Z"
+        },
+        {
+          "timelineEventId": "tl-2026-05-14-vic-supreme-court-ai-guidelines-judicial-officers",
+          "title": "Supreme Court of Victoria issues AI guidelines for judicial officers",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+          "auditedAt": "2026-11-05T22:11:07.313Z"
+        },
+        {
+          "timelineEventId": "tl-2026-06-05-vic-county-court-pnccv-1-2026",
+          "title": "County Court of Victoria issues practice note PNCCV 1-2026 on AI",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "1177d0ce865a13d6f02144b2e94c0f5f91b756b479cbd44d3d05702fb3a5c8bf",
+          "auditedAt": "2026-11-05T22:11:04.810Z"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-3",
+      "proposedAt": "2026-11-05T22:08:46.096Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "timelineEventId": "tl-2025-12-22-vic-vcat-pnvcat-11-genai",
+          "title": "VCAT practice note PNVCAT 11 on generative AI takes effect",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "e8ddb193be361e8d367637877430eee59fa75814a3b6a9e2dd080f3e31a34339",
+          "auditedAt": "2026-11-05T22:11:05.021Z"
+        },
+        {
+          "timelineEventId": "tl-2025-10-17-qld-qcat-practice-direction-10-2025",
+          "title": "QCAT issues Practice Direction 10 of 2025 on accuracy of references",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "17a2b32761ea0b74d6e2216f5e199612c7c5516e698574adac576c712b1cd739",
+          "auditedAt": "2026-11-05T22:11:05.154Z"
+        },
+        {
+          "timelineEventId": "tl-2025-09-25-qld-district-court-practice-direction-12-2025",
+          "title": "District Court of Queensland issues Practice Direction 12 of 2025",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "f41471f855f554cd076ef194dc3653fc7288b3b332d6db842d33de9f25bbabe4",
+          "auditedAt": "2026-11-05T22:11:05.276Z"
+        },
+        {
+          "timelineEventId": "tl-2025-09-29-qld-land-court-practice-direction-4-2025",
+          "title": "Land Court of Queensland commences Practice Direction 4 of 2025",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "f02ad68c3f951a33e716378a3fcf0c345adf3daa1bbd76907a11ad6e8934ff26",
+          "auditedAt": "2026-11-05T22:11:05.354Z"
+        },
+        {
+          "timelineEventId": "tl-2025-09-25-qld-planning-environment-court-practice-direction-",
+          "title": "Planning and Environment Court of Queensland issues Practice Direction 7 of 2025",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "d74c26b3b50adfd198ea3cb5d7cff45f54d72fe5bce4a109f76c2503a3c4c462",
+          "auditedAt": "2026-11-05T22:11:05.424Z"
+        },
+        {
+          "timelineEventId": "tl-2025-09-10-qld-supreme-court-practice-direction-14-2024-exper",
+          "title": "Queensland Supreme Court adds generative AI duties to its expert evidence practice direction",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "9da8c29accdc0805573d22b07815011f8d9abcce484c27bc22582b6ef707fee8",
+          "auditedAt": "2026-11-05T22:11:06.186Z"
+        },
+        {
+          "timelineEventId": "tl-2025-11-20-wa-supreme-court-genai-guidelines",
+          "title": "Supreme Court of Western Australia publishes generative AI guidelines",
+          "verifiedAt": "2026-08-25T02:01:07.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "e24334d7a4fd060df81ef65580112139eac5bd0f2cac509f877c53e2cc6c57de",
+          "auditedAt": "2026-11-05T22:11:06.545Z"
+        },
+        {
+          "timelineEventId": "tl-2024-11-21-nsw-judicial-gen-ai-guidelines",
+          "title": "Chief Justice of NSW issues generative AI guidelines for judges",
+          "verifiedAt": "2026-08-25T13:30:09.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "044419c46de275247f265f3d53036b2178c94939a77f43c398a633e05999d4ee",
+          "auditedAt": "2026-11-05T22:11:06.792Z"
+        },
+        {
+          "timelineEventId": "tl-2026-06-05-vic-county-court-judicial-ai-guidelines",
+          "title": "County Court of Victoria issues guidelines on judicial officers' use of AI",
+          "verifiedAt": "2026-08-25T13:30:09.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "080410f7f572d1fb1a331fb3048ae04bb858a268717c912942f2600bd32a729f",
+          "auditedAt": "2026-11-05T22:11:06.851Z"
+        },
+        {
+          "timelineEventId": "tl-2026-01-19-sa-courts-gen-ai-self-represented-info",
+          "title": "South Australian courts publish generative AI information sheet for self-represented litigants",
+          "verifiedAt": "2026-08-25T13:30:09.000Z",
+          "verifiedBy": "Policai editorial source review",
+          "contentHash": "974fa5eef71ab195d51c387b5db6776f20b7843e6bfb35390940ed2e724bcaf3",
+          "auditedAt": "2026-11-05T22:11:07.684Z"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-4",
+      "proposedAt": "2026-11-05T22:14:14.918Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "developmentId": "dev-administrative-guideline-for-the-safe-and-respon-wo7okk",
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "verifiedAt": "2026-08-07T05:10:38.082Z",
+          "verifiedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+          "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
+          "auditedAt": "2026-11-05T22:14:15.421Z"
+        },
+        {
+          "developmentId": "dev-use-of-enterprise-generative-ai-tools-in-the-vic-15kcbs1",
+          "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+          "verifiedAt": "2026-07-24T02:35:49.530Z",
+          "verifiedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "contentHash": "bb501314ff02225c567f97f1dd0eb76090f43bf3641272147ffd6f4f4f9f9848",
+          "auditedAt": "2026-11-05T22:14:16.208Z"
+        },
+        {
+          "developmentId": "dev-use-of-publicly-available-generative-ai-tools-in-1nbqxl0",
+          "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+          "verifiedAt": "2026-07-24T02:36:19.291Z",
+          "verifiedBy": "Daniel Alkurdi (Codex-assisted web review)",
+          "contentHash": "ae252cfac000de29f5b376184568db75217d23979a7d68c7ec09ed7b88fd86e0",
+          "auditedAt": "2026-11-05T22:14:16.361Z"
+        }
+      ]
     }
   ]
 }
