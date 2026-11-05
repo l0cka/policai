@@ -1000,6 +1000,9 @@ export async function getTimelineEvents(
 // Developments feed + collection metadata
 // ---------------------------------------------------------------------------
 
+/** `sourceId` of a public development projected from a timeline event. */
+export const TIMELINE_PROJECTION_SOURCE_ID = "editorial-timeline";
+
 function timelineEventAsDevelopment(event: TimelineEvent): Development {
 	const date =
 		typeof event.date === "string"
@@ -1017,7 +1020,7 @@ function timelineEventAsDevelopment(event: TimelineEvent): Development {
 		id: `dev-${event.id.replace(/^tl-/, "")}`,
 		title: event.title,
 		url: event.sourceUrl,
-		sourceId: "editorial-timeline",
+		sourceId: TIMELINE_PROJECTION_SOURCE_ID,
 		sourceName,
 		jurisdiction: event.jurisdiction,
 		publishedAt: date,
