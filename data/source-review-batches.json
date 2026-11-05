@@ -107,6 +107,41 @@
           "proposalHash": "78a64c0c637b8f0490636615397fb82d2f9aaaa7a488773e973529f58507154e"
         }
       ]
+    },
+    {
+      "id": "2026-11-05-1",
+      "proposedAt": "2026-11-05T02:14:16.337Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
+          "proposalHash": "f5dd194132edd85078a0c9295e099dbb771b2be2a684802c0e6b8fada62662af"
+        },
+        {
+          "id": "source-review-edb628fe-8041-4b77-b110-243136c5db32",
+          "proposalHash": "b91db0fe132d137b5dbd6fbc4a0748834a8ab5b113370042b451fa9673b3f095"
+        },
+        {
+          "id": "source-review-7976bc2e-cc4d-49f7-9033-563a8098dfce",
+          "proposalHash": "06fa16f423b7c39032b1b56e5e0f50561c6f8871e53baf7b4743489e190fdb33"
+        },
+        {
+          "id": "source-review-845523f0-517c-43dc-b0d1-0fd7452c7da5",
+          "proposalHash": "5bd85e9df7ccfab82c8c85bf8ed18bc0fcecf764e7a931b54fde45c23f514783"
+        },
+        {
+          "id": "source-review-f2c39399-441a-4250-a188-b8039d343198",
+          "proposalHash": "47c87d1d3cf9fea935a85b2e6471ff30b0c80e9a1930c5870737bad86681f28f"
+        },
+        {
+          "id": "source-review-49cc6bad-cdd7-4676-bfb0-81af0c05f293",
+          "proposalHash": "dcedfc81db259bddf2f91543b7820ea5602b97141a33131b8e9c6c52db6aeaad"
+        },
+        {
+          "id": "source-review-b5ca2649-c68e-4d8e-a0d0-d723aa3362aa",
+          "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
+        }
+      ]
     }
   ]
 }

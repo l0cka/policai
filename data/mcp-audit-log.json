@@ -1,5 +1,160 @@
 [
   {
+    "id": "mcp-audit-b6d14793-6533-401d-a6f5-257ac85c4a8a",
+    "createdAt": "2026-11-05T02:14:16.338Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-746c3a59-5c3a-4fce-ad88-a06e94274188",
+    "createdAt": "2026-11-05T02:14:01.544Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cd221d7b-3ff4-4a69-bc16-df777d08a17b",
+    "createdAt": "2026-11-05T02:12:03.910Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-25d659f6-a04e-445c-9f73-0dd07eb99bf1",
+    "createdAt": "2026-11-05T02:12:03.867Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e50a87d7-4011-4a3a-bdca-2b446164ad50",
+    "createdAt": "2026-11-05T02:11:55.837Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-db7c1203-24cb-4b92-b3ef-423ba1005f84",
+    "createdAt": "2026-11-05T02:11:55.174Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f207bf31-a87f-4b3f-9332-bb6e365d2bf0",
+    "createdAt": "2026-11-05T02:09:58.568Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-66a5e62c-5e31-4322-9564-02ba99847cb0",
+    "createdAt": "2026-11-05T02:09:57.560Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-5010b9eb-a8cb-4ce9-8a76-bfe969577b1f",
+    "createdAt": "2026-11-05T02:09:56.480Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9102a46d-9607-4693-a4a6-cf1e655a6e8f",
+    "createdAt": "2026-11-05T02:09:55.793Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-eb6ce90f-0aed-4f4a-bb4b-0834a065624b",
+    "createdAt": "2026-11-05T02:09:07.900Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d99458c0-9ac5-4903-9144-ef394536351e",
+    "createdAt": "2026-11-05T02:09:07.730Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "status": "error",
+    "errorSummary": "HTTP 403 at https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result"
+  },
+  {
+    "id": "mcp-audit-47cc3e1f-8e4e-4c14-a4eb-5e147a5ec59f",
+    "createdAt": "2026-11-05T02:09:07.646Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.digital.gov.au/ai/ai-in-government-policy",
+    "status": "error",
+    "errorSummary": "read ETIMEDOUT"
+  },
+  {
+    "id": "mcp-audit-745c8fa3-89bd-40c5-ab30-c68685f968a5",
+    "createdAt": "2026-11-05T02:07:21.187Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4dc2ce81-0aab-4158-a3fc-61509a2d06ea",
+    "createdAt": "2026-11-05T02:07:19.165Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9e54c258-3d84-4ec1-834c-467496a23867",
+    "createdAt": "2026-11-05T02:07:17.694Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.digital.gov.au/ai-reference-architecture",
+    "status": "error",
+    "errorSummary": "read ETIMEDOUT"
+  },
+  {
+    "id": "mcp-audit-d4b774b0-d582-4a13-9ef9-42c413a42dd3",
+    "createdAt": "2026-11-05T02:05:31.817Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-97270c87-3f4e-4afc-9976-56ac8e4dcc80",
+    "createdAt": "2026-11-05T02:05:22.130Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ac510342-ead7-4334-a527-e157bdee01f0",
+    "createdAt": "2026-11-05T02:05:09.374Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9ef9ba9d-c368-4dd0-80a6-59e7d25ceabe",
+    "createdAt": "2026-11-05T02:03:00.831Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
+    "status": "error",
+    "errorSummary": "The source changed since the collector staged this ordered review; run collection again to create the next source transition"
+  },
+  {
     "id": "mcp-audit-f7c70475-5f1b-4c1d-b6fd-587cd4839701",
     "createdAt": "2026-11-05T00:22:12.450Z",
     "actor": "local-mcp-admin",
@@ -3530,158 +3685,6 @@
     "createdAt": "2026-07-19T06:14:28.636Z",
     "actor": "local-mcp-admin",
     "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-fe5e9dd2-b328-44f2-8409-ae7c6fd91564",
-    "createdAt": "2026-07-19T06:14:28.536Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0004/1194340/AI_Ethics_Policy.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-65448aad-7f93-4c76-844d-581a2d841ef7",
-    "createdAt": "2026-07-19T06:14:28.426Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-13026a3e-e63f-4b0b-8e8e-992c31150509",
-    "createdAt": "2026-07-19T06:14:28.310Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.treasury.sa.gov.au/__data/assets/pdf_file/0007/936745/Guideline-13.1-Use-of-Large-Language-Model-AI-Tools-Utilities.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5966f4ad-b388-48ff-a11f-05e85e6b5b2d",
-    "createdAt": "2026-07-19T06:14:28.194Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5b773ada-65ac-4bf1-8d9f-6d76c2577535",
-    "createdAt": "2026-07-19T06:14:28.187Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b2aa8b46-9689-4b8b-9151-9c865f4f0650",
-    "createdAt": "2026-07-19T06:14:28.180Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-a9bbc347-1abd-41c0-a9b3-1e39dc1625fd",
-    "createdAt": "2026-07-19T06:14:28.173Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-404341f7-b53d-422b-a19f-74b514aeb3e5",
-    "createdAt": "2026-07-19T06:14:28.166Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-36a2f4c4-8c57-4cb0-ad0e-ae9064905c68",
-    "createdAt": "2026-07-19T06:14:28.158Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.info.buy.nsw.gov.au/resources/artificial-intelligence-ai-procurement-essentials",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-73e80aed-b23a-4bb1-90b3-b3c94a948392",
-    "createdAt": "2026-07-19T06:14:28.151Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-efd35429-5ced-4b86-9dc1-db8594c0f528",
-    "createdAt": "2026-07-19T06:14:28.143Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-72192579-60cb-4655-a889-35e08c37f971",
-    "createdAt": "2026-07-19T06:14:28.135Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-157f7858-33aa-4ffa-8165-d7f68f3dbf41",
-    "createdAt": "2026-07-19T06:14:28.127Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://forms.digital.wa.gov.au/250231755970861",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-786e20cb-98b7-472f-985e-96f5e1e9a1b3",
-    "createdAt": "2026-07-19T06:14:28.120Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-6a3d2bde-29b3-4d79-8595-ec8de45552ca",
-    "createdAt": "2026-07-19T06:14:28.112Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-897628bc-6fda-4e63-a730-b92080fffdeb",
-    "createdAt": "2026-07-19T06:14:28.098Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-bb766d67-557b-4946-99e5-ea92413abad6",
-    "createdAt": "2026-07-19T06:14:27.949Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.dpac.tas.gov.au/__data/assets/pdf_file/0034/497176/Tasmanian-Government-Guidance-Artificial-Intelligence.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-95f1993d-17e4-4294-961b-96abbd08f241",
-    "createdAt": "2026-07-19T04:24:44.784Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.dpac.tas.gov.au/__data/assets/pdf_file/0034/497176/Tasmanian-Government-Guidance-Artificial-Intelligence.pdf",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-a67343b2-8b96-462d-b03a-645fa9746b0d",
-    "createdAt": "2026-07-19T04:20:26.834Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/artificial-intelligence-governance-toolkit-wa-public-sector-entities",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ca369451-b7d3-4325-a042-0977018a24c2",
-    "createdAt": "2026-07-19T04:20:24.633Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/organisation/department-of-the-premier-and-cabinet/office-of-digital-government/western-australian-artificial-intelligence-advisory-board",
     "status": "success"
   }
 ]
