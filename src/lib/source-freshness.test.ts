@@ -106,9 +106,58 @@ describe('assessSourceFreshness', () => {
     const rows = assessSourceFreshness(sources, checked, now, { manualReviews: [] });
     expect(rows.every((row) => row.state === 'overdue')).toBe(true);
     const messages = uncheckedSourceErrors(sources, checked, { manualReviews: [] }, now);
-    expect(messages.map((message) => message.split(':')[0])).toEqual([...silent]);
-    expect(messages[0]).toContain('limit 2 days');
-    expect(messages[4]).toContain('limit 8 days');
+    // Staleness of a manual source stays on /status (the rows above); it is
+    // not a run error, so it cannot hold the collector at degraded.
+    expect(messages).toEqual([]);
+  });
+
+  it('uses one 8-day hand-check limit for every manual source, daily or weekly', () => {
+    const now = new Date('2026-11-05T00:00:00.000Z');
+    const review = (sourceId: string, reviewedAt: string): ManualSourceReview => ({
+      sourceId,
+      status: 'checked',
+      reviewedAt,
+      reviewedBy: 'Daniel',
+      evidence: { url: 'https://example.gov.au/a' },
+      notes: 'Checked the page by hand; nothing new.',
+    });
+    const sources = [
+      { ...base, id: 'daily-manual', automation: buildManualDecision() },
+      { ...base, id: 'weekly-manual', schedule: 'weekly' as const, automation: buildManualDecision() },
+    ];
+    const state = (reviewedAt: string) =>
+      Object.fromEntries(
+        assessSourceFreshness(sources, {}, now, {
+          manualReviews: sources.map((source) => review(source.id, reviewedAt)),
+        }).map((row) => [row.sourceId, row.state]),
+      );
+    expect(state('2026-10-29T00:00:00.000Z')).toEqual({
+      'daily-manual': 'manual',
+      'weekly-manual': 'manual',
+    });
+    expect(state('2026-10-27T00:00:00.000Z')).toEqual({
+      'daily-manual': 'overdue',
+      'weekly-manual': 'overdue',
+    });
+  });
+
+  it('still names an automatic source that is overdue or never checked', () => {
+    const sources = [
+      { ...base, id: 'auto-stale' },
+      { ...base, id: 'auto-never' },
+      { ...base, id: 'manual-silent', automation: buildManualDecision() },
+    ];
+    const messages = uncheckedSourceErrors(
+      sources,
+      { 'auto-stale': '2026-09-01T00:00:00.000Z' },
+      { manualReviews: [] },
+      NOW,
+    );
+    expect(messages.map((message) => message.split(':')[0])).toEqual([
+      'auto-stale',
+      'auto-never',
+    ]);
+    expect(messages[0]).toContain('limit 3 days');
   });
 
   it('ages a manual source from its last hand review, not the watch-state check', () => {
@@ -130,8 +179,6 @@ describe('assessSourceFreshness', () => {
     const [row] = assessSourceFreshness([source], watchStateOnly, now, monitoring);
     expect(row.ageDays).toBe(22);
     expect(row.lastCheckedAt).toBe('2026-10-22T00:00:00.000Z');
-    expect(uncheckedSourceErrors([source], lastChecked, monitoring, now)[0]).toContain(
-      'last checked 22 days ago',
-    );
+    expect(uncheckedSourceErrors([source], lastChecked, monitoring, now)).toEqual([]);
   });
 });

@@ -1,9 +1,6 @@
 import { UNCHECKED_SOURCE_MARKER } from '@/lib/collection-coverage';
 import type { WatchSource } from '@/lib/pipeline/sources';
-import {
-  MANUAL_REVIEW_LIMIT_DAYS,
-  reviewIsCurrent,
-} from '@/lib/source-monitoring';
+import { reviewIsCurrent } from '@/lib/source-monitoring';
 import type { SourceMonitoringState } from '@/types';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -94,11 +91,11 @@ export function assessSourceFreshness(
 }
 
 /**
- * Sources the collector must name because nobody has checked them inside
- * the existing limit: {@link FRESHNESS_LIMIT_DAYS} for an automatic source
- * (3 days daily, 10 weekly), and {@link MANUAL_REVIEW_LIMIT_DAYS} for a
- * manual source (2 days daily, 8 weekly). A manual source counts only when
- * its hand review is missing or no longer current.
+ * Automatic sources the collector must name because it has not completed a
+ * check inside {@link FRESHNESS_LIMIT_DAYS} (3 days daily, 10 weekly).
+ * A manual source is excluded: its staleness is a person's backlog, shown
+ * on /status, and must not hold every run at degraded and bury real
+ * failures.
  */
 export function uncheckedSourceErrors(
   sources: readonly WatchSource[],
@@ -106,14 +103,19 @@ export function uncheckedSourceErrors(
   monitoring: SourceMonitoringState,
   now: Date = new Date(),
 ): string[] {
+  const automaticIds = new Set(
+    sources
+      .filter((source) => source.automation === 'automatic')
+      .map((source) => source.id),
+  );
   return assessSourceFreshness(sources, lastCheckedBySource, now, monitoring)
-    .filter((row) => row.state === 'overdue' || row.state === 'never_checked')
+    .filter(
+      (row) =>
+        automaticIds.has(row.sourceId) &&
+        (row.state === 'overdue' || row.state === 'never_checked'),
+    )
     .map((row) => {
-      const limit =
-        sources.find((source) => source.id === row.sourceId)?.automation ===
-        'automatic'
-          ? FRESHNESS_LIMIT_DAYS[row.schedule]
-          : MANUAL_REVIEW_LIMIT_DAYS[row.schedule];
+      const limit = FRESHNESS_LIMIT_DAYS[row.schedule];
       const age =
         row.ageDays === null
           ? 'never checked'

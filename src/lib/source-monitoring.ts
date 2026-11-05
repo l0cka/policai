@@ -9,11 +9,12 @@ import { sourceUrlsEqual } from '@/lib/source-url';
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
- * How long a hand check stays current. Daily sources: 2 days. Weekly: 8.
- * The same limits decide that a manual source with no current review has
- * gone unchecked.
+ * How long a hand check stays current: 8 days for every manual source,
+ * whatever its nominal cadence, because the weekly manual-source routine is
+ * the only rhythm a person can keep. A manual source past it is overdue on
+ * /status; it does not degrade collector health.
  */
-export const MANUAL_REVIEW_LIMIT_DAYS = { daily: 2, weekly: 8 } as const;
+export const MANUAL_REVIEW_LIMIT_DAYS = 8;
 
 export interface ManualSourceCoverage {
   total: number;
@@ -36,7 +37,7 @@ export function reviewIsCurrent(
   ) {
     return false;
   }
-  const maximumAge = MANUAL_REVIEW_LIMIT_DAYS[source.schedule] * DAY_MS;
+  const maximumAge = MANUAL_REVIEW_LIMIT_DAYS * DAY_MS;
   const age =
     now.getTime() - new Date(review.reviewedAt).getTime();
   return (

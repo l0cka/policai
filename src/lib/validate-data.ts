@@ -1514,7 +1514,10 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
           if (skipped?.because === 'decided_block') {
             if (!isNonEmptyString(skipped.decidedBy))
               errors.push(`${label}: skippedLinked[${index}] requires decidedBy`);
-          } else if (skipped?.because !== 'robots_disallowed')
+          } else if (
+            skipped?.because !== 'robots_disallowed' &&
+            skipped?.because !== 'no_document_bytes'
+          )
             errors.push(`${label}: skippedLinked[${index}] has an invalid because`);
         });
     }
