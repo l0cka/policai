@@ -49,8 +49,9 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
     },
-    "status": "promoted",
-    "relatedPolicyId": "dta-ai-reference-architecture"
+    "status": "dismissed",
+    "relatedPolicyId": "dta-ai-reference-architecture",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Duplicates the timeline announcement tl-2026-10-30-dta-ai-reference-architecture-published (DTA publishes the AI Reference Architecture), which cites the DTA media release; this editorial-staging entry carried a staging label as its source name."
   },
   {
     "id": "dev-latest-news-16bao",
@@ -2025,10 +2026,11 @@
       "method": "manual",
       "notes": "QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current."
     },
-    "status": "promoted",
+    "status": "dismissed",
     "publishedAt": "2024-09-01",
     "publishedAtPrecision": "month",
-    "relatedPolicyId": "queensland-ai-governance-policy"
+    "relatedPolicyId": "queensland-ai-governance-policy",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Earlier detection of the Queensland AI governance policy that describes v1.0.0 as current; v2.0.0 superseded it, and dev-artificial-intelligence-governance-policy-1j2eo9g covers the same page."
   },
   {
     "id": "dev-speech-moving-from-ai-pilots-to-whole-of-governm-78k67w",
@@ -2734,10 +2736,11 @@
       "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au.",
       "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
     },
-    "status": "promoted",
+    "status": "dismissed",
     "publishedAt": "2024-11-27",
     "publishedAtPrecision": "day",
-    "relatedPolicyId": "victoria-genai-guideline-vps"
+    "relatedPolicyId": "victoria-genai-guideline-vps",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Same Victorian generative AI guideline page as dev-administrative-guideline-for-the-safe-and-respon-gmhnpg, which stays."
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-1oub5xm",
@@ -2819,8 +2822,9 @@
       "notes": "WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07.",
       "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
     },
-    "status": "promoted",
-    "relatedPolicyId": "wa-ai-policy-assurance-framework"
+    "status": "dismissed",
+    "relatedPolicyId": "wa-ai-policy-assurance-framework",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Same WA Government AI Policy and Assurance Framework page as dev-wa-government-artificial-intelligence-policy-and-qppmsw, which stays."
   },
   {
     "id": "dev-public-consultation-on-artificial-intelligence-p-17y73hz",
