@@ -13,7 +13,7 @@ import { getAutomaticSources, WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { sourcesNotReachedSince } from '@/lib/pipeline/source-health';
 import { collectionAnchor } from '@/lib/this-week';
 import { watchCoverage } from '@/lib/watch-coverage/report';
-import { summarizeManualSourceCoverage } from '@/lib/source-monitoring';
+import { MANUAL_REVIEW_LIMIT_DAYS, summarizeManualSourceCoverage } from '@/lib/source-monitoring';
 import {
   assessSourceFreshness,
   FRESHNESS_LIMIT_DAYS,
@@ -303,7 +303,11 @@ export default async function StatusPage() {
             {FRESHNESS_LIMIT_DAYS.weekly} days (weekly sources). A run can
             reach a source without completing its check, for example while a
             changed document waits for editorial review. This table can
-            therefore disagree with the last-run figure above.
+            therefore disagree with the last-run figure above. A manual source
+            is overdue when nobody has reviewed it by hand in the last{' '}
+            {MANUAL_REVIEW_LIMIT_DAYS} days, whatever its cadence. That is a
+            note for the reviewer: it does not change the collector health
+            above.
           </p>
           <div className="overflow-x-auto" role="region" aria-label="Source freshness table" tabIndex={0}>
             <table className="w-full">

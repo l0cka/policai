@@ -497,6 +497,14 @@ remove the exception after allow-listing, or move a still-refusing source to
 manual tracking. The collector never automatically changes canonical source
 status; `cyber-news` remains manual without an exception.
 
+A manual source is current for 8 days after its last hand review, whatever its
+nominal `daily` or `weekly` cadence, matching the weekly manual-source routine
+(`MANUAL_REVIEW_LIMIT_DAYS`). One that falls behind shows as overdue in the
+`/status` source table and in the manual-coverage count, but it adds no run
+error and does not degrade collector health, so a person's review backlog
+cannot hide a real failure. Automatic sources that miss their check, and
+`track:*` follow trackers that fail, still degrade the run.
+
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
 reviewer's identity, substantive notes that
