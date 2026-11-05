@@ -8005,7 +8005,7 @@
     ],
     "createdAt": "2026-08-20T00:00:00Z",
     "updatedAt": "2026-08-24T23:32:02.000Z",
-    "lastReviewedAt": "2026-08-24T23:32:02.000Z",
+    "lastReviewedAt": "2026-11-05T03:51:26.703Z",
     "verification": {
       "status": "verified",
       "source": {
@@ -8019,10 +8019,10 @@
         "contentType": "application/pdf",
         "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
       },
-      "checkedAt": "2026-08-24T23:32:02.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T03:51:26.703Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the signed practice direction PDF from the Tribunal's official site, fingerprinted it, and read it in full against the Tribunal's announcement of 24 August 2026 before creating this record.",
+      "notes": "Retrieved the signed practice direction PDF from the Tribunal's official site, fingerprinted it, and read it in full against the Tribunal's announcement of 24 August 2026 before creating this record. Re-confirmed in batch 2026-11-05-1 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-24.",
       "lastSourceAuditAt": "2026-11-05T02:53:42.541Z"
     },
     "dates": [
