@@ -207,5 +207,16 @@
       "signature": "MEYCIQDh_bYg63Iq1TzHJpyoMPbzL79fLs5_z2dtD9Jqo_dA1gIhAPMvozRjVhTirfOfSotsiy3oflaC3d2a9_1Bxd2Sc5HO",
       "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
     }
+  },
+  {
+    "subject": "source-review-batch:2026-11-05-1:8768a8d468a99ee97d4f32459c91bba5605e0b103132f18954f3b86fab36eec8",
+    "receivedAt": "2026-11-05T22:01:29.182Z",
+    "response": {
+      "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+      "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+      "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWTVIYW9UV2k0NDc2WmZRRVp5dGlvNndFZkdWTU96eTF2ekthaGZJM2JEYyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+      "signature": "MEUCIQCFxTL8Hq-So71cELal01NivsPlofyCCZMqXKr9Jdqa7wIgaEkzstKXbcef15CJaB43vNkCGbCMWgzUep9Wu0d1K3E",
+      "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+    }
   }
 ]
