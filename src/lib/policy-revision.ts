@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import type { Policy, SourceEvidence, TimelineEvent } from '@/types';
+import type { Development, Policy, SourceEvidence, TimelineEvent } from '@/types';
 
 type StableJsonValue =
   | string
@@ -55,7 +55,7 @@ function editorialSourceEvidence(source: SourceEvidence): object {
   };
 }
 
-function editorialVerification<T extends Policy | TimelineEvent>(
+function editorialVerification<T extends Policy | TimelineEvent | Development>(
   record: T,
 ): T['verification'] {
   const verification = { ...record.verification };
@@ -83,5 +83,12 @@ export function timelineRevisionHash(event: TimelineEvent): string {
   return revisionHash({
     ...event,
     verification: editorialVerification(event),
+  });
+}
+
+export function developmentRevisionHash(development: Development): string {
+  return revisionHash({
+    ...development,
+    verification: editorialVerification(development),
   });
 }
