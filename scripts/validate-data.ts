@@ -279,7 +279,11 @@ async function main() {
     }),
     validateSiteReuse(siteReuse, bodies),
     validateRuleScopes(ruleScopes, policies),
-    validateReconfirmLedger(reconfirmations, policies),
+    validateReconfirmLedger(reconfirmations, {
+      policy: policies,
+      timeline,
+      development: developments,
+    }),
     editorApprovals,
     validateSignedRecordChanges(head, base),
     validateArticles(articles, articleBaseline, {

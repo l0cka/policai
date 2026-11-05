@@ -239,8 +239,16 @@ async function mapWithConcurrency<T, R>(
   return results;
 }
 
+/**
+ * A record whose official source the audit can re-read: a register policy,
+ * a timeline event, or a development under its `url`.
+ */
+export type AuditableRecord = Pick<Policy, 'id' | 'title' | 'sourceUrl' | 'verification'> & {
+  status?: string;
+};
+
 export async function auditRegister(
-  policies: Policy[],
+  policies: readonly AuditableRecord[],
   options: RegisterAuditOptions = {},
 ): Promise<RegisterAuditResult[]> {
   const resolved = options.retrieve
@@ -327,13 +335,13 @@ export async function auditRegister(
   );
 }
 
-export function applyRegisterAuditEvidence(
-  policies: Policy[],
-  results: RegisterAuditResult[],
-): Policy[] {
+export function applyRegisterAuditEvidence<T extends AuditableRecord>(
+  policies: readonly T[],
+  results: readonly RegisterAuditResult[],
+): T[] {
   const resultById = new Map(results.map((result) => [result.policyId, result]));
 
-  return policies.map((policy) => {
+  return policies.map((policy): T => {
     const result = resultById.get(policy.id);
     if (!result) return policy;
 

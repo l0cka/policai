@@ -76,10 +76,7 @@ export interface RecordFreshnessSummary {
  * `audit:register`, which detects content drift, not age.
  */
 export function summarizeRecordFreshness(
-  policies: readonly Pick<
-    Policy,
-    'id' | 'title' | 'type' | 'lastReviewedAt' | 'verification'
-  >[],
+  policies: readonly ReviewableRecord[],
   now: Date = new Date(),
 ): RecordFreshnessSummary {
   const schedule = buildRecordReviewSchedule(policies, now);
@@ -98,10 +95,13 @@ export function summarizeRecordFreshness(
   };
 }
 
+/** Any editorially verified record: a policy, a timeline event or a development. */
+export type ReviewableRecord = Pick<Policy, 'id' | 'title' | 'verification'> &
+  Partial<Pick<Policy, 'lastReviewedAt'>>;
+
 export interface RecordReviewRow {
   id: string;
   title: string;
-  type: PolicyType;
   /** ISO time of the last editorial re-verification, or null if none. */
   reviewedAt: string | null;
   /** ISO date the record becomes overdue, or null if never reviewed. */
@@ -116,10 +116,7 @@ export interface RecordReviewRow {
  * Never-reviewed records sort first and count as overdue.
  */
 export function buildRecordReviewSchedule(
-  policies: readonly Pick<
-    Policy,
-    'id' | 'title' | 'type' | 'lastReviewedAt' | 'verification'
-  >[],
+  policies: readonly ReviewableRecord[],
   now: Date = new Date(),
 ): RecordReviewRow[] {
   const rows = policies.map((policy): RecordReviewRow => {
@@ -131,7 +128,6 @@ export function buildRecordReviewSchedule(
       return {
         id: policy.id,
         title: policy.title,
-        type: policy.type,
         reviewedAt: null,
         dueAt: null,
         daysLeft: null,
@@ -144,7 +140,6 @@ export function buildRecordReviewSchedule(
     return {
       id: policy.id,
       title: policy.title,
-      type: policy.type,
       reviewedAt,
       dueAt: new Date(dueTime).toISOString(),
       daysLeft: limitDays - ageDays,

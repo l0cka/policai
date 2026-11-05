@@ -10,6 +10,7 @@ import {
 import { validatePolicies } from '@/lib/validate-data';
 import {
   approveReconfirmBatch,
+  entryRecord,
   proposeReconfirmBatches,
   reconfirmApprovalSubject,
   ReconfirmError,
@@ -61,9 +62,9 @@ function audit(
 }
 
 function propose(policies: Policy[], audits: RegisterAuditResult[], ledger: ReconfirmLedger = { batches: [] }, batchSize?: number) {
-  const candidates = selectReconfirmCandidates(policies, ledger, { now: NOW });
+  const candidates = selectReconfirmCandidates(policies, ledger, { kind: 'policy', now: NOW });
   const audited = applyRegisterAuditEvidence(policies, audits);
-  return { audited, ...proposeReconfirmBatches(candidates, audits, audited, ledger, { now: NOW, batchSize }) };
+  return { audited, ...proposeReconfirmBatches(candidates, audits, audited, ledger, { kind: 'policy', now: NOW, batchSize }) };
 }
 
 describe('register re-confirmation', () => {
@@ -86,8 +87,8 @@ describe('register re-confirmation', () => {
 
     expect(batches).toHaveLength(1);
     expect(batches[0].id).toBe('2026-11-01-1');
-    expect(batches[0].entries.map((entry) => entry.policyId).sort()).toEqual(['due-soon', 'overdue']);
-    expect(fullReview).toEqual([{ policyId: 'changed', title: 'Record changed', reason: 'changed' }]);
+    expect(batches[0].entries.map((entry) => entryRecord(entry)?.id).sort()).toEqual(['due-soon', 'overdue']);
+    expect(fullReview).toEqual([{ id: 'changed', title: 'Record changed', reason: 'changed' }]);
   });
 
   it('never proposes a record twice while its batch is open', () => {
@@ -118,16 +119,16 @@ describe('register re-confirmation', () => {
       attestationUrl: CARD,
     });
 
-    const schedule = buildRecordReviewSchedule(result.policies, new Date('2027-01-30T00:00:00.000Z'));
+    const schedule = buildRecordReviewSchedule(result.records, new Date('2027-01-30T00:00:00.000Z'));
     expect(schedule.every((row) => !row.overdue)).toBe(true);
-    const renewed = result.policies.find((record) => record.id === 'due-soon')!;
+    const renewed = result.records.find((record) => record.id === 'due-soon')!;
     expect(renewed.verification).toMatchObject({ status: 'verified', checkedAt: approvedAt, checkedBy: 'Daniel Alkurdi' });
     expect(renewed.verification.notes).toContain(`Re-confirmed in batch ${batches[0].id}`);
     expect(renewed.verification.notes).toContain(CARD);
     expect(result.ledger.batches[0].decision?.attestationUrl).toBe(CARD);
     vi.useFakeTimers({ now: new Date('2026-11-03T00:00:00.000Z') });
-    expect(validatePolicies(result.policies, new Set(), { requireLegislative: false }).errors).toEqual([]);
-    expect(validateReconfirmLedger(result.ledger, result.policies)).toEqual({ errors: [], warnings: [] });
+    expect(validatePolicies(result.records, new Set(), { requireLegislative: false }).errors).toEqual([]);
+    expect(validateReconfirmLedger(result.ledger, { policy: result.records })).toEqual({ errors: [], warnings: [] });
   });
 
   it('accepts a passkey approval only for the batch and entries it signed', () => {
@@ -138,9 +139,9 @@ describe('register re-confirmation', () => {
     const decision = { approvedBy: 'Daniel Alkurdi', approvedAt, approval: signed };
 
     const result = approveReconfirmBatch(audited, { batches }, batches[0].id, decision);
-    expect(result.policies.find((record) => record.id === 'due-soon')!.verification.notes).toContain('(passkey approval)');
+    expect(result.records.find((record) => record.id === 'due-soon')!.verification.notes).toContain('(passkey approval)');
     vi.useFakeTimers({ now: new Date('2026-11-03T00:00:00.000Z') });
-    expect(validateReconfirmLedger(result.ledger, result.policies)).toEqual({ errors: [], warnings: [] });
+    expect(validateReconfirmLedger(result.ledger, { policy: result.records })).toEqual({ errors: [], warnings: [] });
 
     const fewer = { ...batches[0], entries: batches[0].entries.slice(1) };
     expect(() => approveReconfirmBatch(audited, { batches: [fewer] }, fewer.id, decision)).toThrow(
@@ -156,17 +157,17 @@ describe('register re-confirmation', () => {
       attestationUrl: CARD,
     });
     const later = new Date('2027-01-20T00:00:00.000Z');
-    const record = once.policies[0];
-    const candidates = selectReconfirmCandidates(once.policies, once.ledger, { now: later });
+    const record = once.records[0];
+    const candidates = selectReconfirmCandidates(once.records, once.ledger, { kind: 'policy', now: later });
     const audits = [audit(record, 'unchanged', '2027-01-19T00:00:00.000Z')];
-    const audited = applyRegisterAuditEvidence(once.policies, audits);
-    const second = proposeReconfirmBatches(candidates, audits, audited, once.ledger, { now: later });
+    const audited = applyRegisterAuditEvidence(once.records, audits);
+    const second = proposeReconfirmBatches(candidates, audits, audited, once.ledger, { kind: 'policy', now: later });
     const twice = approveReconfirmBatch(audited, { batches: [...once.ledger.batches, ...second.batches] }, second.batches[0].id, {
       approvedBy: 'Daniel Alkurdi',
       approvedAt: '2027-01-20T00:00:00.000Z',
       attestationUrl: CARD,
     });
-    const notes = twice.policies[0].verification.notes!;
+    const notes = twice.records[0].verification.notes!;
     expect(notes.match(/Re-confirmed in batch/g)).toHaveLength(1);
     expect(notes).toContain(second.batches[0].id);
     expect(notes.startsWith('Approved after reading the official source.')).toBe(true);
@@ -204,7 +205,7 @@ describe('register re-confirmation', () => {
     const { audited, batches } = propose([dueSoon], [audit(dueSoon, 'unchanged')]);
     const decision = { approvedBy: 'Daniel Alkurdi', approvedAt: '2026-11-02T00:00:00.000Z', attestationUrl: CARD };
     const once = approveReconfirmBatch(audited, { batches }, batches[0].id, decision);
-    expect(() => approveReconfirmBatch(once.policies, once.ledger, batches[0].id, decision)).toThrow(/already decided/);
+    expect(() => approveReconfirmBatch(once.records, once.ledger, batches[0].id, decision)).toThrow(/already decided/);
   });
 
   it('flags a record waiting in two open batches', () => {
@@ -215,7 +216,7 @@ describe('register re-confirmation', () => {
         { id: 'b2', proposedAt: NOW.toISOString(), proposedBy: 'x', entries: [entry] },
       ],
     };
-    expect(validateReconfirmLedger(ledger, [dueSoon]).errors).toEqual([
+    expect(validateReconfirmLedger(ledger, { policy: [dueSoon] }).errors).toEqual([
       'reconfirmations:b2: due-soon is also waiting in batch b1',
     ]);
   });
