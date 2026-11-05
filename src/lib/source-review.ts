@@ -4,6 +4,7 @@ import type {
 	SourceReview,
 	TimelineEvent,
 } from "@/types";
+import { sourceUrlIdentity } from "@/lib/source-url";
 
 export function linkedDevelopmentId(
 	review: SourceReview,
@@ -19,6 +20,10 @@ export function linkedDevelopmentId(
  * Merge collector-produced review snapshots by stable id. Current collector
  * output wins because recovered candidates may have newer extraction,
  * classification, proposed-record, and linked-development evidence.
+ *
+ * A watched document gets a new review id for each content version, so a
+ * new version replaces any still-pending collector review of the same page
+ * rather than standing beside it as a duplicate sourceUrl.
  */
 export function mergeSourceReviews(
 	existing: SourceReview[],
@@ -54,10 +59,32 @@ export function mergeSourceReviews(
 				: update,
 		);
 	}
+	const supersededUrls = new Set(
+		[...updateById.values()]
+			.filter(isUntargetedCollectorReview)
+			.map((review) => sourceUrlIdentity(review.sourceUrl)),
+	);
 	return [
 		...updateById.values(),
-		...existing.filter((review) => !updateById.has(review.id)),
+		...existing.filter(
+			(review) =>
+				!updateById.has(review.id) &&
+				!(
+					isUntargetedCollectorReview(review) &&
+					supersededUrls.has(sourceUrlIdentity(review.sourceUrl))
+				),
+		),
 	];
+}
+
+function isUntargetedCollectorReview(review: SourceReview): boolean {
+	return (
+		review.status === "pending_review" &&
+		review.createdBy === "collector" &&
+		!review.targetPolicyId &&
+		!review.targetTimelineEventId &&
+		!review.targetTimelineRevisionHash
+	);
 }
 
 export function reconcileLinkedDevelopments(
