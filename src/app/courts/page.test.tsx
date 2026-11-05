@@ -78,8 +78,30 @@ describe('/courts page', () => {
       },
     ]);
 
+    const { getPublicCourtRequirements } = await import('@/lib/court-requirements');
+    vi.mocked(getPublicCourtRequirements).mockResolvedValueOnce([
+      {
+        id: 'r1',
+        policyId: 'federal-court-gpn-ai',
+        actor: 'Legal practitioners',
+        modality: 'must',
+        action: 'Disclose AI use.',
+        conditions: [],
+        exceptions: [],
+        topics: [],
+        source: { url: 'https://www.fedcourt.gov.au/gpn-ai', contentHash: 'a'.repeat(64), locator: 'para 1', quote: 'Practitioners must disclose.' },
+        extraction: { method: 'manual', extractedAt: '2026-08-26T00:00:00Z', extractedBy: 'Editor' },
+        verification: { status: 'verified', reviewedAt: '2026-08-26T01:00:00Z', reviewedBy: 'Reviewer' },
+        policy: court,
+      },
+    ]);
+
     const { default: CourtsPage } = await import('./page');
     const page = await CourtsPage();
+    // The HTML and flight payload carry only the actor; text loads on demand.
+    expect(page.props.requirements).toEqual([
+      { id: 'r1', policyId: 'federal-court-gpn-ai', actor: 'Legal practitioners' },
+    ]);
     render(page);
 
     expect(

@@ -23,7 +23,6 @@ import {
 } from '@/lib/this-week';
 import {
   getJurisdictionName,
-  getUpcomingDateTypeName,
   getPolicyStatusName,
   getPolicyTypeName,
   type Development,
@@ -170,7 +169,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
       </div>
       <div className="min-w-0">
         <p className="text-xs text-muted-foreground">
-          {getUpcomingDateTypeName(item.dateType)} ·{' '}
+          {item.label} ·{' '}
           {getJurisdictionName(item.jurisdiction)} ·{' '}
           {getPolicyTypeName(item.type)} ·{' '}
           {getPolicyStatusName(item.status)}
@@ -232,7 +231,7 @@ export default async function ThisWeekPage() {
     <div className="container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       <PageIntro
         title="This week"
-        eyebrow="The week in brief"
+        eyebrow="Updates · this week"
         description="Verified developments from the latest collected week, and dates to watch in the register. Every entry links to its source."
       />
       <div className="reveal">

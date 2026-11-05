@@ -6,6 +6,7 @@ import type { CollectionMeta, SourceRunResult } from '@/types';
 import { WATCH_SOURCES } from '@/lib/pipeline/sources';
 import {
   publicAutomaticCollectionMeta,
+  withRunLevelErrors,
   type CoverageCatalogSource,
 } from './collection-coverage';
 
@@ -170,5 +171,32 @@ describe('publicAutomaticCollectionMeta', () => {
         ),
       ).toBe(false);
     }
+  });
+});
+
+describe('withRunLevelErrors', () => {
+  const healthy = (): CollectionMeta => {
+    const base = meta([row('pm-media', 'success')], []);
+    return {
+      ...base,
+      lastHealthyAt: '2026-11-05T00:00:00.000Z',
+      collector: { ...base.collector, health: 'healthy' },
+    };
+  };
+
+  it('keeps a healthy run healthy when no run-level error is added', () => {
+    expect(withRunLevelErrors(healthy(), [], '2026-10-27T00:00:00.000Z').collector.health).toBe(
+      'healthy',
+    );
+  });
+
+  it('degrades a healthy run for a failing follow tracker', () => {
+    const next = withRunLevelErrors(
+      healthy(),
+      ['track:ai-act: timed out after 30000ms'],
+      '2026-10-27T00:00:00.000Z',
+    );
+    expect(next.collector.health).toBe('degraded');
+    expect(next.lastHealthyAt).toBe('2026-10-27T00:00:00.000Z');
   });
 });

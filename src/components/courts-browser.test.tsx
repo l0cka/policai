@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import Link from 'next/link';
 import { StatusPill } from './policy-indicators';
 import { CourtsBrowser } from './courts-browser';
@@ -105,7 +105,18 @@ beforeAll(() => {
   });
 });
 
-beforeEach(() => window.history.replaceState({}, '', '/courts'));
+/** Serve the requirement text the page loads on demand. */
+function serveDetails(list: unknown[]) {
+  const fetchMock = vi.fn(async () => Response.json({ requirements: list }));
+  vi.stubGlobal('fetch', fetchMock);
+  return fetchMock;
+}
+
+beforeEach(() => {
+  window.history.replaceState({}, '', '/courts');
+  serveDetails([]);
+});
+afterEach(() => vi.unstubAllGlobals());
 
 describe('CourtsBrowser', () => {
   it('preserves the literal search query all rather than treating it as a filter default', () => {
@@ -198,15 +209,35 @@ describe('CourtsBrowser', () => {
     expect(screen.getByText('Exception: Only with prior leave.')).toBeInTheDocument();
     expect(screen.getByText('paragraph 4')).toBeInTheDocument();
   });
-  it.each(['affidavit', 'confidentiality', 'prior leave', 'paragraph 4'])('finds structured requirement topic %s', (query) => {
-    render(<CourtsBrowser policies={policies} requirements={[{ ...requirements[0], action: 'Prepare an affidavit.', conditions: ['confidentiality'], exceptions: ['prior leave'] }]} />);
+  it.each(['affidavit', 'confidentiality', 'prior leave', 'paragraph 4'])('finds structured requirement topic %s', async (query) => {
+    const detailed = { ...requirements[0], action: 'Prepare an affidavit.', conditions: ['confidentiality'], exceptions: ['prior leave'] };
+    serveDetails([detailed]);
+    render(<CourtsBrowser policies={policies} requirements={[detailed]} />);
     fireEvent.change(screen.getByRole('searchbox', { name: 'Search court guidance' }), { target: { value: query } });
-    expect(screen.getByText('1 of 2 instruments')).toBeInTheDocument();
+    expect(await screen.findByText('1 of 2 instruments')).toBeInTheDocument();
   });
-  it('shows material exceptions beside the lead rule, outside the quotation', () => {
-    render(<CourtsBrowser policies={policies} requirements={[{ ...requirements[0], exceptions: ['Only with prior leave and confidentiality safeguards.'] }]} />);
+  it('fetches requirement text only once a note opens or a search starts', async () => {
+    const fetchMock = serveDetails([requirements[0]]);
+    render(<CourtsBrowser policies={policies} requirements={requirements} />);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(screen.queryByText(/Use generative AI to formulate reasons/)).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /Guidelines for judicial officers/ }));
-    expect(screen.getByText(/Exception: Only with prior leave and confidentiality safeguards/)).toBeInTheDocument();
+    expect(await screen.findByText('Use generative AI to formulate reasons.')).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith('/courts/requirements.json');
+  });
+  it('points to the full record when the requirement text cannot be loaded', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('', { status: 500 })));
+    render(<CourtsBrowser policies={policies} requirements={requirements} />);
+    fireEvent.click(screen.getByRole('button', { name: /Guidelines for judicial officers/ }));
+    expect(await screen.findByText(/could not be loaded/)).toBeInTheDocument();
+  });
+  it('shows material exceptions beside the lead rule, outside the quotation', async () => {
+    const detailed = { ...requirements[0], exceptions: ['Only with prior leave and confidentiality safeguards.'] };
+    serveDetails([detailed]);
+    render(<CourtsBrowser policies={policies} requirements={[detailed]} />);
+    fireEvent.click(screen.getByRole('button', { name: /Guidelines for judicial officers/ }));
+    expect(await screen.findByText(/Exception: Only with prior leave and confidentiality safeguards/)).toBeInTheDocument();
   });
   it('includes mixed practitioner audiences from public requirements, not non-lawyers', () => {
     const mixed = { ...requirements[0], actor: 'Legal practitioners and unrepresented parties' };
@@ -215,7 +246,8 @@ describe('CourtsBrowser', () => {
     expect(screen.getByText('Guidelines for judicial officers')).toBeInTheDocument();
     expect(screen.queryByText('Information for self-represented litigants')).not.toBeInTheDocument();
   });
-  it('filters by audience and keeps the official source reachable', () => {
+  it('filters by audience and keeps the official source reachable', async () => {
+    serveDetails(requirements);
     render(<CourtsBrowser policies={policies} requirements={requirements} />);
 
     fireEvent.change(screen.getByRole('combobox', { name: 'Filter by audience' }), {
@@ -232,7 +264,7 @@ describe('CourtsBrowser', () => {
       'href',
       'https://example.gov.au/judicial-guidance',
     );
-    expect(screen.getByText('Verified requirements (1)')).toBeInTheDocument();
+    expect(await screen.findByText('Verified requirements (1)')).toBeInTheDocument();
     expect(
       screen.getByText('Use generative AI to formulate reasons.'),
     ).toBeInTheDocument();
