@@ -28,10 +28,11 @@ import {
   readEditorPasskeys,
   type EditorPasskey,
 } from '../src/lib/editor-approval';
+import { validateEditorApprovals } from '../src/lib/editor-approval-validation';
 import {
-  validateEditorApprovals,
-  type EditorApprovalState,
-} from '../src/lib/editor-approval-validation';
+  validateSignedRecordChanges,
+  type SignedRecordState,
+} from '../src/lib/signed-record-changes';
 import { readArticleBaseline } from '../src/lib/article-baseline';
 import { getPolicies } from '../src/lib/data-service';
 import {
@@ -116,8 +117,8 @@ async function gitShowJson<T>(sha: string, file: string, fallback: T): Promise<T
   }
 }
 
-/** The approval state at the merge base, or null when there is no base to compare with. */
-async function editorApprovalBase(): Promise<EditorApprovalState | null> {
+/** The approvals and published records at the merge base, or null when there is no base to compare with. */
+async function publicationBase(): Promise<SignedRecordState | null> {
   let sha = process.env.GITHUB_BASE_SHA?.trim();
   if (!sha) {
     try {
@@ -126,12 +127,15 @@ async function editorApprovalBase(): Promise<EditorApprovalState | null> {
       return null;
     }
   }
-  const [passkeys, sourceReviews, ledger] = await Promise.all([
+  const [passkeys, sourceReviews, ledger, policies, timeline, developments] = await Promise.all([
     gitShowJson<EditorPasskey[]>(sha, EDITOR_PASSKEYS_PATH, []),
     gitShowJson<SourceReview[]>(sha, 'data/source-reviews.json', []),
     gitShowJson<ReconfirmLedger>(sha, 'data/reconfirmations.json', { batches: [] }),
+    gitShowJson<Policy[]>(sha, 'data/policies.json', []),
+    gitShowJson<TimelineEvent[]>(sha, 'data/timeline.json', []),
+    gitShowJson<Development[]>(sha, 'data/developments.json', []),
   ]);
-  return { passkeys, sourceReviews, reconfirmBatches: ledger.batches };
+  return { passkeys, sourceReviews, reconfirmBatches: ledger.batches, policies, timeline, developments };
 }
 
 async function main() {
@@ -227,11 +231,16 @@ async function main() {
     return;
   }
 
-  const [passkeys, approvalBase] = await Promise.all([readEditorPasskeys(), editorApprovalBase()]);
-  const editorApprovals = await validateEditorApprovals(
-    { passkeys, sourceReviews, reconfirmBatches: reconfirmations?.batches ?? [] },
-    approvalBase,
-  );
+  const [passkeys, base] = await Promise.all([readEditorPasskeys(), publicationBase()]);
+  const head: SignedRecordState = {
+    passkeys,
+    sourceReviews,
+    reconfirmBatches: reconfirmations?.batches ?? [],
+    policies,
+    timeline,
+    developments,
+  };
+  const editorApprovals = await validateEditorApprovals(head, base);
 
   const [articles, articleBaseline, publicPolicies, articleImages] = await Promise.all([
     readArticleSources(path.join(STATE_DIR, 'articles')),
@@ -272,6 +281,7 @@ async function main() {
     validateRuleScopes(ruleScopes, policies),
     validateReconfirmLedger(reconfirmations, policies),
     editorApprovals,
+    validateSignedRecordChanges(head, base),
     validateArticles(articles, articleBaseline, {
       policies,
       publicPolicies,
