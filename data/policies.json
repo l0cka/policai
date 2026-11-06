@@ -137,7 +137,7 @@
       "Australian Federal Police"
     ],
     "sourceUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-    "content": "The Australian Federal Police (AFP) publishes the Artificial Intelligence Strategy 2026-28 at https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28, with the PDF at https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf. In her foreword, Commissioner Krissy Barrett APM says the strategy commits the AFP to a human-led, responsible and transparent approach to AI, that AI will support, not replace, the judgement of AFP members, and that accountability for decisions always rests with the AFP.\n\nVision: to establish the AFP as a collaborative leader that brings law enforcement and the broader AI community together in applied responsible use of AI.\n\nStrategic goals: counter the criminal threat from AI, including deepfakes, synthetic media and disinformation; strengthen data-driven decision making; safeguard member wellbeing by reducing exposure to harmful material such as child abuse material; empower creativity and workforce engagement; and enhance productivity through services such as transcription, translation, summarisation, video analytics and entity recognition.\n\nAdoption pillars: People (AI knowledge, culture and leadership; human-led decision-making; safeguarding member wellbeing), Process (responsible AI governance and policies; operational alignment), Technology (investment in technology; end-to-end data management) and Partnerships (partnership and collaboration; public trust and transparency).\n\nThe AFP says it has fully adopted the guiding principles of the ANZPAA Responsible and Ethical Artificial Intelligence Framework: transparency, explainability, accountability, human oversight, fairness, skills and knowledge, proportionality and justifiability, reliability, and privacy and security. The strategy also names Australia's AI Ethics Principles, the National Framework for the Assurance of AI in Government, the Policy for the Responsible Use of AI in Government and the Voluntary AI Safety Standard as informing its approach.\n\nThe risks it names are AI system failure; overuse, inappropriate or reckless use; legal, ethical and privacy risk; reputational and public trust risk; and bias and hallucination. It says the AFP will establish mechanisms to measure progress across all strategic pillars. The strategy gives no specific measures.",
+    "content": "The Australian Federal Police (AFP) publishes the Artificial Intelligence Strategy 2026-28 on its publication page, with a PDF of the strategy. In her foreword, Commissioner Krissy Barrett APM says the strategy commits the AFP to a human-led, responsible and transparent approach to AI, that AI will support, not replace, the judgement of AFP members, and that accountability for decisions always rests with the AFP.\n\nVision: to establish the AFP as a collaborative leader that brings law enforcement and the broader AI community together in applied responsible use of AI.\n\nStrategic goals: counter the criminal threat from AI, including deepfakes, synthetic media and disinformation; strengthen data-driven decision making; safeguard member wellbeing by reducing exposure to harmful material such as child abuse material; empower creativity and workforce engagement; and enhance productivity through services such as transcription, translation, summarisation, video analytics and entity recognition.\n\nAdoption pillars: People (AI knowledge, culture and leadership; human-led decision-making; safeguarding member wellbeing), Process (responsible AI governance and policies; operational alignment), Technology (investment in technology; end-to-end data management) and Partnerships (partnership and collaboration; public trust and transparency).\n\nThe AFP says it has fully adopted the guiding principles of the ANZPAA Responsible and Ethical Artificial Intelligence Framework: transparency, explainability, accountability, human oversight, fairness, skills and knowledge, proportionality and justifiability, reliability, and privacy and security. The strategy also names Australia's AI Ethics Principles, the National Framework for the Assurance of AI in Government, the Policy for the Responsible Use of AI in Government and the Voluntary AI Safety Standard as informing its approach.\n\nThe risks it names are AI system failure; overuse, inappropriate or reckless use; legal, ethical and privacy risk; reputational and public trust risk; and bias and hallucination. It says the AFP will establish mechanisms to measure progress across all strategic pillars. The strategy gives no specific measures.",
     "aiSummary": "The AFP strategy for 2026 to 2028 commits the agency to human-led, responsible AI use. It sets five goals and four pillars, adopts the ANZPAA police AI principles, and says AI will support, not replace, the judgement of AFP members.",
     "tags": [
       "AFP",
@@ -152,7 +152,7 @@
       "human-oversight"
     ],
     "createdAt": "2026-11-02T05:18:15.869Z",
-    "updatedAt": "2026-11-02T05:50:13.061Z",
+    "updatedAt": "2026-11-05T22:01:43.239Z",
     "dates": [
       {
         "type": "published",
@@ -162,16 +162,16 @@
         "source": {
           "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
           "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-          "retrievedAt": "2026-11-02T05:50:12.941Z",
+          "retrievedAt": "2026-11-05T22:01:43.100Z",
           "contentType": "text/html",
           "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
-          "etag": "W/\"1793592645\"",
-          "lastModified": "Mon, 02 Nov 2026 04:10:45 GMT",
+          "etag": "W/\"1793915822\"",
+          "lastModified": "Thu, 05 Nov 2026 21:57:02 GMT",
           "linkedDocuments": [
             {
               "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
               "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-              "retrievedAt": "2026-11-02T05:50:13.058Z",
+              "retrievedAt": "2026-11-05T22:01:43.237Z",
               "contentType": "application/pdf",
               "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
               "etag": "\"6a977966-33b269\"",
@@ -182,29 +182,29 @@
           "reviewedDate": {
             "date": "2026-09-02",
             "precision": "day",
-            "reviewedAt": "2026-11-02T05:50:13.061Z",
+            "reviewedAt": "2026-11-05T22:01:43.239Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+            "notes": "Rechecked 5 Nov 2026: the AFP publications listing shows '02 Sep 2026' on the Artificial Intelligence Strategy 2026-28 card; the publication page itself states no date. Unchanged from the verified record."
           }
         }
       }
     ],
-    "lastReviewedAt": "2026-11-02T05:50:13.061Z",
+    "lastReviewedAt": "2026-11-05T22:01:43.239Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
         "finalUrl": "https://www.afp.gov.au/news-centre/publications/artificial-intelligence-strategy-2026-28",
-        "retrievedAt": "2026-11-02T05:50:12.941Z",
+        "retrievedAt": "2026-11-05T22:01:43.100Z",
         "contentType": "text/html",
         "contentHash": "2901c59ea817b7a28a7e02852e7118b606bb76c1702011dba292225420e77c98",
-        "etag": "W/\"1793592645\"",
-        "lastModified": "Mon, 02 Nov 2026 04:10:45 GMT",
+        "etag": "W/\"1793915822\"",
+        "lastModified": "Thu, 05 Nov 2026 21:57:02 GMT",
         "linkedDocuments": [
           {
             "url": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
             "finalUrl": "https://www.afp.gov.au/sites/default/files/2026-09/Artificial-Intelligence-Strategy.pdf",
-            "retrievedAt": "2026-11-02T05:50:13.058Z",
+            "retrievedAt": "2026-11-05T22:01:43.237Z",
             "contentType": "application/pdf",
             "contentHash": "f345e02d4aca3d8aa4f0469df3d7ac50aff43d58d3145a39ba156e9550fef89b",
             "etag": "\"6a977966-33b269\"",
@@ -215,15 +215,15 @@
         "reviewedDate": {
           "date": "2026-09-02",
           "precision": "day",
-          "reviewedAt": "2026-11-02T05:50:13.061Z",
+          "reviewedAt": "2026-11-05T22:01:43.239Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "AFP's publications listing (https://www.afp.gov.au/news-centre?field_article_type_target_id=10) shows \"02 Sep 2026\" on the strategy's card. The PDF metadata and its Last-Modified header also read 2 September 2026. The publication page itself states no date. Corrected from month precision by Daniel Alkurdi on 2 Nov 2026."
+          "notes": "Rechecked 5 Nov 2026: the AFP publications listing shows '02 Sep 2026' on the Artificial Intelligence Strategy 2026-28 card; the publication page itself states no date. Unchanged from the verified record."
         }
       },
-      "checkedAt": "2026-11-02T05:50:13.061Z",
+      "checkedAt": "2026-11-05T22:01:43.239Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 75bb111c). Proposed by Claude (agent). Corrects the published date from month to day precision. Nothing else changes."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal b91d b0fe 132d 137b). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
     }
   },
   {
@@ -1896,35 +1896,41 @@
   {
     "id": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025",
     "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
-    "description": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
+    "description": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025, when the second reading was also moved; the second reading was debated on 25 June 2026. Still before the Senate. It is not law.",
     "jurisdiction": "federal",
     "type": "legislation",
     "status": "proposed",
-    "effectiveDate": "2026-06-25",
+    "effectiveDate": "2025-11-24",
     "dates": [
       {
         "type": "published",
-        "date": "2026-06-25",
+        "date": "2025-11-24",
         "precision": "day",
         "primary": true,
         "source": {
           "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
           "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
-          "retrievedAt": "2026-10-07T19:33:43.055Z",
-          "contentType": "text/plain",
-          "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
           "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
-          "publishedAt": "2026-06-25",
-          "publishedAtPrecision": "day",
-          "linkedDocuments": [
-            {
-              "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-              "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-              "retrievedAt": "2026-10-07T19:33:43.055Z",
-              "contentType": "text/plain",
-              "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
-            }
-          ]
+          "retrievedAt": "2026-11-05T02:11:55.793Z",
+          "contentType": "text/html",
+          "contentHash": "0f0cf060bf5df0ea7e64216713c8092fa38759ca062aaaa5260739a0e643d5a0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:11:55.793Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+            "pageContentHash": "08dc0404b44a9220371831180b52f5a0dd6d25f63ab909c686eaec1abbbbff98",
+            "characterCount": 4002
+          },
+          "reviewedDate": {
+            "date": "2025-11-24",
+            "precision": "day",
+            "reviewedAt": "2026-11-05T22:01:48.350Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Bill home page (bId s1471) captured 5 Nov 2026: Progress, Senate, 'Introduced and read a first time 24 Nov 2025'; 'Second reading moved 24 Nov 2025'; 'Second reading debate 25 Jun 2026'; Status 'Before Senate'. The primary date is the introduction day, replacing the 25 June 2026 debate date."
+          }
         }
       }
     ],
@@ -1932,8 +1938,8 @@
       "Parliament of Australia"
     ],
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
-    "content": "[Skip all navigation links](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22#startContent) [Permalink](https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22) Prev Next [Return to results list](https://parlinfo.aph.gov.au/parlInfo/search/summary/summary.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22#1) (1 results) [![Print List](https://parlinfo.aph.gov.au/images/print.jpg \"Print Document\")](https://parlinfo.aph.gov.au/parlInfo/search/display/displayPrint.w3p;qu",
-    "aiSummary": "Private senator's bill (Senator David Pocock) amending the Online Safety Act 2021 and the Privacy Act 1988 to address non-consensual deepfake face or voice material. Introduced in the Senate on 24 November 2025; before the Senate as of the second-reading debate on 25 June 2026. Detected via Hansard debate discussing AI; primary citation is the bill homepage, not the debate transcript.",
+    "content": "The Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025 is a private senator's bill sponsored by Senator David Pocock, introduced in the Senate.\n\nThe bill home page summary says it amends the Online Safety Act 2021 to establish a complaints and enforcement regime for the non-consensual sharing of digitally altered or artificially generated audio or visual content that depicts a person's face or voice without their consent (deepfake material), and amends the Privacy Act 1988 to establish a cause of action for the wrongful use or disclosure of deepfake material.\n\nProgress in the Senate: introduced and read a first time on 24 November 2025; second reading moved on 24 November 2025; second reading debate on 25 June 2026. On 5 November 2026 the bill home page shows its status as Before Senate, with no proposed amendments circulated. It is not law.",
+    "aiSummary": "Private senator's bill introduced in the Senate on 24 November 2025 to regulate non-consensual deepfake face or voice material under the Online Safety Act 2021 and create a Privacy Act cause of action. Second reading debated 25 June 2026; still before the Senate.",
     "tags": [
       "online safety",
       "deepfake",
@@ -1942,37 +1948,43 @@
       "Parliament"
     ],
     "createdAt": "2026-10-07T19:33:43.055Z",
-    "updatedAt": "2026-10-19T09:22:36.725Z",
+    "updatedAt": "2026-11-05T22:01:48.350Z",
     "themes": [
       "online-safety",
       "privacy-data"
     ],
-    "lastReviewedAt": "2026-10-19T09:22:36.725Z",
+    "lastReviewedAt": "2026-11-05T22:01:48.350Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
-        "retrievedAt": "2026-10-07T19:33:43.055Z",
-        "contentType": "text/plain",
-        "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
         "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
-        "publishedAt": "2026-06-25",
-        "publishedAtPrecision": "day",
-        "linkedDocuments": [
-          {
-            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-            "retrievedAt": "2026-10-07T19:33:43.055Z",
-            "contentType": "text/plain",
-            "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
-          }
-        ]
+        "retrievedAt": "2026-11-05T02:11:55.793Z",
+        "contentType": "text/html",
+        "contentHash": "0f0cf060bf5df0ea7e64216713c8092fa38759ca062aaaa5260739a0e643d5a0",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-05T02:11:55.793Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+          "pageContentHash": "08dc0404b44a9220371831180b52f5a0dd6d25f63ab909c686eaec1abbbbff98",
+          "characterCount": 4002
+        },
+        "reviewedDate": {
+          "date": "2025-11-24",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T22:01:48.350Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Bill home page (bId s1471) captured 5 Nov 2026: Progress, Senate, 'Introduced and read a first time 24 Nov 2025'; 'Second reading moved 24 Nov 2025'; 'Second reading debate 25 Jun 2026'; Status 'Before Senate'. The primary date is the introduction day, replacing the 25 June 2026 debate date."
+        }
       },
-      "checkedAt": "2026-10-19T09:22:36.725Z",
+      "checkedAt": "2026-11-05T22:01:48.350Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi (Signal): approve 2, themes online-safety, privacy-data; type legislation\nchatMessageId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ncardId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ndecided: 19 Oct 2026, 20:22 AEDT (2026-10-19T09:22:34.993Z)\nthemes: online-safety, privacy-data\ntype: legislation\nrelayed by Policai Signal\nApproval used the collector-retained source snapshot because the live re-fetch was refused by the host (HTTP 403, 429, or equivalent identity/rate refusal)."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 42cd 2ff9 27c2 43ce). Proposed by Claude (agent). Introduction date and current stage corrected."
     },
     "legislative": {
       "kind": "bill",
@@ -2768,40 +2780,36 @@
         "source": {
           "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
           "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
-          "title": "Use of publicly available Generative AI tools in the Victorian public sector",
-          "retrievedAt": "2026-07-24T02:36:16.190Z",
+          "retrievedAt": "2026-11-05T22:01:44.877Z",
           "contentType": "text/html",
-          "contentHash": "ae252cfac000de29f5b376184568db75217d23979a7d68c7ec09ed7b88fd86e0",
+          "contentHash": "f6a64e4609f4d294176e3f169dd9716e12e0ff5039372dc779cfc312d5df276f",
           "linkedDocuments": [
             {
               "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
               "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-              "retrievedAt": "2026-07-24T02:36:16.190Z",
+              "retrievedAt": "2026-11-05T22:01:44.938Z",
               "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39"
+              "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39",
+              "etag": "\"2f32d-655233e362291\"",
+              "lastModified": "Fri, 26 Jun 2026 07:41:56 GMT"
             },
             {
               "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
               "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-              "retrievedAt": "2026-07-24T02:36:16.190Z",
+              "retrievedAt": "2026-11-05T22:01:44.992Z",
               "contentType": "application/pdf",
-              "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f"
+              "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f",
+              "etag": "\"2573e-655233d17d633\"",
+              "lastModified": "Fri, 26 Jun 2026 07:41:37 GMT"
             }
           ],
-          "browserCapture": {
-            "method": "browser",
-            "capturedAt": "2026-07-24T02:36:16.190Z",
-            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-            "notes": "Fresh official OVIC source revalidation on 24 July 2026; the displayed guidance and exact linked DOCX and PDF bytes were inspected before applying the approved restoration.",
-            "pageContentHash": "564d3150c31e46150e152c095831929603c37202ef13647680fc4e59929c49c7",
-            "characterCount": 17585
-          },
+          "title": "Use of publicly available Generative AI tools in the Victorian public sector",
           "reviewedDate": {
             "date": "2026-06-26",
             "precision": "day",
-            "reviewedAt": "2026-07-24T02:36:19.291Z",
-            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-            "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
+            "reviewedAt": "2026-11-05T22:01:44.992Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
           }
         }
       }
@@ -2810,7 +2818,7 @@
       "Office of the Victorian Information Commissioner"
     ],
     "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
-    "content": "From Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Use of publicly available Generative AI tools in the Victorian public sector Last updated 26 June 2026 This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) position on the use of publicly available Generative Artificial Intelligence (Generative AI) tools within Victorian public sector organisations (VPS organisations).1 Generative AI is a type of Artificial Intelligence that creates content, such as text, images, music, audio and video. Generative AI tools do this by predicting the best response to the information entered, known as a prompt. Predictions, also known as outputs, are made based on the content of the prompt and the data on which the Generative AI tool has been trained.2 This guidance relates to VPS organisations’ use of any Generative AI tool that is publicly available.3 Publicly available Generative AI tools are platforms or software that can be accessed via a web browser or application. Generally, publicly available tools have minimal controls for how the information entered is used or protected. At the time of issuing this guidance, examples include free versions of ChatGPT, Google Gemini, Grammarly, Claude, Perplexity, Otter, QuillBot and Llama.4 The risks involved in using publicly available Generative AI tools are different to those involved in using tools that are purchased at an enterprise level. For guidance on using enterprise Generative AI tools in a secure environment, please refer to OVIC’s guidance on the use of enterprise Generative AI tools in the Victorian public sector. Personal information and publicly available Generative AI tools VPS organisations should ensure their staff, contracted service providers and other personnel do not enter personal information into publicly available Generative AI tools.5 Doing so will likely be a contravention of the Information Privacy Principles (IPPs) in the Privacy and Data Protection Act 2014 (PDP Act), and may cause significant harm to individuals whose information is used in publicly available Generative AI tools.6 Generative AI outputs can also reveal or create personal information. Personal information includes opinions about individuals. VPS organisations must treat outputs that contain personal information as a collection of personal information, and handle the information in accordance with the IPPs.7 Public sector information and publicly available Generative AI tools VPS organisations should ensure their staff, contracted service providers and other personnel limit the public sector information that is entered into publicly available Generative AI tools.8 VPS organisations should only enter public sector information that is already publicly known or approved for public release.9 The risk of using publicly available Generative AI tools with public sector information is context specific, and will differ depending on the Generative AI tool and its intended use. Risks of using publicly available Generative AI tools Using personal information with a publicly available Generative AI tool raises significant information privacy and other concerns. Some examples are outlined below. Disclosure of personal information: using personal information with a publicly available Generative AI tool may mean disclosing that information to the company that owns the tool. The information may be subsequently used, disclosed or accessed for unauthorised purposes unrelated to the original prompt. This may contravene IPPs 2.1 and 4.1, relating to use and disclosure of personal information, and information security.The information entered into a publicly available Generative AI tool is likely to be stored outside Victoria, and in many cases, in jurisdictions that do not have information privacy and information security laws equivalent to the PDP Act. This may contravene IPP 9, relating to transborder data flows. Collection of personal information: generating personal information with a Generative AI tool constitutes a new collection of personal information. VPS organisations should be mindful of the necessity, lawfulness and fairness of collecting new personal information in this way. This may result in inaccurate information or opinions being generated and subsequently used or disclosed, which may contravene IPPs 1.1, 1.2, 3.1 and 10, relating to the collection of personal information, data quality, and sensitive information. IPP 1.3, which requires VPS organisations to provide a notice of collection to individuals when their personal information is collected, will also be relevant. It will be difficult for VPS organisations to provide adequate notice, where at the time of collection it is not known that personal information will be used with publicly available Generative AI tools, resulting in its disclosure and further use. Further, providing notice of collection where personal information is created by a publicly available Generative AI tool and therefore collected by the VPS organisation, may be difficult. Accuracy of information: it can be difficult to ensure the accuracy of personal information, for both that which is entered into a Generative AI tool and generated by it. Generative AI tools are not a reliable source of accurate information. They simply make predictions based on the prompt they receive and the training they’ve had. Relying on outputs that contain personal information may contravene IPP 3 in relation to data quality. Information accuracy issues also apply to non-personal information that is generated by a Generative AI tool. Information security: publicly available Generative AI tools raise a number of information security issues. For example, unauthorised disclosure of and access to personal information and other public sector information by third parties, which could lead to a contravention of IPP 4.1 and the Victorian Protective Data Security Standards.10 This could lead to harm to individuals and VPS organisations, if the information is used for malicious intent. Retention of personal information: information entered into a publicly available Generative AI tool may be retained indefinitely by the company that owns the tool. Once information is entered into a publicly available Generative AI tool, it may not be possible to extract that information, leaving the VPS organisation without the ability to adhere to IPP 4.2. Generative AI tools are trained on vast amounts of data, including in many cases, information entered by a user.11 Retaining this information is of benefit to the companies that own these tools, but where personal information is involved, may contravene IPP 4.2 relating to data destruction. VPS organisations also have obligations under the Public Records Act 1973 that must be adhered to.12 Fairness: Publicly available Generative AI tools should not be used to formulate decisions, undertake assessments, or for other administrative functions that may have consequences for individuals. The use of these tools with personal information may cause significant harm to those individuals whose information has been used. It risks unfair decisions being made about them based on information created by Generative AI, that may be inaccurate or of a diminished quality. For information on other privacy risks associated with using generative AI in decision-making processes, please refer to OVIC’s guidance on the use of enterprise Generative AI tools in the Victorian public sector. OVIC’s minimum expectations For VPS organisations using, or considering using, publicly available Generative AI tools, OVIC expects at a minimum they will: conduct security risk assessments before use, in accordance with their risk management framework to ensure that any risks are identified, assessed, treated and monitored accordingly13 implement a formal process for the ongoing monitoring and review of risks and controls review the publicly available Generative AI tools’ terms and conditions prior to use, and where possible, configure security settings to protect public sector information only permit public sector information that is already publicly known or approved for public release to be used with publicly available Generative AI tools require their staff, contracted service providers and other personnel to check the accuracy of generated content before using it develop organisational policies on the use of Generative AI tools, and communicate about the policies to staff, contracted service providers and other personnel train staff on how to safely and responsibly use Generative AI tools, including for what purposes publicly available Generative AI tools may be used, which tools are permitted, and what information is appropriate to enter into a publicly available Generative AI tool notify OVIC if personal information or public sector information that is not already publicly known or approved for public release has been used with a publicly available Generative AI tool.14 VPS organisations are welcome to contact OVIC for guidance on managing the information privacy and information security impacts of publicly available Generative AI tools. OVIC can be contacted at enquiries@ovic.vic.gov.au. Scenarios The following scenarios have been prepared to illustrate the risks involved with using personal information in publicly available Generative AI tools. Scenario 1 – Entering and generating content A hiring manager is using a publicly available Generative AI tool to generate content for a recruitment selection report. They enter the CVs and interview notes captured by the panel, and the reference reports of five candidates into the Generative AI tool. They prompt the tool to generate six paragraphs recommending Candidate A for the role. Trainers at the overseas company that owns the Generative AI tool subsequently review the content and prompt used with the tool, which is used to improve the model. This results in a disclosure of the personal information of five individuals, in contravention of IPP 2.1 and 4.1. As the content is stored outside of Victoria and retained by the company indefinitely, it is also a contravention of IPP 9 and IPP 4.2. Scenario 2 – Using a publicly available Generative AI tool for decision making A Victorian public sector employee is writing a report evaluating whether a prisoner should be granted parole, and uses a publicly available Generative AI tool to generate the content of the report, including the evaluation of risks. In doing so, they enter the prisoner’s personal information. The company that owns the Generative AI tool stores its data outside of Australia. The Generative AI tool generates an output in response to the prompt. The employee does not carry out their own independent evaluation and relies solely on the information contained in the output. The employee then submits the recommendation to their supervisor that the prisoner’s parole application be rejected. The employee’s supervisor reviews the report and notes that the reasoning for the opinion rejecting the parole application is flawed, and that the wrong recommendation had been reached. The supervisor rewrites the report themselves, undertaking analysis of the information to ensure its accuracy, and resubmits the report. If it had not been for the supervisor’s intervention, the use of the Generative AI tool could have had severe negative consequences for the prisoner. As the employee used a publicly available Generative AI tool, the information they entered into the tool resulted in an unauthorised disclosure of information. The use of the personal and sensitive information of the prisoner would contravene IPPs 2.1, 3.1, 4.1 and 9 at a minimum. Scenario 3 – Using a publicly available Generative AI tool in a public school A teacher uses a publicly available Generative AI tool to generate an email to a student’s parents, expressing their concern about the student’s behaviour and academic performance. In doing so, the teacher enters the notes they have taken about the student across the term to generate the output. The company that owns the Generative AI tool stores its data outside of Australia. The teacher isn’t happy with the tone of the output, so generates it again. In doing so, the Generative AI tool generates a new output with a different tone and different opinion about the student. The teacher then sends the content in an email to the student’s parents. The parents receive the email and raise concerns with the teacher about the opinions formed about their child, and question who wrote the letter. The teacher explains they used a Generative AI tool to generate the content. The parents are not satisfied the generation of the content about their child was necessary, and consider the use of the tool to be an unreasonably intrusive method of collecting information about their child. As generating personal information using a Generative AI tool is considered a new ‘collection’ of personal information, there has been a contravention of IPPs 1.1, 1.2 and 1.3. Given the student’s personal information was entered into a publicly available Generative AI tool, where data is stored outside Victoria, a contravention of IPPs 4.1 and 9 has also occurred. For the purpose of this guidance, VPS organisations are organisations subject to Part 3 of the Privacy and Data Protection Act 2014. See section 3 of that Act for a list of organisations.For further information on Generative AI concepts, see the resource developed by the Centre of Excellence for Automated Decision-Making and Society, and OVIC: https://www.admscentre.org.au/genai-concepts/.This guidance replaces the guidance OVIC issued in its public statement on the use of personal information with ChatGPT in February 2024.The Australian Government and the Victorian Government have both issued a ban on DeepSeek.Personal information is defined in section 3 of the Privacy and Data Protection Act 2014 as ‘information or an opinion… that is recorded in any form and whether true or not, about an individual whose identity is apparent, or can reasonably be ascertained, from the information or opinion’. The definition of personal information excludes health information, which is covered by the Health Records Act 2001.In November 2024, OVIC published a report on its investigation into the use of ChatGPT by a Child Protection worker. The report highlights a range of information privacy issues that stemmed from personal information being entered into a publicly available Generative AI tool: https://ovic.vic.gov.au/regulatory-action/investigation-into-the-use-of-chatgpt-by-a-child-protection-worker/.Comprehensive Guidelines to the Information Privacy Principles are available on OVIC’s website: https://ovic.vic.gov.au/privacy/resources-for-organisations/guidelines-to-the-information-privacy-principles/.Public sector data, also known as public sector information, is defined in section 3 of the PDP Act as ‘information (including personal information) obtained, received or held by an agency or body to which Part 4 applies’. Not all VPS organisations will have obligations under Part 4 of the PDP Act. However, OVIC recommends all VPS organisations limit the information they enter into publicly available Generative AI tools.This is consistent with the position taken in the Victorian Government’s Administrative guideline on the safe and responsible use of Generative Artificial Intelligence in the Victorian public sector: https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps.Bodies that are subject to Part 4 of the Privacy and Data Protection Act 2014 must comply with the Victorian Protective Data Security Standards: https://ovic.vic.gov.au/information-security/standards/.Some Generative AI tools provide users with the ability to disable the information they enter from being recorded, and opt-out of the information they enter being used to train the tool. Even if these features are disabled, privacy concerns around the disclosure of personal information and unauthorised access remain.For further information on AI and recordkeeping, refer to the Public Record Office Victoria’s guidance and policy: https://prov.vic.gov.au/recordkeeping-government/a-z-topics/AI.OVIC recommends that VPS organisations also conduct privacy impact assessments (PIAs) where a program or initiative involves the handling of personal information. As this guidance states that no personal information should be entered into publicly available Generative AI tools, PIAs will not be necessary if no personal information is handled. For guidance on PIAs, refer to OVIC’s website: https://ovic.vic.gov.au/privacy/resources-for-organisations/privacy-impact-assessment/.VPS organisations should report information privacy and information security incidents to OVIC via the incident notification form: https://ovic.vic.gov.au/privacy/resources-for-organisations/information-security-and-privacy-incident-notification-form/. Download Use of publicly available Generative AI tools - PDF Size 149.81 KB Download Use of publicly available Generative AI tools - DOCX Size 188.79 KB Download Contents Personal information and publicly available Generative AI toolsPublic sector information and publicly available Generative AI toolsRisks of using publicly available Generative AI toolsOVIC’s minimum expectationsScenariosFootnotes Back to privacy resources Page details Updated 17 March 2025",
+    "content": "From Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Use of publicly available Generative AI tools in the Victorian public sector Last updated 26 June 2026 This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) position on the use of publicly available Generative Artificial Intelligence (Generative AI) tools within Victorian public sector organisations (VPS organisations).1 Generative AI is a type of Artificial Intelligence that creates content, such as text, images, music, audio and video. Generative AI tools do this by predicting the best response to the information entered, known as a prompt. Predictions, also known as outputs, are made based on the content of the prompt and the data on which the Generative AI tool has been trained.2 This guidance relates to VPS organisations’ use of any Generative AI tool that is publicly available.3 Publicly available Generative AI tools are platforms or software that can be accessed via a web browser or application. Generally, publicly available tools have minimal controls for how the information entered is used or protected. At the time of issuing this guidance, examples include free versions of ChatGPT, Google Gemini, Grammarly, Claude, Perplexity, Otter, QuillBot and Llama.4 The risks involved in using publicly available Generative AI tools are different to those involved in using tools that are purchased at an enterprise level. For guidance on using enterprise Generative AI tools in a secure environment, please refer to OVIC’s guidance on the use of enterprise Generative AI tools in the Victorian public sector. Personal information and publicly available Generative AI tools VPS organisations should ensure their staff, contracted service providers and other personnel do not enter personal information into publicly available Generative AI tools.5 Doing so will likely be a contravention of the Information Privacy Principles (IPPs) in the Privacy and Data Protection Act 2014 (PDP Act), and may cause significant harm to individuals whose information is used in publicly available Generative AI tools.6 Generative AI outputs can also reveal or create personal information. Personal information includes opinions about individuals. VPS organisations must treat outputs that contain personal information as a collection of personal information, and handle the information in accordance with the IPPs.7 Public sector information and publicly available Generative AI tools VPS organisations should ensure their staff, contracted service providers and other personnel limit the public sector information that is entered into publicly available Generative AI tools.8 VPS organisations should only enter public sector information that is already publicly known or approved for public release.9 The risk of using publicly available Generative AI tools with public sector information is context specific, and will differ depending on the Generative AI tool and its intended use. Risks of using publicly available Generative AI tools Using personal information with a publicly available Generative AI tool raises significant information privacy and other concerns. Some examples are outlined below. Disclosure of personal information: using personal information with a publicly available Generative AI tool may mean disclosing that information to the company that owns the tool. The information may be subsequently used, disclosed or accessed for unauthorised purposes unrelated to the original prompt. This may contravene IPPs 2.1 and 4.1, relating to use and disclosure of personal information, and information security.The information entered into a publicly available Generative AI tool is likely to be stored outside Victoria, and in many cases, in jurisdictions that do not have information privacy and information security laws equivalent to the PDP Act. This may contravene IPP 9, relating to transborder data flows. Collection of personal information: generating personal information with a Generative AI tool constitutes a new collection of personal information. VPS organisations should be mindful of the necessity, lawfulness and fairness of collecting new personal information in this way. This may result in inaccurate information or opinions being generated and subsequently used or disclosed, which may contravene IPPs 1.1, 1.2, 3.1 and 10, relating to the collection of personal information, data quality, and sensitive information. IPP 1.3, which requires VPS organisations to provide a notice of collection to individuals when their personal information is collected, will also be relevant. It will be difficult for VPS organisations to provide adequate notice, where at the time of collection it is not known that personal information will be used with publicly available Generative AI tools, resulting in its disclosure and further use. Further, providing notice of collection where personal information is created by a publicly available Generative AI tool and therefore collected by the VPS organisation, may be difficult. Accuracy of information: it can be difficult to ensure the accuracy of personal information, for both that which is entered into a Generative AI tool and generated by it. Generative AI tools are not a reliable source of accurate information. They simply make predictions based on the prompt they receive and the training they’ve had. Relying on outputs that contain personal information may contravene IPP 3 in relation to data quality. Information accuracy issues also apply to non-personal information that is generated by a Generative AI tool. Information security: publicly available Generative AI tools raise a number of information security issues. For example, unauthorised disclosure of and access to personal information and other public sector information by third parties, which could lead to a contravention of IPP 4.1 and the Victorian Protective Data Security Standards.10 This could lead to harm to individuals and VPS organisations, if the information is used for malicious intent. Retention of personal information: information entered into a publicly available Generative AI tool may be retained indefinitely by the company that owns the tool. Once information is entered into a publicly available Generative AI tool, it may not be possible to extract that information, leaving the VPS organisation without the ability to adhere to IPP 4.2. Generative AI tools are trained on vast amounts of data, including in many cases, information entered by a user.11 Retaining this information is of benefit to the companies that own these tools, but where personal information is involved, may contravene IPP 4.2 relating to data destruction. VPS organisations also have obligations under the Public Records Act 1973 that must be adhered to.12 Fairness: Publicly available Generative AI tools should not be used to formulate decisions, undertake assessments, or for other administrative functions that may have consequences for individuals. The use of these tools with personal information may cause significant harm to those individuals whose information has been used. It risks unfair decisions being made about them based on information created by Generative AI, that may be inaccurate or of a diminished quality. For information on other privacy risks associated with using generative AI in decision-making processes, please refer to OVIC’s guidance on the use of enterprise Generative AI tools in the Victorian public sector. OVIC’s minimum expectations For VPS organisations using, or considering using, publicly available Generative AI tools, OVIC expects at a minimum they will: conduct security risk assessments before use, in accordance with their risk management framework to ensure that any risks are identified, assessed, treated and monitored accordingly13 implement a formal process for the ongoing monitoring and review of risks and controls review the publicly available Generative AI tools’ terms and conditions prior to use, and where possible, configure security settings to protect public sector information only permit public sector information that is already publicly known or approved for public release to be used with publicly available Generative AI tools require their staff, contracted service providers and other personnel to check the accuracy of generated content before using it develop organisational policies on the use of Generative AI tools, and communicate about the policies to staff, contracted service providers and other personnel train staff on how to safely and responsibly use Generative AI tools, including for what purposes publicly available Generative AI tools may be used, which tools are permitted, and what information is appropriate to enter into a publicly available Generative AI tool notify OVIC if personal information or public sector information that is not already publicly known or approved for public release has been used with a publicly available Generative AI tool.14 VPS organisations are welcome to contact OVIC for guidance on managing the information privacy and information security impacts of publicly available Generative AI tools. OVIC can be contacted at enquiries@ovic.vic.gov.au. Scenarios The following scenarios have been prepared to illustrate the risks involved with using personal information in publicly available Generative AI tools. Scenario 1 – Entering and generating content A hiring manager is using a publicly available Generative AI tool to generate content for a recruitment selection report. They enter the CVs and interview notes captured by the panel, and the reference reports of five candidates into the Generative AI tool. They prompt the tool to generate six paragraphs recommending Candidate A for the role. Trainers at the overseas company that owns the Generative AI tool subsequently review the content and prompt used with the tool, which is used to improve the model. This results in a disclosure of the personal information of five individuals, in contravention of IPP 2.1 and 4.1. As the content is stored outside of Victoria and retained by the company indefinitely, it is also a contravention of IPP 9 and IPP 4.2. Scenario 2 – Using a publicly available Generative AI tool for decision making A Victorian public sector employee is writing a report evaluating whether a prisoner should be granted parole, and uses a publicly available Generative AI tool to generate the content of the report, including the evaluation of risks. In doing so, they enter the prisoner’s personal information. The company that owns the Generative AI tool stores its data outside of Australia. The Generative AI tool generates an output in response to the prompt. The employee does not carry out their own independent evaluation and relies solely on the information contained in the output. The employee then submits the recommendation to their supervisor that the prisoner’s parole application be rejected. The employee’s supervisor reviews the report and notes that the reasoning for the opinion rejecting the parole application is flawed, and that the wrong recommendation had been reached. The supervisor rewrites the report themselves, undertaking analysis of the information to ensure its accuracy, and resubmits the report. If it had not been for the supervisor’s intervention, the use of the Generative AI tool could have had severe negative consequences for the prisoner. As the employee used a publicly available Generative AI tool, the information they entered into the tool resulted in an unauthorised disclosure of information. The use of the personal and sensitive information of the prisoner would contravene IPPs 2.1, 3.1, 4.1 and 9 at a minimum. Scenario 3 – Using a publicly available Generative AI tool in a public school A teacher uses a publicly available Generative AI tool to generate an email to a student’s parents, expressing their concern about the student’s behaviour and academic performance. In doing so, the teacher enters the notes they have taken about the student across the term to generate the output. The company that owns the Generative AI tool stores its data outside of Australia. The teacher isn’t happy with the tone of the output, so generates it again. In doing so, the Generative AI tool generates a new output with a different tone and different opinion about the student. The teacher then sends the content in an email to the student’s parents. The parents receive the email and raise concerns with the teacher about the opinions formed about their child, and question who wrote the letter. The teacher explains they used a Generative AI tool to generate the content. The parents are not satisfied the generation of the content about their child was necessary, and consider the use of the tool to be an unreasonably intrusive method of collecting information about their child. As generating personal information using a Generative AI tool is considered a new ‘collection’ of personal information, there has been a contravention of IPPs 1.1, 1.2 and 1.3. Given the student’s personal information was entered into a publicly available Generative AI tool, where data is stored outside Victoria, a contravention of IPPs 4.1 and 9 has also occurred. For the purpose of this guidance, VPS organisations are organisations subject to Part 3 of the Privacy and Data Protection Act 2014. See section 3 of that Act for a list of organisations.For further information on Generative AI concepts, see the resource developed by the Centre of Excellence for Automated Decision-Making and Society, and OVIC. This guidance replaces the guidance OVIC issued in its public statement on the use of personal information with ChatGPT in February 2024.The Australian Government and the Victorian Government have both issued a ban on DeepSeek.Personal information is defined in section 3 of the Privacy and Data Protection Act 2014 as ‘information or an opinion… that is recorded in any form and whether true or not, about an individual whose identity is apparent, or can reasonably be ascertained, from the information or opinion’. The definition of personal information excludes health information, which is covered by the Health Records Act 2001.In November 2024, OVIC published a report on its investigation into the use of ChatGPT by a Child Protection worker. The report highlights a range of information privacy issues that stemmed from personal information being entered into a publicly available Generative AI tool. Comprehensive Guidelines to the Information Privacy Principles are available on OVIC’s website. Public sector data, also known as public sector information, is defined in section 3 of the PDP Act as ‘information (including personal information) obtained, received or held by an agency or body to which Part 4 applies’. Not all VPS organisations will have obligations under Part 4 of the PDP Act. However, OVIC recommends all VPS organisations limit the information they enter into publicly available Generative AI tools.This is consistent with the position taken in the Victorian Government’s Administrative guideline on the safe and responsible use of Generative Artificial Intelligence in the Victorian public sector. Bodies that are subject to Part 4 of the Privacy and Data Protection Act 2014 must comply with the Victorian Protective Data Security Standards. Some Generative AI tools provide users with the ability to disable the information they enter from being recorded, and opt-out of the information they enter being used to train the tool. Even if these features are disabled, privacy concerns around the disclosure of personal information and unauthorised access remain.For further information on AI and recordkeeping, refer to the Public Record Office Victoria’s guidance and policy. OVIC recommends that VPS organisations also conduct privacy impact assessments (PIAs) where a program or initiative involves the handling of personal information. As this guidance states that no personal information should be entered into publicly available Generative AI tools, PIAs will not be necessary if no personal information is handled. For guidance on PIAs, refer to OVIC’s website. VPS organisations should report information privacy and information security incidents to OVIC via the incident notification form. Download Use of publicly available Generative AI tools - PDF Size 149.81 KB Download Use of publicly available Generative AI tools - DOCX Size 188.79 KB Download Contents Personal information and publicly available Generative AI toolsPublic sector information and publicly available Generative AI toolsRisks of using publicly available Generative AI toolsOVIC’s minimum expectationsScenariosFootnotes Back to privacy resources Page details Updated 17 March 2025",
     "aiSummary": "Victorian regulator guidance says personal information should not be entered into publicly available generative AI tools and limits public-sector information to material already public or approved for release.",
     "tags": [
       "Victoria",
@@ -2826,53 +2834,49 @@
       "public-sector"
     ],
     "createdAt": "2026-07-22T12:48:46.496Z",
-    "updatedAt": "2026-07-24T02:36:19.291Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "updatedAt": "2026-11-05T22:01:44.992Z",
+    "lastReviewedAt": "2026-11-05T22:01:44.992Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
         "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
-        "title": "Use of publicly available Generative AI tools in the Victorian public sector",
-        "retrievedAt": "2026-07-24T02:36:16.190Z",
+        "retrievedAt": "2026-11-05T22:01:44.877Z",
         "contentType": "text/html",
-        "contentHash": "ae252cfac000de29f5b376184568db75217d23979a7d68c7ec09ed7b88fd86e0",
+        "contentHash": "f6a64e4609f4d294176e3f169dd9716e12e0ff5039372dc779cfc312d5df276f",
         "linkedDocuments": [
           {
             "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
             "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-            "retrievedAt": "2026-07-24T02:36:16.190Z",
+            "retrievedAt": "2026-11-05T22:01:44.938Z",
             "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39"
+            "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39",
+            "etag": "\"2f32d-655233e362291\"",
+            "lastModified": "Fri, 26 Jun 2026 07:41:56 GMT"
           },
           {
             "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
             "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-            "retrievedAt": "2026-07-24T02:36:16.190Z",
+            "retrievedAt": "2026-11-05T22:01:44.992Z",
             "contentType": "application/pdf",
-            "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f"
+            "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f",
+            "etag": "\"2573e-655233d17d633\"",
+            "lastModified": "Fri, 26 Jun 2026 07:41:37 GMT"
           }
         ],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-24T02:36:16.190Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official OVIC source revalidation on 24 July 2026; the displayed guidance and exact linked DOCX and PDF bytes were inspected before applying the approved restoration.",
-          "pageContentHash": "564d3150c31e46150e152c095831929603c37202ef13647680fc4e59929c49c7",
-          "characterCount": 17585
-        },
+        "title": "Use of publicly available Generative AI tools in the Victorian public sector",
         "reviewedDate": {
           "date": "2026-06-26",
           "precision": "day",
-          "reviewedAt": "2026-07-24T02:36:19.291Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
+          "reviewedAt": "2026-11-05T22:01:44.992Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
-      "checkedBy": "Policai Developer source re-read (issue 161)",
+      "checkedAt": "2026-11-05T22:01:44.992Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 06fa 16f4 23b7 c390). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
     }
   },
   {
@@ -2892,40 +2896,36 @@
         "source": {
           "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
           "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
-          "title": "Use of enterprise Generative AI tools in the Victorian public sector",
-          "retrievedAt": "2026-07-24T02:35:46.125Z",
+          "retrievedAt": "2026-11-05T22:01:46.862Z",
           "contentType": "text/html",
-          "contentHash": "bb501314ff02225c567f97f1dd0eb76090f43bf3641272147ffd6f4f4f9f9848",
+          "contentHash": "d5caad2d61c1560c9790e8355d7d10c13ce6291843ae1ca694da232dc1b28d53",
           "linkedDocuments": [
             {
               "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
               "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-              "retrievedAt": "2026-07-24T02:35:46.125Z",
+              "retrievedAt": "2026-11-05T22:01:46.921Z",
               "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-              "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774"
+              "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774",
+              "etag": "\"2fd30-65522f10ab252\"",
+              "lastModified": "Fri, 26 Jun 2026 07:20:21 GMT"
             },
             {
               "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
               "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-              "retrievedAt": "2026-07-24T02:35:46.125Z",
+              "retrievedAt": "2026-11-05T22:01:46.968Z",
               "contentType": "application/pdf",
-              "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910"
+              "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910",
+              "etag": "\"2d1ce-65522ef7bfb50\"",
+              "lastModified": "Fri, 26 Jun 2026 07:19:55 GMT"
             }
           ],
-          "browserCapture": {
-            "method": "browser",
-            "capturedAt": "2026-07-24T02:35:46.125Z",
-            "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-            "notes": "Fresh official OVIC source revalidation on 24 July 2026; the displayed guidance and exact linked DOCX and PDF bytes were inspected before applying the approved restoration.",
-            "pageContentHash": "424d93904d0fddc5bc546328b05cd7a0e57d8560bc4c2ee8ce2c804a3e032aa2",
-            "characterCount": 22404
-          },
+          "title": "Use of enterprise Generative AI tools in the Victorian public sector",
           "reviewedDate": {
             "date": "2026-06-26",
             "precision": "day",
-            "reviewedAt": "2026-07-24T02:35:49.530Z",
-            "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-            "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
+            "reviewedAt": "2026-11-05T22:01:46.968Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
           }
         }
       }
@@ -2934,7 +2934,7 @@
       "Office of the Victorian Information Commissioner"
     ],
     "sourceUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
-    "content": "From Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Use of enterprise Generative AI tools in the Victorian public sector Last updated 26 June 2026 This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) minimum expectations for Victorian public sector organisations (VPS organisations) using enterprise Generative Artificial Intelligence (Generative AI) tools.1 It also sets out the key information privacy and information security obligations for VPS organisations to consider. Generative AI is a type of Artificial Intelligence that creates content, such as text, images, music, audio and video. Generative AI tools do this by predicting the best response to the information entered, known as a prompt. Predictions, also known as outputs, are made based on the content of the prompt and the data on which the Generative AI tool has been trained.2 This guidance relates to Generative AI tools that are purchased at an enterprise level, and operate within a VPS organisation’s securely managed environment. Enterprise Generative AI tools are integrated within an organisation’s existing systems. Examples include tenanted versions of Microsoft 365 Copilot, Chat GPT Enterprise, Duet AI for Google Workspace, Zoom IQ and Slack GPT. 3 The adoption and use of Generative AI tools may magnify existing information privacy and information security risks for VPS organisations, and create new ones (some examples are included below). VPS organisations should therefore take the steps outlined below to improve their information security maturity and privacy practices before adopting an enterprise Generative AI tool.4 The risks involved in using publicly available Generative AI tools are different to those involved in using enterprise Generative AI tools. For guidance on using publicly available Generative AI tools, please refer to OVIC’s guidance on the use of personal information with publicly available Generative AI tools in the Victorian public sector. OVIC’s minimum expectations This section sets out OVIC’s minimum expectations for VPS organisations to work through prior to purchasing and integrating an enterprise Generative AI tool. VPS organisations should: Assess the maturity of their existing information security program,5 including: identifying existing information holdings and systems that may be impacted by the introduction of an integrated Generative AI tool, including due consideration of their security value considering how any Generative AI outputs will be assessed, valued and securely managed, including applying appropriate protective markings for newly generated information assets conducting a security risk assessment for the integration of an enterprise Generative AI tool, including due consideration of adjusted risk profiles and development of treatment plans to address relevant Generative AI features implementing any updated treatment plans by rolling out new or changed controls, including consideration of the organisation’s existing logical access controls implementing a formal process for the ongoing monitoring and review of risks and controls. This is especially important given the dynamic development and release of enhancements and new features in Generative AI tools. Undertake privacy impact assessments (PIAs) to understand the ways in which the enterprise Generative AI tool will be utilised, the risks it presents to the privacy of individuals, whether and how those risks can be mitigated, and in light of any residual risks, the extent to which it is appropriate to proceed to purchase the tool.6 There may be high-risk functions or specific business units within a VPS organisation for whom it is not appropriate to use a Generative AI tool.7 Ensure that risks and controls are regularly reviewed and monitored. Be careful when using Generative AI tools in ways that may significantly impact one or more individuals. This includes automated decision-making and the use of these tools during earlier steps in a decision-making process, where that earlier use significantly influences or materially assists the organisation in making its decision. Earlier steps may include using a Generative AI tool to conduct research, summarise key information, facts or evidence or make a prediction, recommendation, assessment, summary, conclusion or inference. Using Generative AI tools in decision-making processes carries privacy risks under Victoria’s Information Privacy Principles (IPPs). This includes IPP 2 risks (where personal information is used for a secondary purpose that is not permitted), IPP 3 risks (poor data quality and accuracy) and IPP 1 risks (the collection of personal information may not be considered fair if collected for use in fully automated decision-making that significantly impacts on the individual). Ensure that settings can be configured to enhance information privacy and information security, such as disabling or limiting data sharing between certain platforms and between the VPS organisation and the company that owns the enterprise Generative AI tool. Develop organisational policies on the use of Generative AI tools, and communicate about the policies to staff, contracted service providers and other personnel. Develop and implement clear and tailored guidance and training for their staff, contracted service providers and other personnel on the use of the enterprise Generative AI tool, that: covers how to safely and responsibly use the enterprise Generative AI tool, prompt engineering, risk assessment and management, human review of generated outputs, and active monitoring and reviews to identify potential misuse ensures all users of the enterprise Generative AI tool are aware of and understand what information they are permitted to enter into the enterprise Generative AI tool and its permitted use cases ensures all users of the enterprise Generative AI tool are aware of how the tool may generate, collect, use or disclose personal information and public sector information, and understand how to ensure the accuracy and security of the information. Develop an incident response plan for dealing with inadvertent or unauthorised disclosures, access or misuse of information through the enterprise Generative AI tool. VPS organisations are responsible for all actions and content generated by the enterprise Generative AI tool they use. Where an information security incident or interference with privacy occurs through the use of the tool, VPS organisations will not be able to simply say that the incident or interference was caused by AI. Notify OVIC of information privacy and information security incidents, in line with the Information Security Incident Notification Scheme.8 Information privacy requirements This section applies to VPS organisations covered by Part 3 of the Privacy and Data Protection Act 2014 (PDP Act). The 10 Information Privacy Principles (IPPs), as set out in Schedule 1 of the PDP Act, will apply to the collection and handling of personal information that may be entered into, generated, or used by an enterprise Generative AI tool.9 While all 10 IPPs are relevant to the handling of personal information by an organisation, IPPs 1, 2, 3, 4 and 5 will be most relevant when integrating an enterprise Generative AI tool.10 Collection of personal information IPP 1 sets out that an organisation must only collect personal information if it is necessary to fulfill one or more of its functions. The collection must be lawful, fair and not unreasonably intrusive. Organisations must also provide notice to individuals about why the information is being collected, how it will be used and how individuals can access the information. Organisations should understand that when an enterprise Generative AI tool generates new content in response to a user prompt (such as “draft me a summary of the main points in the document called ‘John Smith’s CV’”), this generated content constitutes a new collection of personal information. Organisations must comply with the requirements of IPP 1. Example – Collection of personal information via a collaboration platform An organisation’s HR team invites a Senior Operations Manager to a meeting via a collaboration platform to provide an update on an internal conduct investigation involving one of the manager’s staff. The manager realises at the last minute that they cannot attend, so asks the enterprise Generative AI tool within the collaboration platform to ‘follow’ the meeting so they can receive a recap of what was discussed. The HR team joins the meeting and see a message from the manager that they can no longer attend. They decide that without the manager, there is no point discussing the matter but, since they have all set aside 30 minutes for the meeting, they use the time to instead discuss another matter, relating to a different staff member’s request for family violence leave. The next day, the manager sends a prompt to the enterprise Generative AI tool within the collaboration platform, asking “what were the main points discussed at the meeting?”. The enterprise Generative AI tool responds with a summary of the details about the other staff member and their request for family violence leave. The generation of the summary content by the enterprise Generative AI tool is a collection of personal information, which would likely contravene at least IPP 1.1 (as the manager had no need to know that information). Use and disclosure of personal information IPP 2 provides that personal information may only be used or disclosed for the primary purpose for which it is was collected, or where an exception applies under IPPs 2.1(a-h). Human error is the leading cause of data breaches reported to OVIC involving unauthorised use and disclosure of personal information. Without proper controls in place, the implementation of an enterprise Generative AI tool could exacerbate this, given the increased speed at which personal information can be generated, used, and disclosed. While users are in control of what they do with content generated by an enterprise Generative AI tool, there is a risk that humans using a tool described as ‘intelligent’ may not always exercise an appropriate level of scrutiny over its output. Further, as enterprise Generative AI tools use documents from an organisation’s information holdings to generate content in response to a user prompt, they could provide the user with personal information with which they were previously unfamiliar (even if access controls are correctly configured and the user has a right to know this information). This creates a risk that VPS employees could be unaware of the original purpose for which the personal information was collected, and cannot properly consider whether a proposed use or disclosure would comply with IPP 2. Example – Unauthorised disclosure of personal information generated by an enterprise Generative AI tool An organisation’s Assessment Officer wants to write a letter rejecting Person A’s application for a service. They prompt their enterprise Generative AI tool to draft this letter and base it off a letter they wrote two months ago rejecting Person B’s application. Impressed by how quickly the enterprise Generative AI tool drafts the six-page letter, the Assessment Officer quickly reads through and digitally signs it. They then send the letter to Person A by email. Person A later calls the Complaints Officer and informs them that while the letter was addressed to Person A, it also contained the name of Person B in the body of the letter as well as other personal information relating to Person B’s application. As well as highlighting an interference with Person B’s privacy, Person A also suspects that the Assessment Officer may have based their decision on the wrong personal information, and asks that their application is considered afresh. The disclosure of Person B’s personal information to Person A is a breach of IPP 2. The use of inaccurate personal information about Person A would also likely breach IPP 3, relating to accuracy of personal information (see discussion below). Additionally, this scenario raises concerns about the fairness of the decision made. Accuracy of personal information IPP 3 requires an organisation to take reasonable steps to ensure the personal information it collects, uses or discloses is accurate, complete and up to date. The use of an enterprise Generative AI tool presents an increased risk of organisations generating, using or disclosing inaccurate personal information. This is because Generative AI outputs will not always give the correct information. They simply make predictions based on the prompt they receive and the training they’ve had. Further, where a user re-generates the same prompt, the Generative AI tool likely won’t reproduce the original output. In choosing whether to implement an enterprise Generative AI tool, organisations should assess whether they will be able to mitigate risks associated with the generation of inaccurate, incomplete or outdated personal information. Example – Summary of complaint documents present incomplete picture A complainant makes a complaint to a regulator about the actions of a government department. In a 20-page document, the complainant sets out comprehensive details of their allegations, the serious harm they have experienced, and what they want the department to do to resolve their concerns, including payment of $20,000 in compensation. The complaint is assigned to a Complaint Officer at the regulator’s office. After reading the complaint once, the Officer writes a prompt to an enterprise Generative AI tool asking it to summarise the content into a new document, and directs that it should be two pages long. Once generated, the Officer emails the summary to the department asking for its response to the complaint. The department responds, agreeing that the conduct occurred as alleged but insists that it was a trivial matter that had little impact on the complainant. The department offers $1,000 in compensation to resolve the complaint. The complainant rejects this, and the regulator closes the complaint on the basis that it cannot be resolved. The complainant is disappointed by the department’s approach and asks the Complaint Officer how a government body could read her complaint and still place so little value on what she went through. The Officer explains that it was actually an AI-generated summary of the complaint that was sent to the department, and provides the complainant with a copy. The complainant is shocked when they read the summary. They believe it has omitted crucial elements of their allegations, and has minimised their description of the harm suffered. They believe it has created an inaccurate and incomplete description of the complaint, and has led to the department trivialising their experience and dismissing the complaint. The collection and use of inaccurate personal information about the complainant would likely breach IPP 3, as the regulator has not taken reasonable steps to make sure that the personal information it collects, uses or discloses is accurate and complete. Security of personal information IPP 4 requires an organisation to take reasonable steps to protect the personal information it holds from misuse, loss, and unauthorised access, modification and disclosure. The adoption of an enterprise Generative AI tool could magnify existing risks to the security of personal information for organisations. One particular risk relates to unauthorised access to information, where access permissions have not been properly configured within other organisational systems that are then integrated with the enterprise Generative AI tool. Misconfiguration of access controls is one of the most common causes of data breaches reported to OVIC.11 Organisations should review and update access controls for any platforms integrated with enterprise Generative AI tools. Further information on steps organisations should take in relation to security controls is covered in the next section. Example – Unauthorised access due to misconfigured access controls A manager is drafting an internal document for a new member of their team to explain the basics of performance development procedures. Looking for inspiration, the manager prompts an enterprise Generative AI tool, asking about any previous documents relating to performance development that other staff in the organisation have created. Due to an access control misconfiguration, of which the manager was unaware, the Generative AI tool sends the manager a range of documents that include final copies of the Performance Development Plans of their colleagues. The disclosure of the Performance Development Plans of other colleagues to the manager due to misconfigured access controls would likely be a breach of IPP 4.1. Privacy policies IPP 5 requires VPS organisations to have a privacy policy, outlining how they handle the personal information they hold. Where personal information is handled by an enterprise Generative AI tool, a VPS organisation’s privacy policy should be clear about this. This is especially important where the outputs of an enterprise Generative AI tool are used to inform decision making about an individual, such as whether they are eligible for a service or a payment. Information security requirements Before VPS organisations implement any enterprise Generative AI tool, the public sector body head must assess the information security risks to the confidentiality, integrity and availability of public sector information and systems proposed to be used by the enterprise Generative AI tool,12 and ensure adherence to the Victorian Protective Data Security Standards (the Standards).13 The Standards set out the mandatory requirements to protect public sector information across all security domains including governance, information, personnel, information communications technology and physical security. The PDP Act extends these information security obligations to contracted service providers (CSPs), requiring public sector body heads to ensure that a CSP does not do an act or engage in a practice that contravenes a Standard.14 VPS organisations therefore must ensure their security risk assessment includes an evaluation of CSPs relevant to the enterprise Generative AI tool. By following this approach organisations: will be best placed to understand the risks of an enterprise Generative AI tool within the context of their organisation and risk profile will ensure that any changes to their operating environment (people, processes and technology) are incorporated into existing risk assessments provide the public sector body head with full visibility and understanding of current risks associated with an enterprise Generative AI tool following any changes. For the purpose of this guidance, VPS organisations are organisations subject to Parts 3 and 4 of the Privacy and Data Protection Act 2014. See sections 3 and 84 of that Act for a list of organisations covered by these Parts.For further information on Generative AI concepts, see the resource developed by the Centre of Excellence for Automated Decision-Making and Society, and OVIC: https://www.admscentre.org.au/genai-concepts/This guidance replaces the guidance OVIC issued in its public statement on the use of Microsoft 365 Copilot in the Victorian public sector in October 2023.OVIC recommends that VPS organisations review OVIC’s guidance on engaging third party providers prior to purchasing an enterprise Generative AI tool. The guidance outlines the steps VPS organisations should take to ensure they meet their information privacy and information security obligations: https://ovic.vic.gov.au/privacy/resources-for-organisations/engaging-contracted-service-providers/See the information security requirements section below.OVIC has a PIA template and accompanying guide available to assist organisations to undertake a PIA: https://ovic.vic.gov.au/privacy/resources-for-organisations/privacy-impact-assessment/It likely will not be sufficient for one overarching PIA to be undertaken on the integration of the enterprise Generative AI tool. PIAs should be conducted for individual functions or uses of the enterprise Generative AI tool, or by business unit, where a business unit will use the Generative AI tool for a discrete, defined purpose.Incidents can be reported via OVIC’s incident notification form: https://ovic.vic.gov.au/privacy/resources-for-organisations/information-security-and-privacy-incident-notification-form/Personal information is defined in section 3 of the Privacy and Data Protection Act 2014 as ‘information or an opinion… that is recorded in any form and whether true or not, about an individual whose identity is apparent, or can reasonably be ascertained, from the information or opinion’. The definition of personal information excludes health information, which is covered by the Health Records Act 2001.For guidance on how to interpret and apply the IPPs, refer to OVIC’s Guidelines to the Information Privacy Principles: https://ovic.vic.gov.au/privacy/resources-for-organisations/guidelines-to-the-information-privacy-principles/OVIC Incidents Insights Report: 1 July 2022 – 31 December 2022: https://ovic.vic.gov.au/information-security/security-insights/incident-insights-report-1-july-2022-31-december-2022/Public sector data, also known as public sector information, is defined in section 3 of the PDP Act as ‘information (including personal information) obtained, received or held by an agency or body to which Part 4 applies’.The Victorian Protective Data Security Standards are available at: https://ovic.vic.gov.au/information-security/standards/Section 88(2), PDP Act. Download Use of enterprise Generative AI tools in the public sector - PDF Size 180.45 KB Download Use of enterprise Generative AI tools in the public sector - DOCX Size 191.30 KB Download Contents OVIC’s minimum expectationsInformation privacy requirementsCollection of personal informationUse and disclosure of personal informationAccuracy of personal informationSecurity of personal informationPrivacy policiesInformation security requirementsFootnotes Back to privacy resources",
+    "content": "From Monday 12 September 2020, OVIC's website will no longer be supported in Internet Explorer (IE). We recommend installing Microsoft Edge, Google Chrome, Safari, Firefox, or Opera to visit the site. Use of enterprise Generative AI tools in the Victorian public sector Last updated 26 June 2026 This guidance outlines the Office of the Victorian Information Commissioner’s (OVIC) minimum expectations for Victorian public sector organisations (VPS organisations) using enterprise Generative Artificial Intelligence (Generative AI) tools.1 It also sets out the key information privacy and information security obligations for VPS organisations to consider. Generative AI is a type of Artificial Intelligence that creates content, such as text, images, music, audio and video. Generative AI tools do this by predicting the best response to the information entered, known as a prompt. Predictions, also known as outputs, are made based on the content of the prompt and the data on which the Generative AI tool has been trained.2 This guidance relates to Generative AI tools that are purchased at an enterprise level, and operate within a VPS organisation’s securely managed environment. Enterprise Generative AI tools are integrated within an organisation’s existing systems. Examples include tenanted versions of Microsoft 365 Copilot, Chat GPT Enterprise, Duet AI for Google Workspace, Zoom IQ and Slack GPT. 3 The adoption and use of Generative AI tools may magnify existing information privacy and information security risks for VPS organisations, and create new ones (some examples are included below). VPS organisations should therefore take the steps outlined below to improve their information security maturity and privacy practices before adopting an enterprise Generative AI tool.4 The risks involved in using publicly available Generative AI tools are different to those involved in using enterprise Generative AI tools. For guidance on using publicly available Generative AI tools, please refer to OVIC’s guidance on the use of personal information with publicly available Generative AI tools in the Victorian public sector. OVIC’s minimum expectations This section sets out OVIC’s minimum expectations for VPS organisations to work through prior to purchasing and integrating an enterprise Generative AI tool. VPS organisations should: Assess the maturity of their existing information security program,5 including: identifying existing information holdings and systems that may be impacted by the introduction of an integrated Generative AI tool, including due consideration of their security value considering how any Generative AI outputs will be assessed, valued and securely managed, including applying appropriate protective markings for newly generated information assets conducting a security risk assessment for the integration of an enterprise Generative AI tool, including due consideration of adjusted risk profiles and development of treatment plans to address relevant Generative AI features implementing any updated treatment plans by rolling out new or changed controls, including consideration of the organisation’s existing logical access controls implementing a formal process for the ongoing monitoring and review of risks and controls. This is especially important given the dynamic development and release of enhancements and new features in Generative AI tools. Undertake privacy impact assessments (PIAs) to understand the ways in which the enterprise Generative AI tool will be utilised, the risks it presents to the privacy of individuals, whether and how those risks can be mitigated, and in light of any residual risks, the extent to which it is appropriate to proceed to purchase the tool.6 There may be high-risk functions or specific business units within a VPS organisation for whom it is not appropriate to use a Generative AI tool.7 Ensure that risks and controls are regularly reviewed and monitored. Be careful when using Generative AI tools in ways that may significantly impact one or more individuals. This includes automated decision-making and the use of these tools during earlier steps in a decision-making process, where that earlier use significantly influences or materially assists the organisation in making its decision. Earlier steps may include using a Generative AI tool to conduct research, summarise key information, facts or evidence or make a prediction, recommendation, assessment, summary, conclusion or inference. Using Generative AI tools in decision-making processes carries privacy risks under Victoria’s Information Privacy Principles (IPPs). This includes IPP 2 risks (where personal information is used for a secondary purpose that is not permitted), IPP 3 risks (poor data quality and accuracy) and IPP 1 risks (the collection of personal information may not be considered fair if collected for use in fully automated decision-making that significantly impacts on the individual). Ensure that settings can be configured to enhance information privacy and information security, such as disabling or limiting data sharing between certain platforms and between the VPS organisation and the company that owns the enterprise Generative AI tool. Develop organisational policies on the use of Generative AI tools, and communicate about the policies to staff, contracted service providers and other personnel. Develop and implement clear and tailored guidance and training for their staff, contracted service providers and other personnel on the use of the enterprise Generative AI tool, that: covers how to safely and responsibly use the enterprise Generative AI tool, prompt engineering, risk assessment and management, human review of generated outputs, and active monitoring and reviews to identify potential misuse ensures all users of the enterprise Generative AI tool are aware of and understand what information they are permitted to enter into the enterprise Generative AI tool and its permitted use cases ensures all users of the enterprise Generative AI tool are aware of how the tool may generate, collect, use or disclose personal information and public sector information, and understand how to ensure the accuracy and security of the information. Develop an incident response plan for dealing with inadvertent or unauthorised disclosures, access or misuse of information through the enterprise Generative AI tool. VPS organisations are responsible for all actions and content generated by the enterprise Generative AI tool they use. Where an information security incident or interference with privacy occurs through the use of the tool, VPS organisations will not be able to simply say that the incident or interference was caused by AI. Notify OVIC of information privacy and information security incidents, in line with the Information Security Incident Notification Scheme.8 Information privacy requirements This section applies to VPS organisations covered by Part 3 of the Privacy and Data Protection Act 2014 (PDP Act). The 10 Information Privacy Principles (IPPs), as set out in Schedule 1 of the PDP Act, will apply to the collection and handling of personal information that may be entered into, generated, or used by an enterprise Generative AI tool.9 While all 10 IPPs are relevant to the handling of personal information by an organisation, IPPs 1, 2, 3, 4 and 5 will be most relevant when integrating an enterprise Generative AI tool.10 Collection of personal information IPP 1 sets out that an organisation must only collect personal information if it is necessary to fulfill one or more of its functions. The collection must be lawful, fair and not unreasonably intrusive. Organisations must also provide notice to individuals about why the information is being collected, how it will be used and how individuals can access the information. Organisations should understand that when an enterprise Generative AI tool generates new content in response to a user prompt (such as “draft me a summary of the main points in the document called ‘John Smith’s CV’”), this generated content constitutes a new collection of personal information. Organisations must comply with the requirements of IPP 1. Example – Collection of personal information via a collaboration platform An organisation’s HR team invites a Senior Operations Manager to a meeting via a collaboration platform to provide an update on an internal conduct investigation involving one of the manager’s staff. The manager realises at the last minute that they cannot attend, so asks the enterprise Generative AI tool within the collaboration platform to ‘follow’ the meeting so they can receive a recap of what was discussed. The HR team joins the meeting and see a message from the manager that they can no longer attend. They decide that without the manager, there is no point discussing the matter but, since they have all set aside 30 minutes for the meeting, they use the time to instead discuss another matter, relating to a different staff member’s request for family violence leave. The next day, the manager sends a prompt to the enterprise Generative AI tool within the collaboration platform, asking “what were the main points discussed at the meeting?”. The enterprise Generative AI tool responds with a summary of the details about the other staff member and their request for family violence leave. The generation of the summary content by the enterprise Generative AI tool is a collection of personal information, which would likely contravene at least IPP 1.1 (as the manager had no need to know that information). Use and disclosure of personal information IPP 2 provides that personal information may only be used or disclosed for the primary purpose for which it is was collected, or where an exception applies under IPPs 2.1(a-h). Human error is the leading cause of data breaches reported to OVIC involving unauthorised use and disclosure of personal information. Without proper controls in place, the implementation of an enterprise Generative AI tool could exacerbate this, given the increased speed at which personal information can be generated, used, and disclosed. While users are in control of what they do with content generated by an enterprise Generative AI tool, there is a risk that humans using a tool described as ‘intelligent’ may not always exercise an appropriate level of scrutiny over its output. Further, as enterprise Generative AI tools use documents from an organisation’s information holdings to generate content in response to a user prompt, they could provide the user with personal information with which they were previously unfamiliar (even if access controls are correctly configured and the user has a right to know this information). This creates a risk that VPS employees could be unaware of the original purpose for which the personal information was collected, and cannot properly consider whether a proposed use or disclosure would comply with IPP 2. Example – Unauthorised disclosure of personal information generated by an enterprise Generative AI tool An organisation’s Assessment Officer wants to write a letter rejecting Person A’s application for a service. They prompt their enterprise Generative AI tool to draft this letter and base it off a letter they wrote two months ago rejecting Person B’s application. Impressed by how quickly the enterprise Generative AI tool drafts the six-page letter, the Assessment Officer quickly reads through and digitally signs it. They then send the letter to Person A by email. Person A later calls the Complaints Officer and informs them that while the letter was addressed to Person A, it also contained the name of Person B in the body of the letter as well as other personal information relating to Person B’s application. As well as highlighting an interference with Person B’s privacy, Person A also suspects that the Assessment Officer may have based their decision on the wrong personal information, and asks that their application is considered afresh. The disclosure of Person B’s personal information to Person A is a breach of IPP 2. The use of inaccurate personal information about Person A would also likely breach IPP 3, relating to accuracy of personal information (see discussion below). Additionally, this scenario raises concerns about the fairness of the decision made. Accuracy of personal information IPP 3 requires an organisation to take reasonable steps to ensure the personal information it collects, uses or discloses is accurate, complete and up to date. The use of an enterprise Generative AI tool presents an increased risk of organisations generating, using or disclosing inaccurate personal information. This is because Generative AI outputs will not always give the correct information. They simply make predictions based on the prompt they receive and the training they’ve had. Further, where a user re-generates the same prompt, the Generative AI tool likely won’t reproduce the original output. In choosing whether to implement an enterprise Generative AI tool, organisations should assess whether they will be able to mitigate risks associated with the generation of inaccurate, incomplete or outdated personal information. Example – Summary of complaint documents present incomplete picture A complainant makes a complaint to a regulator about the actions of a government department. In a 20-page document, the complainant sets out comprehensive details of their allegations, the serious harm they have experienced, and what they want the department to do to resolve their concerns, including payment of $20,000 in compensation. The complaint is assigned to a Complaint Officer at the regulator’s office. After reading the complaint once, the Officer writes a prompt to an enterprise Generative AI tool asking it to summarise the content into a new document, and directs that it should be two pages long. Once generated, the Officer emails the summary to the department asking for its response to the complaint. The department responds, agreeing that the conduct occurred as alleged but insists that it was a trivial matter that had little impact on the complainant. The department offers $1,000 in compensation to resolve the complaint. The complainant rejects this, and the regulator closes the complaint on the basis that it cannot be resolved. The complainant is disappointed by the department’s approach and asks the Complaint Officer how a government body could read her complaint and still place so little value on what she went through. The Officer explains that it was actually an AI-generated summary of the complaint that was sent to the department, and provides the complainant with a copy. The complainant is shocked when they read the summary. They believe it has omitted crucial elements of their allegations, and has minimised their description of the harm suffered. They believe it has created an inaccurate and incomplete description of the complaint, and has led to the department trivialising their experience and dismissing the complaint. The collection and use of inaccurate personal information about the complainant would likely breach IPP 3, as the regulator has not taken reasonable steps to make sure that the personal information it collects, uses or discloses is accurate and complete. Security of personal information IPP 4 requires an organisation to take reasonable steps to protect the personal information it holds from misuse, loss, and unauthorised access, modification and disclosure. The adoption of an enterprise Generative AI tool could magnify existing risks to the security of personal information for organisations. One particular risk relates to unauthorised access to information, where access permissions have not been properly configured within other organisational systems that are then integrated with the enterprise Generative AI tool. Misconfiguration of access controls is one of the most common causes of data breaches reported to OVIC.11 Organisations should review and update access controls for any platforms integrated with enterprise Generative AI tools. Further information on steps organisations should take in relation to security controls is covered in the next section. Example – Unauthorised access due to misconfigured access controls A manager is drafting an internal document for a new member of their team to explain the basics of performance development procedures. Looking for inspiration, the manager prompts an enterprise Generative AI tool, asking about any previous documents relating to performance development that other staff in the organisation have created. Due to an access control misconfiguration, of which the manager was unaware, the Generative AI tool sends the manager a range of documents that include final copies of the Performance Development Plans of their colleagues. The disclosure of the Performance Development Plans of other colleagues to the manager due to misconfigured access controls would likely be a breach of IPP 4.1. Privacy policies IPP 5 requires VPS organisations to have a privacy policy, outlining how they handle the personal information they hold. Where personal information is handled by an enterprise Generative AI tool, a VPS organisation’s privacy policy should be clear about this. This is especially important where the outputs of an enterprise Generative AI tool are used to inform decision making about an individual, such as whether they are eligible for a service or a payment. Information security requirements Before VPS organisations implement any enterprise Generative AI tool, the public sector body head must assess the information security risks to the confidentiality, integrity and availability of public sector information and systems proposed to be used by the enterprise Generative AI tool,12 and ensure adherence to the Victorian Protective Data Security Standards (the Standards).13 The Standards set out the mandatory requirements to protect public sector information across all security domains including governance, information, personnel, information communications technology and physical security. The PDP Act extends these information security obligations to contracted service providers (CSPs), requiring public sector body heads to ensure that a CSP does not do an act or engage in a practice that contravenes a Standard.14 VPS organisations therefore must ensure their security risk assessment includes an evaluation of CSPs relevant to the enterprise Generative AI tool. By following this approach organisations: will be best placed to understand the risks of an enterprise Generative AI tool within the context of their organisation and risk profile will ensure that any changes to their operating environment (people, processes and technology) are incorporated into existing risk assessments provide the public sector body head with full visibility and understanding of current risks associated with an enterprise Generative AI tool following any changes. For the purpose of this guidance, VPS organisations are organisations subject to Parts 3 and 4 of the Privacy and Data Protection Act 2014. See sections 3 and 84 of that Act for a list of organisations covered by these Parts.For further information on Generative AI concepts, see the resource developed by the Centre of Excellence for Automated Decision-Making and Society, and OVIC. This guidance replaces the guidance OVIC issued in its public statement on the use of Microsoft 365 Copilot in the Victorian public sector in October 2023.OVIC recommends that VPS organisations review OVIC’s guidance on engaging third party providers prior to purchasing an enterprise Generative AI tool. The guidance outlines the steps VPS organisations should take to ensure they meet their information privacy and information security obligations. See the information security requirements section below.OVIC has a PIA template and accompanying guide available to assist organisations to undertake a PIA. It likely will not be sufficient for one overarching PIA to be undertaken on the integration of the enterprise Generative AI tool. PIAs should be conducted for individual functions or uses of the enterprise Generative AI tool, or by business unit, where a business unit will use the Generative AI tool for a discrete, defined purpose.Incidents can be reported via OVIC’s incident notification form. Personal information is defined in section 3 of the Privacy and Data Protection Act 2014 as ‘information or an opinion… that is recorded in any form and whether true or not, about an individual whose identity is apparent, or can reasonably be ascertained, from the information or opinion’. The definition of personal information excludes health information, which is covered by the Health Records Act 2001.For guidance on how to interpret and apply the IPPs, refer to OVIC’s Guidelines to the Information Privacy Principles. OVIC Incidents Insights Report: 1 July 2022 – 31 December 2022. Public sector data, also known as public sector information, is defined in section 3 of the PDP Act as ‘information (including personal information) obtained, received or held by an agency or body to which Part 4 applies’.The Victorian Protective Data Security Standards are available on OVIC’s website. Section 88(2), PDP Act. Download Use of enterprise Generative AI tools in the public sector - PDF Size 180.45 KB Download Use of enterprise Generative AI tools in the public sector - DOCX Size 191.30 KB Download Contents OVIC’s minimum expectationsInformation privacy requirementsCollection of personal informationUse and disclosure of personal informationAccuracy of personal informationSecurity of personal informationPrivacy policiesInformation security requirementsFootnotes Back to privacy resources",
     "aiSummary": "Victorian regulator guidance requiring privacy impact assessment, security risk assessment, access controls, governance, training, incident response and human scrutiny for enterprise generative AI.",
     "tags": [
       "Victoria",
@@ -2950,53 +2950,49 @@
       "public-sector"
     ],
     "createdAt": "2026-07-22T12:48:46.496Z",
-    "updatedAt": "2026-07-24T02:35:49.530Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "updatedAt": "2026-11-05T22:01:46.968Z",
+    "lastReviewedAt": "2026-11-05T22:01:46.968Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
         "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
-        "title": "Use of enterprise Generative AI tools in the Victorian public sector",
-        "retrievedAt": "2026-07-24T02:35:46.125Z",
+        "retrievedAt": "2026-11-05T22:01:46.862Z",
         "contentType": "text/html",
-        "contentHash": "bb501314ff02225c567f97f1dd0eb76090f43bf3641272147ffd6f4f4f9f9848",
+        "contentHash": "d5caad2d61c1560c9790e8355d7d10c13ce6291843ae1ca694da232dc1b28d53",
         "linkedDocuments": [
           {
             "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
             "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
-            "retrievedAt": "2026-07-24T02:35:46.125Z",
+            "retrievedAt": "2026-11-05T22:01:46.921Z",
             "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774"
+            "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774",
+            "etag": "\"2fd30-65522f10ab252\"",
+            "lastModified": "Fri, 26 Jun 2026 07:20:21 GMT"
           },
           {
             "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
             "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
-            "retrievedAt": "2026-07-24T02:35:46.125Z",
+            "retrievedAt": "2026-11-05T22:01:46.968Z",
             "contentType": "application/pdf",
-            "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910"
+            "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910",
+            "etag": "\"2d1ce-65522ef7bfb50\"",
+            "lastModified": "Fri, 26 Jun 2026 07:19:55 GMT"
           }
         ],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-24T02:35:46.125Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official OVIC source revalidation on 24 July 2026; the displayed guidance and exact linked DOCX and PDF bytes were inspected before applying the approved restoration.",
-          "pageContentHash": "424d93904d0fddc5bc546328b05cd7a0e57d8560bc4c2ee8ce2c804a3e032aa2",
-          "characterCount": 22404
-        },
+        "title": "Use of enterprise Generative AI tools in the Victorian public sector",
         "reviewedDate": {
           "date": "2026-06-26",
           "precision": "day",
-          "reviewedAt": "2026-07-24T02:35:49.530Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
+          "reviewedAt": "2026-11-05T22:01:46.968Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Rechecked 5 Nov 2026: the OVIC page states 'Last updated 26 June 2026'. Unchanged from the verified record's amended date."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
-      "checkedBy": "Policai Developer source re-read (issue 161)",
+      "checkedAt": "2026-11-05T22:01:46.968Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 5bd8 5e9d f7cc fab8). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
     }
   },
   {
@@ -5232,49 +5228,54 @@
       "public-sector"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-08-07T05:10:38.082Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "updatedAt": "2026-11-05T22:01:42.878Z",
+    "lastReviewedAt": "2026-11-05T22:01:42.878Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
         "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-        "retrievedAt": "2026-08-07T05:10:37.597Z",
+        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "retrievedAt": "2026-11-05T02:05:08.991Z",
         "contentType": "text/html",
-        "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
+        "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
         "linkedDocuments": [
           {
             "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
             "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-            "retrievedAt": "2026-08-07T05:10:37.989Z",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "application/pdf",
-            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
-            "etag": "\"2e976-612c9a53ad71b\"",
-            "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
           },
           {
             "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
             "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-            "retrievedAt": "2026-08-07T05:10:38.082Z",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "application/pdf",
-            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
-            "etag": "\"67480ace-1e00c\"",
-            "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
           }
         ],
-        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-05T02:05:08.991Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+          "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+          "characterCount": 15157
+        },
         "reviewedDate": {
           "date": "2024-11-27",
           "precision": "day",
-          "reviewedAt": "2026-08-07T05:10:38.082Z",
-          "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-          "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
+          "reviewedAt": "2026-11-05T22:01:42.878Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
-      "checkedBy": "Policai Developer source re-read (issue 161)",
+      "checkedAt": "2026-11-05T22:01:42.878Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161).",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal f5dd 1941 32ed d850). Proposed by Claude (agent). Republish unchanged: the live source matches the verified baseline; the 27 Oct change was a reading without the guideline PDF.",
       "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
     },
     "dates": [
@@ -5286,36 +5287,41 @@
         "source": {
           "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
           "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-          "retrievedAt": "2026-08-07T05:10:37.597Z",
+          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "retrievedAt": "2026-11-05T02:05:08.991Z",
           "contentType": "text/html",
-          "contentHash": "6013a3f65fd755391a25c8768410318375421342c47621c337baf604fe5abc71",
+          "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
           "linkedDocuments": [
             {
               "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
               "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-              "retrievedAt": "2026-08-07T05:10:37.989Z",
+              "retrievedAt": "2026-11-05T02:05:08.991Z",
               "contentType": "application/pdf",
-              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
-              "etag": "\"2e976-612c9a53ad71b\"",
-              "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+              "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
             },
             {
               "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
               "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-              "retrievedAt": "2026-08-07T05:10:38.082Z",
+              "retrievedAt": "2026-11-05T02:05:08.991Z",
               "contentType": "application/pdf",
-              "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
-              "etag": "\"67480ace-1e00c\"",
-              "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+              "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
             }
           ],
-          "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:05:08.991Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+            "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+            "characterCount": 15157
+          },
           "reviewedDate": {
             "date": "2024-11-27",
             "precision": "day",
-            "reviewedAt": "2026-08-07T05:10:38.082Z",
-            "reviewedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-            "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
+            "reviewedAt": "2026-11-05T22:01:42.878Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
           }
         }
       }
@@ -10115,26 +10121,26 @@
         "source": {
           "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
           "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
-          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
-          "retrievedAt": "2026-10-29T21:08:00.000Z",
+          "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+          "retrievedAt": "2026-11-05T02:11:55.127Z",
           "contentType": "text/html",
-          "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
+          "contentHash": "ce61339ed67cbb14bdd0fbd32ccfa39908ad71e52d276ca2ccdb37849ffd97a5",
           "linkedDocuments": [],
           "browserCapture": {
             "method": "browser",
-            "capturedAt": "2026-10-29T21:08:00.000Z",
-            "capturedBy": "Cursor agent",
-            "requestedBy": "Policai Signal",
-            "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
-            "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
-            "characterCount": 6528
+            "capturedAt": "2026-11-05T02:11:55.127Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+            "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
+            "characterCount": 5793
           },
           "reviewedDate": {
             "date": "2026-10-15",
             "precision": "day",
-            "reviewedAt": "2026-10-31T05:30:43.928Z",
+            "reviewedAt": "2026-11-05T22:01:48.258Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
+            "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
           }
         }
       },
@@ -10174,7 +10180,7 @@
       "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
     ],
     "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
-    "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. On 28 October 2026 the bill home page records that the second reading was agreed, that consideration in detail agreed 15 government amendments and 8 crossbench amendments, and that the third reading was agreed. Status remains proposed: the register has no separate before-Parliament status, and the bill is not an Act. The same page's Status field still reads \"Before Reps\" and it shows no Senate progress table. The page records referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. Divisions listed on the bill home page for 28 October 2026 include the question that the amendments moved by Ms Chaney be agreed to. The sheet linked from that page (Kate Chaney MP, https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22legislation/amend/r7553_amend_94de72af-fd1a-4779-b6c7-c0230408dc0f%22) proposes inserting paragraph 25E(1)(da), \"material or conduct that simulates emotional intimacy and encourages or fosters a child's dependence on it in place of human relationships\". The third-reading PDF was not readable in this capture, so that sentence is the circulated sheet, not a quotation from the text as agreed. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications, https://minister.infrastructure.gov.au/wells/media-release/my-feed-my-way). The Minister announced introduction on 15 October 2026 (https://minister.infrastructure.gov.au/wells/media-release/digital-duty-care-next-step-australias-world-leading-reforms). The department's page is https://www.infrastructure.gov.au/media-communications/internet/online-safety/digital-duty-care.",
+    "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. On 28 October 2026 the bill home page records that the second reading was agreed, that consideration in detail agreed 15 government amendments and 8 crossbench amendments, and that the third reading was agreed. Status remains proposed: the register has no separate before-Parliament status, and the bill is not an Act. The same page's Status field still reads \"Before Reps\" and it shows no Senate progress table. The page records referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. Divisions listed on the bill home page for 28 October 2026 include the question that the amendments moved by Ms Chaney be agreed to. The sheet linked from that page (Kate Chaney MP) proposes inserting paragraph 25E(1)(da), \"material or conduct that simulates emotional intimacy and encourages or fosters a child's dependence on it in place of human relationships\". The third-reading PDF was not readable in this capture, so that sentence is the circulated sheet, not a quotation from the text as agreed. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications). The Minister announced introduction on 15 October 2026. The department has a page on the digital duty of care.",
     "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026. The House agreed to the third reading on 28 October 2026, with amendments. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
     "tags": [
       "digital duty of care",
@@ -10190,38 +10196,38 @@
       "ai-governance"
     ],
     "createdAt": "2026-10-17T09:00:00.000Z",
-    "updatedAt": "2026-10-31T05:30:43.928Z",
+    "updatedAt": "2026-11-05T22:01:48.258Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
-        "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
-        "retrievedAt": "2026-10-29T21:08:00.000Z",
+        "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+        "retrievedAt": "2026-11-05T02:11:55.127Z",
         "contentType": "text/html",
-        "contentHash": "2c49db754908b887b195cdd73fdd5f5e63fc3e726e4ced732cfdebb4694ce63d",
+        "contentHash": "ce61339ed67cbb14bdd0fbd32ccfa39908ad71e52d276ca2ccdb37849ffd97a5",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-10-29T21:08:00.000Z",
-          "capturedBy": "Cursor agent",
-          "requestedBy": "Policai Signal",
-          "notes": "Headless Chrome capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged for Daniel Alkurdi. The progress table shows third reading agreed on 28 Oct 2026, with amendment details \"15 Government and 8 Crossbench agreed to\".",
-          "pageContentHash": "7b009f86251b5a8e3bb204ce7cbc5183c53cce698949c6abc92812288cd288da",
-          "characterCount": 6528
+          "capturedAt": "2026-11-05T02:11:55.127Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+          "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
+          "characterCount": 5793
         },
         "reviewedDate": {
           "date": "2026-10-15",
           "precision": "day",
-          "reviewedAt": "2026-10-31T05:30:43.928Z",
+          "reviewedAt": "2026-11-05T22:01:48.258Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The bill home page shows the bill introduced and read a first time in the House of Representatives on 15 Oct 2026; the record's published date is the introduction day."
+          "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
         }
       },
-      "checkedAt": "2026-10-31T05:30:43.928Z",
+      "checkedAt": "2026-11-05T22:01:48.258Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal fc68e583). Proposed by Claude (agent). Prepared for Daniel Alkurdi after #581 merged."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal dced fc81 db25 9bdd). Proposed by Claude (agent)."
     },
     "legislative": {
       "kind": "bill",
@@ -10272,7 +10278,7 @@
         }
       ]
     },
-    "lastReviewedAt": "2026-10-31T05:30:43.928Z"
+    "lastReviewedAt": "2026-11-05T22:01:48.258Z"
   },
   {
     "id": "asd-ai-considerations-within-the-essentials-2026",
@@ -10295,7 +10301,7 @@
       "Australian Cyber Security Centre"
     ],
     "sourceUrl": "https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials",
-    "content": "ASD published this as guidance on 15 October 2026. The publication page (https://www.cyber.gov.au/publication/ai-considerations-within-the-essentials) shows \"Published 15 Oct 2026\" and the PDF is at https://www.cyber.gov.au/sites/default/files/2026-10/AI%20considerations%20within%20the%20Essentials.pdf. The page describes it as guidance that helps cyber security practitioners understand considerations for scoping, implementing and assessing controls in AI environments, especially within the enterprise IT chapter. ASD presents it as guidance. It uses 'should' language, and its disclaimer says it is 'of a general nature'. The same day's news item (https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience) says ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, in chapters for enterprise IT, operational technology and cloud, and that during the transition ASD keeps both frameworks on cyber.gov.au. It also says: \"Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations.\" The publication says the Essentials framework applies whether an organisation consumes, develops or deploys AI. It covers AI assets in scoping (including models, training data, model artefacts and inference endpoints), prompt injection, the integrity and provenance of model weights and training data, least privilege for AI agents and integrations, AI agents' non-person identities, AI tools capable of administrative actions operating through privileged environments, and logging of prompts and outputs. ASD's transition guidance, also published on 15 October 2026 (https://www.cyber.gov.au/publication/transitioning-from-the-essential-eight), says the enterprise IT chapter's Governance and culture domain includes an artificial intelligence accountability principle, and that these governance areas were not assessed as part of the Essential Eight maturity model. The AI considerations PDF (p 5) ties executive AI accountability to the ISM principle. The record sits with ASD's other AI cyber security guidance: Careful adoption of agentic AI services (asd-careful-adoption-agentic-ai-services-2026), Agentic AI harnesses (asd-agentic-ai-harnesses-2026), the Blueprint for Secure Cloud artificial intelligence usage policy requirement (asd-blueprint-secure-cloud-ai-usage-policy) and Frontier AI models and their impact on cyber security (asd-frontier-ai-models-cyber-security-2026).",
+    "content": "ASD published this as guidance on 15 October 2026. The publication page shows \"Published 15 Oct 2026\" and links a PDF of the publication. The page describes it as guidance that helps cyber security practitioners understand considerations for scoping, implementing and assessing controls in AI environments, especially within the enterprise IT chapter. ASD presents it as guidance. It uses 'should' language, and its disclaimer says it is 'of a general nature'. The same day's news item says ASD launched the ASD Essentials on 15 October 2026 as an evolution of the Essential Eight, in chapters for enterprise IT, operational technology and cloud, and that during the transition ASD keeps both frameworks on cyber.gov.au. It also says: \"Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations.\" The publication says the Essentials framework applies whether an organisation consumes, develops or deploys AI. It covers AI assets in scoping (including models, training data, model artefacts and inference endpoints), prompt injection, the integrity and provenance of model weights and training data, least privilege for AI agents and integrations, AI agents' non-person identities, AI tools capable of administrative actions operating through privileged environments, and logging of prompts and outputs. ASD's transition guidance, also published on 15 October 2026, says the enterprise IT chapter's Governance and culture domain includes an artificial intelligence accountability principle, and that these governance areas were not assessed as part of the Essential Eight maturity model. The AI considerations PDF (p 5) ties executive AI accountability to the ISM principle. The record sits with ASD's other AI cyber security guidance: Careful adoption of agentic AI services (asd-careful-adoption-agentic-ai-services-2026), Agentic AI harnesses (asd-agentic-ai-harnesses-2026), the Blueprint for Secure Cloud artificial intelligence usage policy requirement (asd-blueprint-secure-cloud-ai-usage-policy) and Frontier AI models and their impact on cyber security (asd-frontier-ai-models-cyber-security-2026).",
     "aiSummary": "ASD guidance, published 15 October 2026, on applying the ASD Essentials to AI an organisation consumes, develops or deploys, including scoping, prompt injection, provenance, agent privilege and logging.",
     "tags": [
       "ASD Essentials",
@@ -10344,7 +10350,7 @@
       "Department of Premier and Cabinet"
     ],
     "sourceUrl": "https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities",
-    "content": "On 14 October 2026 the Premier of Tasmania announced that the Tasmanian Government will establish a Local Community Benefit Fund so communities hosting major AI and data-centre developments share directly in the benefits. The fund is to support local infrastructure, skills and training, community organisations and initiatives that improve liveability and economic participation in host communities. Major AI and data-centre proponents will be expected to: pay their own infrastructure and network costs; help grow Tasmania's energy supply by supporting new renewable generation and additional energy capacity; locate in appropriate industrial precincts away from urban areas; protect consumers so water and power demand does not compromise supply security or raise costs for other users; contribute to the Local Community Benefit Fund; and publicly report water and energy use each quarter. The announcement builds on the Government's draft Statement of Expectations for Data Centres and AI Infrastructure and reflects issues raised through the Parliamentary Inquiry into AI Data Centres. Source: https://www.premier.tas.gov.au/latest-news/2026/october/major-ai-investment-must-deliver-for-tasmanian-communities.",
+    "content": "On 14 October 2026 the Premier of Tasmania announced that the Tasmanian Government will establish a Local Community Benefit Fund so communities hosting major AI and data-centre developments share directly in the benefits. The fund is to support local infrastructure, skills and training, community organisations and initiatives that improve liveability and economic participation in host communities. Major AI and data-centre proponents will be expected to: pay their own infrastructure and network costs; help grow Tasmania's energy supply by supporting new renewable generation and additional energy capacity; locate in appropriate industrial precincts away from urban areas; protect consumers so water and power demand does not compromise supply security or raise costs for other users; contribute to the Local Community Benefit Fund; and publicly report water and energy use each quarter. The announcement builds on the Government's draft Statement of Expectations for Data Centres and AI Infrastructure and reflects issues raised through the Parliamentary Inquiry into AI Data Centres. Source: the Premier's media release on premier.tas.gov.au.",
     "aiSummary": "Tasmania announced on 14 October 2026 a Local Community Benefit Fund that major AI and data-centre proponents will be expected to contribute to, with network cost recovery and quarterly water and energy reporting.",
     "tags": [
       "Tasmania",
@@ -10395,7 +10401,7 @@
       "Tasmanian Government"
     ],
     "sourceUrl": "https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers",
-    "content": "The Tasmanian Government released a draft Statement of Expectations for Data Centres and Artificial Intelligence (AI) Infrastructure for public consultation on Engage with Building Tasmania. The Engage consultation page states that the expectations apply to large data-centre developments, generally including AI factories, hyper-scale data centres and multi-site developments by a proponent. Consultation opened on 7 September 2026 and closed at 11.59pm on Monday 12 October 2026; analysis of feedback was scheduled for October 2026, with release of the final Expectations by end of 2026. The draft is intended to guide proponents, investors, industry, communities and other stakeholders while supporting responsible development that delivers enduring benefits for Tasmania. The Premier's 14 October 2026 announcement of a Local Community Benefit Fund builds on this draft Statement. Primary source: https://engage.building.tas.gov.au/draft-expectations-data-centres-and-ai-infrastructure-developers.",
+    "content": "The Tasmanian Government released a draft Statement of Expectations for Data Centres and Artificial Intelligence (AI) Infrastructure for public consultation on Engage with Building Tasmania. The Engage consultation page states that the expectations apply to large data-centre developments, generally including AI factories, hyper-scale data centres and multi-site developments by a proponent. Consultation opened on 7 September 2026 and closed at 11.59pm on Monday 12 October 2026; analysis of feedback was scheduled for October 2026, with release of the final Expectations by end of 2026. The draft is intended to guide proponents, investors, industry, communities and other stakeholders while supporting responsible development that delivers enduring benefits for Tasmania. The Premier's 14 October 2026 announcement of a Local Community Benefit Fund builds on this draft Statement. Primary source: the consultation page on engage.building.tas.gov.au.",
     "aiSummary": "Tasmania's draft Statement of Expectations for data centres and AI infrastructure was open for consultation from 7 September to 12 October 2026; final expectations are planned by end of 2026.",
     "tags": [
       "Tasmania",
@@ -10438,16 +10444,16 @@
         "source": {
           "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
           "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-          "retrievedAt": "2026-10-22T06:08:03.318Z",
+          "retrievedAt": "2026-11-05T22:01:48.129Z",
           "contentType": "text/html",
           "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
           "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
           "reviewedDate": {
             "date": "2026-09-15",
             "precision": "day",
-            "reviewedAt": "2026-10-22T06:08:03.324Z",
+            "reviewedAt": "2026-11-05T22:01:48.131Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The media release reports ASIC has made amendments to both sets of rules. The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026."
+            "notes": "Unchanged from the verified record: the Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026; the media release reports ASIC has made the amendments."
           }
         }
       },
@@ -10536,7 +10542,7 @@
       "Australian Securities and Investments Commission"
     ],
     "sourceUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-    "content": "ASIC media release 26-226MR (https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules) is dated 24 September 2026 on the page (displayDate). It announces amendments to the ASIC Market Integrity Rules (Securities Markets) 2017 and the ASIC Market Integrity Rules (Futures Markets) 2017 that modernise trading-systems obligations for algorithmic trading, including AI and machine learning, require participants to test, monitor and govern trading systems and algorithms, align more closely with IOSCO principles, apply trading-system requirements consistently to manually entered and automated orders, and clarify the false or misleading appearance rule for AI-enabled and other trading. The release says the amendments follow Consultation Paper 386 and take effect in 2028 after an 18-month transition. The release does not mention a kill switch or a seven-year record-keeping period. ASIC consultation CS 63 (https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241) states Released 24 September 2026 and that comments close at 5 pm AEDT on 5 November 2026. It states that the market integrity rules were amended in September 2026 and that the rules commence on 18 March 2028 after an 18-month transition. It proposes updates to RG 265 and RG 266 and moving relevant guidance from RG 241 into those guides so RG 241 can be retired. The CS 63 page does not mention a kill switch or seven-year record keeping. Attachments 5 and 6, the marked-up compilations of the securities and futures rules, state that the changes are in force from 18 March 2028 and that market participants and market operators can continue to comply with the rules as in force on 15 October 2024 until 18 March 2028. The Federal Register of Legislation records ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574 (F2026L01223, https://www.legislation.gov.au/F2026L01223/latest/text) and ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575 (F2026L01224, https://www.legislation.gov.au/F2026L01224/latest/text). Each instrument is dated 15 September 2026 and was registered on 17 September 2026. Section 2 of each instrument states that it commences on the day that is 18 months after the day it is registered. The instruments do not use the term kill switch. They do set seven-year record obligations in the amended trading-system rules. In the securities instrument, a trading participant must maintain records of trading messages identified under the monitoring and post-trade surveillance rule, and any measures taken, for seven years from the date of the relevant trading message (rule 5.6.3A(3)); maintain records that demonstrate compliance with the trading-algorithm controls and testing obligations for seven years (rule 5.6.3B(4)); and document and retain for at least seven years records of the methodology, scope and results of the Initial Certification Review (rule 5.6.4(4)), the Material Change Review (rule 5.6.8(4)) and the Annual Review (rule 5.6.8A(5)), and of recommended changes applied as a result. The futures instrument states the corresponding obligations in rules 2.2B.3(3), 2.2B.4(4), 2.2B.5(4), 2.2B.8(4) and 2.2B.9(5).",
+    "content": "ASIC media release 26-226MR is dated 24 September 2026 on the page (displayDate). It announces amendments to the ASIC Market Integrity Rules (Securities Markets) 2017 and the ASIC Market Integrity Rules (Futures Markets) 2017 that modernise trading-systems obligations for algorithmic trading, including AI and machine learning, require participants to test, monitor and govern trading systems and algorithms, align more closely with IOSCO principles, apply trading-system requirements consistently to manually entered and automated orders, and clarify the false or misleading appearance rule for AI-enabled and other trading. The release says the amendments follow Consultation Paper 386 and take effect in 2028 after an 18-month transition. The release does not mention a kill switch or a seven-year record-keeping period. ASIC consultation CS 63 states Released 24 September 2026 and that comments close at 5 pm AEDT on 5 November 2026. It states that the market integrity rules were amended in September 2026 and that the rules commence on 18 March 2028 after an 18-month transition. It proposes updates to RG 265 and RG 266 and moving relevant guidance from RG 241 into those guides so RG 241 can be retired. The CS 63 page does not mention a kill switch or seven-year record keeping. Attachments 5 and 6, the marked-up compilations of the securities and futures rules, state that the changes are in force from 18 March 2028 and that market participants and market operators can continue to comply with the rules as in force on 15 October 2024 until 18 March 2028. The Federal Register of Legislation records ASIC Market Integrity Rules (Securities Markets) Amendment Instrument 2026/574 (F2026L01223) and ASIC Market Integrity Rules (Futures Markets) Amendment Instrument 2026/575 (F2026L01224). Each instrument is dated 15 September 2026 and was registered on 17 September 2026. Section 2 of each instrument states that it commences on the day that is 18 months after the day it is registered. The instruments do not use the term kill switch. They do set seven-year record obligations in the amended trading-system rules. In the securities instrument, a trading participant must maintain records of trading messages identified under the monitoring and post-trade surveillance rule, and any measures taken, for seven years from the date of the relevant trading message (rule 5.6.3A(3)); maintain records that demonstrate compliance with the trading-algorithm controls and testing obligations for seven years (rule 5.6.3B(4)); and document and retain for at least seven years records of the methodology, scope and results of the Initial Certification Review (rule 5.6.4(4)), the Material Change Review (rule 5.6.8(4)) and the Annual Review (rule 5.6.8A(5)), and of recommended changes applied as a result. The futures instrument states the corresponding obligations in rules 2.2B.3(3), 2.2B.4(4), 2.2B.5(4), 2.2B.8(4) and 2.2B.9(5).",
     "aiSummary": "ASIC Market Integrity Rules amendments (F2026L01223, F2026L01224) for algorithmic and AI-enabled trading, made 15 September 2026. The Federal Register schedules them to start on 17 March 2028.",
     "tags": [
       "ASIC",
@@ -10556,28 +10562,28 @@
       "automated-decisions"
     ],
     "createdAt": "2026-10-19T08:35:00.000Z",
-    "updatedAt": "2026-10-22T06:08:03.324Z",
+    "updatedAt": "2026-11-05T22:01:48.131Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
         "finalUrl": "https://www.asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-226mr-asic-strengthens-ai-trading-safeguards-and-streamlines-market-integrity-rules",
-        "retrievedAt": "2026-10-22T06:08:03.318Z",
+        "retrievedAt": "2026-11-05T22:01:48.129Z",
         "contentType": "text/html",
         "contentHash": "e7fa9e82e71022e776f0cbd92addc28d668d64b7d85223724c520e7b4f225dd6",
         "title": "26-226MR ASIC strengthens AI trading safeguards and streamlines market integrity rules | ASIC",
         "reviewedDate": {
           "date": "2026-09-15",
           "precision": "day",
-          "reviewedAt": "2026-10-22T06:08:03.324Z",
+          "reviewedAt": "2026-11-05T22:01:48.131Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The media release reports ASIC has made amendments to both sets of rules. The Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026."
+          "notes": "Unchanged from the verified record: the Federal Register title records for F2026L01223 and F2026L01224 give a making date of 15 September 2026 and registration on 17 September 2026; the media release reports ASIC has made the amendments."
         }
       },
-      "checkedAt": "2026-10-22T06:08:03.324Z",
+      "checkedAt": "2026-11-05T22:01:48.131Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd79SQ9JhoFnEooWZHjqMweh8&message=cmsg_019nKBbCzGtpRmfKqX3Xisd7KNPzemojn2WFEg12PozCjy (proposal 9c69307a). Proposed by Claude (agent), at the request of Daniel Alkurdi. Re-verification of the hidden draft. Commenced date corrected from 2028-03-18 to 2028-03-17, read with frlCommencements over https://api.prod.legislation.gov.au/v1/Versions?$filter=titleId%20eq%20'F2017L01474'%20and%20start%20ge%202026-09-01T00%3A00%3A00&$select=titleId,start,reasons; instrument events from parseFrlTitle; F2026L01224 named in the description."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 47c8 7d1d 3cf9 fea9). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
     },
     "legislative": {
       "kind": "instrument",
@@ -10625,7 +10631,7 @@
         }
       ]
     },
-    "lastReviewedAt": "2026-10-22T06:08:03.324Z"
+    "lastReviewedAt": "2026-11-05T22:01:48.131Z"
   },
   {
     "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
