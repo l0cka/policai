@@ -1,5 +1,19 @@
 [
   {
+    "id": "mcp-audit-222497dc-eebd-4df3-918a-a57b266fa9ea",
+    "createdAt": "2026-11-06T01:44:44.686Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-16c35bc1-c768-4a1c-9a67-7616f82575a6",
+    "createdAt": "2026-11-06T01:44:44.175Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-8ea630c7-658d-42f6-8ccc-a1e5ea258a70",
     "createdAt": "2026-11-06T01:37:18.660Z",
     "actor": "local-mcp-admin",
@@ -3672,21 +3686,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-d192ea9c-166f-4b6e-83b4-c9c32213b6d0",
-    "createdAt": "2026-07-19T06:14:29.223Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b9dd19e7-3cce-4b18-a8bf-b0a683085541",
-    "createdAt": "2026-07-19T06:14:29.216Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
     "status": "success"
   }
 ]
