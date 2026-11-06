@@ -497,6 +497,14 @@ remove the exception after allow-listing, or move a still-refusing source to
 manual tracking. The collector never automatically changes canonical source
 status; `cyber-news` remains manual without an exception.
 
+A manual source is current for 8 days after its last hand review, whatever its
+nominal `daily` or `weekly` cadence, matching the weekly manual-source routine
+(`MANUAL_REVIEW_LIMIT_DAYS`). One that falls behind shows as overdue in the
+`/status` source table and in the manual-coverage count, but it adds no run
+error and does not degrade collector health, so a person's review backlog
+cannot hide a real failure. Automatic sources that miss their check, and
+`track:*` follow trackers that fail, still degrade the run.
+
 Manual sources remain enabled. Review them with a browser and record the result
 through the MCP `record_manual_source_review` tool, supplying the human
 reviewer's identity, substantive notes that
@@ -807,7 +815,7 @@ Each run holds the existing concurrency lock and:
 4. Commits only `data/developments.json`, `public/data/meta.json`,
    `data/watch-state.json` and `data/source-reviews.json`, pushes a unique
    collection branch and opens a ready PR that auto-merges when the required
-   checks pass. Older open collection PRs are closed. It never pushes main.
+   checks pass (see **Repository configuration** below). Older open collection PRs are closed. It never pushes main.
 5. Returns failed source health as a failure even when the output was
    published, so the failure alert fires.
 
@@ -824,10 +832,18 @@ version cannot be lost merely because its state write completed first.
 
 **Repository configuration:**
 
-- Main requires a PR with an independent approving review, resolved threads,
-  linear history and `lint`, `test`, `build` checks. Retired deploy-key bypass
-  advice is not a recovery path. Data merge and editorial register publication
-  are separate reviewer decisions; neither is performed by the wrapper.
+- The "Protect main" ruleset requires a PR, squash merges, linear history,
+  resolved review threads and the `lint`, `test`, `build`, `Pro Bono
+  dashboard` and `Pro Bono worker` checks. It requires no approving review:
+  the `claude-pr-review` routine reviews every other PR before it merges
+  (AGENTS.md, "Pull requests and review").
+- `.github/workflows/auto-merge.yml` arms squash auto-merge on a collection PR
+  only while every changed file is one of the four collector outputs above and
+  the PR has no `hold` label. It re-runs on every push, so a later commit that
+  touches anything else disarms it. Collection PRs skip the review routine.
+- Data merge and editorial register publication are separate decisions;
+  neither is performed by the wrapper. Publication needs a passkey-signed
+  approval.
 
 ## Reviewing detections into the register
 
@@ -873,6 +889,24 @@ agent, which runs `npm run passkey:add`. Until a key is registered,
 `record_decision` takes `reviewer` and the claude.ai card link as
 `attestationUrl` instead.
 
+The same gate ties published records to those signatures
+(`validateSignedRecordChanges` in `src/lib/signed-record-changes.ts`). A
+pull request that changes what readers see of a published policy, timeline
+event or development fails unless a decision signed on that branch covers the
+record. A signed source review covers the record it approved, and the record
+must match its `proposedRecord` exactly; it also covers the developments it
+promotes. A signed reconfirm batch covers its records, and may change only
+`lastReviewedAt` and the verification's `checkedAt`, `checkedBy` and `notes`.
+A record is published when the public read path would serve it as
+editorially verified (`src/lib/published-records.ts`). What readers see is
+the record's editorial revision hash, which leaves out
+`verification.lastSourceAuditAt` and source retrieval metadata. New
+unpublished records, staged reviews, collector detections, and withdrawals
+(trashed, stale or removed records) need no signature. So a correction to a
+published record needs a new staged review and a fresh passkey signature.
+Replay merged history through the rule with
+`npx tsx scripts/replay-signed-record-check.ts --limit=15`.
+
 Server-fetchable sources are fetched again at decision time, and approval
 refuses if their fingerprint moved since staging. When that re-fetch is
 refused by the host (HTTP 403, HTTP 429, or an equivalent `identity_refused`
@@ -880,6 +914,50 @@ refused by the host (HTTP 403, HTTP 429, or an equivalent `identity_refused`
 review (`sourceEvidence` plus the staged record text) and its notes gain
 `RETAINED_SNAPSHOT_APPROVAL_NOTE` (`src/lib/source-ingest.ts`). Other
 failures, such as timeouts, 404s and 5xx responses, still refuse.
+
+### Re-confirming due records on Argus
+
+A verified record falls due 90 days after `verification.checkedAt`. When its
+official source is unchanged, an editor can renew a batch of them on one
+passkey signature instead of a full review each. This covers register
+policies, timeline events and editor-verified developments. Each kind has its
+own batches.
+
+`propose` reads every official source, so run it on Argus from a checkout of
+fresh `main` (the cloud sandbox cannot reach government hosts):
+
+```bash
+npm run check:freshness                                   # what is overdue or due within 30 days
+npm run reconfirm:register -- propose --kind=timeline --dry-run
+npm run reconfirm:register -- propose --kind=timeline     # writes evidence and batches
+npm run reconfirm:register -- propose --kind=development
+npm run reconfirm:register -- propose                     # --kind=policy is the default
+```
+
+`--due-within=<days>` (default 30) widens or narrows the window and
+`--batch-size=<n>` (default 10) sets the batch size. `propose` writes the audit
+evidence to the kind's data file (`data/policies.json`, `data/timeline.json`
+or `data/developments.json`) and appends the batches to
+`data/reconfirmations.json`. It prints each batch's approve link and every
+record that needs a full review instead. A source that changed, went missing,
+refused the collector, or was verified from a browser capture that a plain
+read cannot compare is never batched. Dismissed developments and the DTA
+framework's policy are never batched either.
+
+Commit the proposal and send Daniel each approve link. After he signs:
+
+```bash
+npm run reconfirm:register -- approve --batch=<id>
+npm run validate:data
+```
+
+`approve` needs no source access, only the approvals mailbox. It reads the
+batch's kind from its entries and renews every record in it, or none: each
+fingerprint must still match and each audit must be at most seven days old
+at approval. `validate:data` refuses a decided batch without Daniel's
+signature over its exact entries. After approval, lower the matching budget
+in `data/freshness-budget.json` if `check:freshness` says the backlog is
+below it.
 
 ### Follow watches for federal legislation
 
@@ -1347,6 +1425,13 @@ a fingerprint baseline.
   PDF sits under vic.gov.au's disallowed `/sites/default/files/`). A source
   or candidate page that robots.txt disallows still fails as
   `robots_disallowed`.
+- **A linked document returns no bytes** — an empty 200 response for an
+  attached document is skipped the same way: it is listed under
+  `skippedLinked` with `because: 'no_document_bytes'` and the page stays
+  watched (`ovic-privacy-resources`). Only the empty body is skipped. A
+  linked document of the wrong type or one that fails byte validation, an
+  HTTP error, and any failure of the source's own page still fail the
+  source.
 - **An HTML source reports no coverage** — only links inside recognised
   publication/result containers count as index entries. Navigation, footer,
   homepage, login, and soft-error links do not make a source healthy; inspect
@@ -1391,8 +1476,10 @@ a fingerprint baseline.
 - **A record has not been reviewed for 90 days** — it stays public, labelled
   "Review due", with its verification projected as `stale` until an editor
   re-verifies and republishes it. `/status` lists due and overdue records;
-  `npm run check:freshness` fails when the overdue count exceeds
-  `data/freshness-budget.json`.
+  `npm run check:freshness` fails when the overdue count of policies,
+  timeline events or editor-verified developments exceeds its budget in
+  `data/freshness-budget.json`. To renew records whose source is unchanged,
+  see "Re-confirming due records on Argus" above.
 - **A verified record's secondary structured date has no source evidence** —
   historical records are tolerated within a lower-only budget ratchet:
   `npm run validate:data` fails when the count of verified secondary dates

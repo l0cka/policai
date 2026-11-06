@@ -1,9 +1,12 @@
 import type {
 	Development,
 	Policy,
+	RecordVerification,
+	SourceEvidence,
 	SourceReview,
 	TimelineEvent,
 } from "@/types";
+import { sourceUrlIdentity, sourceUrlsEqual } from "@/lib/source-url";
 
 export function linkedDevelopmentId(
 	review: SourceReview,
@@ -19,7 +22,50 @@ export function linkedDevelopmentId(
  * Merge collector-produced review snapshots by stable id. Current collector
  * output wins because recovered candidates may have newer extraction,
  * classification, proposed-record, and linked-development evidence.
+ *
+ * A watched document gets a new review id for each content version, so a
+ * new version replaces any still-pending collector review of the same page
+ * rather than standing beside it as a duplicate sourceUrl.
  */
+export interface PublishedRecordRef {
+	kind: "policy" | "timeline_event";
+	id: string;
+	sourceUrl: string;
+	verification: RecordVerification;
+}
+
+function sameEvidence(left: SourceEvidence, right: SourceEvidence): boolean {
+	return (
+		Boolean(left.contentHash) &&
+		left.contentHash === right.contentHash &&
+		sourceUrlsEqual(left.url, right.url)
+	);
+}
+
+export function developmentsRenewedByPublication(
+	developments: readonly Development[],
+	record: PublishedRecordRef,
+	previousSource: SourceEvidence | undefined,
+	excludeId: string | null,
+): Development[] {
+	return developments.filter((development) => {
+		if (development.id === excludeId || development.status !== "promoted") {
+			return false;
+		}
+		const related =
+			record.kind === "timeline_event"
+				? development.relatedTimelineEventId === record.id
+				: development.relatedPolicyId === record.id;
+		if (!related || development.verification?.method !== "manual") return false;
+		if (!sourceUrlsEqual(development.url, record.sourceUrl)) return false;
+		const source = development.verification.source;
+		return (
+			(previousSource !== undefined && sameEvidence(source, previousSource)) ||
+			sameEvidence(source, record.verification.source)
+		);
+	});
+}
+
 export function mergeSourceReviews(
 	existing: SourceReview[],
 	updates: SourceReview[],
@@ -54,10 +100,32 @@ export function mergeSourceReviews(
 				: update,
 		);
 	}
+	const supersededUrls = new Set(
+		[...updateById.values()]
+			.filter(isUntargetedCollectorReview)
+			.map((review) => sourceUrlIdentity(review.sourceUrl)),
+	);
 	return [
 		...updateById.values(),
-		...existing.filter((review) => !updateById.has(review.id)),
+		...existing.filter(
+			(review) =>
+				!updateById.has(review.id) &&
+				!(
+					isUntargetedCollectorReview(review) &&
+					supersededUrls.has(sourceUrlIdentity(review.sourceUrl))
+				),
+		),
 	];
+}
+
+function isUntargetedCollectorReview(review: SourceReview): boolean {
+	return (
+		review.status === "pending_review" &&
+		review.createdBy === "collector" &&
+		!review.targetPolicyId &&
+		!review.targetTimelineEventId &&
+		!review.targetTimelineRevisionHash
+	);
 }
 
 export function reconcileLinkedDevelopments(

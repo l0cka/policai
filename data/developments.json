@@ -115,8 +115,9 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 7571c389). Proposed by Claude (agent), requested by Daniel Alkurdi. Re-staged from a one-off declared-identity browser read. Record text unchanged from the earlier proposal; the date source evidence now points to the new media release capture."
     },
-    "status": "promoted",
-    "relatedPolicyId": "dta-ai-reference-architecture"
+    "status": "dismissed",
+    "relatedPolicyId": "dta-ai-reference-architecture",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Duplicates the timeline announcement tl-2026-10-30-dta-ai-reference-architecture-published (DTA publishes the AI Reference Architecture), which cites the DTA media release; this editorial-staging entry carried a staging label as its source name."
   },
   {
     "id": "dev-latest-news-16bao",
@@ -153,18 +154,18 @@
   },
   {
     "id": "dev-administrative-guideline-for-the-safe-and-respon-gmhnpg",
-    "title": "Victorian Generative AI Guideline Made",
+    "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
     "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
     "sourceId": "vic-ai",
     "sourceName": "vic.gov.au — generative AI guidance",
     "jurisdiction": "vic",
     "detectedAt": "2026-10-27T19:30:32.288Z",
-    "summary": "The Secretary of the Department of Premier and Cabinet makes the administrative guideline for safe and responsible generative AI use in the Victorian public sector.",
+    "summary": "Current Victorian public-sector guidance on the safe and responsible use of generative AI.",
     "relevanceScore": 1,
     "classification": "curated",
     "assessment": {
       "method": "editorial",
-      "assessedAt": "2026-11-01T11:03:01.049Z",
+      "assessedAt": "2026-11-05T22:01:42.878Z",
       "promptVersion": "editorial-review-v1"
     },
     "verification": {
@@ -172,42 +173,48 @@
       "source": {
         "url": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
         "finalUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-        "retrievedAt": "2026-11-01T11:03:00.905Z",
+        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "retrievedAt": "2026-11-05T02:05:08.991Z",
         "contentType": "text/html",
-        "contentHash": "b4b980e826f57c655edca52007be924ce36e5c290b92de04715c92bd48230dcf",
+        "contentHash": "d1c1a6106b2aa2ace73c411d87ba2601c113fcc492c2f7f173379905c966c1ba",
         "linkedDocuments": [
           {
             "url": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
             "finalUrl": "https://prov.vic.gov.au/sites/default/files/files/documents/ai_tech_and_recordkeeping_policy_v1_2024.pdf",
-            "retrievedAt": "2026-11-01T11:03:01.029Z",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "application/pdf",
-            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee",
-            "etag": "\"2e976-612c9a53ad71b\"",
-            "lastModified": "Sun, 03 Mar 2024 23:05:30 GMT"
+            "contentHash": "ab6aa1576ba4d7cd255e3ddfe6214c6a873ff0ed079346fbc4c6a17892aa08ee"
           },
           {
             "url": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
             "finalUrl": "https://www.vic.gov.au/sites/default/files/2024-11/Generative-AI-Guideline-%281%29.pdf",
-            "retrievedAt": "2026-11-01T11:03:01.048Z",
+            "retrievedAt": "2026-11-05T02:05:08.991Z",
             "contentType": "application/pdf",
-            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc",
-            "etag": "\"67480ace-1e00c\"",
-            "lastModified": "Thu, 28 Nov 2024 06:16:46 GMT"
+            "contentHash": "eb114ba5e9e8614438dfc291a50aff04baffab52f070c9089f175c80895860bc"
           }
         ],
-        "title": "Administrative Guideline for the safe and responsible use of Generative Artificial Intelligence in the Victorian Public Sector",
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-05T02:05:08.991Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Captured 5 Nov 2026 by Claude (agent) with headless Chromium sending the Policai identity, at Daniel Alkurdi's request, to resolve the pending 27 Oct review. Page text is the main element's text; both linked PDFs downloaded with the Policai identity.",
+          "pageContentHash": "84841f3d5c50991a6345028451cde676a50fc4299706fd7c8caa9aeb7b69e0b4",
+          "characterCount": 15157
+        },
         "reviewedDate": {
           "date": "2024-11-27",
           "precision": "day",
-          "reviewedAt": "2026-11-01T11:03:01.049Z",
+          "reviewedAt": "2026-11-05T22:01:42.878Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The guideline states it \"was endorsed by the Victorian Secretaries Board (VSB) on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024\"."
+          "notes": "The page's Review section, captured 5 Nov 2026, states the guideline was endorsed by the Victorian Secretaries Board on 24 September 2024 and made by the Secretary, Department of Premier and Cabinet, on 27 November 2024. Unchanged from the verified record."
         }
       },
-      "checkedAt": "2026-11-01T11:03:01.049Z",
+      "checkedAt": "2026-11-05T22:01:42.878Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-2, proposal ca4883b2). Proposed by Claude (agent). Retrieved through the standard declared-identity path."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal f5dd 1941 32ed d850). Proposed by Claude (agent). Republish unchanged: the live source matches the verified baseline; the 27 Oct change was a reading without the guideline PDF.",
+      "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
     },
     "status": "promoted",
     "relatedTimelineEventId": "tl-2024-11-27-victorian-generative-ai-guideline-published",
@@ -2070,7 +2077,7 @@
       "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
@@ -2089,12 +2096,14 @@
       "checkedAt": "2026-08-07T05:11:55.571Z",
       "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
       "method": "manual",
-      "notes": "QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current."
+      "notes": "QGEA AI governance policy — source states Policy, v1.0.0, Current/Mandated, Effective September 2024–current. Source content changed during register audit at 2026-11-05T22:14:15.315Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-05T22:14:15.315Z"
     },
-    "status": "promoted",
+    "status": "dismissed",
     "publishedAt": "2024-09-01",
     "publishedAtPrecision": "month",
-    "relatedPolicyId": "queensland-ai-governance-policy"
+    "relatedPolicyId": "queensland-ai-governance-policy",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Earlier detection of the Queensland AI governance policy that describes v1.0.0 as current; v2.0.0 superseded it, and dev-artificial-intelligence-governance-policy-1j2eo9g covers the same page."
   },
   {
     "id": "dev-speech-moving-from-ai-pilots-to-whole-of-governm-78k67w",
@@ -2794,16 +2803,17 @@
           "notes": "Date confirmed against the live official source on 2026-08-08. VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au."
         }
       },
-      "checkedAt": "2026-08-07T05:10:38.082Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "checkedAt": "2026-11-05T22:44:48.914Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au.",
-      "lastSourceAuditAt": "2026-07-16T10:00:09.144Z"
+      "notes": "VIC Gen-AI VPS guideline — endorsed VSB 24 Sep 2024, made by Secretary DPC 27 Nov 2024, updated 12 Feb 2025; all three dates confirmed on vic.gov.au. Re-confirmed in batch 2026-11-05-4 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-07.",
+      "lastSourceAuditAt": "2026-11-05T22:14:15.421Z"
     },
-    "status": "promoted",
+    "status": "dismissed",
     "publishedAt": "2024-11-27",
     "publishedAtPrecision": "day",
-    "relatedPolicyId": "victoria-genai-guideline-vps"
+    "relatedPolicyId": "victoria-genai-guideline-vps",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Same Victorian generative AI guideline page as dev-administrative-guideline-for-the-safe-and-respon-gmhnpg, which stays."
   },
   {
     "id": "dev-artificial-intelligence-governance-policy-1oub5xm",
@@ -2885,8 +2895,9 @@
       "notes": "WA AI Policy and Assurance Framework — wa.gov.au page confirmed; current instrument PDF is ai_policyv2.pdf under 2025-07.",
       "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
     },
-    "status": "promoted",
-    "relatedPolicyId": "wa-ai-policy-assurance-framework"
+    "status": "dismissed",
+    "relatedPolicyId": "wa-ai-policy-assurance-framework",
+    "dismissalReason": "Dismissed as a duplicate (3 Nov 2026 audit; Daniel approved dismissal on 5 Nov 2026). Same WA Government AI Policy and Assurance Framework page as dev-wa-government-artificial-intelligence-policy-and-qppmsw, which stays."
   },
   {
     "id": "dev-public-consultation-on-artificial-intelligence-p-17y73hz",
@@ -2995,10 +3006,11 @@
           "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
         }
       },
-      "checkedAt": "2026-07-24T02:35:49.530Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-11-05T22:44:48.914Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version."
+      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version. Re-confirmed in batch 2026-11-05-4 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-07-24.",
+      "lastSourceAuditAt": "2026-11-05T22:14:16.208Z"
     },
     "status": "promoted",
     "publishedAt": "2026-06-26",
@@ -3062,10 +3074,11 @@
           "notes": "The official OVIC page continues to state Last updated 26 June 2026; this remains the amended date for the guidance."
         }
       },
-      "checkedAt": "2026-07-24T02:36:19.291Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-11-05T22:44:48.914Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version."
+      "notes": "Approved restoration: the official OVIC page still states Last updated 26 June 2026, the substantive guidance is unchanged, and both linked document fingerprints match the verified source version. Re-confirmed in batch 2026-11-05-4 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-07-24.",
+      "lastSourceAuditAt": "2026-11-05T22:14:16.361Z"
     },
     "status": "promoted",
     "publishedAt": "2026-06-26",

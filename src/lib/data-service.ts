@@ -30,6 +30,7 @@ import {
 	projectVerificationForPublic,
 } from "@/lib/verification";
 import { reconcileLinkedDevelopments } from "@/lib/source-review";
+import { isPublicPolicy, isPublicTimelineEvent } from "@/lib/published-records";
 import { registerChart, type RegisterChart } from "@/lib/article-figures";
 import { sydneyCalendarDate } from "@/lib/calendar-date";
 import {
@@ -155,18 +156,6 @@ function canonicalizeSourceReviewRecord(review: SourceReview): SourceReview {
 				}
 			: {}),
 	};
-}
-
-/**
- * Public register reads contain only records that passed attributable
- * editorial verification. A record past its review interval stays public and
- * is projected as stale ("Review due") rather than withdrawn.
- */
-function isPublicPolicy(policy: Policy, now: Date): boolean {
-	return (
-		policy.status !== "trashed" &&
-		isPubliclyEstablished(policy.verification, now)
-	);
 }
 
 function applyPublicPolicyFilter(
@@ -931,7 +920,7 @@ export async function getTimelineEvents(
 		.filter(
 			(event) =>
 			access === "admin" ||
-			(isPubliclyEstablished(event.verification, now) &&
+			(isPublicTimelineEvent(event, now) &&
 				!withheldEventIds.has(event.id)),
 		)
 		.map((event) => {
@@ -1000,6 +989,9 @@ export async function getTimelineEvents(
 // Developments feed + collection metadata
 // ---------------------------------------------------------------------------
 
+/** `sourceId` of a public development projected from a timeline event. */
+export const TIMELINE_PROJECTION_SOURCE_ID = "editorial-timeline";
+
 function timelineEventAsDevelopment(event: TimelineEvent): Development {
 	const date =
 		typeof event.date === "string"
@@ -1017,7 +1009,7 @@ function timelineEventAsDevelopment(event: TimelineEvent): Development {
 		id: `dev-${event.id.replace(/^tl-/, "")}`,
 		title: event.title,
 		url: event.sourceUrl,
-		sourceId: "editorial-timeline",
+		sourceId: TIMELINE_PROJECTION_SOURCE_ID,
 		sourceName,
 		jurisdiction: event.jurisdiction,
 		publishedAt: date,

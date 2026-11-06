@@ -1,4 +1,5 @@
 import { decodeEntities } from './page-title.js';
+import { assertPublicDestination, publicFetch } from './public-fetch.js';
 
 /*
  * The source page as plain text, for the deadline verifier. Firecrawl first
@@ -51,6 +52,7 @@ export function isUsablePage(text: string | null | undefined): text is string {
 export async function fetchViaFirecrawl(url: string, timeoutMs = 120_000): Promise<string | null> {
   const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
   try {
+    await assertPublicDestination(url);
     const res = await fetch(`${base}/v1/scrape`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: 'Bearer self-hosted' },
@@ -69,8 +71,7 @@ export async function fetchViaFirecrawl(url: string, timeoutMs = 120_000): Promi
 
 export async function fetchDirect(url: string, timeoutMs = 20_000): Promise<string | null> {
   try {
-    const res = await fetch(url, {
-      redirect: 'follow',
+    const res = await publicFetch(url, {
       signal: AbortSignal.timeout(timeoutMs),
       headers: { 'user-agent': UA, accept: 'text/html,application/xhtml+xml' },
     });

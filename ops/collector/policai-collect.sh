@@ -67,7 +67,7 @@ def command(args, cwd=SOURCE, limit=45, log=None, check=True, env=None):
                           stderr=log or subprocess.PIPE, text=True,
                           start_new_session=True, env=env) as child:
         try:
-            out, _err = child.communicate(timeout=remaining)
+            out, err = child.communicate(timeout=remaining)
         except BaseException:
             os.killpg(child.pid, signal.SIGTERM)
             try:
@@ -82,7 +82,9 @@ def command(args, cwd=SOURCE, limit=45, log=None, check=True, env=None):
                 pass
             raise
         if check and child.returncode:
-            raise Refused(f'{args[0]} {args[1]} failed (exit {child.returncode})')
+            detail = (err or '').strip().splitlines()[-3:]
+            raise Refused(f'{args[0]} {args[1]} failed (exit {child.returncode})'
+                          + (': ' + ' | '.join(detail) if detail else ''))
         return (out or '').strip() if check else child.returncode
 
 
@@ -208,8 +210,10 @@ def collect(run):
                      'HEAD', cwd=WORK).split('\0')) - {''}
     if not staged or staged - set(ALLOWED):
         raise Refused('staged output paths empty or outside explicit allowlist; no commit')
+    # The sandboxed unit cannot reach a host signing agent, so never sign.
     git('-c', 'user.name=policai-collector[bot]',
         '-c', 'user.email=policai-collector[bot]@users.noreply.github.com',
+        '-c', 'commit.gpgsign=false',
         'commit', '-m', 'chore(data): daily collection ' + run['started_at'][:10], cwd=WORK)
     run['head'] = git('rev-parse', 'HEAD', cwd=WORK)
     save(run)

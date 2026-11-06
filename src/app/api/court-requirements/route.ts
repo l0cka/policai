@@ -14,7 +14,7 @@ import {
 } from "@/types";
 
 export async function GET(request: Request) {
-	const limited = checkPublicApiRequest(request);
+	const limited = await checkPublicApiRequest(request);
 	if (limited) return limited;
 
 	const { searchParams } = parseSourceUrl(request.url);

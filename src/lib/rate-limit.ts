@@ -1,12 +1,12 @@
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 import { NextResponse } from 'next/server';
 
 /**
- * Simple in-memory fixed-window rate limiter.
- * Tracks requests per client IP and bucket, with cleanup of expired entries.
- *
- * Note: In-memory state is per-instance and resets on deploy. This provides
- * basic protection against abuse, not a hard guarantee. For stronger rate
- * limiting, use Cloudflare rate limiting rules.
+ * Per-client, per-bucket rate limiting. On Workers each bucket counts through
+ * a rate limiting binding declared in wrangler.jsonc, so every isolate in a
+ * Cloudflare location shares one count. Without the binding (next dev, tests,
+ * self-hosted) it falls back to an in-memory fixed window, which only counts
+ * within one process.
  */
 
 interface RateLimitEntry {
@@ -27,25 +27,47 @@ setInterval(() => {
 export interface RateLimitConfig {
   /** Routes sharing a bucket share one budget, whatever their path or ids */
   bucket: string;
+  /** wrangler.jsonc `ratelimits` binding with the same limit and period */
+  binding: string;
   /** Maximum requests per window */
   limit: number;
   /** Window size in seconds */
   windowSeconds: number;
 }
 
-/**
- * Check rate limit for a request. Returns null if allowed,
- * or a 429 NextResponse if the limit is exceeded.
- */
-export function checkRateLimit(
-  request: Request,
-  config: RateLimitConfig,
-): NextResponse | null {
-  // Cloudflare sets cf-connecting-ip and overwrites any client copy;
-  // X-Forwarded-For and X-Real-IP arrive as the caller wrote them.
-  const ip = request.headers.get('cf-connecting-ip')?.trim() || 'unknown';
+/** Every bucket. wrangler.jsonc declares one binding per entry, same numbers. */
+export const RATE_LIMITS = {
+  publicApi: { bucket: 'public-api', binding: 'RATE_LIMIT_PUBLIC_API', limit: 60, windowSeconds: 60 },
+  signalReviews: { bucket: 'signal-reviews', binding: 'RATE_LIMIT_SIGNAL_REVIEWS', limit: 20, windowSeconds: 60 },
+  signalReview: { bucket: 'signal-review', binding: 'RATE_LIMIT_SIGNAL_REVIEW', limit: 30, windowSeconds: 60 },
+  approvals: { bucket: 'approvals', binding: 'RATE_LIMIT_APPROVALS', limit: 10, windowSeconds: 60 },
+} as const satisfies Record<string, RateLimitConfig>;
 
-  const key = `${config.bucket}:${ip}`;
+interface RateLimitBinding {
+  limit(options: { key: string }): Promise<{ success: boolean }>;
+}
+
+function tooManyRequests(retryAfterSeconds: number): NextResponse {
+  return NextResponse.json(
+    { error: 'Too many requests', success: false },
+    {
+      status: 429,
+      headers: { 'Retry-After': String(retryAfterSeconds) },
+    },
+  );
+}
+
+async function workerBinding(name: string): Promise<RateLimitBinding | undefined> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    const binding = (env as Record<string, unknown>)[name] as RateLimitBinding | undefined;
+    return typeof binding?.limit === 'function' ? binding : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function checkInMemory(key: string, config: RateLimitConfig): NextResponse | null {
   const now = Date.now();
   const entry = store.get(key);
 
@@ -55,17 +77,25 @@ export function checkRateLimit(
   }
 
   entry.count++;
+  if (entry.count <= config.limit) return null;
+  return tooManyRequests(Math.ceil((entry.resetAt - now) / 1000));
+}
 
-  if (entry.count > config.limit) {
-    const retryAfter = Math.ceil((entry.resetAt - now) / 1000);
-    return NextResponse.json(
-      { error: 'Too many requests', success: false },
-      {
-        status: 429,
-        headers: { 'Retry-After': String(retryAfter) },
-      },
-    );
-  }
+/**
+ * Check rate limit for a request. Returns null if allowed,
+ * or a 429 NextResponse if the limit is exceeded.
+ */
+export async function checkRateLimit(
+  request: Request,
+  config: RateLimitConfig,
+): Promise<NextResponse | null> {
+  // Cloudflare sets cf-connecting-ip and overwrites any client copy;
+  // X-Forwarded-For and X-Real-IP arrive as the caller wrote them.
+  const ip = request.headers.get('cf-connecting-ip')?.trim() || 'unknown';
+  const key = `${config.bucket}:${ip}`;
 
-  return null;
+  const binding = await workerBinding(config.binding);
+  if (!binding) return checkInMemory(key, config);
+  const { success } = await binding.limit({ key });
+  return success ? null : tooManyRequests(config.windowSeconds);
 }

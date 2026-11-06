@@ -29,24 +29,45 @@ the first deploy after the interval expires. Every commit outside
 verified manually, by a named reviewer, against a fingerprinted source are
 eligible to stay public this way (`isPubliclyEstablished` in
 `src/lib/verification.ts`); anything else is never published.
-`npm run check:freshness` fails CI when overdue records exceed the ratchet
-budget in `data/freshness-budget.json`.
+The same rule applies to public timeline events and to developments an editor
+verified. `npm run check:freshness` reports all three kinds and fails CI when
+any kind's overdue count exceeds its ratchet budget in
+`data/freshness-budget.json` (`maxOverdueRecords`, `maxOverdueTimelineEvents`,
+`maxOverdueDevelopments`). The timeline and development budgets were seeded on
+5 November 2026 at that day's overdue counts.
 A later automated fingerprint check is recorded separately as
 `verification.lastSourceAuditAt`; it does not renew the editorial review.
 An editor can renew it in batches instead (`npm run reconfirm:register`). The
-script audits records due within 30 days and groups those whose source
-fingerprint is unchanged into batches in `data/reconfirmations.json`. The
-editor approves a batch with one passkey signature (`reconfirm approve` reads
-it from the approvals mailbox). Approval renews `checkedAt` for
-every record in the batch, or for none: each fingerprint must still match and
-each audit must be at most seven days old. Changed or unreadable sources get a
-full review.
+script audits records of one kind (`--kind=policy`, the default,
+`--kind=timeline` or `--kind=development`) due within 30 days and groups those
+whose source fingerprint is unchanged into batches in
+`data/reconfirmations.json`. Each entry names its record with `policyId`,
+`timelineEventId` or `developmentId`, and a batch holds one kind. The editor
+approves a batch with one passkey signature over its id and exact entries
+(`reconfirm approve` reads it from the approvals mailbox and finds the data
+file from the entries). Approval renews `checkedAt` for every record in the
+batch, or for none: each fingerprint must still match and each audit must be
+at most seven days old. Changed or unreadable sources get a full review.
+`validate:data` refuses a batch decided without that signature.
 Full reviews of staged sources can also be approved in batches of up to ten
 (`npm run source-review:batch`). Each batch in `data/source-review-batches.json`
 pins every review to the exact proposal the editor was shown, and the editor
 signs the batch once. Each review is still decided and published separately and
 keeps a copy of the batch, so validation checks its signature without the
-ledger.
+ledger. Those batches publish new or changed records, including timeline
+events; re-confirmation batches renew records whose source has not changed.
+Publishing a signed timeline or policy review also renews each promoted
+development related to that record (`relatedTimelineEventId` or
+`relatedPolicyId`) whose URL is the record's source page and whose stored
+evidence has the same URL and content hash as the record's evidence before
+publication. The development takes the published record's verification, so one
+signature covers both (Daniel, 6 November 2026). Detected and dismissed
+developments, developments on another page, and developments verified from
+different evidence are left as they were and still need their own review
+(`developmentsRenewedByPublication` in `src/lib/source-review.ts`). A retried
+publication renews only developments that already carry the published evidence,
+so a crash after the record write but before the renewal leaves the development
+due rather than guessing its evidence.
 A record also becomes stale when its source content changes or its source is
 confirmed missing with an HTTP 404 or 410 response, redirects to a homepage, or
 leaves the official-source allow-list. A timeout, bot challenge, or access

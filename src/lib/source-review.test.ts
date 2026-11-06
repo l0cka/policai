@@ -63,6 +63,36 @@ describe("source review recovery", () => {
 		]);
 	});
 
+	it("replaces a pending review of the same watched page when a new version is staged", () => {
+		const page = "https://www.courts.qld.gov.au/newsroom/news";
+		const older = {
+			id: "source-review-dev-latest-news-16bao",
+			sourceUrl: page,
+			status: "pending_review",
+			createdBy: "collector",
+			sourceEvidence: { contentHash: "a".repeat(64) },
+		} as SourceReview;
+		const decided = {
+			...older,
+			id: "source-review-dev-latest-news-old",
+			status: "rejected",
+		} as SourceReview;
+		const reverify = {
+			...older,
+			id: "source-review-reverify",
+			targetPolicyId: "some-policy",
+		} as SourceReview;
+		const newer = {
+			...older,
+			id: "source-review-dev-latest-news-b10hjq",
+			sourceEvidence: { contentHash: "b".repeat(64) },
+		} as SourceReview;
+
+		expect(
+			mergeSourceReviews([older, decided, reverify], [newer]),
+		).toEqual([newer, decided, reverify]);
+	});
+
 	it("restores a development retained inside a staged review after a partial write", () => {
 		const linkedDevelopment = {
 			id: "dev-recover-me",

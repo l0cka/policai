@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { CourtsAnalysis } from '@/components/courts-analysis';
 import { CourtsBrowser } from '@/components/courts-browser';
 import { datesWithoutSources } from '@/lib/client-records';
-import { getPublicCourtRequirements, toShownRequirement } from '@/lib/court-requirements';
+import { getPublicCourtRequirements } from '@/lib/court-requirements';
 import {
   analysesByCourtPolicy,
   courtFocusedAnalyses,
@@ -47,7 +47,7 @@ export default async function CourtsPage() {
         dates: datesWithoutSources(policy.dates),
         verification: { status: verification.status, checkedAt: verification.checkedAt },
       }))}
-      requirements={requirements.map(toShownRequirement)}
+      requirements={requirements.map(({ id, policyId, actor }) => ({ id, policyId, actor }))}
       analysesByPolicy={analysesByPolicy}
       relatedByPolicy={relatedByPolicy}
       analysis={<CourtsAnalysis articles={courtAnalyses} />}
