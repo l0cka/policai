@@ -543,9 +543,9 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
 
 ## Pull requests and review
 
-A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day, in case one landed before it ran. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves, pushes or merges. A blocker it finds on a merged PR gets a "Post-merge review" issue.
+A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day, in case one landed before it ran. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves or pushes. When its review of an open PR's current head names no blockers, it squash-merges that PR pinned to the reviewed head SHA, but only once CI is green and the PR is not a draft, not held, and not waiting on a date, an event or the maintainer. A blocker it finds on a merged PR gets a "Post-merge review" issue.
 
-- Only collection PRs (`automation/collection-*`) auto-merge. Every other PR is merged by hand, and only after a `claude-pr-review` on its current head names no blockers, so nothing lands unreviewed.
+- Only collection PRs (`automation/collection-*`) arm GitHub auto-merge (`.github/workflows/auto-merge.yml`), and only while every changed file is one of the collector's four output files; the check re-runs on every push. Every other PR merges only after a `claude-pr-review` on its current head names no blockers, either by the routine or by the thread that owns it, so nothing lands unreviewed.
 - A `claude-pr-review` review with blockers is work: fix every blocker it names, in one push. Its "No blockers" review needs no reply.
 - When a review is posted, address it before merging: fix every blocker it names; for a non-blocking note, fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
 - Never push only because of a note you have already seen or handled. Batch fixes into one push.

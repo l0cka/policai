@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { appendToApprovalMailbox } from "@/lib/approval-mailbox";
 import {
 	parseApprovalSubject,
@@ -7,8 +7,6 @@ import {
 	verifyEditorApproval,
 	type EditorApproval,
 } from "@/lib/editor-approval";
-
-const APPROVAL_RATE = { bucket: "approvals", limit: 10, windowSeconds: 60 } as const;
 
 function approvalJson(data: unknown, status = 200) {
 	return NextResponse.json(data, { status, headers: { "Cache-Control": "no-store" } });
@@ -25,7 +23,7 @@ function field(record: Record<string, unknown>, key: string): string | undefined
  * filled by anyone else; publishing verifies it again.
  */
 export async function POST(request: Request) {
-	const limited = checkRateLimit(request, APPROVAL_RATE);
+	const limited = await checkRateLimit(request, RATE_LIMITS.approvals);
 	if (limited) return limited;
 
 	let body: Record<string, unknown>;

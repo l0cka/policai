@@ -13,7 +13,8 @@ vi.mock('@/lib/data-service', () => ({
   getPolicies,
 }))
 
-vi.mock('@/lib/rate-limit', () => ({
+vi.mock('@/lib/rate-limit', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/rate-limit')>()),
   checkRateLimit,
 }))
 

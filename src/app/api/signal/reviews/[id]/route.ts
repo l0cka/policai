@@ -1,17 +1,11 @@
 import { NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getSourceReviewById } from "@/lib/data-service";
 import {
 	bearerToken,
 	dryRunSignalReview,
 	requireSignalHttpToken,
 } from "@/lib/signal-http";
-
-const SIGNAL_RATE = {
-	bucket: "signal-review",
-	limit: 30,
-	windowSeconds: 60,
-} as const;
 
 function signalJson(data: unknown, status = 200) {
 	return NextResponse.json(data, {
@@ -31,7 +25,7 @@ export async function GET(
 	request: Request,
 	context: { params: Promise<{ id: string }> },
 ) {
-	const limited = checkRateLimit(request, SIGNAL_RATE);
+	const limited = await checkRateLimit(request, RATE_LIMITS.signalReview);
 	if (limited) {
 		limited.headers.set("Cache-Control", "no-store");
 		return limited;

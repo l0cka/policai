@@ -11,7 +11,7 @@ import { JURISDICTIONS, POLICY_STATUSES, POLICY_TYPES } from "@/types";
 // Read-only public API. Policies are published by committing to the repo
 // (via the local MCP source-ingest server or the collector), not over HTTP.
 export async function GET(request: Request) {
-  const limited = checkPublicApiRequest(request);
+  const limited = await checkPublicApiRequest(request);
   if (limited) return limited;
 
   const { searchParams } = parseSourceUrl(request.url);
