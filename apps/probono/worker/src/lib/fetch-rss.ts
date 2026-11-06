@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import type { RawItem } from './fetch-firecrawl.js';
+import { publicFetch, type PublicFetchInit } from './public-fetch.js';
 
 /**
  * The collector identity on every retrieval path (`COLLECTOR_IDENTITY_TOKEN`
@@ -72,7 +73,9 @@ async function consume(response: Response): Promise<void> {
  * A 403 names the URL the ingest host received, so a reader can compare that
  * response with a fetch from somewhere else.
  */
-export async function readFeedXml(feedUrl: string, fetchImpl: typeof fetch = fetch): Promise<string> {
+type FetchLike = (url: string, init: PublicFetchInit) => Promise<Response>;
+
+export async function readFeedXml(feedUrl: string, fetchImpl: FetchLike = publicFetch): Promise<string> {
   let current = feedUrl;
   for (let redirect = 0; redirect <= MAX_REDIRECTS; redirect++) {
     const response = await fetchImpl(current, {
@@ -104,7 +107,7 @@ export async function readFeedXml(feedUrl: string, fetchImpl: typeof fetch = fet
   throw new Error(`Too many redirects at ${feedUrl}`);
 }
 
-export async function fetchRss(feedUrl: string, fetchImpl: typeof fetch = fetch): Promise<RawItem[]> {
+export async function fetchRss(feedUrl: string, fetchImpl: FetchLike = publicFetch): Promise<RawItem[]> {
   const xml = await readFeedXml(feedUrl, fetchImpl);
   return parseRssString(xml);
 }

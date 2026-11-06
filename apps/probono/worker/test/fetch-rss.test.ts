@@ -1,7 +1,12 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { once } from 'node:events';
 import { afterEach, describe, expect, it } from 'vitest';
-import { FEED_USER_AGENT, fetchRss } from '../src/lib/fetch-rss.js';
+import { FEED_USER_AGENT, fetchRss as fetchRssGuarded } from '../src/lib/fetch-rss.js';
+import { publicFetch, type PublicFetchInit } from '../src/lib/public-fetch.js';
+
+// The test server is on loopback, which the default guard refuses.
+const loopbackFetch = (url: string, init: PublicFetchInit) => publicFetch(url, init, { isBlocked: () => false });
+const fetchRss = (url: string) => fetchRssGuarded(url, loopbackFetch);
 
 const RSS = `<?xml version="1.0"?><rss version="2.0"><channel><title>Tenants</title>
 <item><title>Hotter summers, hotter homes</title><link>https://www.tenants.org.au/blog/hotter-summers</link><pubDate>Thu, 08 Oct 2026 07:12:25 +0000</pubDate><description>Heat in rentals.</description></item>
@@ -78,5 +83,12 @@ describe('fetchRss', () => {
     });
 
     await expect(fetchRss(`${base}/rss.xml`)).rejects.toThrow(/Refusing redirect/);
+  });
+});
+
+describe('fetchRss default guard', () => {
+  it('refuses a feed on a private address', async () => {
+    const base = await listen((_req, res) => res.end(RSS));
+    await expect(fetchRssGuarded(`${base}/rss.xml`)).rejects.toThrow(/non-public address/);
   });
 });

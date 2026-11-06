@@ -18,6 +18,8 @@
  * the document head, not a rendered page, and it should cost nothing.
  */
 
+import { assertPublicDestination, publicFetch } from './public-fetch.js';
+
 const UA =
   'Mozilla/5.0 (compatible; ProBonoRadar/1.0; +https://a2j.policai.org) title-resolver';
 
@@ -327,8 +329,7 @@ async function fetchPageTitleDirect(url: string): Promise<string | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
-    const res = await fetch(url, {
-      redirect: 'follow',
+    const res = await publicFetch(url, {
       signal: controller.signal,
       headers: { 'user-agent': UA, accept: 'text/html,application/xhtml+xml' },
     });
@@ -356,6 +357,7 @@ async function fetchPageTitleDirect(url: string): Promise<string | null> {
 export async function fetchPageTitleViaFirecrawl(url: string): Promise<string | null> {
   const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
   try {
+    await assertPublicDestination(url);
     const res = await fetch(`${base}/v1/scrape`, {
       method: 'POST',
       headers: { 'content-type': 'application/json', authorization: 'Bearer self-hosted' },
