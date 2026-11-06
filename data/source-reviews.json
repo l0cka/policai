@@ -34867,6 +34867,182 @@
     "publishedAt": "2026-11-05T22:01:46.105Z"
   },
   {
+    "id": "source-review-asd-open-weight-opportunities-2026-11-05",
+    "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+    "title": "Open-weight AI models: Opportunities and cyber security risks",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-05T05:20:00.000Z",
+    "createdBy": "Inky Quill (Signal handoff)",
+    "notes": "Signal handoff, 5 November 2026. Manual read of the cyber.gov.au publication page. The page shows 05 Nov 2026 and last reviewed 05 Nov 2026. Staged as a new guideline for editorial review. It is not approved, published or verified, and lastReviewedAt is unset. Direct curl from the staging host was reset (HTTP/2 INTERNAL_ERROR) and HTTP/1.1 timed out; the page text was read through an HTTPS fetch of the rendered article. contentHash is the SHA-256 of proposedRecord.content (the staged summary), not a byte hash of the HTML. The announcing news item is https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models, which shows the same date. cyber-news is manual (identity_refused since 2026-10-07) and is not fetched by the collector; watch-state lastCheckedBySource for cyber-news is 2026-10-06. Related existing records: asd-careful-adoption-agentic-ai-services-2026, asd-agentic-ai-harnesses-2026, asd-frontier-ai-models-cyber-security-2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "ASD's ACSC guidance on the benefits and cyber security risks of open-weight AI models, for executives, technology leaders and cyber security practitioners.",
+      "tags": [
+        "open-weight AI",
+        "cyber security",
+        "supply chain",
+        "governance"
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+      "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+      "title": "Open-weight AI models: Opportunities and cyber security risks",
+      "retrievedAt": "2026-11-05T05:20:00.000Z",
+      "contentType": "text/html",
+      "contentHash": "1c7d3eb03fd9402616f68c5cec8f4c05a4475a3ec6ecc8ae28e71b736a2a2bef",
+      "linkedDocuments": [],
+      "publishedAt": "2026-11-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "asd-open-weight-ai-opportunities-risks-2026",
+      "title": "Open-weight AI models: Opportunities and cyber security risks",
+      "description": "ASD's ACSC guidance on the benefits and cyber security risks of open-weight AI models, for executives, technology leaders and cyber security practitioners.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-05",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+            "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+            "title": "Open-weight AI models: Opportunities and cyber security risks",
+            "retrievedAt": "2026-11-05T05:20:00.000Z",
+            "contentType": "text/html",
+            "contentHash": "1c7d3eb03fd9402616f68c5cec8f4c05a4475a3ec6ecc8ae28e71b736a2a2bef",
+            "linkedDocuments": [],
+            "publishedAt": "2026-11-05",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ],
+      "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+      "content": "ASD's ACSC publication. The page is dated 05 Nov 2026 and last reviewed 05 Nov 2026. It explains what open-weight AI models are: models whose weights are publicly released so an organisation can download, modify and operate them on its own infrastructure, typically without the training data, training code or full documentation. It describes benefits of local control, including hosting in the organisation's own environment (including disconnected environments), choosing when to adopt updates, and configuring safeguards under the organisation's own governance. It says those benefits sit with greater responsibility for security, monitoring, maintenance and incident response. Risk areas on the page, which arise because released weights can be copied, modified and redistributed without the original developer's oversight, are model selection, provenance and developer jurisdiction; model, data and software supply chain (including executable model formats and hidden behaviour); fine-tuned model security (memorisation and theft of sensitive training information); and safeguards, integrations and agentic systems (outdated, weakened or removed safeguards, prompt injection and unauthorised tool use). Recommended actions include defining intended and prohibited uses, not adopting a model whose provenance cannot be established for that use, obtaining artefacts only from assessed sources, verifying hashes and signatures, sandboxing new models, preferring formats that cannot contain executable code, treating fine-tuned files as potentially containing the data used to create them, and placing controls outside the model, with human approval for high-risk or irreversible actions. The audience is executives, technology leaders and cyber security practitioners considering whether to adopt open-weight models. It points to the companion publication Selecting, deploying and operating open-weight AI models securely, and to ASD's Careful adoption of agentic AI services and Agentic AI harnesses for agentic deployments. Announced at https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models. Staged for editorial review; not verified.",
+      "aiSummary": "ASD's ACSC guidance on the benefits and cyber security risks of open-weight AI models, for executives, technology leaders and cyber security practitioners.",
+      "tags": [
+        "open-weight AI",
+        "cyber security",
+        "supply chain",
+        "governance"
+      ],
+      "themes": [
+        "cyber-security",
+        "ai-governance",
+        "procurement-supply",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-11-05T05:20:00.000Z",
+      "updatedAt": "2026-11-05T05:20:00.000Z"
+    },
+    "updatedAt": "2026-11-05T05:20:00.000Z"
+  },
+  {
+    "id": "source-review-asd-open-weight-secure-operation-2026-11-05",
+    "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+    "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-05T05:20:00.000Z",
+    "createdBy": "Inky Quill (Signal handoff)",
+    "notes": "Signal handoff, 5 November 2026. Manual read of the cyber.gov.au publication page. The page shows 05 Nov 2026 and last reviewed 05 Nov 2026. Staged as a new guideline for editorial review. It is not approved, published or verified, and lastReviewedAt is unset. Direct curl from the staging host was reset (HTTP/2 INTERNAL_ERROR) and HTTP/1.1 timed out; the page text was read through an HTTPS fetch of the rendered article. contentHash is the SHA-256 of proposedRecord.content (the staged summary), not a byte hash of the HTML. The announcing news item is https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models, which shows the same date. cyber-news is manual (identity_refused since 2026-10-07) and is not fetched by the collector; watch-state lastCheckedBySource for cyber-news is 2026-10-06. Related existing records: asd-careful-adoption-agentic-ai-services-2026, asd-agentic-ai-harnesses-2026, asd-frontier-ai-models-cyber-security-2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "ASD's ACSC guidance on governance, selection, secure deployment, monitoring, maintenance and incident response for organisations operating open-weight AI models.",
+      "tags": [
+        "open-weight AI",
+        "cyber security",
+        "governance",
+        "incident response"
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+      "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+      "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
+      "retrievedAt": "2026-11-05T05:20:00.000Z",
+      "contentType": "text/html",
+      "contentHash": "e105caceaebbcb60ad17233c6d47f73e92ec17646850b55d39d4c2ec3649ba64",
+      "linkedDocuments": [],
+      "publishedAt": "2026-11-05",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "asd-open-weight-ai-secure-operation-2026",
+      "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
+      "description": "ASD's ACSC guidance on governance, selection, secure deployment, monitoring, maintenance and incident response for organisations operating open-weight AI models.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-05",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+            "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+            "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
+            "retrievedAt": "2026-11-05T05:20:00.000Z",
+            "contentType": "text/html",
+            "contentHash": "e105caceaebbcb60ad17233c6d47f73e92ec17646850b55d39d4c2ec3649ba64",
+            "linkedDocuments": [],
+            "publishedAt": "2026-11-05",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [
+        "Australian Signals Directorate",
+        "Australian Cyber Security Centre"
+      ],
+      "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+      "content": "ASD's ACSC companion publication. The page shows 05 Nov 2026 twice, in the published and last-reviewed positions. It assumes the organisation has decided, or is close to deciding, to operate an open-weight model itself, and covers the responsibilities that creates. It distinguishes local deployment (on infrastructure the organisation controls, on-premises or in a public cloud) from consuming a hosted API or a third party that operates the model, and says a hosted open-weight service should be treated like other hosted AI or cloud services. Governance on the page: an organisational policy for approved use cases, security requirements, accountability and risk acceptance; a formal onboarding assessment; a register of approved models (use case, owner, risk acceptance, next review) and a technical inventory of versions, artefacts, adapters, dependencies and configurations; and processes to reassess after material change and to update, replace or retire models. Selection and operation principles on the page are: choose proportionately; know and verify the source (including provenance, licence, modifications, and country of origin as one factor rather than proof of trustworthiness); verify suitability by independent testing of the specific version; assess and secure the deployment before committing to a design, including egress and controls outside the model; and maintain assurance, including what the organisation must monitor itself when vendor support is limited. Deployment risks, which the page says the operating organisation manages without a provider's monitoring and incident response, are deployment and infrastructure security (segmentation, separate development and production, authentication, multi-factor authentication for administrative access, least privilege, controlled outbound access, rate limits, and tested containment); model maintenance and updates (track releases and advisories, test before deployment, keep rollback, reassess unmaintained models); and monitoring, evaluation and incident response (log access, prompts, responses and tool activity commensurate with risk, watch for misuse, theft, leakage and safeguard bypass, and keep tested rollback, credential revocation and incident reporting). The audience is executives, technology leaders and cyber security practitioners responsible for these models. Companion: Open-weight AI models: Opportunities and cyber security risks. Announced at https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models. Staged for editorial review; not verified.",
+      "aiSummary": "ASD's ACSC guidance on governance, selection, secure deployment, monitoring, maintenance and incident response for organisations operating open-weight AI models.",
+      "tags": [
+        "open-weight AI",
+        "cyber security",
+        "governance",
+        "incident response"
+      ],
+      "themes": [
+        "cyber-security",
+        "ai-governance",
+        "risk-assurance",
+        "human-oversight"
+      ],
+      "createdAt": "2026-11-05T05:20:00.000Z",
+      "updatedAt": "2026-11-05T05:20:00.000Z"
+    },
+    "updatedAt": "2026-11-05T05:20:00.000Z"
+  },
+  {
     "id": "source-review-dev-education-ministers-digital-detox-2026",
     "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
     "title": "A Digital Detox for rebalancing technology use in Australian schools",
