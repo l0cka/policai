@@ -56,6 +56,18 @@ signs the batch once. Each review is still decided and published separately and
 keeps a copy of the batch, so validation checks its signature without the
 ledger. Those batches publish new or changed records, including timeline
 events; re-confirmation batches renew records whose source has not changed.
+Publishing a signed timeline or policy review also renews each promoted
+development related to that record (`relatedTimelineEventId` or
+`relatedPolicyId`) whose URL is the record's source page and whose stored
+evidence has the same URL and content hash as the record's evidence before
+publication. The development takes the published record's verification, so one
+signature covers both (Daniel, 6 November 2026). Detected and dismissed
+developments, developments on another page, and developments verified from
+different evidence are left as they were and still need their own review
+(`developmentsRenewedByPublication` in `src/lib/source-review.ts`). A retried
+publication renews only developments that already carry the published evidence,
+so a crash after the record write but before the renewal leaves the development
+due rather than guessing its evidence.
 A record also becomes stale when its source content changes or its source is
 confirmed missing with an HTTP 404 or 410 response, redirects to a homepage, or
 leaves the official-source allow-list. A timeout, bot challenge, or access
