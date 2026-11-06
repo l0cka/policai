@@ -1938,10 +1938,11 @@
           "notes": "The official SAET announcement is dated 26 June 2026 and records the Tribunal President's adoption decision."
         }
       },
-      "checkedAt": "2026-07-24T02:50:46.440Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved after fresh review of the official SAET announcement and the exact adopted Guidelines and self-represented litigant information sheet."
+      "notes": "Approved after fresh review of the official SAET announcement and the exact adopted Guidelines and self-represented litigant information sheet. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-07-24.",
+      "lastSourceAuditAt": "2026-11-05T22:10:18.184Z"
     }
   },
   {
@@ -1990,7 +1991,7 @@
     "jurisdiction": "nsw",
     "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
         "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
@@ -2006,7 +2007,8 @@
       "checkedAt": "2026-08-11T23:18:07.058Z",
       "checkedBy": "Daniel Alkurdi (Codex-assisted official-source review)",
       "method": "manual",
-      "notes": "Approved by the user on 12 August 2026 as a timeline event, not an adopted policy. The official NSW source confirms that NESA was asked to examine possible measures; it does not announce a completed guideline or rule."
+      "notes": "Approved by the user on 12 August 2026 as a timeline event, not an adopted policy. The official NSW source confirms that NESA was asked to examine possible measures; it does not announce a completed guideline or rule. Source content changed during register audit at 2026-11-05T22:10:19.907Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-05T22:10:19.907Z"
     }
   },
   {
@@ -2061,10 +2063,11 @@
         "contentType": "application/pdf",
         "contentHash": "2715d2249a14946d6a931856b9c8adb5a3cf8fb4c5c8a68ef4a4f7073a378e55"
       },
-      "checkedAt": "2026-08-24T23:32:02.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Every page footer of the guidance note PDF carries 'Published: 24 August 2026', and paragraph 5 states the guidance note commences on 20 October 2026."
+      "notes": "Every page footer of the guidance note PDF carries 'Published: 24 August 2026', and paragraph 5 states the guidance note commences on 20 October 2026. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-24.",
+      "lastSourceAuditAt": "2026-11-05T22:11:03.769Z"
     }
   },
   {
@@ -2096,10 +2099,11 @@
           "notes": "Paragraph 1 states the Procedural Direction was issued on 7 March 2025 and commences on 7 April 2025, applying to all proceedings from that date."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the procedural direction PDF from the NCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the procedural direction PDF from the NCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:03.862Z"
     }
   },
   {
@@ -2131,10 +2135,11 @@
           "notes": "Paragraph 2 of the District Court practice note states that it commences 3 February 2025."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the District Court site through the collector retrieval path, fingerprinted it, and read the adopting note and the reproduced SC Gen 23 text in full before creating this record."
+      "notes": "Retrieved the practice note PDF from the District Court site through the collector retrieval path, fingerprinted it, and read the adopting note and the reproduced SC Gen 23 text in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:03.975Z"
     }
   },
   {
@@ -2166,10 +2171,11 @@
           "notes": "Paragraph 1 states the Practice Note will commence on 19 February 2025 and will apply to all proceedings from that date."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Commission's site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice note PDF from the Commission's site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:04.105Z"
     }
   },
   {
@@ -2201,10 +2207,11 @@
           "notes": "Paragraph 1 states the Practice Note replaces the note that commenced on 3 February and commences on 12 February 2025."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Land and Environment Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice note PDF from the Land and Environment Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:04.208Z"
     }
   },
   {
@@ -2236,10 +2243,11 @@
           "notes": "The cover page records 'Commences: 12 January 2026' and clause 1.1 states the Practice Note commences on that date."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Local Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice note PDF from the Local Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:04.338Z"
     }
   },
   {
@@ -2270,10 +2278,11 @@
           "notes": "The procedural direction page records 'Date of commencement: 1 January 2026' for the Workers Compensation, Motor Accidents and Police Officer Support Scheme Divisions."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the procedural direction page from the Personal Injury Commission site through the collector retrieval path, fingerprinted it, and read the direction in full before creating this record."
+      "notes": "Retrieved the procedural direction page from the Personal Injury Commission site through the collector retrieval path, fingerprinted it, and read the direction in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:04.487Z"
     }
   },
   {
@@ -2305,10 +2314,11 @@
           "notes": "The Guidelines carry the date 14 May 2026 at the end of the text, and the Court's publication metadata records a publication date of May 2026."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines page from the Supreme Court of Victoria site through the collector retrieval path, fingerprinted it, and read the guidelines in full before creating this record."
+      "notes": "Retrieved the guidelines page from the Supreme Court of Victoria site through the collector retrieval path, fingerprinted it, and read the guidelines in full before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:07.313Z"
     }
   },
   {
@@ -2340,10 +2350,11 @@
           "notes": "The practice note's release history records version 1.0 created on 5 June 2026 by Chief Judge Chambers."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:37.356Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note document from the County Court of Victoria site through the collector retrieval path, fingerprinted it, and read the document control block and text before creating this record."
+      "notes": "Retrieved the practice note document from the County Court of Victoria site through the collector retrieval path, fingerprinted it, and read the document control block and text before creating this record. Re-confirmed in batch 2026-11-05-2 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:04.810Z"
     }
   },
   {
@@ -2375,10 +2386,11 @@
           "notes": "The practice note records an effective date of 22 December 2025 and states that it is issued by the Rules Committee under section 158 of the VCAT Act."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note page and attached document from the VCAT site through the collector retrieval path, fingerprinted it, and read the practice note before creating this record."
+      "notes": "Retrieved the practice note page and attached document from the VCAT site through the collector retrieval path, fingerprinted it, and read the practice note before creating this record. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:05.021Z"
     }
   },
   {
@@ -2409,10 +2421,11 @@
           "notes": "The Practice Direction is signed by President Justice Kerri Mellifont and dated 17 October 2025, and the document metadata records the same creation date."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the QCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice direction PDF from the QCAT site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:05.154Z"
     }
   },
   {
@@ -2443,10 +2456,11 @@
           "notes": "The Practice Direction is signed by Chief Judge Brian Devereaux SC and dated 25 September 2025."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:05.276Z"
     }
   },
   {
@@ -2477,10 +2491,11 @@
           "notes": "Paragraph 3 of the Practice Direction states that it commences on 29 September 2025."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:05.354Z"
     }
   },
   {
@@ -2511,10 +2526,11 @@
           "notes": "The Practice Direction is signed by Chief Judge Brian Devereaux SC and dated 25 September 2025."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record."
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:05.424Z"
     }
   },
   {
@@ -2613,10 +2629,11 @@
           "notes": "The version history records '10 September 2025 – Practice Direction amended and reissued', and the document is signed by Chief Justice Bowskill under that date."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record."
+      "notes": "Retrieved the practice direction PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:06.186Z"
     }
   },
   {
@@ -2648,10 +2665,11 @@
           "notes": "The Guidelines carry no printed date; the PDF creation metadata records 20 November 2025 and the Last-Modified header served with the file records the same date."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines PDF from the Supreme Court of Western Australia site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata corroborated by the HTTP Last-Modified header."
+      "notes": "Retrieved the guidelines PDF from the Supreme Court of Western Australia site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata corroborated by the HTTP Last-Modified header. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:06.545Z"
     }
   },
   {
@@ -2684,10 +2702,11 @@
           "notes": "The document has no commencement clause; it is signed by the Hon. A S Bell, Chief Justice of New South Wales, and dated 21 November 2024 on page 3, matching the Supreme Court's announcement of the same date."
         }
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "The document has no commencement clause; it is signed by the Hon. A S Bell, Chief Justice of New South Wales, and dated 21 November 2024 on page 3, matching the Supreme Court's announcement of the same date."
+      "notes": "The document has no commencement clause; it is signed by the Hon. A S Bell, Chief Justice of New South Wales, and dated 21 November 2024 on page 3, matching the Supreme Court's announcement of the same date. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:06.792Z"
     }
   },
   {
@@ -2720,10 +2739,11 @@
           "notes": "The header block states 'Date created 5 June 2026' and 'Authorised by Chief Judge Chambers'; the Court announced the Guidelines on 9 June 2026 and no separate commencement date is stated."
         }
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "The header block states 'Date created 5 June 2026' and 'Authorised by Chief Judge Chambers'; the Court announced the Guidelines on 9 June 2026 and no separate commencement date is stated."
+      "notes": "The header block states 'Date created 5 June 2026' and 'Authorised by Chief Judge Chambers'; the Court announced the Guidelines on 9 June 2026 and no separate commencement date is stated. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:06.851Z"
     }
   },
   {
@@ -2792,10 +2812,11 @@
           "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026."
         }
       },
-      "checkedAt": "2026-08-25T13:30:09.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-05T22:44:43.274Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026."
+      "notes": "The information sheet itself is undated; the Courts Administration Authority news item publishing it, together with the Generative AI Guidelines adopted from 1 January 2026, is dated 19 January 2026. Re-confirmed in batch 2026-11-05-3 by Daniel Alkurdi on 2026-11-05 (passkey approval): the source fingerprint was unchanged at the 2026-11-05 register audit, matching the version verified on 2026-08-25.",
+      "lastSourceAuditAt": "2026-11-05T22:11:07.684Z"
     }
   },
   {
