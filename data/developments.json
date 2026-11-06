@@ -1,5 +1,71 @@
 [
   {
+    "id": "dev-education-ministers-digital-detox-2026",
+    "title": "A Digital Detox: Education Ministers restrict generative AI in schools",
+    "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "sourceId": "editorial-staging",
+    "sourceName": "Department of Education — schooling announcements",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-11-04",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-04T21:19:19.864Z",
+    "summary": "Education Ministers agreed to restrict student use of generative AI applications in primary schools and in secondary school assessments, with timing, scope and application set by each jurisdiction or sector. The Department of Education published the decisions in \"A Digital Detox\" on 4 November 2026.",
+    "relevanceScore": 0.65,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-11-04T21:19:19.864Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "retrievedAt": "2026-11-04T21:19:19.864Z",
+        "contentType": "text/html",
+        "title": "A Digital Detox for rebalancing technology use in Australian schools",
+        "publishedAt": "2026-11-04",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-australian-framework-generative-ai-in-schools",
+    "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+    "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+    "sourceId": "editorial-staging",
+    "sourceName": "Department of Education — schooling resources",
+    "jurisdiction": "federal",
+    "publishedAt": "2023-12-01",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-04T21:19:19.864Z",
+    "summary": "The department resource page publishes the Australian Framework for Generative AI in Schools. The 1 December 2023 announcement says ministers approved it on 5 October 2023. The resource page says ministers endorsed the 2024 review in June 2025.",
+    "relevanceScore": 0.65,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "keyword-rules-v1",
+      "assessedAt": "2026-11-04T21:19:19.864Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "retrievedAt": "2026-11-04T21:19:19.864Z",
+        "contentType": "text/html",
+        "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+        "publishedAt": "2023-12-01",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "publishedAt is the date on the separate announcement page, not metadata of this resource URL. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-2026-10-30-dta-ai-reference-architecture",
     "title": "AI Reference Architecture",
     "url": "https://www.digital.gov.au/ai-reference-architecture",
