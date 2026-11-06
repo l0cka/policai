@@ -22,7 +22,7 @@ import {
 import { summarizeManualSourceCoverage } from "@/lib/source-monitoring";
 
 export async function GET(request?: Request) {
-	const limited = checkPublicApiRequest(request);
+	const limited = await checkPublicApiRequest(request);
 	if (limited) return limited;
 
 	const [meta, recentDevelopments, monitoring, checkTimes, policies] =

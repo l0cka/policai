@@ -11,7 +11,7 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const limited = checkPublicApiRequest(request);
+  const limited = await checkPublicApiRequest(request);
   if (limited) return limited;
 
   try {
