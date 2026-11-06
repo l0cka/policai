@@ -209,6 +209,23 @@ else:
         installs = (self.home / 'npm.log').read_text().count('ci --no-audit')
         self.assertEqual(installs, 1)
 
+    def test_host_commit_signing_cannot_stop_the_commit(self):
+        # Argus's global git config signs through the 1Password agent, which the sandboxed unit cannot reach.
+        (self.home / '.gitconfig').write_text('[commit]\n\tgpgsign = true\n[gpg]\n\tformat = ssh\n'
+                                              '[gpg "ssh"]\n\tprogram = /nonexistent/op-ssh-sign\n')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        self.assertEqual(self.receipt()['phase'], 'published')
+
+    def test_a_failed_git_command_reports_its_stderr(self):
+        (self.home / '.gitconfig').write_text('[core]\n\thooksPath = ' + str(self.home / 'hooks') + '\n')
+        hook = self.home / 'hooks/pre-commit'
+        hook.parent.mkdir()
+        hook.write_text('#!/bin/sh\necho "hook says no" >&2\nexit 1\n')
+        hook.chmod(0o755)
+        self.assertEqual(self.run_workflow().returncode, 1)
+        self.assertIn('hook says no', self.receipt()['message'])
+
     def test_pr_create_failure_keeps_state_for_the_next_run(self):
         gh = self.bin / 'gh'
         original = gh.read_text()

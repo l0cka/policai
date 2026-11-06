@@ -1,4 +1,6 @@
 {
   "maxOverdueRecords": 0,
-  "note": "Ratchet: lower only. Raising this needs a stated reason in the pull request. Checked by npm run check:freshness."
+  "maxOverdueTimelineEvents": 3,
+  "maxOverdueDevelopments": 6,
+  "note": "Ratchet: lower only. Raising a value needs a stated reason in the pull request. Checked by npm run check:freshness. The timeline and development budgets were seeded on 5 Nov 2026 at that day's overdue counts."
 }

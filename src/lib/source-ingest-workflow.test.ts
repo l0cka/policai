@@ -2161,6 +2161,94 @@ describe('source ingest approval workflow', () => {
     );
   });
 
+  it('renews a promoted development verified from the same evidence when its timeline event is published', async () => {
+    const previousVerification = {
+      status: 'verified' as const,
+      source: {
+        url: SOURCE_URL,
+        contentHash: 'c'.repeat(64),
+        publishedAt: '2026-07-01',
+        publishedAtPrecision: 'day' as const,
+      },
+      checkedAt: '2026-04-20T00:00:00.000Z',
+      checkedBy: 'reviewer',
+      method: 'manual' as const,
+    };
+    const existingEvent = {
+      id: 'renewed-timeline-event',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'AI policy event',
+      description: 'Source-backed timeline description.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: SOURCE_URL,
+      verification: previousVerification,
+    };
+    const publishedEvent = {
+      ...existingEvent,
+      verification: {
+        status: 'verified' as const,
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'Daniel Alkurdi',
+        method: 'manual' as const,
+      },
+    };
+    const development = (
+      id: string,
+      overrides: Partial<Development> = {},
+    ): Development => ({
+      ...buildLinkedDevelopment({
+        id,
+        classification: 'curated',
+        status: 'promoted',
+        relatedTimelineEventId: existingEvent.id,
+        verification: previousVerification,
+      }),
+      ...overrides,
+    });
+    getDevelopments.mockResolvedValue([
+      development('dev-same-evidence'),
+      development('dev-other-evidence', {
+        verification: {
+          ...previousVerification,
+          source: { ...previousVerification.source, contentHash: 'd'.repeat(64) },
+        },
+      }),
+      development('dev-other-page', { url: 'https://example.gov.au/catalogue' }),
+      development('dev-detected', { status: 'detected' }),
+      development('dev-dismissed', { status: 'dismissed' }),
+      development('dev-unrelated', { relatedTimelineEventId: 'another-event' }),
+    ]);
+    const review = buildReview({
+      entryKind: 'timeline_event',
+      status: 'approved',
+      reviewedAt: '2026-07-16T00:00:00.000Z',
+      reviewedBy: 'Daniel Alkurdi',
+      targetTimelineEventId: existingEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(existingEvent),
+      proposedRecord: publishedEvent,
+    });
+    getSourceReviewById.mockResolvedValue(review);
+    getTimelineEvents.mockResolvedValue([existingEvent]);
+
+    await publishStagedSource(review.id);
+
+    expect(updateTimelineEvent).toHaveBeenCalledWith(
+      existingEvent.id,
+      expect.objectContaining({ verification: publishedEvent.verification }),
+    );
+    expect(updateDevelopment.mock.calls).toEqual([
+      ['dev-same-evidence', { verification: publishedEvent.verification }],
+    ]);
+  });
+
   it('does not promote a timeline development before publication is terminal', async () => {
     const event = {
       id: 'timeline-publication-boundary',

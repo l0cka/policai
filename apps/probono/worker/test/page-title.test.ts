@@ -1,4 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
+// These tests stub global fetch for both the direct GET and the scraper.
+vi.mock('../src/lib/public-fetch.js', () => ({
+  publicFetch: (url: string, init: RequestInit) => globalThis.fetch(url, init),
+  assertPublicDestination: async () => {},
+}));
 import {
   coversSlug,
   decodeEntities,

@@ -52,6 +52,22 @@ deploy hook "Daily rebuild (Sydney midnight)", whose URL is the Worker secret
 Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
 Worker secrets, set with `wrangler secret put` or in the dashboard.
 
+`POLICAI_SIGNAL_GITHUB_TOKEN` is a fine-grained personal access token limited
+to `l0cka/policai`, with an expiry, and with only these repository
+permissions:
+
+| Permission | Access | Used by |
+| --- | --- | --- |
+| Contents | Read and write | Signal reads `main` and commits to `signal/*` branches (`src/lib/signal-git-persist.ts`); `/api/approvals` appends to the `editor-approvals` branch (`src/lib/approval-mailbox.ts`) |
+| Pull requests | Read and write | Signal opens or finds the PR for its branch |
+| Metadata | Read | Required by GitHub for every fine-grained token |
+
+It needs no Actions, Workflows, Administration or Secrets access, and no
+access to other repositories. The "Protect main" ruleset still applies to it,
+so it cannot push `main`. Rotate it before it expires: create the new token,
+run `wrangler secret put POLICAI_SIGNAL_GITHUB_TOKEN` in the repo root, then
+revoke the old one.
+
 ## a2j.policai.org on Workers
 
 Workers Builds deploys the `a2j` Worker from `apps/probono/dashboard` on

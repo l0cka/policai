@@ -26,7 +26,7 @@ jobs:
       probono: ${{ steps.diff.outputs.probono }}
       host: ${{ steps.diff.outputs.host }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 2
       # The checkout is the PR merge commit, so its first parent is the base.
@@ -50,10 +50,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
 
@@ -73,12 +72,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
 
@@ -103,10 +102,9 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
 
@@ -133,9 +131,9 @@ jobs:
         if: ${{ env.AFFECTED != 'true' }}
         working-directory: .
         run: echo 'No change under apps/probono; checks skipped.'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         if: ${{ env.AFFECTED == 'true' }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         if: ${{ env.AFFECTED == 'true' }}
         with:
           node-version: 24
@@ -172,7 +170,7 @@ jobs:
         if: ${{ env.AFFECTED != 'true' }}
         working-directory: .
         run: echo 'No change under apps/probono; checks skipped.'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         if: ${{ env.AFFECTED == 'true' }}
       - name: Start disposable Postgres for CI
         id: pg
@@ -212,7 +210,7 @@ jobs:
           port="$(docker inspect --format '{{(index (index .NetworkSettings.Ports "5432/tcp") 0).HostPort}}' "$name")"
           test -n "$port"
           echo "port=$port" >> "$GITHUB_OUTPUT"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         if: ${{ env.AFFECTED == 'true' }}
         with:
           node-version: 24
@@ -261,7 +259,7 @@ jobs:
     if: ${{ !cancelled() && (needs.changes.result == 'failure' || needs.changes.outputs.host == 'true') }}
     runs-on: [self-hosted, linux, argus]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
       # Arch runners have no actions/setup-python cache for 3.11. Use system
       # python3 (3.14 on Argus); ops/host/README.txt requires >=3.11.
       - name: Require system Python >= 3.11
@@ -277,7 +275,7 @@ jobs:
         run: python3 -B ops/host/verify.py
       - name: Retain host verification evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: host-verification
           path: ops/host/logs/FINAL-VERIFICATION.json

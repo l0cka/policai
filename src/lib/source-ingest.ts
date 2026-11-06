@@ -50,7 +50,10 @@ import {
 	updateTimelineEvent,
 	updateSourceReview,
 } from "@/lib/data-service";
-import { linkedDevelopmentId } from "@/lib/source-review";
+import {
+	developmentsRenewedByPublication,
+	linkedDevelopmentId,
+} from "@/lib/source-review";
 import {
 	policyRevisionHash,
 	revisionHash,
@@ -2348,7 +2351,10 @@ function publicationDetails(review: SourceReview): {
 async function reconcilePublicationSideEffects(
 	review: SourceReview,
 	publishedAt: string,
-	options: { preserveExistingDevelopment?: boolean } = {},
+	options: {
+		preserveExistingDevelopment?: boolean;
+		previousSource?: SourceEvidence;
+	} = {},
 ): Promise<void> {
 	const {
 		verification,
@@ -2371,7 +2377,30 @@ async function reconcilePublicationSideEffects(
 		},
 		dismissalReason: undefined,
 	}, options);
+	await renewRelatedDevelopments(review, verification, options.previousSource);
 	await markCollectionReviewed(review.reviewedAt ?? publishedAt);
+}
+
+async function renewRelatedDevelopments(
+	review: SourceReview,
+	verification: Policy["verification"],
+	previousSource: SourceEvidence | undefined,
+): Promise<void> {
+	const record = review.proposedRecord as Policy | TimelineEvent;
+	const renewed = developmentsRenewedByPublication(
+		await getDevelopments(undefined, { access: "admin" }),
+		{
+			kind: review.entryKind,
+			id: record.id,
+			sourceUrl: record.sourceUrl,
+			verification,
+		},
+		previousSource,
+		linkedDevelopmentId(review),
+	);
+	for (const development of renewed) {
+		await updateDevelopment(development.id, { verification });
+	}
 }
 
 async function reconcileLinkedDevelopment(
@@ -2713,6 +2742,7 @@ async function publishStagedSourceUnlocked(
 	);
 
 	const publishedAt = new Date().toISOString();
+	let previousSource: SourceEvidence | undefined;
 	let reviewForPublication = canonicalRecord
 		? { ...review, proposedRecord: canonicalRecord }
 		: review;
@@ -2764,6 +2794,7 @@ async function publishStagedSourceUnlocked(
 		if (targetTimelineEventId && !existingEvent) {
 			throw new Error("Target timeline event for update review was not found");
 		}
+		previousSource = existingEvent?.verification?.source;
 		if (existingEvent) {
 			if (
 				targetTimelineEventId &&
@@ -2829,6 +2860,7 @@ async function publishStagedSourceUnlocked(
 			if (!targetPolicy) {
 				throw new Error("Target policy for update review was not found");
 			}
+			previousSource = targetPolicy.verification.source;
 			const replacesTargetSource = Boolean(
 				review.targetPolicyPreviousSourceUrl &&
 					sourceUrlsEqual(
@@ -2943,7 +2975,9 @@ async function publishStagedSourceUnlocked(
 	// The review is the public transaction boundary. Development promotion and
 	// collection metadata are recoverable side effects, so they must not become
 	// publicly verified before this terminal status is durable.
-	await reconcilePublicationSideEffects(reviewForPublication, publishedAt);
+	await reconcilePublicationSideEffects(reviewForPublication, publishedAt, {
+		previousSource,
+	});
 	return updated;
 }
 

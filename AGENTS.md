@@ -66,7 +66,7 @@ npm run build          # production build
 npm run lint           # ESLint (flat config)
 npm run test           # Vitest
 npm run validate:data  # structural validation of the data files
-npm run check:freshness # overdue-review ratchet (data/freshness-budget.json)
+npm run check:freshness # overdue-review ratchet for policies, timeline events, developments (data/freshness-budget.json)
 npm run check          # lint + typecheck + test + validate:data + build — run before handing off
 npm run collect        # one collection pass (-- --dry-run to preview, -- --source=<id> for one source)
 npm run audit:sources  # live audit of automatic watch sources
@@ -136,7 +136,7 @@ docs/                             # collector.md + docs index
 6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
    **Reuse terms** (`data/site-reuse.json`, parsed by `src/lib/watch-coverage/site-reuse.ts`): one entry per body host with what its copyright page permits (`stated` with a Creative Commons id, `all_rights_reserved` or `custom` terms, plus `termsUrl`; or `not_stated` / `refused` with a note) and `checkedAt`. `validate:data` errors on a host no body owns and warns on an unchecked body host. Shown at `/status/reuse` and as "Site reuse terms" on `/policies/[id]`. Re-check with `npm run survey:site-reuse -- --out=<file>` on the collector host (declared identity, robots.txt, 2 s gap); the survey only gathers evidence, an editor writes the file.
    **Rule scope** (`data/rule-scope.json`, parsed by `src/lib/rule-finder/scope.ts`): one entry per register record, kept outside `policies.json` so it never changes a record's revision hash. A `rule` gives its `legalForce` (binding, government_mandatory, expectation, voluntary, proposed), the audiences it `appliesTo`, and a `scope` citation quoting the instrument's own words with a pinpoint; a `not_a_rule` entry (strategy, report, funding program) carries a note. `review` is `draft` until an editor approves it on a decision card, then `reviewed` with `reviewedBy`. Only reviewed rules reach `/rule-finder`, which returns 404 while there are none. `validate:data` errors on an unknown record or a proposed record not marked proposed, and warns with a count of unscoped records. The finder reports what an instrument says about whom it covers; it never says whether a reader complies.
-7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification. Separately, a record whose manual verification is older than 90 days stays public but is shown as "Review due"; `npm run check:freshness` (CI, weekly) fails when overdue records exceed the ratchet in `data/freshness-budget.json`.
+7. **Freshness**: register source fingerprints are checked with `npm run audit:register`; changed content marks a record stale until editorial re-verification. Separately, a record whose manual verification is older than 90 days stays public but is shown as "Review due"; the same holds for timeline events and editor-verified developments. `npm run check:freshness` (CI, weekly) fails when overdue policies, timeline events or developments exceed their ratchet in `data/freshness-budget.json`. `npm run reconfirm:register -- propose --kind=policy|timeline|development` (on Argus) batches due records whose source is unchanged for one passkey approval; see docs/collector.md, "Re-confirming due records on Argus".
 
 8. **Articles** (`data/articles/<slug>.md`): Policai's written analysis. See Articles below.
 
@@ -543,9 +543,9 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
 
 ## Pull requests and review
 
-A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day, in case one landed before it ran. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves, pushes or merges. A blocker it finds on a merged PR gets a "Post-merge review" issue.
+A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day, in case one landed before it ran. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves or pushes. When its review of an open PR's current head names no blockers, it squash-merges that PR pinned to the reviewed head SHA, but only once CI is green and the PR is not a draft, not held, and not waiting on a date, an event or the maintainer. A blocker it finds on a merged PR gets a "Post-merge review" issue.
 
-- Only collection PRs (`automation/collection-*`) auto-merge. Every other PR is merged by hand, and only after a `claude-pr-review` on its current head names no blockers, so nothing lands unreviewed.
+- Only collection PRs (`automation/collection-*`) arm GitHub auto-merge (`.github/workflows/auto-merge.yml`), and only while every changed file is one of the collector's four output files; the check re-runs on every push. Every other PR merges only after a `claude-pr-review` on its current head names no blockers, either by the routine or by the thread that owns it, so nothing lands unreviewed.
 - A `claude-pr-review` review with blockers is work: fix every blocker it names, in one push. Its "No blockers" review needs no reply.
 - When a review is posted, address it before merging: fix every blocker it names; for a non-blocking note, fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
 - Never push only because of a note you have already seen or handled. Batch fixes into one push.
