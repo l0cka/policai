@@ -142,6 +142,36 @@
           "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
         }
       ]
+    },
+    {
+      "id": "2026-11-07-1",
+      "proposedAt": "2026-11-07T03:52:58.785Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-asd-open-weight-opportunities-2026-11-05",
+          "proposalHash": "de596ccb9a05f342ce1462d0ea80966a08e917199ed5d0463dd6d79337d56db7"
+        },
+        {
+          "id": "source-review-asd-open-weight-secure-operation-2026-11-05",
+          "proposalHash": "eef0eeea34053e57e8bd9dae78c7e066cdad3937978a07e39c4831c9adeb9865"
+        },
+        {
+          "id": "source-review-dev-education-ministers-digital-detox-2026",
+          "proposalHash": "de00c8fcba93940b35fcd86454d20c821083ec735bd57867869df0f9a24e720d"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-2",
+      "proposedAt": "2026-11-07T04:02:04.109Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-dev-australian-framework-generative-ai-in-schools",
+          "proposalHash": "953baf270555d1b5cb98440c48833c1b15a1c80db4b323caae830856db60a123"
+        }
+      ]
     }
   ]
 }
