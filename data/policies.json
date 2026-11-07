@@ -1,5 +1,365 @@
 [
   {
+    "id": "australian-framework-generative-ai-in-schools",
+    "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+    "description": "National framework guiding responsible and ethical use of generative AI in Australian schools. Education Ministers approved it on 5 October 2023; the department published it on 1 December 2023. Ministers endorsed the 2024 review in June 2025.",
+    "jurisdiction": "federal",
+    "type": "framework",
+    "status": "active",
+    "effectiveDate": "2023-12-01",
+    "agencies": [
+      "Department of Education"
+    ],
+    "sourceUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+    "content": "The Australian Framework for Generative Artificial Intelligence (AI) in Schools guides responsible and ethical use of generative AI in school education. The Department of Education resource page says it supports school leaders, teachers, support staff, service providers, parents, guardians, students and policy makers.\n\nThe department announcement of the framework, published 1 December 2023, says Education Ministers approved it on 5 October 2023. It names six principles: Teaching and Learning; Human and Social Wellbeing; Transparency; Fairness; Accountability; and Privacy, Security and Safety. It says implementation is from Term 1 2024, and that the National AI in Schools Taskforce developed it with the Commonwealth, jurisdictions, school sectors and the national agencies (ESA, ACARA, AITSL and AERO).\n\nThe resource page states that in June 2025 Education Ministers endorsed the 2024 Framework Review, undertaken by the National AI in Schools Taskforce with jurisdictions, school sectors and national agencies. The page links a PDF and DOCX of the framework, a resource poster, and the 2024 review. This staging does not transcribe those files; they were not retrieved as bytes.",
+    "aiSummary": "The national school generative-AI framework, published 1 December 2023 after Education Ministers approved it on 5 October 2023. Six principles cover teaching and learning, wellbeing, transparency, fairness, accountability, and privacy, security and safety. Ministers endorsed the 2024 review in June 2025.",
+    "tags": [
+      "education",
+      "generative AI",
+      "schools",
+      "framework"
+    ],
+    "themes": [
+      "generative-ai",
+      "responsible-ai",
+      "strategy-adoption"
+    ],
+    "createdAt": "2026-11-04T21:19:19.864Z",
+    "updatedAt": "2026-11-07T04:26:43.526Z",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2023-12-01",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+          "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+          "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools - Department of Education, Australian Government",
+          "retrievedAt": "2026-11-07T03:46:46.115Z",
+          "contentType": "text/html",
+          "contentHash": "8575f43af1c06544006434e299219185c58aa35192a0ce7eddcc55574fda7fb3",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-07T03:46:46.115Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:46.115Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+            "pageContentHash": "b18fed7719e37d5032c649f7024d07461871196fa6aa07a1e9c22f1099669701",
+            "characterCount": 2241
+          },
+          "reviewedDate": {
+            "date": "2023-12-01",
+            "precision": "day",
+            "reviewedAt": "2026-11-07T04:26:43.526Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools shows \"This content was published on Friday 1 December 2023\" and the dateline \"1 December 2023\" as visible text (one-off Firecrawl read with the declared Policai identity, 2026-11-07T03:55:12.848Z, approved by Daniel Alkurdi on 7 Nov 2026). The resource page itself does not state the publication date."
+          }
+        }
+      }
+    ],
+    "lastReviewedAt": "2026-11-07T04:26:43.526Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools - Department of Education, Australian Government",
+        "retrievedAt": "2026-11-07T03:46:46.115Z",
+        "contentType": "text/html",
+        "contentHash": "8575f43af1c06544006434e299219185c58aa35192a0ce7eddcc55574fda7fb3",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-07T03:46:46.115Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:46.115Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "b18fed7719e37d5032c649f7024d07461871196fa6aa07a1e9c22f1099669701",
+          "characterCount": 2241
+        },
+        "reviewedDate": {
+          "date": "2023-12-01",
+          "precision": "day",
+          "reviewedAt": "2026-11-07T04:26:43.526Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools shows \"This content was published on Friday 1 December 2023\" and the dateline \"1 December 2023\" as visible text (one-off Firecrawl read with the declared Policai identity, 2026-11-07T03:55:12.848Z, approved by Daniel Alkurdi on 7 Nov 2026). The resource page itself does not state the publication date."
+        }
+      },
+      "checkedAt": "2026-11-07T04:26:43.526Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-07-2, proposal 953b af27 0555 d1b5). Proposed by Claude (agent). Adds the labelled primary published date (1 December 2023) from the department announcement page; no other change to the proposed record."
+    }
+  },
+  {
+    "id": "education-ministers-digital-detox-2026",
+    "title": "A Digital Detox: Education Ministers’ decisions on technology and generative AI in schools",
+    "description": "Decisions of the Education Ministers Meeting, published by the Department of Education on 4 November 2026, restricting student use of generative AI in primary schools and in secondary assessments, with timing, scope and application set by each jurisdiction or sector.",
+    "jurisdiction": "federal",
+    "type": "policy",
+    "status": "active",
+    "effectiveDate": "2026-11-04",
+    "agencies": [
+      "Department of Education"
+    ],
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "content": "On 4 November 2026 the Department of Education published \"A Digital Detox\", a paper setting out decisions of the Education Ministers Meeting. The announcement page is dated 4 November 2026. The paper says ministers adopted the policy at their meeting on 2 November 2026.\n\nIn the section \"The next steps: digital detox\", ministers agreed to restrict student use of generative AI applications in primary schools, recognising this may involve the continued use of some AI features built into technologies currently in use, with the timing, scope and application of potential limits to be determined by each jurisdiction or sector.\n\nMinisters agreed to restrict student use of generative AI in secondary school assessments, with the same timing, scope and application caveat for each jurisdiction or sector.\n\nMinisters agreed to introduce, trial or consider limits for screen use in schools, again with timing, scope and application determined by each jurisdiction or sector.\n\nMinisters agreed to establish the Australian Schools Digital Detox Taskforce to collect evidence, consult students, teachers and parents, and advise ministers on further action. The paper says the taskforce will provide preliminary advice by mid-2027 and conclude its work by the end of 2027, unless Education Ministers determine otherwise. The agreed list also says the taskforce will advise ministers on further actions next year.\n\nMinisters agreed the Year 5 NAPLAN writing assessment would return to handwritten completion in 2028, subject to further advice from ACARA on feasibility, costs and workload. ACARA is also to advise on handwritten NAPLAN writing for Years 7 and 9.\n\nThe paper recaps the Australian Framework for Generative Artificial Intelligence in Schools (National AI in Schools Taskforce, released late 2023, reviewed in 2024, review endorsed by Education Ministers in June 2025) and Education Services Australia product standards for generative AI.",
+    "aiSummary": "Published 4 November 2026. Education Ministers agreed to restrict generative AI use by primary students and in secondary assessments, with each jurisdiction or sector setting timing, scope and application. They also agreed screen-use limits, a Digital Detox Taskforce to the end of 2027, and a return of Year 5 NAPLAN writing to handwriting in 2028 subject to ACARA advice.",
+    "tags": [
+      "education",
+      "generative AI",
+      "schools",
+      "Education Ministers"
+    ],
+    "themes": [
+      "generative-ai",
+      "strategy-adoption",
+      "responsible-ai"
+    ],
+    "createdAt": "2026-11-04T21:19:19.864Z",
+    "updatedAt": "2026-11-07T04:26:37.474Z",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-11-04",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+          "retrievedAt": "2026-11-07T03:46:42.752Z",
+          "contentType": "text/html",
+          "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-07T03:46:42.752Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:42.752Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+            "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+            "characterCount": 1281
+          },
+          "reviewedDate": {
+            "date": "2026-11-04",
+            "precision": "day",
+            "reviewedAt": "2026-11-07T04:26:37.474Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The announcement page shows \"4 November 2026\" as visible text under its heading (Firecrawl capture of 7 Nov 2026); the page carries no date metadata. This matches the existing effectiveDate."
+          }
+        }
+      }
+    ],
+    "lastReviewedAt": "2026-11-07T04:26:37.474Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+        "retrievedAt": "2026-11-07T03:46:42.752Z",
+        "contentType": "text/html",
+        "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-07T03:46:42.752Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:42.752Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+          "characterCount": 1281
+        },
+        "reviewedDate": {
+          "date": "2026-11-04",
+          "precision": "day",
+          "reviewedAt": "2026-11-07T04:26:37.474Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The announcement page shows \"4 November 2026\" as visible text under its heading (Firecrawl capture of 7 Nov 2026); the page carries no date metadata. This matches the existing effectiveDate."
+        }
+      },
+      "checkedAt": "2026-11-07T04:26:37.474Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-07-1, proposal de00 c8fc ba93 940b). Proposed by Claude (agent). Adds the labelled primary published date the approval gate requires; no other change to the proposed record."
+    }
+  },
+  {
+    "id": "asd-open-weight-ai-secure-operation-2026",
+    "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
+    "description": "ASD's ACSC guidance on governance, selection, secure deployment, monitoring, maintenance and incident response for organisations operating open-weight AI models.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-11-05",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-11-05",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+          "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+          "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI models securely | CGA",
+          "retrievedAt": "2026-11-07T03:46:38.980Z",
+          "contentType": "text/html",
+          "contentHash": "48056cddfec2842523a5a99ee225921972c937aa36897d430907c88babd9f0cb",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-07T03:46:38.980Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:38.980Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+            "pageContentHash": "1acee17edfd62a6c7fc718473f74e798711f214acdcd64e4ad7ddac8dfe65465",
+            "characterCount": 17155
+          },
+          "publishedAt": "2026-11-05",
+          "publishedAtPrecision": "day"
+        }
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+    "content": "ASD's ACSC companion publication. The page shows 05 Nov 2026 twice, in the published and last-reviewed positions. It assumes the organisation has decided, or is close to deciding, to operate an open-weight model itself, and covers the responsibilities that creates. It distinguishes local deployment (on infrastructure the organisation controls, on-premises or in a public cloud) from consuming a hosted API or a third party that operates the model, and says a hosted open-weight service should be treated like other hosted AI or cloud services. Governance on the page: an organisational policy for approved use cases, security requirements, accountability and risk acceptance; a formal onboarding assessment; a register of approved models (use case, owner, risk acceptance, next review) and a technical inventory of versions, artefacts, adapters, dependencies and configurations; and processes to reassess after material change and to update, replace or retire models. Selection and operation principles on the page are: choose proportionately; know and verify the source (including provenance, licence, modifications, and country of origin as one factor rather than proof of trustworthiness); verify suitability by independent testing of the specific version; assess and secure the deployment before committing to a design, including egress and controls outside the model; and maintain assurance, including what the organisation must monitor itself when vendor support is limited. Deployment risks, which the page says the operating organisation manages without a provider's monitoring and incident response, are deployment and infrastructure security (segmentation, separate development and production, authentication, multi-factor authentication for administrative access, least privilege, controlled outbound access, rate limits, and tested containment); model maintenance and updates (track releases and advisories, test before deployment, keep rollback, reassess unmaintained models); and monitoring, evaluation and incident response (log access, prompts, responses and tool activity commensurate with risk, watch for misuse, theft, leakage and safeguard bypass, and keep tested rollback, credential revocation and incident reporting). The audience is executives, technology leaders and cyber security practitioners responsible for these models. Companion: Open-weight AI models: Opportunities and cyber security risks. Announced at https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models. Staged for editorial review; not verified.",
+    "aiSummary": "ASD's ACSC guidance on governance, selection, secure deployment, monitoring, maintenance and incident response for organisations operating open-weight AI models.",
+    "tags": [
+      "open-weight AI",
+      "cyber security",
+      "governance",
+      "incident response"
+    ],
+    "themes": [
+      "cyber-security",
+      "ai-governance",
+      "risk-assurance",
+      "human-oversight"
+    ],
+    "createdAt": "2026-11-05T05:20:00.000Z",
+    "updatedAt": "2026-11-07T04:26:37.392Z",
+    "lastReviewedAt": "2026-11-07T04:26:37.392Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+        "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+        "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI models securely | CGA",
+        "retrievedAt": "2026-11-07T03:46:38.980Z",
+        "contentType": "text/html",
+        "contentHash": "48056cddfec2842523a5a99ee225921972c937aa36897d430907c88babd9f0cb",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-07T03:46:38.980Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:38.980Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "1acee17edfd62a6c7fc718473f74e798711f214acdcd64e4ad7ddac8dfe65465",
+          "characterCount": 17155
+        },
+        "publishedAt": "2026-11-05",
+        "publishedAtPrecision": "day"
+      },
+      "checkedAt": "2026-11-07T04:26:37.392Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-07-1, proposal eef0 eeea 3405 3e57). Proposed by Inky Quill (Signal handoff)."
+    }
+  },
+  {
+    "id": "asd-open-weight-ai-opportunities-risks-2026",
+    "title": "Open-weight AI models: Opportunities and cyber security risks",
+    "description": "ASD's ACSC guidance on the benefits and cyber security risks of open-weight AI models, for executives, technology leaders and cyber security practitioners.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "active",
+    "effectiveDate": "2026-11-05",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-11-05",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+          "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+          "title": "Open-weight AI models: Opportunities and cyber security risks | CGA",
+          "retrievedAt": "2026-11-07T03:46:22.618Z",
+          "contentType": "text/html",
+          "contentHash": "c2535120157bf9a2175b10e2508c23750c9ef6bf87116caf3a19431b69bf2cf4",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-07T03:46:22.618Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:22.618Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+            "pageContentHash": "1a1f41c41b816b1c81796808f0ca59683031034e681045f4bd3eb80fde18d68f",
+            "characterCount": 17907
+          },
+          "publishedAt": "2026-11-05",
+          "publishedAtPrecision": "day"
+        }
+      }
+    ],
+    "agencies": [
+      "Australian Signals Directorate",
+      "Australian Cyber Security Centre"
+    ],
+    "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+    "content": "ASD's ACSC publication. The page is dated 05 Nov 2026 and last reviewed 05 Nov 2026. It explains what open-weight AI models are: models whose weights are publicly released so an organisation can download, modify and operate them on its own infrastructure, typically without the training data, training code or full documentation. It describes benefits of local control, including hosting in the organisation's own environment (including disconnected environments), choosing when to adopt updates, and configuring safeguards under the organisation's own governance. It says those benefits sit with greater responsibility for security, monitoring, maintenance and incident response. Risk areas on the page, which arise because released weights can be copied, modified and redistributed without the original developer's oversight, are model selection, provenance and developer jurisdiction; model, data and software supply chain (including executable model formats and hidden behaviour); fine-tuned model security (memorisation and theft of sensitive training information); and safeguards, integrations and agentic systems (outdated, weakened or removed safeguards, prompt injection and unauthorised tool use). Recommended actions include defining intended and prohibited uses, not adopting a model whose provenance cannot be established for that use, obtaining artefacts only from assessed sources, verifying hashes and signatures, sandboxing new models, preferring formats that cannot contain executable code, treating fine-tuned files as potentially containing the data used to create them, and placing controls outside the model, with human approval for high-risk or irreversible actions. The audience is executives, technology leaders and cyber security practitioners considering whether to adopt open-weight models. It points to the companion publication Selecting, deploying and operating open-weight AI models securely, and to ASD's Careful adoption of agentic AI services and Agentic AI harnesses for agentic deployments. Announced at https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models. Staged for editorial review; not verified.",
+    "aiSummary": "ASD's ACSC guidance on the benefits and cyber security risks of open-weight AI models, for executives, technology leaders and cyber security practitioners.",
+    "tags": [
+      "open-weight AI",
+      "cyber security",
+      "supply chain",
+      "governance"
+    ],
+    "themes": [
+      "cyber-security",
+      "ai-governance",
+      "procurement-supply",
+      "risk-assurance"
+    ],
+    "createdAt": "2026-11-05T05:20:00.000Z",
+    "updatedAt": "2026-11-07T04:26:37.306Z",
+    "lastReviewedAt": "2026-11-07T04:26:37.306Z",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+        "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+        "title": "Open-weight AI models: Opportunities and cyber security risks | CGA",
+        "retrievedAt": "2026-11-07T03:46:22.618Z",
+        "contentType": "text/html",
+        "contentHash": "c2535120157bf9a2175b10e2508c23750c9ef6bf87116caf3a19431b69bf2cf4",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-07T03:46:22.618Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:22.618Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "1a1f41c41b816b1c81796808f0ca59683031034e681045f4bd3eb80fde18d68f",
+          "characterCount": 17907
+        },
+        "publishedAt": "2026-11-05",
+        "publishedAtPrecision": "day"
+      },
+      "checkedAt": "2026-11-07T04:26:37.306Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-07-1, proposal de59 6ccb 9a05 f342). Proposed by Inky Quill (Signal handoff)."
+    }
+  },
+  {
     "id": "agd-privacy-reform-exposure-draft-2026",
     "title": "Privacy Reform – Consultation on Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026",
     "description": "Attorney-General's Department consultation on a Consultation Paper and the Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026, which would modernise the Privacy Act 1988 and, in the department's words, help tackle emerging risks from new technologies including artificial intelligence. Submissions closed on 18 September 2026.",

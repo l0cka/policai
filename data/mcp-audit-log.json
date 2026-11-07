@@ -1,5 +1,33 @@
 [
   {
+    "id": "mcp-audit-571716b0-0a5d-4517-a65c-1f13cd3e4a7a",
+    "createdAt": "2026-11-07T04:26:43.597Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ae37ab70-ffd6-4965-a245-8f1b802d1c94",
+    "createdAt": "2026-11-07T04:26:37.527Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-43722886-6d37-439b-a01d-fd1b8dff57ed",
+    "createdAt": "2026-11-07T04:26:37.446Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2ba77e8e-5165-48d0-90b5-eb56b50ac5f1",
+    "createdAt": "2026-11-07T04:26:37.368Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-a8931077-a8a5-4e75-81c1-b85c5ad03f09",
     "createdAt": "2026-11-07T04:02:04.110Z",
     "actor": "local-mcp-admin",
@@ -3649,36 +3677,6 @@
   {
     "id": "mcp-audit-19461a8b-5d4b-45c9-be42-bc68aea4ed99",
     "createdAt": "2026-07-19T06:14:29.287Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-26b6e57d-7852-4447-b1b5-4c995e1da0b5",
-    "createdAt": "2026-07-19T06:14:29.273Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-deec8004-d14f-4e1c-9797-93c701cdb645",
-    "createdAt": "2026-07-19T06:14:29.259Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-a2664a83-0ecd-4326-84b0-e9ada9d2a48d",
-    "createdAt": "2026-07-19T06:14:29.241Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-d192ea9c-166f-4b6e-83b4-c9c32213b6d0",
-    "createdAt": "2026-07-19T06:14:29.223Z",
     "actor": "local-mcp-admin",
     "toolName": "approve_staged_source",
     "status": "success"
