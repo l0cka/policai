@@ -1,5 +1,69 @@
 [
   {
+    "id": "mcp-audit-c4787dc9-7350-4006-bbb1-071719aca369",
+    "createdAt": "2026-11-06T22:09:24.604Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-b69786e0-f35d-4a6a-a00e-1f7c3b60d8de",
+    "createdAt": "2026-11-06T22:09:24.523Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cdb593b7-014b-48d4-abf8-f9ad808585d5",
+    "createdAt": "2026-11-06T22:09:24.437Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-16aaf5db-8108-4d0c-9693-bbcc94df344c",
+    "createdAt": "2026-11-06T22:09:24.355Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-d808f6e7-232e-43b1-8771-1a4a2878a060",
+    "createdAt": "2026-11-06T22:09:24.271Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e480432a-a153-432b-97f9-20ed946a9463",
+    "createdAt": "2026-11-06T22:09:24.187Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e5f5e263-8757-48d8-91f6-437cb2bdd12b",
+    "createdAt": "2026-11-06T22:09:24.109Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-35dafebe-b68f-43d4-840a-58d5d118a546",
+    "createdAt": "2026-11-06T22:09:24.030Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-780e580c-23d1-41ec-94d6-45085aab96df",
+    "createdAt": "2026-11-06T22:09:23.294Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "error",
+    "errorSummary": "Official source changed after staging and must be reviewed again before approval"
+  },
+  {
     "id": "mcp-audit-6acd5fa2-4fdf-4c3c-a87d-d691b4ddd885",
     "createdAt": "2026-11-06T01:54:29.233Z",
     "actor": "local-mcp-admin",
@@ -3614,74 +3678,6 @@
     "createdAt": "2026-07-19T06:14:30.290Z",
     "actor": "local-mcp-admin",
     "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-46c80eeb-b27d-4b9f-9237-35df51f6453f",
-    "createdAt": "2026-07-19T06:14:30.284Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.ag.gov.au/rights-and-protections/publications/government-response-privacy-act-review-report",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-24a337da-328b-4ccf-ae2b-789923a13556",
-    "createdAt": "2026-07-19T06:14:30.278Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-25e0a9d7-e282-408d-9cb7-460718737566",
-    "createdAt": "2026-07-19T06:14:30.271Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://consult.industry.gov.au/ai-mandatory-guardrails",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ea2020f6-b2a6-4104-b013-facc9798499f",
-    "createdAt": "2026-07-19T06:14:30.265Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-82b5036f-d6ad-4c8a-a449-64b068203ecc",
-    "createdAt": "2026-07-19T06:14:30.259Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://consult.industry.gov.au/automated-decision-making-ai-regulation-issues-paper",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f50b14f1-3310-423f-aa63-9906793c1446",
-    "createdAt": "2026-07-19T06:14:30.252Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-45f5db9b-e8e5-4f03-9b7f-d7e1025d116d",
-    "createdAt": "2026-07-19T06:14:30.243Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.vic.gov.au/administrative-guideline-safe-responsible-use-gen-ai-vps",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-3f684074-b0b5-4053-ba8b-b34b8d3cf4db",
-    "createdAt": "2026-07-19T06:14:30.236Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-2a910c76-4ba3-43ee-9181-af5c7f4e2679",
-    "createdAt": "2026-07-19T06:14:30.229Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
     "status": "success"
   }
 ]

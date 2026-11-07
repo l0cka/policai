@@ -1206,36 +1206,42 @@
     "id": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
     "date": "2026-05-08",
     "title": "ASIC open letter on AI-era cyber resilience",
-    "description": "ASIC writes to AFS licensees and market participants on AI-driven cyber threats.",
+    "description": "ASIC writes to licensees and market participants on AI-driven cyber threats.",
     "type": "announcement",
     "jurisdiction": "federal",
-    "sourceUrl": "https://asic.gov.au/newsroom",
+    "sourceUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
     "datePrecision": "day",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://asic.gov.au/newsroom",
-        "finalUrl": "https://asic.gov.au/newsroom",
-        "title": "Newsroom | ASIC with linked official detail",
-        "retrievedAt": "2026-08-12T01:21:03.384Z",
+        "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "title": "26-092MR ASIC calls for urgent cyber uplift as AI accelerates cyber threats | ASIC",
+        "retrievedAt": "2026-11-06T01:49:54.000Z",
         "contentType": "text/html",
-        "contentHash": "e95a04ee2655ada6d9b2b51f62189b7a28ad756dd39d51891effdff1f20cdbdc",
+        "contentHash": "fcc0040a9bf955552cc369cc755ced066a09e3e301c217e61b60a3eaf3452aec",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-12T01:21:03.384Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
-          "pageContentHash": "0f081346c6dcf8faaafb14fd38c2aedcedf62df477c7b34a0eb16ec0a6112030",
-          "characterCount": 9776
+          "capturedAt": "2026-11-06T01:49:54.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+          "pageContentHash": "6f6fee6072cc96c0160878c155f7f786266a9c13aea3980f9b45d316417daa53",
+          "characterCount": 5419
         },
-        "publishedAt": "2026-05-08",
-        "publishedAtPrecision": "day"
+        "reviewedDate": {
+          "date": "2026-05-08",
+          "precision": "day",
+          "reviewedAt": "2026-11-06T22:09:24.217Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Release 26-092MR carries the page metadata displayDate \"8 May 2026\" (dcterms.date.created 2026-05-07); the visible body has no date line. It states ASIC \"is calling on all licensees and market participants to urgently strengthen their cyber resilience measures\"."
+        }
       },
-      "checkedAt": "2026-08-12T01:22:07.078Z",
+      "checkedAt": "2026-11-06T22:09:24.217Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi verified the newsroom entry and linked permanent ASIC release 26-092MR, including the date, audience and cyber-resilience expectations."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 4827 9999 925b d1df). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it."
     }
   },
   {
@@ -1246,38 +1252,39 @@
     "type": "policy_introduced",
     "jurisdiction": "vic",
     "relatedPolicyId": "vic-supreme-court-sc-gen-25",
-    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
     "datePrecision": "day",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
-        "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
-        "title": "Practice notes | The Supreme Court of Victoria with linked official detail",
-        "retrievedAt": "2026-08-12T01:20:57.469Z",
+        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+        "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+        "title": "SC GEN 25 - The use of Artificial Intelligence by Court users | The Supreme Court of Victoria",
+        "retrievedAt": "2026-11-06T01:49:57.000Z",
         "contentType": "text/html",
-        "contentHash": "0209a1483c496a40b1123b2ae31ab96ec219846afda6b19cce00eeae751f5549",
+        "contentHash": "304bf6411b5dfa148b3989fc2a8c38d4ec3c38db0f13f8856bba0b3fbcc20cb7",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-12T01:20:57.469Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
-          "pageContentHash": "d6987579a4da4249e40ee56eea88f153bf8d2237db47fbf0bf5776144e67f9e3",
-          "characterCount": 13738
+          "capturedAt": "2026-11-06T01:49:57.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+          "pageContentHash": "3106c13185e1c882ad1ff25a8c59098647c73e06bbc06feb41bd9b7d044409f9",
+          "characterCount": 10743
         },
         "reviewedDate": {
           "date": "2026-05-14",
           "precision": "day",
-          "reviewedAt": "2026-08-12T01:22:04.540Z",
+          "reviewedAt": "2026-11-06T22:09:24.300Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The linked official SC GEN 25 detail states the practice note was issued and commenced on 14 May 2026 and replaced the May 2024 guidelines."
+          "notes": "Paragraph 2.1 states \"This Practice Note was issued and commences on 14 May 2026\"; the amendment history says it was issued \"replacing the Guidelines for Litigants ... of May 2024\"."
         }
       },
-      "checkedAt": "2026-08-12T01:22:04.540Z",
+      "checkedAt": "2026-11-06T22:09:24.300Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi verified the catalogue entry and linked permanent SC GEN 25 detail page, including issue, commencement and replacement of the May 2024 guidelines."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1a93 b110 a21d b690). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it."
     }
   },
   {
@@ -1332,30 +1339,31 @@
         "url": "https://www.fcfcoa.gov.au/pd/pd-ai",
         "finalUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
         "title": "FCFCOA Practice Direction: Use of Artificial Intelligence | Federal Circuit and Family Court of Australia",
-        "retrievedAt": "2026-08-12T01:20:50.317Z",
+        "retrievedAt": "2026-11-06T01:47:54.704Z",
         "contentType": "text/html",
-        "contentHash": "3888da141a5e98b737f86a1125a13ef669792722660c10f449cab30036a33e89",
+        "contentHash": "1b613411154a4234cdbdea8ddede6062d033b42d58c85128f3cb0e2355260de2",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-12T01:20:50.317Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
-          "pageContentHash": "0e308c0e770fd66514c531f468726e377ba137ea4712e292d5e36c2fa7816bea",
-          "characterCount": 19353
+          "capturedAt": "2026-11-06T01:47:54.704Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+          "pageContentHash": "6d9cbb0b33b0a93ab660f112e17b1f2df2ea0dd7e3095cffd135c6628fd58220",
+          "characterCount": 19030
         },
         "reviewedDate": {
           "date": "2026-05-29",
           "precision": "day",
-          "reviewedAt": "2026-08-12T01:21:59.609Z",
+          "reviewedAt": "2026-11-06T22:09:23.955Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The official practice direction states Issued: 29 May 2026 and applies to all proceedings in Divisions 1 and 2."
+          "notes": "The practice direction states \"Issued: 29 May 2026\"; paragraph 1.1 applies it \"to all proceedings\" in Divisions 1 and 2 and paragraph 1.4 to litigants, lawyers, experts and all other court users."
         }
       },
-      "checkedAt": "2026-08-12T01:21:59.609Z",
+      "checkedAt": "2026-11-06T22:09:23.955Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi approved the corrected scope: PD-AI applies to all proceedings in FCFCOA Divisions 1 and 2, not only proceedings commenced after 1 December 2025."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 9fee c83f 34c5 7c78). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403)."
     }
   },
   {
@@ -1490,31 +1498,32 @@
       "source": {
         "url": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
         "finalUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
-        "title": "AEMC proposes new grid standards for data centre connections",
-        "retrievedAt": "2026-07-20T10:05:51.890Z",
+        "title": "AEMC proposes new grid standards for data centre connections | AEMC",
+        "retrievedAt": "2026-11-06T01:48:09.190Z",
         "contentType": "text/html",
-        "contentHash": "a10a5d578a58de4500241589087d2e56d8ef6e1e824f75f8592828d382175c22",
+        "contentHash": "f849df7cb4018e2c55ff101b25aa097d30b19f76c1334705fedd6d356550e373",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-07-20T10:05:51.890Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official-source browser verification performed on 20 July 2026 immediately before recording the user approval.",
-          "pageContentHash": "4cc54a3c9e7cb9d77c4c109c2620e3dfe2053bbd5b2a538a3f87e0704d6771cc",
-          "characterCount": 184
+          "capturedAt": "2026-11-06T01:48:09.190Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+          "pageContentHash": "a4d70d6c67f208ebd5255d48226ff3de34a2fe808fd9c34c2c61db5b4c21883e",
+          "characterCount": 8913
         },
         "reviewedDate": {
           "date": "2026-03-12",
           "precision": "day",
-          "reviewedAt": "2026-07-20T10:05:51.901Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Draft-rule announcement date verified on the official AEMC source."
+          "reviewedAt": "2026-11-06T22:09:24.135Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The media release is dated \"12 March 2026\" and states the AEMC \"has released a draft rule proposing new technical standards for large data centres\"."
         }
       },
-      "checkedAt": "2026-07-20T10:05:51.901Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-11-06T22:09:24.135Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by the user on 20 July 2026 following a Codex-assisted review of the official Commonwealth source."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal ba27 8fa7 5e03 6a21). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403)."
     }
   },
   {
@@ -1860,31 +1869,32 @@
       "source": {
         "url": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
         "finalUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
-        "title": "SDDC Communique 02 July 2026",
-        "retrievedAt": "2026-07-22T12:53:52.556Z",
+        "title": "SDDC Communique 02 July 2026 | digital.gov.au",
+        "retrievedAt": "2026-11-06T01:48:03.750Z",
         "contentType": "text/html",
-        "contentHash": "cc3a05bbafbc50e4931c6d5244b9a15f27fbce5b9df468e50d7be1e330504bf5",
+        "contentHash": "0146e4bd9c4c59e21a12cb425f62a27bccb80ca11cd8407af299c3cd1cd74050",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-07-22T12:53:52.556Z",
-          "capturedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "Fresh official-source browser revalidation performed immediately before applying the user’s approval on 22 July 2026.",
-          "pageContentHash": "b045d1e8e8e625af2491484510c459c9820dde5248e434925793698751b5bf27",
-          "characterCount": 4814
+          "capturedAt": "2026-11-06T01:48:03.750Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+          "pageContentHash": "c39cf2f71159c3e0755530b4b07365f09f607b59da6f4974a98da757bcca6959",
+          "characterCount": 4671
         },
         "reviewedDate": {
           "date": "2026-07-02",
           "precision": "day",
-          "reviewedAt": "2026-07-22T12:54:11.486Z",
-          "reviewedBy": "Daniel Alkurdi (Codex-assisted web review)",
-          "notes": "The official digital.gov.au communiqué displays 02 July 2026 as the meeting and publication date; the page was last updated 17 July 2026."
+          "reviewedAt": "2026-11-06T22:09:24.059Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The communique states \"Date: 02 July 2026\" and has sections \"Clarifying Record Keeping and FOI Obligations relating to AI\" and \"Update on frontier AI models\"."
         }
       },
-      "checkedAt": "2026-07-22T12:54:11.486Z",
-      "checkedBy": "Daniel Alkurdi (Codex-assisted web review)",
+      "checkedAt": "2026-11-06T22:09:24.059Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by the user after review of the SDDC communiqué’s AI recordkeeping, FOI and cyber-governance content and official date."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 5e36 545e 9f36 a848). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403)."
     }
   },
   {
@@ -2026,18 +2036,40 @@
       "source": {
         "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
         "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
-        "title": "Administrative Review Tribunal (Generative AI) Practice Direction 2026",
-        "publisher": "Administrative Review Tribunal",
-        "retrievedAt": "2026-08-24T23:30:00.000Z",
-        "publishedAt": "2026-08-20",
-        "publishedAtPrecision": "day",
-        "contentType": "application/pdf",
-        "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+        "title": "Administrative Review Tribunal (Use of Generative AI)",
+        "retrievedAt": "2026-11-05T02:52:40.000Z",
+        "contentType": "text/html",
+        "contentHash": "6d63615ada5fdae97e82659cb8575b0ddeb8387c98a9ecce8e741f50fc13b32c",
+        "linkedDocuments": [
+          {
+            "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+            "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+            "retrievedAt": "2026-11-05T02:52:40.000Z",
+            "contentType": "application/pdf",
+            "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-05T02:52:40.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026.",
+          "pageContentHash": "70c958b1eb468795c675e3f9eaeeaa60080d622a775bf2753f25672f1ba6e5eb",
+          "characterCount": 24896
+        },
+        "reviewedDate": {
+          "date": "2026-08-20",
+          "precision": "day",
+          "reviewedAt": "2026-11-06T22:09:24.552Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The practice direction is \"Dated: 20 August 2026\"; paragraph 1.3 states it \"commences and has effect from the date it is signed\", paragraph 1.4 applies it to proceedings \"in all jurisdictional areas of the Tribunal\", and it states it \"has been adapted from the Federal Court of Australia ... (GPN-AI)\"."
+        }
       },
-      "checkedAt": "2026-08-24T23:32:02.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-06T22:09:24.552Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "The signed practice direction is dated 20 August 2026 and paragraph 1.3 states it commences and has effect from the date it is signed. The Tribunal announced it on 24 August 2026."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal af05 9811 b989 082c). Proposed by Claude (agent). Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026."
     }
   },
   {
@@ -2542,29 +2574,46 @@
     "type": "policy_introduced",
     "jurisdiction": "qld",
     "relatedPolicyId": "qld-courts-genai-guidelines-non-lawyers",
-    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
-        "title": "The Use of Generative Artificial Intelligence (AI) — Guidelines for Responsible Use by Non-Lawyers",
-        "publisher": "Queensland Courts",
-        "retrievedAt": "2026-08-25T01:54:16.749Z",
-        "contentType": "application/pdf",
-        "contentHash": "ee2b7fad1564eb18393efcf1919bb7727b11bcb864c76ffe81fdfd2fa48ac11a",
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+        "title": "The Use of Generative AI: Guidelines for non-lawyers",
+        "retrievedAt": "2026-11-06T01:51:41.000Z",
+        "contentType": "text/html",
+        "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
+        "linkedDocuments": [
+          {
+            "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+            "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+            "retrievedAt": "2026-11-06T01:51:41.000Z",
+            "contentType": "application/pdf",
+            "contentHash": "c56a9a20e1740724ea6c9672563798d36e0dbe9243027fc33714b1aba3714c6b"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-06T01:51:41.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026).",
+          "pageContentHash": "6a8998a424bf3de72279b19ca6b6a2b56038ef37a26902807dbcf113c9e2943f",
+          "characterCount": 13733
+        },
         "reviewedDate": {
           "date": "2025-09-15",
           "precision": "day",
-          "reviewedAt": "2026-08-25T02:01:07.000Z",
-          "reviewedBy": "Policai editorial source review",
-          "notes": "The document carries no printed date; the PDF creation metadata records 15 September 2025 and QCAT Practice Direction No 10 of 2025 cites the Guidelines as updated 15 September 2025."
+          "reviewedAt": "2026-11-06T22:09:24.383Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The PDF's version history states \"Guideline issued on 13 May 2024\" and \"Revised version issued on 15 September 2025\"."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-06T22:09:24.383Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full. The undated document's date was taken from PDF creation metadata and corroborated against QCAT Practice Direction No 10 of 2025."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1ba0 0434 e409 3b96). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026)."
     }
   },
   {
@@ -2576,29 +2625,46 @@
     "type": "policy_introduced",
     "jurisdiction": "qld",
     "relatedPolicyId": "qld-courts-genai-guidelines-judicial-officers",
-    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
-        "title": "The Use of Generative AI — Guidelines for Judicial Officers",
-        "publisher": "Queensland Courts",
-        "retrievedAt": "2026-08-25T01:54:16.966Z",
-        "contentType": "application/pdf",
-        "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba",
+        "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+        "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+        "title": "The use of Generative AI: Guidelines for judicial officers",
+        "retrievedAt": "2026-11-06T01:51:44.000Z",
+        "contentType": "text/html",
+        "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
+        "linkedDocuments": [
+          {
+            "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+            "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+            "retrievedAt": "2026-11-06T01:51:44.000Z",
+            "contentType": "application/pdf",
+            "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+          }
+        ],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-06T01:51:44.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba).",
+          "pageContentHash": "e2c878609db63614362d6ceff52e76830093de7431c4286e19fae8c48ef2b3b6",
+          "characterCount": 15273
+        },
         "reviewedDate": {
           "date": "2025-09-15",
           "precision": "day",
-          "reviewedAt": "2026-08-25T02:01:07.000Z",
-          "reviewedBy": "Policai editorial source review",
-          "notes": "The version history records 'Revised version issued on 15 September 2025', and the document text carries the same date."
+          "reviewedAt": "2026-11-06T22:09:24.465Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The version history records \"Revised version issued on 15 September 2025\"."
         }
       },
-      "checkedAt": "2026-08-25T02:01:07.000Z",
-      "checkedBy": "Policai editorial source review",
+      "checkedAt": "2026-11-06T22:09:24.465Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines PDF from the Queensland Courts site through the collector retrieval path, fingerprinted it, and read it in full including the version history before creating this record."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 9971 c6ac d0d5 8d60). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba)."
     }
   },
   {
