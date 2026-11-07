@@ -6,7 +6,10 @@ import yaml from "js-yaml";
 import { describe, expect, it, vi } from "vitest";
 
 type Step = { with?: { script?: string } };
-type Workflow = { jobs: { arm: { steps: Step[] } } };
+type Workflow = {
+	on: { pull_request_target: { types: string[] } };
+	jobs: { arm: { steps: Step[] } };
+};
 
 const workflow = yaml.load(
 	readFileSync(
@@ -21,7 +24,7 @@ const AsyncFunction = Object.getPrototypeOf(async () => {})
 ) => (...args: unknown[]) => Promise<unknown>;
 const run = new AsyncFunction("github", "context", "core", script);
 
-async function arm(changedFiles: string[]) {
+async function arm(changedFiles: string[], { armed = false } = {}) {
 	const graphql = vi.fn().mockResolvedValue({});
 	const info = vi.fn();
 	const octokit = {
@@ -32,7 +35,7 @@ async function arm(changedFiles: string[]) {
 						number: 7,
 						node_id: "PR_node",
 						labels: [],
-						auto_merge: null,
+						auto_merge: armed ? { merge_method: "squash" } : null,
 						mergeable_state: "blocked",
 						head: { sha: "abc" },
 					},
@@ -80,5 +83,15 @@ describe("auto-merge workflow", () => {
 	it("does not arm when the curated register changes", async () => {
 		const { graphql } = await arm(["data/policies.json"]);
 		expect(graphql).not.toHaveBeenCalled();
+	});
+
+	it("re-checks the files on every push and disarms a PR that gained one", async () => {
+		expect(workflow.on.pull_request_target.types).toContain("synchronize");
+		const { graphql } = await arm(
+			["data/watch-state.json", "src/lib/pipeline/collect.ts"],
+			{ armed: true },
+		);
+		expect(graphql).toHaveBeenCalledTimes(1);
+		expect(graphql.mock.calls[0][0]).toContain("disablePullRequestAutoMerge");
 	});
 });

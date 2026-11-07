@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { checkRateLimit } from "@/lib/rate-limit";
+import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getSourceReviewById } from "@/lib/data-service";
 import { rejectStagedSource } from "@/lib/source-ingest";
 import {
@@ -10,12 +10,6 @@ import {
 } from "@/lib/signal-http";
 import { runWithDataOverlay } from "@/lib/data-overlay";
 import { openSignalSnapshot } from "@/lib/signal-git-persist";
-
-const SIGNAL_RATE = {
-	bucket: "signal-reviews",
-	limit: 20,
-	windowSeconds: 60,
-} as const;
 
 function signalJson(data: unknown, status = 200) {
 	return NextResponse.json(data, {
@@ -37,7 +31,7 @@ function signalError(
 }
 
 export async function POST(request: Request) {
-	const limited = checkRateLimit(request, SIGNAL_RATE);
+	const limited = await checkRateLimit(request, RATE_LIMITS.signalReviews);
 	if (limited) {
 		limited.headers.set("Cache-Control", "no-store");
 		return limited;
