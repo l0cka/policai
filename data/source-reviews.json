@@ -34869,12 +34869,12 @@
   {
     "id": "source-review-asd-open-weight-opportunities-2026-11-05",
     "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
-    "title": "Open-weight AI models: Opportunities and cyber security risks",
+    "title": "Open-weight AI models: Opportunities and cyber security risks | CGA",
     "entryKind": "policy",
     "status": "pending_review",
-    "discoveredAt": "2026-11-05T05:20:00.000Z",
+    "discoveredAt": "2026-11-07T03:49:47.263Z",
     "createdBy": "Inky Quill (Signal handoff)",
-    "notes": "Signal handoff, 5 November 2026. Manual read of the cyber.gov.au publication page. The page shows 05 Nov 2026 and last reviewed 05 Nov 2026. Staged as a new guideline for editorial review. It is not approved, published or verified, and lastReviewedAt is unset. Direct curl from the staging host was reset (HTTP/2 INTERNAL_ERROR) and HTTP/1.1 timed out; the page text was read through an HTTPS fetch of the rendered article. contentHash is the SHA-256 of proposedRecord.content (the staged summary), not a byte hash of the HTML. The announcing news item is https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models, which shows the same date. cyber-news is manual (identity_refused since 2026-10-07) and is not fetched by the collector; watch-state lastCheckedBySource for cyber-news is 2026-10-06. Related existing records: asd-careful-adoption-agentic-ai-services-2026, asd-agentic-ai-harnesses-2026, asd-frontier-ai-models-cyber-security-2026.",
+    "notes": "Re-staged 2026-11-07 from a one-off Firecrawl read with the declared Policai identity, replacing the hand-written staging whose contentHash hashed the summary, not the page. Signal handoff, 5 November 2026. Manual read of the cyber.gov.au publication page. The page shows 05 Nov 2026 and last reviewed 05 Nov 2026. Staged as a new guideline for editorial review. It is not approved, published or verified, and lastReviewedAt is unset. Direct curl from the staging host was reset (HTTP/2 INTERNAL_ERROR) and HTTP/1.1 timed out; the page text was read through an HTTPS fetch of the rendered article. contentHash is the SHA-256 of proposedRecord.content (the staged summary), not a byte hash of the HTML. The announcing news item is https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models, which shows the same date. cyber-news is manual (identity_refused since 2026-10-07) and is not fetched by the collector; watch-state lastCheckedBySource for cyber-news is 2026-10-06. Related existing records: asd-careful-adoption-agentic-ai-services-2026, asd-agentic-ai-harnesses-2026, asd-frontier-ai-models-cyber-security-2026.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,
@@ -34895,11 +34895,20 @@
     "sourceEvidence": {
       "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
       "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
-      "title": "Open-weight AI models: Opportunities and cyber security risks",
-      "retrievedAt": "2026-11-05T05:20:00.000Z",
+      "title": "Open-weight AI models: Opportunities and cyber security risks | CGA",
+      "retrievedAt": "2026-11-07T03:46:22.618Z",
       "contentType": "text/html",
-      "contentHash": "1c7d3eb03fd9402616f68c5cec8f4c05a4475a3ec6ecc8ae28e71b736a2a2bef",
+      "contentHash": "c2535120157bf9a2175b10e2508c23750c9ef6bf87116caf3a19431b69bf2cf4",
       "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-07T03:46:22.618Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:22.618Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+        "pageContentHash": "1a1f41c41b816b1c81796808f0ca59683031034e681045f4bd3eb80fde18d68f",
+        "characterCount": 17907
+      },
       "publishedAt": "2026-11-05",
       "publishedAtPrecision": "day"
     },
@@ -34952,17 +34961,17 @@
       "createdAt": "2026-11-05T05:20:00.000Z",
       "updatedAt": "2026-11-05T05:20:00.000Z"
     },
-    "updatedAt": "2026-11-05T05:20:00.000Z"
+    "updatedAt": "2026-11-07T03:49:47.263Z"
   },
   {
     "id": "source-review-asd-open-weight-secure-operation-2026-11-05",
     "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
-    "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
+    "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI models securely | CGA",
     "entryKind": "policy",
     "status": "pending_review",
-    "discoveredAt": "2026-11-05T05:20:00.000Z",
+    "discoveredAt": "2026-11-07T03:49:47.384Z",
     "createdBy": "Inky Quill (Signal handoff)",
-    "notes": "Signal handoff, 5 November 2026. Manual read of the cyber.gov.au publication page. The page shows 05 Nov 2026 and last reviewed 05 Nov 2026. Staged as a new guideline for editorial review. It is not approved, published or verified, and lastReviewedAt is unset. Direct curl from the staging host was reset (HTTP/2 INTERNAL_ERROR) and HTTP/1.1 timed out; the page text was read through an HTTPS fetch of the rendered article. contentHash is the SHA-256 of proposedRecord.content (the staged summary), not a byte hash of the HTML. The announcing news item is https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models, which shows the same date. cyber-news is manual (identity_refused since 2026-10-07) and is not fetched by the collector; watch-state lastCheckedBySource for cyber-news is 2026-10-06. Related existing records: asd-careful-adoption-agentic-ai-services-2026, asd-agentic-ai-harnesses-2026, asd-frontier-ai-models-cyber-security-2026.",
+    "notes": "Re-staged 2026-11-07 from a one-off Firecrawl read with the declared Policai identity, replacing the hand-written staging whose contentHash hashed the summary, not the page. Signal handoff, 5 November 2026. Manual read of the cyber.gov.au publication page. The page shows 05 Nov 2026 and last reviewed 05 Nov 2026. Staged as a new guideline for editorial review. It is not approved, published or verified, and lastReviewedAt is unset. Direct curl from the staging host was reset (HTTP/2 INTERNAL_ERROR) and HTTP/1.1 timed out; the page text was read through an HTTPS fetch of the rendered article. contentHash is the SHA-256 of proposedRecord.content (the staged summary), not a byte hash of the HTML. The announcing news item is https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models, which shows the same date. cyber-news is manual (identity_refused since 2026-10-07) and is not fetched by the collector; watch-state lastCheckedBySource for cyber-news is 2026-10-06. Related existing records: asd-careful-adoption-agentic-ai-services-2026, asd-agentic-ai-harnesses-2026, asd-frontier-ai-models-cyber-security-2026.",
     "analysis": {
       "isRelevant": true,
       "relevanceScore": 1,
@@ -34983,11 +34992,20 @@
     "sourceEvidence": {
       "url": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
       "finalUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
-      "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI Models securely",
-      "retrievedAt": "2026-11-05T05:20:00.000Z",
+      "title": "Open-weight AI models: Selecting, deploying and operating open-weight AI models securely | CGA",
+      "retrievedAt": "2026-11-07T03:46:38.980Z",
       "contentType": "text/html",
-      "contentHash": "e105caceaebbcb60ad17233c6d47f73e92ec17646850b55d39d4c2ec3649ba64",
+      "contentHash": "48056cddfec2842523a5a99ee225921972c937aa36897d430907c88babd9f0cb",
       "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-07T03:46:38.980Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:38.980Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+        "pageContentHash": "1acee17edfd62a6c7fc718473f74e798711f214acdcd64e4ad7ddac8dfe65465",
+        "characterCount": 17155
+      },
       "publishedAt": "2026-11-05",
       "publishedAtPrecision": "day"
     },
@@ -35040,23 +35058,23 @@
       "createdAt": "2026-11-05T05:20:00.000Z",
       "updatedAt": "2026-11-05T05:20:00.000Z"
     },
-    "updatedAt": "2026-11-05T05:20:00.000Z"
+    "updatedAt": "2026-11-07T03:49:47.384Z"
   },
   {
     "id": "source-review-dev-education-ministers-digital-detox-2026",
     "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
-    "title": "A Digital Detox for rebalancing technology use in Australian schools",
+    "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
     "entryKind": "policy",
     "status": "pending_review",
-    "discoveredAt": "2026-11-04T21:19:19.864Z",
+    "discoveredAt": "2026-11-07T03:49:47.413Z",
     "createdBy": "cursor-agent",
-    "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. The PDF (https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf) and the resource page (https://www.education.gov.au/schooling/resources/digital-detox) were read as rendered text. No lastReviewedAt is set.",
+    "notes": "Re-staged 2026-11-07 from a one-off Firecrawl read with the declared Policai identity, replacing the hand-written staging whose contentHash hashed the summary, not the page. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. The PDF (https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf) and the resource page (https://www.education.gov.au/schooling/resources/digital-detox) were read as rendered text. No lastReviewedAt is set.",
     "analysis": {
       "isRelevant": true,
-      "relevanceScore": 0.65,
+      "relevanceScore": 1,
       "suggestedType": "policy",
       "suggestedJurisdiction": "federal",
-      "summary": "Education Ministers agreed to restrict student use of generative AI applications in primary schools and in secondary school assessments, with timing, scope and application set by each jurisdiction or sector. The Department of Education published the decisions in \"A Digital Detox\" on 4 November 2026.",
+      "summary": "Decisions of the Education Ministers Meeting, published by the Department of Education on 4 November 2026, restricting student use of generative AI in primary schools and in secondary assessments, with timing, scope and application set by each jurisdiction or sector.",
       "tags": [
         "education",
         "generative AI",
@@ -35070,11 +35088,20 @@
     "sourceEvidence": {
       "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
       "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
-      "retrievedAt": "2026-11-04T21:19:19.864Z",
+      "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+      "retrievedAt": "2026-11-07T03:46:42.752Z",
       "contentType": "text/html",
-      "title": "A Digital Detox for rebalancing technology use in Australian schools",
-      "publishedAt": "2026-11-04",
-      "publishedAtPrecision": "day"
+      "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-07T03:46:42.752Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:42.752Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+        "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+        "characterCount": 1281
+      }
     },
     "proposedRecord": {
       "id": "education-ministers-digital-detox-2026",
@@ -35137,23 +35164,94 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-11-04T21:19:19.864Z"
+    "updatedAt": "2026-11-07T03:52:51.982Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "education-ministers-digital-detox-2026",
+        "title": "A Digital Detox: Education Ministers’ decisions on technology and generative AI in schools",
+        "description": "Decisions of the Education Ministers Meeting, published by the Department of Education on 4 November 2026, restricting student use of generative AI in primary schools and in secondary assessments, with timing, scope and application set by each jurisdiction or sector.",
+        "jurisdiction": "federal",
+        "type": "policy",
+        "status": "active",
+        "effectiveDate": "2026-11-04",
+        "agencies": [
+          "Department of Education"
+        ],
+        "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "content": "On 4 November 2026 the Department of Education published \"A Digital Detox\", a paper setting out decisions of the Education Ministers Meeting. The announcement page is dated 4 November 2026. The paper says ministers adopted the policy at their meeting on 2 November 2026.\n\nIn the section \"The next steps: digital detox\", ministers agreed to restrict student use of generative AI applications in primary schools, recognising this may involve the continued use of some AI features built into technologies currently in use, with the timing, scope and application of potential limits to be determined by each jurisdiction or sector.\n\nMinisters agreed to restrict student use of generative AI in secondary school assessments, with the same timing, scope and application caveat for each jurisdiction or sector.\n\nMinisters agreed to introduce, trial or consider limits for screen use in schools, again with timing, scope and application determined by each jurisdiction or sector.\n\nMinisters agreed to establish the Australian Schools Digital Detox Taskforce to collect evidence, consult students, teachers and parents, and advise ministers on further action. The paper says the taskforce will provide preliminary advice by mid-2027 and conclude its work by the end of 2027, unless Education Ministers determine otherwise. The agreed list also says the taskforce will advise ministers on further actions next year.\n\nMinisters agreed the Year 5 NAPLAN writing assessment would return to handwritten completion in 2028, subject to further advice from ACARA on feasibility, costs and workload. ACARA is also to advise on handwritten NAPLAN writing for Years 7 and 9.\n\nThe paper recaps the Australian Framework for Generative Artificial Intelligence in Schools (National AI in Schools Taskforce, released late 2023, reviewed in 2024, review endorsed by Education Ministers in June 2025) and Education Services Australia product standards for generative AI.",
+        "aiSummary": "Published 4 November 2026. Education Ministers agreed to restrict generative AI use by primary students and in secondary assessments, with each jurisdiction or sector setting timing, scope and application. They also agreed screen-use limits, a Digital Detox Taskforce to the end of 2027, and a return of Year 5 NAPLAN writing to handwriting in 2028 subject to ACARA advice.",
+        "tags": [
+          "education",
+          "generative AI",
+          "schools",
+          "Education Ministers"
+        ],
+        "themes": [
+          "generative-ai",
+          "strategy-adoption",
+          "responsible-ai"
+        ],
+        "createdAt": "2026-11-04T21:19:19.864Z",
+        "updatedAt": "2026-11-04T21:19:19.864Z",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-11-04",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+              "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+              "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+              "retrievedAt": "2026-11-07T03:46:42.752Z",
+              "contentType": "text/html",
+              "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-11-07T03:46:42.752Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:42.752Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+                "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+                "characterCount": 1281
+              },
+              "reviewedDate": {
+                "date": "2026-11-04",
+                "precision": "day",
+                "notes": "The announcement page shows \"4 November 2026\" as visible text under its heading (Firecrawl capture of 7 Nov 2026); the page carries no date metadata. This matches the existing effectiveDate.",
+                "reviewedAt": "2026-11-07T03:52:51.972Z",
+                "reviewedBy": "Claude (agent)"
+              }
+            }
+          }
+        ]
+      },
+      "reviewedDate": {
+        "date": "2026-11-04",
+        "precision": "day",
+        "notes": "The announcement page shows \"4 November 2026\" as visible text under its heading (Firecrawl capture of 7 Nov 2026); the page carries no date metadata. This matches the existing effectiveDate."
+      },
+      "notes": "Adds the labelled primary published date the approval gate requires; no other change to the proposed record.",
+      "proposedAt": "2026-11-07T03:52:51.982Z"
+    }
   },
   {
     "id": "source-review-dev-australian-framework-generative-ai-in-schools",
     "sourceUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
-    "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+    "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools - Department of Education, Australian Government",
     "entryKind": "policy",
     "status": "pending_review",
-    "discoveredAt": "2026-11-04T21:19:19.864Z",
+    "discoveredAt": "2026-11-07T03:49:47.441Z",
     "createdBy": "cursor-agent",
-    "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Release date is taken from the department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools, which says it was published on 1 December 2023 and that ministers approved the framework on 5 October 2023. The resource page states the June 2025 endorsement of the 2024 review and does not itself state 1 December 2023.",
+    "notes": "Re-staged 2026-11-07 from a one-off Firecrawl read with the declared Policai identity, replacing the hand-written staging whose contentHash hashed the summary, not the page. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Release date is taken from the department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools, which says it was published on 1 December 2023 and that ministers approved the framework on 5 October 2023. The resource page states the June 2025 endorsement of the 2024 review and does not itself state 1 December 2023.",
     "analysis": {
       "isRelevant": true,
-      "relevanceScore": 0.65,
+      "relevanceScore": 1,
       "suggestedType": "framework",
       "suggestedJurisdiction": "federal",
-      "summary": "National framework, approved by Education Ministers on 5 October 2023 and published on 1 December 2023, for responsible use of generative AI in schools. Education Ministers endorsed the 2024 review in June 2025.",
+      "summary": "National framework guiding responsible and ethical use of generative AI in Australian schools. Education Ministers approved it on 5 October 2023; the department published it on 1 December 2023. Ministers endorsed the 2024 review in June 2025.",
       "tags": [
         "education",
         "generative AI",
@@ -35167,9 +35265,20 @@
     "sourceEvidence": {
       "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
       "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
-      "retrievedAt": "2026-11-04T21:19:19.864Z",
+      "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools - Department of Education, Australian Government",
+      "retrievedAt": "2026-11-07T03:46:46.115Z",
       "contentType": "text/html",
-      "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools"
+      "contentHash": "8575f43af1c06544006434e299219185c58aa35192a0ce7eddcc55574fda7fb3",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-07T03:46:46.115Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:46.115Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+        "pageContentHash": "b18fed7719e37d5032c649f7024d07461871196fa6aa07a1e9c22f1099669701",
+        "characterCount": 2241
+      }
     },
     "proposedRecord": {
       "id": "australian-framework-generative-ai-in-schools",
@@ -35232,7 +35341,69 @@
       },
       "status": "detected"
     },
-    "updatedAt": "2026-11-04T21:19:19.864Z"
+    "updatedAt": "2026-11-07T03:55:26.802Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "australian-framework-generative-ai-in-schools",
+        "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+        "description": "National framework guiding responsible and ethical use of generative AI in Australian schools. Education Ministers approved it on 5 October 2023; the department published it on 1 December 2023. Ministers endorsed the 2024 review in June 2025.",
+        "jurisdiction": "federal",
+        "type": "framework",
+        "status": "active",
+        "effectiveDate": "2023-12-01",
+        "agencies": [
+          "Department of Education"
+        ],
+        "sourceUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "content": "The Australian Framework for Generative Artificial Intelligence (AI) in Schools guides responsible and ethical use of generative AI in school education. The Department of Education resource page says it supports school leaders, teachers, support staff, service providers, parents, guardians, students and policy makers.\n\nThe department announcement of the framework, published 1 December 2023, says Education Ministers approved it on 5 October 2023. It names six principles: Teaching and Learning; Human and Social Wellbeing; Transparency; Fairness; Accountability; and Privacy, Security and Safety. It says implementation is from Term 1 2024, and that the National AI in Schools Taskforce developed it with the Commonwealth, jurisdictions, school sectors and the national agencies (ESA, ACARA, AITSL and AERO).\n\nThe resource page states that in June 2025 Education Ministers endorsed the 2024 Framework Review, undertaken by the National AI in Schools Taskforce with jurisdictions, school sectors and national agencies. The page links a PDF and DOCX of the framework, a resource poster, and the 2024 review. This staging does not transcribe those files; they were not retrieved as bytes.",
+        "aiSummary": "The national school generative-AI framework, published 1 December 2023 after Education Ministers approved it on 5 October 2023. Six principles cover teaching and learning, wellbeing, transparency, fairness, accountability, and privacy, security and safety. Ministers endorsed the 2024 review in June 2025.",
+        "tags": [
+          "education",
+          "generative AI",
+          "schools",
+          "framework"
+        ],
+        "themes": [
+          "generative-ai",
+          "responsible-ai",
+          "strategy-adoption"
+        ],
+        "createdAt": "2026-11-04T21:19:19.864Z",
+        "updatedAt": "2026-11-04T21:19:19.864Z",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2023-12-01",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools",
+              "finalUrl": "https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools",
+              "title": "The Australian Framework for Generative Artificial Intelligence (AI) in Schools - Department of Education, Australian Government",
+              "retrievedAt": "2026-11-07T03:55:12.848Z",
+              "contentType": "text/html",
+              "contentHash": "75b9723fd7be34fcdcb9a181d2f93c2f0344976685092bd4d5805d504fbf020f",
+              "linkedDocuments": [],
+              "reviewedDate": {
+                "date": "2023-12-01",
+                "precision": "day",
+                "notes": "The department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools shows \"This content was published on Friday 1 December 2023\" and the dateline \"1 December 2023\" as visible text (one-off Firecrawl read with the declared Policai identity, 2026-11-07T03:55:12.848Z, approved by Daniel Alkurdi on 7 Nov 2026). The resource page itself does not state the publication date.",
+                "reviewedAt": "2026-11-07T03:55:26.792Z",
+                "reviewedBy": "Claude (agent)"
+              }
+            }
+          }
+        ]
+      },
+      "reviewedDate": {
+        "date": "2023-12-01",
+        "precision": "day",
+        "notes": "The department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools shows \"This content was published on Friday 1 December 2023\" and the dateline \"1 December 2023\" as visible text (one-off Firecrawl read with the declared Policai identity, 2026-11-07T03:55:12.848Z, approved by Daniel Alkurdi on 7 Nov 2026). The resource page itself does not state the publication date."
+      },
+      "notes": "Adds the labelled primary published date (1 December 2023) from the department announcement page; no other change to the proposed record.",
+      "proposedAt": "2026-11-07T03:55:26.802Z"
+    }
   },
   {
     "id": "source-review-tl-education-ministers-digital-detox-2026",

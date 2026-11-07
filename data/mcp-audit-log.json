@@ -1,5 +1,79 @@
 [
   {
+    "id": "mcp-audit-a8931077-a8a5-4e75-81c1-b85c5ad03f09",
+    "createdAt": "2026-11-07T04:02:04.110Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-60c79300-4bcf-490a-9f6a-329469978a30",
+    "createdAt": "2026-11-07T03:55:26.817Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f20d233a-1ed9-4d0d-a4f6-2d06f0544c36",
+    "createdAt": "2026-11-07T03:52:58.786Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c150eb4a-7be2-4d8c-9ea4-a14334689050",
+    "createdAt": "2026-11-07T03:52:51.999Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a326b517-8679-4985-b0fc-1dc62250ca3c",
+    "createdAt": "2026-11-07T03:52:18.008Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-77cd668a-9b86-4284-8035-f1a3377e1b22",
+    "createdAt": "2026-11-07T03:52:10.320Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-9eba5dfb-0f44-48f1-b249-4003098c2a1a",
+    "createdAt": "2026-11-07T03:49:47.455Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-90e4c3aa-1b73-4492-8fc9-abefc349fc3d",
+    "createdAt": "2026-11-07T03:49:47.424Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-96720701-a195-4636-b5cc-0ece43f0dc7a",
+    "createdAt": "2026-11-07T03:49:47.395Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-selecting-deploying-and-operating-open-weight-ai-models-securely",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-57780af4-2532-41bf-b79f-1fe6e07f6cb1",
+    "createdAt": "2026-11-07T03:49:47.278Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.cyber.gov.au/publication/open-weight-ai-models-opportunities-and-cyber-security-risks",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-b1f69971-c6aa-43b1-9e76-1f1851a6935d",
     "createdAt": "2026-11-05T22:01:48.405Z",
     "actor": "local-mcp-admin",
@@ -3605,81 +3679,6 @@
   {
     "id": "mcp-audit-d192ea9c-166f-4b6e-83b4-c9c32213b6d0",
     "createdAt": "2026-07-19T06:14:29.223Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b9dd19e7-3cce-4b18-a8bf-b0a683085541",
-    "createdAt": "2026-07-19T06:14:29.216Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ae388451-1899-437c-b997-4745e7cff870",
-    "createdAt": "2026-07-19T06:14:29.208Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-bb05d9de-c225-41fb-961a-4a8c02eba5b6",
-    "createdAt": "2026-07-19T06:14:29.199Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-1474c0fc-ad5c-417f-bd76-2034e4d95d2b",
-    "createdAt": "2026-07-19T06:14:29.192Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5f57d808-88bc-4c38-a332-79788db7a02b",
-    "createdAt": "2026-07-19T06:14:29.060Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.act.gov.au/open/act-government-artificial-intelligence-policy",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e0232e3a-0888-4cf2-a4b2-e8c2f6dea0bf",
-    "createdAt": "2026-07-19T06:14:28.918Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4465f6d0-be28-4d9a-8c73-59fca9401895",
-    "createdAt": "2026-07-19T06:14:28.908Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-90818d71-5103-4719-8294-0416cf21aaf2",
-    "createdAt": "2026-07-19T06:14:28.900Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f76a395a-67fd-4f9b-97a3-27e7b50fd715",
-    "createdAt": "2026-07-19T06:14:28.892Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.courts.sa.gov.au/2026/01/19/supreme-court-issues-guidelines-for-the-use-of-generative-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-cf771449-997e-436b-8a66-5f091c028068",
-    "createdAt": "2026-07-19T06:14:28.886Z",
     "actor": "local-mcp-admin",
     "toolName": "approve_staged_source",
     "status": "success"
