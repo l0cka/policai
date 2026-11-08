@@ -4,9 +4,17 @@ import {
   type PublishedRecordFiles,
   type PublishedRecordRule,
 } from "@/lib/published-records";
-import { linkedDevelopmentId } from "@/lib/source-review";
+import { signedPublishedRecord, verifiedBefore } from "@/lib/development-renewal";
+import {
+  developmentRenewal,
+  developmentsRenewedByPublication,
+  linkedDevelopmentId,
+  originDevelopmentIds,
+  reviewPreviousSourceUrl,
+  type PublishedRecordRef,
+} from "@/lib/source-review";
 import { entryRecord } from "@/lib/register-reconfirm";
-import type { Policy, SourceReview, TimelineEvent } from "@/types";
+import type { Development, Policy, SourceReview, TimelineEvent } from "@/types";
 
 export type SignedRecordState = EditorApprovalState & PublishedRecordFiles;
 
@@ -152,6 +160,62 @@ function changedPublishedRecords<R extends { id: string }>(
   });
 }
 
+/**
+ * For each record whose current verification a signed source review
+ * published, that review; keyed `policy:<id>` or `timeline_event:<id>`.
+ */
+function signedPublications(
+  head: SignedRecordState,
+): Map<string, { record: PublishedRecordRef; review: SourceReview }> {
+  const current = new Map<string, Policy | TimelineEvent>([
+    ...head.policies.map((record) => [`policy:${record.id}`, record] as const),
+    ...head.timeline.map((record) => [`timeline_event:${record.id}`, record] as const),
+  ]);
+  const publications = new Map<string, { record: PublishedRecordRef; review: SourceReview }>();
+  for (const review of head.sourceReviews) {
+    const key = `${review.entryKind}:${review.proposedRecord?.id}`;
+    const record = signedPublishedRecord(review, current.get(key));
+    if (record) publications.set(key, { record, review });
+  }
+  return publications;
+}
+
+/**
+ * True when `head` is `base` renewed from its related record's signed
+ * publication under the publication renewal rule, as
+ * `npm run renew:developments` writes it.
+ */
+function renewedFromSignedRecord(
+  head: Development,
+  base: Development,
+  publications: Map<string, { record: PublishedRecordRef; review: SourceReview }>,
+  reviews: readonly SourceReview[],
+): boolean {
+  const rule = PUBLISHED_RECORDS.developments;
+  const keys = [
+    base.relatedPolicyId && `policy:${base.relatedPolicyId}`,
+    base.relatedTimelineEventId && `timeline_event:${base.relatedTimelineEventId}`,
+  ];
+  return keys.some((key) => {
+    const publication = key ? publications.get(key) : undefined;
+    if (!publication) return false;
+    const { record, review } = publication;
+    const [renewed] = developmentsRenewedByPublication(
+      [base],
+      record,
+      reviewPreviousSourceUrl(review),
+      linkedDevelopmentId(review),
+      originDevelopmentIds(reviews, record.id),
+    );
+    return (
+      renewed !== undefined &&
+      verifiedBefore(base, record) &&
+      rule.readerContent({ ...base, ...developmentRenewal(record) }) ===
+        rule.readerContent(head)
+    );
+  });
+}
+
 const UNSIGNED =
   "a published record changed without a decision signed on this branch; stage a source review for the change and have the editor approve it with their passkey";
 
@@ -194,6 +258,7 @@ export function validateSignedRecordChanges(
 ): { errors: string[]; warnings: string[] } {
   if (!base || head.passkeys.length === 0) return { errors: [], warnings: [] };
   const signed = signedChanges(head, base);
+  const publications = signedPublications(head);
   const errors = [
     ...unapprovedChanges(
       "policies",
@@ -236,6 +301,18 @@ export function validateSignedRecordChanges(
               PUBLISHED_RECORDS.developments,
               change.head,
               change.base,
+            )
+          ),
+      )
+      .filter(
+        (change) =>
+          !(
+            change.base &&
+            renewedFromSignedRecord(
+              change.head,
+              change.base,
+              publications,
+              head.sourceReviews,
             )
           ),
       )
