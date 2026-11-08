@@ -18,9 +18,9 @@ const enrichScript = readFileSync(
   'utf8',
 );
 
-test('the enrichment agent has only the WebFetch capability', () => {
-  assert.match(enrichScript, /--tools\s+"WebFetch"/);
-  assert.match(enrichScript, /--allowedTools\s+"WebFetch"/);
+test('the enrichment agent has no tools', () => {
+  assert.match(enrichScript, /--tools\s+""/);
+  assert.doesNotMatch(enrichScript, /--allowedTools|WebFetch/);
   assert.doesNotMatch(enrichScript, /Bash\(/);
   assert.match(enrichScript, /--json-schema/);
   assert.match(enrichScript, /src\/save-enrichment\.ts/);
@@ -104,8 +104,8 @@ process.stdout.write(JSON.stringify({
     });
 
     const claudeArgs = JSON.parse(readFileSync(join(testDirectory, 'claude-args.json'), 'utf8'));
-    assert.equal(claudeArgs[claudeArgs.indexOf('--tools') + 1], 'WebFetch');
-    assert.equal(claudeArgs[claudeArgs.indexOf('--allowedTools') + 1], 'WebFetch');
+    assert.equal(claudeArgs[claudeArgs.indexOf('--tools') + 1], '');
+    assert.equal(claudeArgs.includes('--allowedTools'), false);
     assert.equal(claudeArgs.includes('--safe-mode'), true);
     assert.equal(claudeArgs.some((arg) => arg.includes('Bash(')), false);
 
