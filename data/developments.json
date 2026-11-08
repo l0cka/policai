@@ -1,5 +1,111 @@
 [
   {
+    "id": "dev-education-ministers-digital-detox-2026",
+    "title": "A Digital Detox: Education Ministers’ decisions on technology and generative AI in schools",
+    "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "sourceId": "editorial-staging",
+    "sourceName": "Department of Education — schooling announcements",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-11-04",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-04T21:19:19.864Z",
+    "summary": "Decisions of the Education Ministers Meeting, published by the Department of Education on 4 November 2026, restricting student use of generative AI in primary schools and in secondary assessments, with timing, scope and application set by each jurisdiction or sector.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-11-07T04:26:37.474Z",
+      "promptVersion": "editorial-review-v1"
+    },
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+        "retrievedAt": "2026-11-07T03:46:42.752Z",
+        "contentType": "text/html",
+        "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-07T03:46:42.752Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:42.752Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+          "characterCount": 1281
+        },
+        "reviewedDate": {
+          "date": "2026-11-04",
+          "precision": "day",
+          "reviewedAt": "2026-11-07T04:26:37.474Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The announcement page shows \"4 November 2026\" as visible text under its heading (Firecrawl capture of 7 Nov 2026); the page carries no date metadata. This matches the existing effectiveDate."
+        }
+      },
+      "checkedAt": "2026-11-07T04:26:37.474Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-07-1, proposal de00 c8fc ba93 940b). Proposed by Claude (agent). Adds the labelled primary published date the approval gate requires; no other change to the proposed record."
+    },
+    "status": "promoted",
+    "relatedPolicyId": "education-ministers-digital-detox-2026"
+  },
+  {
+    "id": "dev-australian-framework-generative-ai-in-schools",
+    "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools",
+    "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+    "sourceId": "editorial-staging",
+    "sourceName": "Department of Education — schooling resources",
+    "jurisdiction": "federal",
+    "publishedAt": "2023-12-01",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-04T21:19:19.864Z",
+    "summary": "National framework guiding responsible and ethical use of generative AI in Australian schools. Education Ministers approved it on 5 October 2023; the department published it on 1 December 2023. Ministers endorsed the 2024 review in June 2025.",
+    "relevanceScore": 1,
+    "classification": "curated",
+    "assessment": {
+      "method": "editorial",
+      "assessedAt": "2026-11-07T04:26:43.526Z",
+      "promptVersion": "editorial-review-v1"
+    },
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/resources/australian-framework-generative-artificial-intelligence-ai-schools",
+        "title": "Australian Framework for Generative Artificial Intelligence (AI) in Schools - Department of Education, Australian Government",
+        "retrievedAt": "2026-11-07T03:46:46.115Z",
+        "contentType": "text/html",
+        "contentHash": "8575f43af1c06544006434e299219185c58aa35192a0ce7eddcc55574fda7fb3",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-07T03:46:46.115Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-07T03:46:46.115Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "b18fed7719e37d5032c649f7024d07461871196fa6aa07a1e9c22f1099669701",
+          "characterCount": 2241
+        },
+        "reviewedDate": {
+          "date": "2023-12-01",
+          "precision": "day",
+          "reviewedAt": "2026-11-07T04:26:43.526Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The department announcement https://www.education.gov.au/schooling/announcements/australian-framework-generative-artificial-intelligence-ai-schools shows \"This content was published on Friday 1 December 2023\" and the dateline \"1 December 2023\" as visible text (one-off Firecrawl read with the declared Policai identity, 2026-11-07T03:55:12.848Z, approved by Daniel Alkurdi on 7 Nov 2026). The resource page itself does not state the publication date."
+        }
+      },
+      "checkedAt": "2026-11-07T04:26:43.526Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-07-2, proposal 953b af27 0555 d1b5). Proposed by Claude (agent). Adds the labelled primary published date (1 December 2023) from the department announcement page; no other change to the proposed record."
+    },
+    "status": "promoted",
+    "relatedPolicyId": "australian-framework-generative-ai-in-schools"
+  },
+  {
     "id": "dev-2026-10-30-dta-ai-reference-architecture",
     "title": "AI Reference Architecture",
     "url": "https://www.digital.gov.au/ai-reference-architecture",
