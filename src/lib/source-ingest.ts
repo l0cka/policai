@@ -2839,6 +2839,7 @@ async function publishStagedSourceUnlocked(
 		} else {
 			const duplicateExists = await sourceUrlExists(review.sourceUrl, {
 				excludeSourceReviewId: review.id,
+				relatedPolicyId: event.relatedPolicyId,
 			});
 			if (duplicateExists) {
 				throw new Error("Source URL already exists in tracked content");
