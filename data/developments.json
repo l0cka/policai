@@ -677,26 +677,32 @@
       "source": {
         "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
         "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=s1471",
-        "retrievedAt": "2026-10-07T19:33:43.055Z",
-        "contentType": "text/plain",
-        "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368",
         "title": "Online Safety and Other Legislation Amendment (My Face, My Rights) Bill 2025",
-        "publishedAt": "2026-06-25",
-        "publishedAtPrecision": "day",
-        "linkedDocuments": [
-          {
-            "url": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-            "finalUrl": "https://parlinfo.aph.gov.au/parlInfo/search/display/display.w3p;query=Id%3A%22chamber%2Fhansards%2F29224%2F0009%22",
-            "retrievedAt": "2026-10-07T19:33:43.055Z",
-            "contentType": "text/plain",
-            "contentHash": "79d9ec28a4d6c36e28cfc88976c8a7a2b0dc2089c3b507ad091f8df4f93f7368"
-          }
-        ]
+        "retrievedAt": "2026-11-05T02:11:55.793Z",
+        "contentType": "text/html",
+        "contentHash": "0f0cf060bf5df0ea7e64216713c8092fa38759ca062aaaa5260739a0e643d5a0",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-05T02:11:55.793Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+          "pageContentHash": "08dc0404b44a9220371831180b52f5a0dd6d25f63ab909c686eaec1abbbbff98",
+          "characterCount": 4002
+        },
+        "reviewedDate": {
+          "date": "2025-11-24",
+          "precision": "day",
+          "reviewedAt": "2026-11-05T22:01:48.350Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Bill home page (bId s1471) captured 5 Nov 2026: Progress, Senate, 'Introduced and read a first time 24 Nov 2025'; 'Second reading moved 24 Nov 2025'; 'Second reading debate 25 Jun 2026'; Status 'Before Senate'. The primary date is the introduction day, replacing the 25 June 2026 debate date."
+        }
       },
-      "checkedAt": "2026-10-19T09:22:36.725Z",
+      "checkedAt": "2026-11-05T22:01:48.350Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi (Signal): approve 2, themes online-safety, privacy-data; type legislation\nchatMessageId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ncardId: source-review-dev-bills-online-safety-and-other-legislation-amendm-1rn0ixa\ndecided: 19 Oct 2026, 20:22 AEDT (2026-10-19T09:22:34.993Z)\nthemes: online-safety, privacy-data\ntype: legislation\nrelayed by Policai Signal\nApproval used the collector-retained source snapshot because the live re-fetch was refused by the host (HTTP 403, 429, or equivalent identity/rate refusal)."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-05-1, proposal 42cd 2ff9 27c2 43ce). Proposed by Claude (agent). Introduction date and current stage corrected."
     },
     "status": "promoted",
     "relatedPolicyId": "federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025"
@@ -4572,7 +4578,7 @@
   {
     "id": "dev-2026-05-14-victorian-supreme-court-replaces-ai-guidelines-wit",
     "title": "Victorian Supreme Court Practice Note SC GEN 25",
-    "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
     "sourceId": "vic-sc-practice-notes",
     "sourceName": "Victorian Supreme Court — practice notes",
     "jurisdiction": "vic",
@@ -4591,33 +4597,34 @@
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
-        "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
-        "title": "Practice notes | The Supreme Court of Victoria with linked official detail",
-        "retrievedAt": "2026-08-12T01:20:57.469Z",
+        "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+        "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+        "title": "SC GEN 25 - The use of Artificial Intelligence by Court users | The Supreme Court of Victoria",
+        "retrievedAt": "2026-11-06T01:49:57.000Z",
         "contentType": "text/html",
-        "contentHash": "0209a1483c496a40b1123b2ae31ab96ec219846afda6b19cce00eeae751f5549",
+        "contentHash": "304bf6411b5dfa148b3989fc2a8c38d4ec3c38db0f13f8856bba0b3fbcc20cb7",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-12T01:20:57.469Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
-          "pageContentHash": "d6987579a4da4249e40ee56eea88f153bf8d2237db47fbf0bf5776144e67f9e3",
-          "characterCount": 13738
+          "capturedAt": "2026-11-06T01:49:57.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+          "pageContentHash": "3106c13185e1c882ad1ff25a8c59098647c73e06bbc06feb41bd9b7d044409f9",
+          "characterCount": 10743
         },
         "reviewedDate": {
           "date": "2026-05-14",
           "precision": "day",
-          "reviewedAt": "2026-08-12T01:22:04.540Z",
+          "reviewedAt": "2026-11-06T22:09:24.300Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The linked official SC GEN 25 detail states the practice note was issued and commenced on 14 May 2026 and replaced the May 2024 guidelines."
+          "notes": "Paragraph 2.1 states \"This Practice Note was issued and commences on 14 May 2026\"; the amendment history says it was issued \"replacing the Guidelines for Litigants ... of May 2024\"."
         }
       },
-      "checkedAt": "2026-08-12T01:22:04.540Z",
+      "checkedAt": "2026-11-06T22:09:24.300Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi verified the catalogue entry and linked permanent SC GEN 25 detail page, including issue, commencement and replacement of the May 2024 guidelines."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1a93 b110 a21d b690). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it."
     },
     "relatedTimelineEventId": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
     "publishedAtPrecision": "day"
@@ -4625,7 +4632,7 @@
   {
     "id": "dev-2026-05-08-asic-writes-to-licensees-on-ai-era-cyber-resilienc",
     "title": "ASIC open letter on AI-era cyber resilience",
-    "url": "https://asic.gov.au/newsroom",
+    "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
     "sourceId": "asic-newsroom",
     "sourceName": "ASIC — newsroom",
     "jurisdiction": "federal",
@@ -4643,28 +4650,34 @@
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://asic.gov.au/newsroom",
-        "finalUrl": "https://asic.gov.au/newsroom",
-        "title": "Newsroom | ASIC with linked official detail",
-        "retrievedAt": "2026-08-12T01:21:03.384Z",
+        "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "title": "26-092MR ASIC calls for urgent cyber uplift as AI accelerates cyber threats | ASIC",
+        "retrievedAt": "2026-11-06T01:49:54.000Z",
         "contentType": "text/html",
-        "contentHash": "e95a04ee2655ada6d9b2b51f62189b7a28ad756dd39d51891effdff1f20cdbdc",
+        "contentHash": "fcc0040a9bf955552cc369cc755ced066a09e3e301c217e61b60a3eaf3452aec",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-12T01:21:03.384Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Fresh approval-time browser revalidation of the staged official evidence by Daniel Alkurdi. Linked official detail pages are included where the legacy record points to a catalogue URL.",
-          "pageContentHash": "0f081346c6dcf8faaafb14fd38c2aedcedf62df477c7b34a0eb16ec0a6112030",
-          "characterCount": 9776
+          "capturedAt": "2026-11-06T01:49:54.000Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+          "pageContentHash": "6f6fee6072cc96c0160878c155f7f786266a9c13aea3980f9b45d316417daa53",
+          "characterCount": 5419
         },
-        "publishedAt": "2026-05-08",
-        "publishedAtPrecision": "day"
+        "reviewedDate": {
+          "date": "2026-05-08",
+          "precision": "day",
+          "reviewedAt": "2026-11-06T22:09:24.217Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Release 26-092MR carries the page metadata displayDate \"8 May 2026\" (dcterms.date.created 2026-05-07); the visible body has no date line. It states ASIC \"is calling on all licensees and market participants to urgently strengthen their cyber resilience measures\"."
+        }
       },
-      "checkedAt": "2026-08-12T01:22:07.078Z",
+      "checkedAt": "2026-11-06T22:09:24.217Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Daniel Alkurdi verified the newsroom entry and linked permanent ASIC release 26-092MR, including the date, audience and cyber-resilience expectations."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 4827 9999 925b d1df). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it."
     },
     "relatedTimelineEventId": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
     "publishedAtPrecision": "day"
