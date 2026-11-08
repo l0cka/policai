@@ -1327,31 +1327,22 @@
       "source": {
         "url": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
         "finalUrl": "https://www.forgov.qld.gov.au/information-technology/queensland-government-enterprise-architecture-qgea/qgea-directions-and-guidance/qgea-policies-standards-and-guidelines/artificial-intelligence-governance-policy",
-        "title": "Artificial intelligence governance policy | For government | Queensland Government",
-        "retrievedAt": "2026-09-09T23:33:41.619839Z",
+        "retrievedAt": "2026-11-01T11:03:04.232Z",
         "contentType": "text/html",
-        "contentHash": "96998680821df71560957914185af04ecd7ba3b7411d7976b392d82a24f3686c",
-        "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-09-09T23:33:41.619839Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Daniel Alkurdi approved this Firecrawl-backed controlled capture after plain HTTP and direct browser rendering were blocked by the official host. The current official page was reviewed for version, status, effective month and policy requirements.",
-          "pageContentHash": "d419eeb33bb8d28872b24ab2b348516c2ec7393fd5bcc4f3c01116264b5e6e78",
-          "characterCount": 7829
-        },
+        "contentHash": "f80962af801d5af96b5e8d637271e83df2e9e2ee0309a4dfb8e5d6474cc1fbd2",
+        "title": "Artificial intelligence governance policy - forgov.qld.gov.au",
         "reviewedDate": {
           "date": "2026-08-01",
           "precision": "month",
-          "reviewedAt": "2026-09-09T23:40:12.513Z",
+          "reviewedAt": "2026-11-01T11:03:04.240Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The official Queensland Government page identifies Policy v2.0.0 as Current/Mandated and effective August 2026–current. Month precision is retained because no day-level effective date is stated."
+          "notes": "The policy page states \"Effective:\" then \"August 2026–current\", with \"Version:\" then \"v2.0.0\" and status \"Current\" and \"Mandated\"."
         }
       },
-      "checkedAt": "2026-09-09T23:40:12.513Z",
+      "checkedAt": "2026-11-01T11:03:04.240Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved after reviewing the current official Queensland Government source. The source now identifies Policy v2.0.0, effective August 2026, and adds mandatory FAIRA or agreed-equivalent lifecycle assessment, with FAIRA LITE available for low-risk use cases. The record type, version, primary date and summary were corrected; August 2026 is the sole structured effective date and the superseded 2024 version remains in Git history."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 06d573b0). Proposed by Claude (agent). Register full review through the standard declared-identity path."
     },
     "status": "promoted",
     "publishedAt": "2026-08-01",
@@ -1416,33 +1407,34 @@
         "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
         "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
-        "retrievedAt": "2026-09-09T23:27:30.699Z",
+        "retrievedAt": "2026-11-01T10:50:38.112Z",
         "contentType": "text/html",
-        "contentHash": "d3a1cf61f79987a4b84e3dd1814cf66322584932d194b880d81a20734645d58e",
+        "contentHash": "f06764aba978257689f78a3344751fd55bb4734dd8f457d3a927ce6f778e1376",
         "linkedDocuments": [
           {
             "url": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
             "finalUrl": "https://www.wa.gov.au/system/files/2025-07/ai_policyv2.pdf",
-            "retrievedAt": "2026-09-09T23:27:30.699Z",
+            "retrievedAt": "2026-11-01T10:50:38.112Z",
             "contentType": "application/pdf",
             "contentHash": "f0474b1616dfdc3f14df3ef170096d99682ec423e15fd631aeedcae03aa542b6"
           }
         ],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-09-09T23:27:30.699Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Daniel Alkurdi approved this controlled browser capture after reviewing the current official policy page. The hardened retriever was blocked by the host.",
-          "pageContentHash": "45822a32ac5a834887419662c9db20b637d77abae958319c541c18cead84b47e",
-          "characterCount": 5104
+          "capturedAt": "2026-11-01T10:50:38.112Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
+          "pageContentHash": "c4c846051a21e2b1ea545b7f6d29496d87d84cc5f75c8c5d98bf6853ec743afd",
+          "characterCount": 13325
         },
         "publishedAt": "2024-03-05",
         "publishedAtPrecision": "day"
       },
-      "checkedAt": "2026-09-09T23:40:12.610Z",
+      "checkedAt": "2026-11-01T11:03:04.744Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved after reviewing the current official WA Government page and linked policy PDF. The page remains first published 5 March 2024 and was last updated 25 August 2026; the unchanged current PDF states Updated June 2025. The record now captures the mandatory lifecycle self-assessment scope and explicit AI Advisory Board referral thresholds. Unsupported day precision and the prior released July 2025 wording were not retained.",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-01-3, proposal 5529a202). Proposed by Claude (agent). Plain HTTP read of the page and linked policy PDF with the declared Policai identity. Standard staging timed out, so this reading was staged as a capture.",
       "lastSourceAuditAt": "2026-07-16T10:00:33.646Z"
     },
     "status": "promoted",
