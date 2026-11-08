@@ -1531,6 +1531,22 @@ export function validateCollectionMeta(meta: CollectionMeta): ValidationReport {
   return { errors, warnings };
 }
 
+// A timeline event may cite its related policy's page, so its review may share
+// that page with the policy's own review. No other pair may.
+function citesRelatedPolicyReview(a: SourceReview, b: SourceReview): boolean {
+  const relatedPolicyId = (review: SourceReview) =>
+    review.entryKind === 'timeline_event'
+      ? (review.proposedRecord as Partial<TimelineEvent> | undefined)?.relatedPolicyId
+      : undefined;
+  const policyId = (review: SourceReview) =>
+    review.entryKind === 'policy' ? review.proposedRecord?.id : undefined;
+  const pairs = (event: SourceReview, policy: SourceReview) => {
+    const related = relatedPolicyId(event);
+    return related !== undefined && related === policyId(policy);
+  };
+  return pairs(a, b) || pairs(b, a);
+}
+
 export function validateSourceReviews(
   reviews: SourceReview[],
   targets: SourceReviewTargets = { policies: [], timelineEvents: [] },
@@ -1538,7 +1554,7 @@ export function validateSourceReviews(
   const errors: string[] = [];
   const warnings: string[] = [];
   const ids = new Set<string>();
-  const sourceUrls = new Map<string, string>();
+  const sourceUrls = new Map<string, Array<{ label: string; review: SourceReview }>>();
   const policyIds = new Set(targets.policies.map((policy) => policy.id));
   const policiesById = new Map(
     targets.policies.map((policy) => [policy.id, policy]),
@@ -1575,11 +1591,14 @@ export function validateSourceReviews(
         !review.targetTimelineRevisionHash
       ) {
         const sourceIdentity = sourceUrlIdentity(review.sourceUrl);
-        const existing = sourceUrls.get(sourceIdentity);
+        const sharing = sourceUrls.get(sourceIdentity) ?? [];
+        const existing = sharing.find(
+          (other) => !citesRelatedPolicyReview(review, other.review),
+        );
         if (existing) {
-          errors.push(`${label}: duplicate sourceUrl (also on ${existing})`);
+          errors.push(`${label}: duplicate sourceUrl (also on ${existing.label})`);
         } else {
-          sourceUrls.set(sourceIdentity, label);
+          sourceUrls.set(sourceIdentity, [...sharing, { label, review }]);
         }
       }
     }
