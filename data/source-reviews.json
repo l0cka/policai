@@ -1,5 +1,64 @@
 [
   {
+    "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+    "entryKind": "timeline_event",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-08T23:39:01.554Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Re-sourced to the announcement page on Daniel Alkurdi's 8 Nov 2026 decision; the Digital Detox PDF (https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf) returned Firecrawl errors on four attempts. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Timeline proposal only. It is not written to data/timeline.json. relatedPolicyId is the staged policy id and is not on the register until that review is approved.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Department of Education publishes \"A Digital Detox\", a paper on rebalancing technology use in Australian schools. It outlines the decisions taken by Education Ministers to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+      "retrievedAt": "2026-11-08T23:10:25.788Z",
+      "contentType": "text/html",
+      "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T23:10:25.788Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-08T23:10:25.788Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+        "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+        "characterCount": 1281
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-11-04-education-ministers-digital-detox",
+      "date": "2026-11-04",
+      "datePrecision": "day",
+      "title": "A Digital Detox outlines Education Ministers' decisions to restrict AI in schools",
+      "description": "The Department of Education publishes \"A Digital Detox\", a paper on rebalancing technology use in Australian schools. It outlines the decisions taken by Education Ministers to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "education-ministers-digital-detox-2026",
+      "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools"
+    },
+    "updatedAt": "2026-11-08T23:39:28.092Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-11-04",
+        "precision": "day",
+        "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
+      },
+      "notes": "Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record.",
+      "proposedAt": "2026-11-08T23:39:28.092Z"
+    }
+  },
+  {
     "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
     "sourceUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
     "title": "Administrative Review Tribunal issues its Generative AI Practice Direction",
@@ -38565,7 +38624,7 @@
     "sourceUrl": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
     "title": "Education Ministers agree a digital detox for schools",
     "entryKind": "timeline_event",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-11-04T21:19:19.864Z",
     "createdBy": "cursor-agent",
     "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Timeline proposal only. It is not written to data/timeline.json. relatedPolicyId is the staged policy id and is not on the register until that review is approved.",
@@ -38616,6 +38675,7 @@
         "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
       }
     },
-    "updatedAt": "2026-11-04T21:19:19.864Z"
+    "updatedAt": "2026-11-08T23:39:18.692Z",
+    "rejectionReason": "Re-sourced to the 4 November 2026 announcement page per Daniel Alkurdi's 8 Nov 2026 decision card; superseded by source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511. The Digital Detox PDF could not be read through Firecrawl."
   }
 ]

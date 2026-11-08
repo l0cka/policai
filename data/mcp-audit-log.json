@@ -1,5 +1,34 @@
 [
   {
+    "id": "mcp-audit-72ae3e33-f72e-4f9d-9f74-4548afdcc740",
+    "createdAt": "2026-11-08T23:39:35.644Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-dfe7d2ee-883b-4e53-afb9-1813b45b1400",
+    "createdAt": "2026-11-08T23:39:28.112Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a597158b-f2ea-4909-a11a-c91698315723",
+    "createdAt": "2026-11-08T23:39:18.708Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e05136a8-a39a-4b47-8abd-dfd0fd7ae72c",
+    "createdAt": "2026-11-08T23:39:01.577Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-0c8408cc-5ec9-469c-ae0f-bfd7a250f504",
     "createdAt": "2026-11-08T22:50:36.263Z",
     "actor": "local-mcp-admin",
@@ -3657,34 +3686,6 @@
   {
     "id": "mcp-audit-b4542db2-1040-4785-b32e-bd6edd275c00",
     "createdAt": "2026-07-19T06:14:44.208Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-d9f8ef47-13d5-4ea6-876b-bba7a96ce6c8",
-    "createdAt": "2026-07-19T06:14:44.198Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e3754ea1-a43e-4fa8-a19f-9d1b87e96c68",
-    "createdAt": "2026-07-19T06:14:44.189Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-996a2928-5690-4711-a260-c2005f606be0",
-    "createdAt": "2026-07-19T06:14:44.180Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-cf20bf81-23d8-4ae9-8064-04df7469efef",
-    "createdAt": "2026-07-19T06:14:44.171Z",
     "actor": "local-mcp-admin",
     "toolName": "publish_staged_source",
     "status": "success"
