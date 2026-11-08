@@ -144,49 +144,6 @@
       ]
     },
     {
-      "id": "2026-11-06-1",
-      "proposedAt": "2026-11-06T01:54:29.233Z",
-      "proposedBy": "Claude (agent)",
-      "entries": [
-        {
-          "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
-          "proposalHash": "3f4d3485cfe607e0ad92c3b265e2ed166f2664b4dfb16826e66565a14f45f78b"
-        },
-        {
-          "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
-          "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
-        },
-        {
-          "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
-          "proposalHash": "bc2113341eafa8db54b8ff2d5a1c3c526805859178971fdf171aa1c0f78b9d7c"
-        },
-        {
-          "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
-          "proposalHash": "e4cf37fbeb96536fb731f45563dc4aa5bdca279a8344b046020a43ac58a881d0"
-        },
-        {
-          "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
-          "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
-        },
-        {
-          "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
-          "proposalHash": "e3cb6967cc7b6bcd4d2808041097b0a637852cdc227756e173741da0a63b0c95"
-        },
-        {
-          "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
-          "proposalHash": "73b575277333493cd3d7699718bc8029d3b81bc63be52e21479af65009144c7e"
-        },
-        {
-          "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
-          "proposalHash": "fa72ed44a2486ea6849888bc72aead56b8ad6d30194d7d2e17dec12a7f3db757"
-        },
-        {
-          "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
-          "proposalHash": "c42af4d2da46f9acaa6a88218ddce7b60fb290878180fe2069987df99255a2f1"
-        }
-      ]
-    },
-    {
       "id": "2026-11-06-2",
       "proposedAt": "2026-11-06T01:54:29.233Z",
       "proposedBy": "Claude (agent)",
@@ -252,6 +209,49 @@
         {
           "id": "source-review-dev-australian-framework-generative-ai-in-schools",
           "proposalHash": "953baf270555d1b5cb98440c48833c1b15a1c80db4b323caae830856db60a123"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-1",
+      "proposedAt": "2026-11-08T22:46:05.810Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+          "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+        },
+        {
+          "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+          "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+        },
+        {
+          "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+          "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+        },
+        {
+          "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+          "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+        },
+        {
+          "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+          "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+        },
+        {
+          "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+          "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+        },
+        {
+          "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+          "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+        },
+        {
+          "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+          "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+        },
+        {
+          "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+          "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
         }
       ]
     }
