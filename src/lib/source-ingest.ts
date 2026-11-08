@@ -984,18 +984,25 @@ function withProspectiveTimelineEvent(
 	);
 }
 
-// A timeline replacement may share only its already-related policy's canonical
-// URL. Do not exempt that policy's redirect aliases, other records, or drafts.
-function timelineReplacementRelatedPolicy(
+// A new timeline event, or a replacement that keeps its related policy, may
+// share only that policy's canonical URL. Do not exempt that policy's redirect
+// aliases, other records, or drafts.
+function timelineRelatedPolicy(
 	target: TimelineEvent | undefined,
 	proposed: TimelineEventDraft | undefined,
 	sourceUrl: string,
 	replacesSource: boolean,
 	policies: Policy[],
 ): Policy | undefined {
-	if (!replacesSource || !target?.relatedPolicyId ||
-		proposed?.relatedPolicyId !== target.relatedPolicyId) return undefined;
-	return policies.find((policy) => policy.id === target.relatedPolicyId &&
+	const relatedPolicyId = replacesSource
+		? target?.relatedPolicyId && proposed?.relatedPolicyId === target.relatedPolicyId
+			? target.relatedPolicyId
+			: undefined
+		: target
+			? undefined
+			: proposed?.relatedPolicyId;
+	if (!relatedPolicyId) return undefined;
+	return policies.find((policy) => policy.id === relatedPolicyId &&
 		sourceUrlsEqual(policy.sourceUrl, sourceUrl));
 }
 
@@ -1104,9 +1111,22 @@ async function stageSourceUrlUnlocked(input: {
 			);
 		}
 	}
+	const relatedPolicy = input.entryKind === "timeline_event"
+		? timelineRelatedPolicy(
+				targetTimelineEvent, input.proposedRecord as TimelineEventDraft | undefined,
+				canonicalUrl, Boolean(input.replaceTargetSource), trackedPolicies,
+			)
+		: undefined;
+	const sharesRelatedPolicySource =
+		Boolean(input.browserCapture) &&
+		!targetTimelineEvent &&
+		relatedPolicy !== undefined &&
+		matchingTimelineEvents.length === 0 &&
+		matchingPolicies.every((policy) => policy.id === relatedPolicy.id);
 	if (
 		!targetPolicy &&
 		!targetTimelineEvent &&
+		!sharesRelatedPolicySource &&
 		(matchingPolicies.length > 0 || matchingTimelineEvents.length > 0)
 	) {
 		throw new Error(
@@ -1139,6 +1159,7 @@ async function stageSourceUrlUnlocked(input: {
 		);
 		if (
 			!existingReview &&
+			!sharesRelatedPolicySource &&
 			(await sourceUrlExists(canonicalUrl, { legislativeRecord }))
 		) {
 			throw new Error("Source URL already exists in tracked or staged content");
@@ -1259,10 +1280,6 @@ async function stageSourceUrlUnlocked(input: {
 					retrieved.evidence.retrievedAt ?? new Date().toISOString(),
 				};
 			}
-		const relatedPolicy = timelineReplacementRelatedPolicy(
-			targetTimelineEvent, input.proposedRecord as TimelineEventDraft | undefined,
-			canonicalUrl, Boolean(input.replaceTargetSource), trackedPolicies,
-		);
 		const targetRecord = targetPolicy ?? targetTimelineEvent;
 		const candidateIdentityUrls = sourceIdentityUrls(
 			canonicalUrl,
@@ -1932,7 +1949,7 @@ async function approveStagedSourceUnlocked(input: {
 		const timelineCollision = timelineEvents.find(
 			(existing) => existing.id === event.id,
 		);
-		const relatedPolicy = timelineReplacementRelatedPolicy(
+		const relatedPolicy = timelineRelatedPolicy(
 			timelineCollision, event, review.sourceUrl,
 			Boolean(review.targetTimelineEventPreviousSourceUrl), policies,
 		);
@@ -2571,7 +2588,7 @@ async function assertTargetSourceIdentityIsUncontested(
 	if (!target) {
 		throw new Error("Target record for update review was not found");
 	}
-	const relatedPolicy = timelineReplacementRelatedPolicy(
+	const relatedPolicy = timelineRelatedPolicy(
 		timelineEvents.find((event) => event.id === targetTimelineEventId),
 		review.proposedRecord as TimelineEventDraft, review.sourceUrl,
 		Boolean(review.targetTimelineEventPreviousSourceUrl), policies,
