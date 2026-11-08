@@ -164,7 +164,7 @@ describe('validateSignedRecordChanges', () => {
       expect(run([signedReview, origin])).toEqual([])
     })
 
-    it('refuses copying the verification onto a related development verified from other evidence', () => {
+    it('refuses copying the verification onto a related development on another page', () => {
       expect(run([signedReview])).toEqual([expect.stringMatching(/^developments:dev-new-guidance-abc123: a published record changed/)])
     })
 

@@ -2,7 +2,6 @@
 
 import { describe, expect, it } from 'vitest';
 import { renewalsForPublishedReview } from './development-renewal';
-import { timelineRevisionHash } from './policy-revision';
 import type { Development, SourceReview, TimelineEvent } from '@/types';
 
 const OLD_URL = 'https://example.gov.au/newsroom';
@@ -44,7 +43,7 @@ const review = {
   proposedRecord: publishedEvent,
   reviewedAt: publishedEvent.verification.checkedAt,
   targetTimelineEventId: previousEvent.id,
-  targetTimelineRevisionHash: timelineRevisionHash(previousEvent),
+  targetTimelineEventPreviousSourceUrl: OLD_URL,
   decision: { approval: { subject: 'source-review-batch:x:y' } },
 } as unknown as SourceReview;
 
@@ -67,76 +66,64 @@ function development(id: string, overrides: Partial<Development> = {}): Developm
   };
 }
 
-const moved = { url: NEW_URL, verification: publishedEvent.verification };
+const moved = { url: NEW_URL, verification: publishedEvent.verification }
 
 describe('renewing developments from an already-published signed review', () => {
-  it('moves a development verified from the replaced revision to the record’s new page', () => {
-    const result = renewalsForPublishedReview({
+  it('moves a development on the page the review moved its record from', () => {
+    const updates = renewalsForPublishedReview({
       review,
       record: publishedEvent,
-      previousRecord: previousEvent,
       developments: [
-        development('dev-mirror'),
-        development('dev-other-evidence', {
-          verification: { ...oldVerification, source: { url: OLD_URL, contentHash: 'd'.repeat(64) } },
+        development('dev-old-page'),
+        development('dev-other-page', {
+          url: 'https://example.gov.au/other',
+          verification: { ...oldVerification, source: { url: 'https://example.gov.au/other', contentHash: 'd'.repeat(64) } },
         }),
         development('dev-dismissed', { status: 'dismissed' }),
+        development('dev-unrelated', { relatedTimelineEventId: 'tl-other' }),
       ],
       reviews: [review],
-    });
-    expect(result).toEqual({ problems: [], updates: [{ id: 'dev-mirror', changes: moved }] });
-  });
+    })
+    expect(updates).toEqual([{ id: 'dev-old-page', changes: moved }])
+  })
 
-  it('renews a development the record was promoted from without the previous revision', () => {
-    const origin = { id: 'source-review-dev-origin', status: 'published', proposedRecord: { id: previousEvent.id } };
-    const result = renewalsForPublishedReview({
+  it('renews the development the record was promoted from, whatever page it is on', () => {
+    const origin = { id: 'source-review-dev-origin', status: 'published', proposedRecord: { id: previousEvent.id } }
+    const retired = 'https://example.gov.au/retired'
+    const updates = renewalsForPublishedReview({
       review,
       record: publishedEvent,
       developments: [
         development('dev-origin', {
-          url: 'https://example.gov.au/retired',
-          verification: { ...oldVerification, source: { url: 'https://example.gov.au/retired', contentHash: 'e'.repeat(64) } },
+          url: retired,
+          verification: { ...oldVerification, source: { url: retired, contentHash: 'e'.repeat(64) } },
         }),
-        development('dev-mirror'),
       ],
       reviews: [review, origin as unknown as SourceReview],
-    });
-    expect(result.updates).toEqual([{ id: 'dev-origin', changes: moved }]);
-  });
+    })
+    expect(updates).toEqual([{ id: 'dev-origin', changes: moved }])
+  })
 
-  it('refuses a previous revision the review was not staged against', () => {
-    const result = renewalsForPublishedReview({
+  it('refuses a review without a passkey signature, or whose record was verified again since', () => {
+    const args = { record: publishedEvent, developments: [development('dev-old-page')], reviews: [review] }
+    expect(renewalsForPublishedReview({ ...args, review: { ...review, decision: undefined } })).toBeNull()
+    expect(
+      renewalsForPublishedReview({
+        ...args,
+        review,
+        record: { ...publishedEvent, verification: { ...publishedEvent.verification, checkedAt: '2026-12-01T00:00:00.000Z' } },
+      }),
+    ).toBeNull()
+  })
+
+  it('skips a development that already carries the published verification or a later one', () => {
+    const later = { ...oldVerification, checkedAt: '2026-11-07T00:00:00.000Z' }
+    const updates = renewalsForPublishedReview({
       review,
       record: publishedEvent,
-      previousRecord: { ...previousEvent, title: 'Edited later' },
-      developments: [development('dev-mirror')],
+      developments: [development('dev-old-page', moved), development('dev-renewed-since', { verification: later })],
       reviews: [review],
-    });
-    expect(result.updates).toEqual([]);
-    expect(result.problems).toEqual(['the previous tl-event is not the revision source-review-move was staged against']);
-  });
-
-  it('refuses a review without a passkey signature or a record verified since', () => {
-    const result = renewalsForPublishedReview({
-      review: { ...review, decision: undefined },
-      record: { ...publishedEvent, verification: { ...publishedEvent.verification, checkedAt: '2026-12-01T00:00:00.000Z' } },
-      developments: [development('dev-mirror')],
-      reviews: [review],
-    });
-    expect(result.problems).toEqual([
-      'source-review-move has no passkey signature',
-      'tl-event has been re-verified since source-review-move; renew from the later review',
-    ]);
-  });
-
-  it('skips a development that already carries the published verification', () => {
-    const result = renewalsForPublishedReview({
-      review,
-      record: publishedEvent,
-      previousRecord: previousEvent,
-      developments: [development('dev-mirror', moved)],
-      reviews: [review],
-    });
-    expect(result).toEqual({ problems: [], updates: [] });
-  });
-});
+    })
+    expect(updates).toEqual([])
+  })
+})

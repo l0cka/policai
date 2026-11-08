@@ -4,10 +4,13 @@ import {
   type PublishedRecordFiles,
   type PublishedRecordRule,
 } from "@/lib/published-records";
+import { signedPublishedRecord, verifiedBefore } from "@/lib/development-renewal";
 import {
+  developmentRenewal,
   developmentsRenewedByPublication,
   linkedDevelopmentId,
   originDevelopmentIds,
+  reviewPreviousSourceUrl,
   type PublishedRecordRef,
 } from "@/lib/source-review";
 import { entryRecord } from "@/lib/register-reconfirm";
@@ -158,35 +161,23 @@ function changedPublishedRecords<R extends { id: string }>(
 }
 
 /**
- * Records whose current verification is the one a signed source review
- * published, keyed `policy:<id>` or `timeline_event:<id>`.
+ * For each record whose current verification a signed source review
+ * published, that review; keyed `policy:<id>` or `timeline_event:<id>`.
  */
-function signedRecordVerifications(
+function signedPublications(
   head: SignedRecordState,
-): Map<string, PublishedRecordRef> {
-  const records = new Map<string, PublishedRecordRef>();
+): Map<string, { record: PublishedRecordRef; review: SourceReview }> {
   const current = new Map<string, Policy | TimelineEvent>([
     ...head.policies.map((record) => [`policy:${record.id}`, record] as const),
     ...head.timeline.map((record) => [`timeline_event:${record.id}`, record] as const),
   ]);
+  const publications = new Map<string, { record: PublishedRecordRef; review: SourceReview }>();
   for (const review of head.sourceReviews) {
-    if (review.status !== "published" || !review.decision?.approval) continue;
     const key = `${review.entryKind}:${review.proposedRecord?.id}`;
-    const record = current.get(key);
-    if (
-      record &&
-      record.verification.checkedAt === review.reviewedAt &&
-      record.verification.source.contentHash === review.sourceEvidence?.contentHash
-    ) {
-      records.set(key, {
-        kind: review.entryKind as PublishedRecordRef["kind"],
-        id: record.id,
-        sourceUrl: record.sourceUrl,
-        verification: record.verification,
-      });
-    }
+    const record = signedPublishedRecord(review, current.get(key));
+    if (record) publications.set(key, { record, review });
   }
-  return records;
+  return publications;
 }
 
 /**
@@ -197,7 +188,7 @@ function signedRecordVerifications(
 function renewedFromSignedRecord(
   head: Development,
   base: Development,
-  signedRecords: Map<string, PublishedRecordRef>,
+  publications: Map<string, { record: PublishedRecordRef; review: SourceReview }>,
   reviews: readonly SourceReview[],
 ): boolean {
   const rule = PUBLISHED_RECORDS.developments;
@@ -206,22 +197,21 @@ function renewedFromSignedRecord(
     base.relatedTimelineEventId && `timeline_event:${base.relatedTimelineEventId}`,
   ];
   return keys.some((key) => {
-    const record = key ? signedRecords.get(key) : undefined;
-    if (!record) return false;
+    const publication = key ? publications.get(key) : undefined;
+    if (!publication) return false;
+    const { record, review } = publication;
     const [renewed] = developmentsRenewedByPublication(
       [base],
       record,
-      undefined,
-      null,
+      reviewPreviousSourceUrl(review),
+      linkedDevelopmentId(review),
       originDevelopmentIds(reviews, record.id),
     );
     return (
       renewed !== undefined &&
-      rule.readerContent({
-        ...base,
-        url: record.sourceUrl,
-        verification: record.verification,
-      }) === rule.readerContent(head)
+      verifiedBefore(base, record) &&
+      rule.readerContent({ ...base, ...developmentRenewal(record) }) ===
+        rule.readerContent(head)
     );
   });
 }
@@ -268,7 +258,7 @@ export function validateSignedRecordChanges(
 ): { errors: string[]; warnings: string[] } {
   if (!base || head.passkeys.length === 0) return { errors: [], warnings: [] };
   const signed = signedChanges(head, base);
-  const signedRecords = signedRecordVerifications(head);
+  const publications = signedPublications(head);
   const errors = [
     ...unapprovedChanges(
       "policies",
@@ -321,7 +311,7 @@ export function validateSignedRecordChanges(
             renewedFromSignedRecord(
               change.head,
               change.base,
-              signedRecords,
+              publications,
               head.sourceReviews,
             )
           ),

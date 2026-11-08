@@ -2196,7 +2196,7 @@ describe('source ingest approval workflow', () => {
     );
   });
 
-  it('renews a promoted development verified from the same evidence when its timeline event is published', async () => {
+  it('renews the promoted developments on its page when a timeline event is published', async () => {
     const previousVerification = {
       status: 'verified' as const,
       source: {
@@ -2287,6 +2287,7 @@ describe('source ingest approval workflow', () => {
     );
     expect(updateDevelopment.mock.calls).toEqual([
       ['dev-same-evidence', { url: SOURCE_URL, verification: publishedEvent.verification }],
+      ['dev-other-evidence', { url: SOURCE_URL, verification: publishedEvent.verification }],
     ]);
   });
 

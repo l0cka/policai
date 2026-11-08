@@ -2,7 +2,6 @@ import type {
 	Development,
 	Policy,
 	RecordVerification,
-	SourceEvidence,
 	SourceReview,
 	TimelineEvent,
 } from "@/types";
@@ -18,15 +17,6 @@ export function linkedDevelopmentId(
 	return id.startsWith("dev-") ? id : null;
 }
 
-/**
- * Merge collector-produced review snapshots by stable id. Current collector
- * output wins because recovered candidates may have newer extraction,
- * classification, proposed-record, and linked-development evidence.
- *
- * A watched document gets a new review id for each content version, so a
- * new version replaces any still-pending collector review of the same page
- * rather than standing beside it as a duplicate sourceUrl.
- */
 export interface PublishedRecordRef {
 	kind: "policy" | "timeline_event";
 	id: string;
@@ -34,17 +24,16 @@ export interface PublishedRecordRef {
 	verification: RecordVerification;
 }
 
-function sameEvidence(left: SourceEvidence, right: SourceEvidence): boolean {
-	return (
-		Boolean(left.contentHash) &&
-		left.contentHash === right.contentHash &&
-		sourceUrlsEqual(left.url, right.url)
-	);
+/** The page an update review moved its record away from, if it moved it. */
+export function reviewPreviousSourceUrl(review: SourceReview): string | undefined {
+	return review.entryKind === "timeline_event"
+		? review.targetTimelineEventPreviousSourceUrl
+		: review.targetPolicyPreviousSourceUrl;
 }
 
 /**
  * Developments a published review promoted into `recordId`: the record's
- * intake rows, whatever page or evidence they were last verified from.
+ * intake rows, whatever page they were last verified from.
  */
 export function originDevelopmentIds(
 	reviews: readonly SourceReview[],
@@ -62,15 +51,14 @@ export function originDevelopmentIds(
 
 /**
  * Promoted developments that a signed publication of `record` renews: those
- * the record was promoted from (`originIds`), and those verified from the
- * record's evidence before or after publication. A renewed development takes
- * the published verification and the record's source page, so it follows the
- * record when the review moves it to a new URL.
+ * the record was promoted from (`originIds`), and those on the record's page
+ * or on the page the review moved it from (`previousSourceUrl`). A renewed
+ * development takes the published verification and the record's page.
  */
 export function developmentsRenewedByPublication(
 	developments: readonly Development[],
 	record: PublishedRecordRef,
-	previousSource: SourceEvidence | undefined,
+	previousSourceUrl: string | undefined,
 	excludeId: string | null,
 	originIds: ReadonlySet<string> = new Set(),
 ): Development[] {
@@ -83,11 +71,11 @@ export function developmentsRenewedByPublication(
 				? development.relatedTimelineEventId === record.id
 				: development.relatedPolicyId === record.id;
 		if (!related || development.verification?.method !== "manual") return false;
-		if (originIds.has(development.id)) return true;
-		const source = development.verification.source;
 		return (
-			(previousSource !== undefined && sameEvidence(source, previousSource)) ||
-			sameEvidence(source, record.verification.source)
+			originIds.has(development.id) ||
+			sourceUrlsEqual(development.url, record.sourceUrl) ||
+			(previousSourceUrl !== undefined &&
+				sourceUrlsEqual(development.url, previousSourceUrl))
 		);
 	});
 }
@@ -98,6 +86,15 @@ export function developmentRenewal(
 	return { url: record.sourceUrl, verification: record.verification };
 }
 
+/**
+ * Merge collector-produced review snapshots by stable id. Current collector
+ * output wins because recovered candidates may have newer extraction,
+ * classification, proposed-record, and linked-development evidence.
+ *
+ * A watched document gets a new review id for each content version, so a
+ * new version replaces any still-pending collector review of the same page
+ * rather than standing beside it as a duplicate sourceUrl.
+ */
 export function mergeSourceReviews(
 	existing: SourceReview[],
 	updates: SourceReview[],
