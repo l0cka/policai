@@ -2011,6 +2011,59 @@ describe("data-service file store", () => {
 		);
 	});
 
+	it("lets a timeline event cite its related policy's page, and no other record's", async () => {
+		const page = "https://example.gov.au/policy-announcement";
+		const policy = buildPolicy({ id: "related-policy", sourceUrl: page });
+		const publishedPolicyReview = {
+			id: "source-review-related-policy",
+			sourceUrl: page,
+			title: "Related policy",
+			entryKind: "policy" as const,
+			status: "published" as const,
+			discoveredAt: "2026-05-01T00:00:00.000Z",
+			createdBy: "local-mcp-admin",
+			analysis: {
+				isRelevant: true,
+				relevanceScore: 0.9,
+				suggestedType: "guideline" as const,
+				suggestedJurisdiction: "federal" as const,
+				summary: "A relevant policy.",
+			},
+			sourceEvidence: { url: page },
+			proposedRecord: policy,
+			updatedAt: "2026-05-01T00:00:00.000Z",
+		};
+		readJsonFile.mockImplementation(
+			async (filePath: string, fallback: unknown) => {
+				if (filePath.endsWith("policies.json")) return [policy];
+				if (filePath.endsWith("source-reviews.json")) return [publishedPolicyReview];
+				return fallback;
+			},
+		);
+		const { createSourceReview, createTimelineEvent } = await loadDataServiceModule();
+		const event = buildTimelineEvent({ id: "tl-announced", sourceUrl: page });
+		const timelineReview = (proposedRecord: typeof event) => ({
+			...publishedPolicyReview,
+			id: "source-review-tl-announced",
+			entryKind: "timeline_event" as const,
+			status: "pending_review" as const,
+			proposedRecord,
+		});
+
+		await expect(createSourceReview(timelineReview(event))).rejects.toThrow("already exists");
+		await expect(
+			createSourceReview(timelineReview({ ...event, relatedPolicyId: "another-policy" })),
+		).rejects.toThrow("already exists");
+		await expect(
+			createSourceReview(timelineReview({ ...event, relatedPolicyId: policy.id })),
+		).resolves.toMatchObject({ id: "source-review-tl-announced" });
+
+		await expect(createTimelineEvent(event)).rejects.toThrow("already exists");
+		await expect(
+			createTimelineEvent({ ...event, relatedPolicyId: policy.id }),
+		).resolves.toMatchObject({ id: event.id, relatedPolicyId: policy.id });
+	});
+
 	it("creates manual timeline events in the JSON fallback", async () => {
 		readJsonFile.mockImplementation(
 			async (_filePath: string, fallback: unknown) => fallback,

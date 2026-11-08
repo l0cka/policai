@@ -913,6 +913,100 @@ describe('source ingest approval workflow', () => {
     ).rejects.toThrow('require an explicitly reviewed proposedRecord');
   });
 
+  it('lets a new timeline event take its related policy\'s source page, and no other record\'s', async () => {
+    const draft = buildDraft({ id: 'related-policy', effectiveDate: '2026-07-01' });
+    const relatedPolicy: Policy = {
+      ...draft,
+      effectiveDate: '2026-07-01',
+      dates: draft.dates ?? [],
+      verification: {
+        status: 'verified',
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+      },
+    };
+    getPolicies.mockResolvedValue([relatedPolicy]);
+    getSourceReviews.mockResolvedValue([
+      buildReview({
+        id: 'related-policy-review',
+        status: 'published',
+        proposedRecord: { ...draft, sourceUrl: SOURCE_URL },
+      }),
+    ]);
+    const browserCapture = {
+      pageTitle: 'Ministers announce an AI decision',
+      pageText: 'Official browser-captured announcement text.',
+      references: [SOURCE_URL],
+      capturedAt: new Date().toISOString(),
+      capturedBy: 'Jane Reviewer',
+      notes: 'Captured from the announcement page.',
+      linkedDocuments: [],
+    };
+    const event = {
+      id: 'tl-related-policy-announced',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'Ministers announce an AI decision',
+      description: 'Timeline context from the related policy page.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: SOURCE_URL,
+    };
+
+    await expect(
+      stageSourceCapture({
+        url: SOURCE_URL,
+        entryKind: 'timeline_event',
+        proposedRecord: event,
+        actor: 'local-mcp-admin',
+        browserCapture,
+      }),
+    ).rejects.toThrow('Source URL belongs to tracked policy records');
+    await expect(
+      stageSourceCapture({
+        url: SOURCE_URL,
+        entryKind: 'timeline_event',
+        proposedRecord: { ...event, relatedPolicyId: 'another-policy' },
+        actor: 'local-mcp-admin',
+        browserCapture,
+      }),
+    ).rejects.toThrow('Source URL belongs to tracked policy records');
+
+    const staged = await stageSourceCapture({
+      url: SOURCE_URL,
+      entryKind: 'timeline_event',
+      proposedRecord: { ...event, relatedPolicyId: relatedPolicy.id },
+      actor: 'local-mcp-admin',
+      browserCapture,
+    });
+
+    expect(staged).toMatchObject({
+      entryKind: 'timeline_event',
+      proposedRecord: { id: event.id, relatedPolicyId: relatedPolicy.id, sourceUrl: SOURCE_URL },
+    });
+    expect(staged.targetPolicyId).toBeUndefined();
+    expect(staged.targetTimelineEventId).toBeUndefined();
+
+    getSourceReviewById.mockResolvedValue(staged);
+    getSourceReviews.mockResolvedValue([
+      buildReview({
+        id: 'related-policy-review',
+        status: 'published',
+        proposedRecord: { ...draft, sourceUrl: SOURCE_URL },
+      }),
+      staged,
+    ]);
+    updateSourceReview.mockImplementationOnce(async (_id, updates) => ({ ...staged, ...updates }));
+    await expect(
+      approveStagedSource({ id: staged.id, actor: 'timeline-reviewer', reuseStagedCapture: true }),
+    ).resolves.toMatchObject({
+      status: 'approved',
+      proposedRecord: { id: event.id, relatedPolicyId: relatedPolicy.id },
+    });
+  });
+
   it('lets a legislative record take a bill page only hand-typed timeline events cite', async () => {
     getTimelineEvents.mockResolvedValue([
       buildTimelineEventFixture({ id: 'tl-bill-introduced', sourceUrl: SOURCE_URL }),
@@ -2159,6 +2253,94 @@ describe('source ingest approval workflow', () => {
         description: revisedDraft.description,
       }),
     );
+  });
+
+  it('renews a promoted development verified from the same evidence when its timeline event is published', async () => {
+    const previousVerification = {
+      status: 'verified' as const,
+      source: {
+        url: SOURCE_URL,
+        contentHash: 'c'.repeat(64),
+        publishedAt: '2026-07-01',
+        publishedAtPrecision: 'day' as const,
+      },
+      checkedAt: '2026-04-20T00:00:00.000Z',
+      checkedBy: 'reviewer',
+      method: 'manual' as const,
+    };
+    const existingEvent = {
+      id: 'renewed-timeline-event',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'AI policy event',
+      description: 'Source-backed timeline description.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: SOURCE_URL,
+      verification: previousVerification,
+    };
+    const publishedEvent = {
+      ...existingEvent,
+      verification: {
+        status: 'verified' as const,
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'Daniel Alkurdi',
+        method: 'manual' as const,
+      },
+    };
+    const development = (
+      id: string,
+      overrides: Partial<Development> = {},
+    ): Development => ({
+      ...buildLinkedDevelopment({
+        id,
+        classification: 'curated',
+        status: 'promoted',
+        relatedTimelineEventId: existingEvent.id,
+        verification: previousVerification,
+      }),
+      ...overrides,
+    });
+    getDevelopments.mockResolvedValue([
+      development('dev-same-evidence'),
+      development('dev-other-evidence', {
+        verification: {
+          ...previousVerification,
+          source: { ...previousVerification.source, contentHash: 'd'.repeat(64) },
+        },
+      }),
+      development('dev-other-page', { url: 'https://example.gov.au/catalogue' }),
+      development('dev-detected', { status: 'detected' }),
+      development('dev-dismissed', { status: 'dismissed' }),
+      development('dev-unrelated', { relatedTimelineEventId: 'another-event' }),
+    ]);
+    const review = buildReview({
+      entryKind: 'timeline_event',
+      status: 'approved',
+      reviewedAt: '2026-07-16T00:00:00.000Z',
+      reviewedBy: 'Daniel Alkurdi',
+      targetTimelineEventId: existingEvent.id,
+      targetTimelineRevisionHash: timelineRevisionHash(existingEvent),
+      proposedRecord: publishedEvent,
+    });
+    getSourceReviewById.mockResolvedValue(review);
+    getTimelineEvents.mockResolvedValue([existingEvent]);
+
+    await publishStagedSource(review.id);
+
+    expect(updateTimelineEvent).toHaveBeenCalledWith(
+      existingEvent.id,
+      expect.objectContaining({ verification: publishedEvent.verification }),
+    );
+    expect(updateDevelopment.mock.calls).toEqual([
+      ['dev-same-evidence', { verification: publishedEvent.verification }],
+    ]);
   });
 
   it('does not promote a timeline development before publication is terminal', async () => {

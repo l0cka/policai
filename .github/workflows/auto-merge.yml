@@ -4,7 +4,8 @@ name: Auto-merge
 # (`automation/collection-*` branches), which the PR review routine skips.
 # GitHub then merges once the "Protect main" ruleset passes. Every other PR
 # waits for its review and is merged by hand. A `hold` label disarms it, and so
-# does any changed file outside the collector's four output files.
+# does any changed file outside the collector's four output files. Every push
+# re-runs the file check, so a commit added after arming cannot ride it in.
 # Merging to main deploys policai.org.
 #
 # pull_request_target runs this file from main, so a PR cannot rewrite its own
@@ -13,7 +14,7 @@ on:
   pull_request_target:
     branches:
       - main
-    types: [opened, reopened, ready_for_review, labeled, unlabeled]
+    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
 
 permissions:
   contents: write
@@ -30,7 +31,7 @@ jobs:
 
     steps:
       - name: Enable or disable auto-merge
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
             // Read the PR fresh, not from the event payload: when `hold` is

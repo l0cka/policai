@@ -598,12 +598,17 @@ export async function createSourceReview(
 	review: SourceReview,
 ): Promise<SourceReview> {
 	const normalized = canonicalizeSourceReviewRecord(review);
+	const relatedPolicyId =
+		normalized.entryKind === "timeline_event"
+			? (normalized.proposedRecord as TimelineEventDraft).relatedPolicyId
+			: undefined;
 	if (
 		!normalized.targetPolicyId &&
 		!normalized.targetTimelineEventId &&
 		!normalized.targetTimelineRevisionHash &&
 		(await sourceUrlExists(normalized.sourceUrl, {
 			legislativeRecord: isLegislativeDraft(normalized.proposedRecord),
+			relatedPolicyId,
 		}))
 	) {
 		throw new DuplicatePolicyError(normalized.sourceUrl);
@@ -618,7 +623,8 @@ export async function createSourceReview(
 					!normalized.targetTimelineEventId &&
 					!normalized.targetTimelineRevisionHash &&
 					sourceUrlsEqual(existing.sourceUrl, normalized.sourceUrl) &&
-					existing.status !== "rejected"),
+					existing.status !== "rejected" &&
+					!isRelatedPolicyReview(existing, relatedPolicyId)),
 		)
 	) {
 		throw new DuplicatePolicyError(normalized.sourceUrl);
@@ -645,21 +651,35 @@ export async function updateSourceReview(
 	return reviews[idx];
 }
 
+function isRelatedPolicyReview(
+	review: SourceReview,
+	relatedPolicyId: string | undefined,
+): boolean {
+	return (
+		relatedPolicyId !== undefined &&
+		review.entryKind === "policy" &&
+		review.proposedRecord.id === relatedPolicyId
+	);
+}
+
 /**
  * Whether a policy, timeline event or open source review already cites
  * `sourceUrl`. A legislative record carries its bill's history as events, so
  * it may take a bill page that only hand-typed timeline events cite
  * (`legislativeRecord`). Publishing it retires those entries
- * (`retireTimelineEventsCiting`).
+ * (`retireTimelineEventsCiting`). A timeline event may cite its related
+ * policy's page (`relatedPolicyId`), so that policy and its reviews don't count.
  */
 export async function sourceUrlExists(
 	sourceUrl: string,
 	options: {
 		excludeSourceReviewId?: string;
 		legislativeRecord?: boolean;
+		relatedPolicyId?: string;
 	} = {},
 ): Promise<boolean> {
-	if (await policyExistsBySourceUrl(sourceUrl)) return true;
+	const policy = await getPolicyBySourceUrl(sourceUrl, { access: "admin" });
+	if (policy && policy.id !== options.relatedPolicyId) return true;
 
 	const timelineEvents = options.legislativeRecord
 		? []
@@ -679,7 +699,8 @@ export async function sourceUrlExists(
 		(review) =>
 			sourceUrlsEqual(review.sourceUrl, sourceUrl) &&
 			review.id !== options.excludeSourceReviewId &&
-			review.status !== "rejected",
+			review.status !== "rejected" &&
+			!isRelatedPolicyReview(review, options.relatedPolicyId),
 	);
 }
 
@@ -837,7 +858,10 @@ export async function createTimelineEvent(
 	const normalized = canonicalizeTimelineRecord(event);
 	if (
 		normalized.sourceUrl &&
-		(await sourceUrlExists(normalized.sourceUrl, options))
+		(await sourceUrlExists(normalized.sourceUrl, {
+			...options,
+			relatedPolicyId: normalized.relatedPolicyId,
+		}))
 	) {
 		throw new DuplicatePolicyError(normalized.sourceUrl);
 	}

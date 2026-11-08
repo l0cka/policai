@@ -11,6 +11,11 @@
 		"run_worker_first": ["/_bundled/*", "/_rsc/*"]
 	},
 	// OpenNext resizes /_next/image requests through this binding.
+	// Workers Logs keep exceptions and console output for a week, so a failure
+	// like the 6 Nov /_next/image 500s comes with a stack trace.
+	"observability": {
+		"enabled": true
+	},
 	"images": {
 		"binding": "IMAGES"
 	},
@@ -25,6 +30,16 @@
 	"triggers": {
 		"crons": ["5 13 * * *", "5 14 * * *"]
 	},
+	// Per-client request budgets for the API routes, shared by every isolate
+	// in a Cloudflare location. Each must match its RateLimitConfig in code
+	// (src/lib/rate-limit.test.ts checks). namespace_id is any account-unique
+	// integer.
+	"ratelimits": [
+		{ "name": "RATE_LIMIT_PUBLIC_API", "namespace_id": "1001", "simple": { "limit": 60, "period": 60 } },
+		{ "name": "RATE_LIMIT_SIGNAL_REVIEWS", "namespace_id": "1002", "simple": { "limit": 20, "period": 60 } },
+		{ "name": "RATE_LIMIT_SIGNAL_REVIEW", "namespace_id": "1003", "simple": { "limit": 30, "period": 60 } },
+		{ "name": "RATE_LIMIT_APPROVALS", "namespace_id": "1004", "simple": { "limit": 10, "period": 60 } }
+	],
 	// Off so the Signal write API answers only on policai.org.
 	"workers_dev": false
 }
