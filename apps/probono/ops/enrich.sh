@@ -45,8 +45,9 @@ $items_json"
 
 # Haiku keeps enrichment on the subscription while consuming far less of its
 # usage allowance than the default model. --tools "" is the hard capability
-# boundary: no built-in tool is available.
-agent_output="$($PROBONO_CLAUDE_BIN -p "$prompt" \
+# boundary: no built-in tool is available. The prompt goes on stdin: with
+# pages attached it can pass the 128 KB limit on one command-line argument.
+agent_output="$(printf '%s' "$prompt" | $PROBONO_CLAUDE_BIN -p \
   --model claude-haiku-4-5-20251001 \
   --tools "" \
   --permission-mode dontAsk \
