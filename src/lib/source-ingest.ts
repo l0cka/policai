@@ -51,8 +51,10 @@ import {
 	updateSourceReview,
 } from "@/lib/data-service";
 import {
+	developmentRenewal,
 	developmentsRenewedByPublication,
 	linkedDevelopmentId,
+	originDevelopmentIds,
 } from "@/lib/source-review";
 import {
 	policyRevisionHash,
@@ -2386,20 +2388,22 @@ async function renewRelatedDevelopments(
 	verification: Policy["verification"],
 	previousSource: SourceEvidence | undefined,
 ): Promise<void> {
-	const record = review.proposedRecord as Policy | TimelineEvent;
+	const proposed = review.proposedRecord as Policy | TimelineEvent;
+	const record = {
+		kind: review.entryKind,
+		id: proposed.id,
+		sourceUrl: proposed.sourceUrl,
+		verification,
+	};
 	const renewed = developmentsRenewedByPublication(
 		await getDevelopments(undefined, { access: "admin" }),
-		{
-			kind: review.entryKind,
-			id: record.id,
-			sourceUrl: record.sourceUrl,
-			verification,
-		},
+		record,
 		previousSource,
 		linkedDevelopmentId(review),
+		originDevelopmentIds(await getSourceReviews(), proposed.id),
 	);
 	for (const development of renewed) {
-		await updateDevelopment(development.id, { verification });
+		await updateDevelopment(development.id, developmentRenewal(record));
 	}
 }
 

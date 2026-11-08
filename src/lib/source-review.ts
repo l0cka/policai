@@ -42,11 +42,37 @@ function sameEvidence(left: SourceEvidence, right: SourceEvidence): boolean {
 	);
 }
 
+/**
+ * Developments a published review promoted into `recordId`: the record's
+ * intake rows, whatever page or evidence they were last verified from.
+ */
+export function originDevelopmentIds(
+	reviews: readonly SourceReview[],
+	recordId: string,
+): Set<string> {
+	const ids = new Set<string>();
+	for (const review of reviews) {
+		if (review.status !== "published") continue;
+		const record = review.proposedRecord as { id?: string } | undefined;
+		const developmentId = linkedDevelopmentId(review);
+		if (record?.id === recordId && developmentId) ids.add(developmentId);
+	}
+	return ids;
+}
+
+/**
+ * Promoted developments that a signed publication of `record` renews: those
+ * the record was promoted from (`originIds`), and those verified from the
+ * record's evidence before or after publication. A renewed development takes
+ * the published verification and the record's source page, so it follows the
+ * record when the review moves it to a new URL.
+ */
 export function developmentsRenewedByPublication(
 	developments: readonly Development[],
 	record: PublishedRecordRef,
 	previousSource: SourceEvidence | undefined,
 	excludeId: string | null,
+	originIds: ReadonlySet<string> = new Set(),
 ): Development[] {
 	return developments.filter((development) => {
 		if (development.id === excludeId || development.status !== "promoted") {
@@ -57,13 +83,19 @@ export function developmentsRenewedByPublication(
 				? development.relatedTimelineEventId === record.id
 				: development.relatedPolicyId === record.id;
 		if (!related || development.verification?.method !== "manual") return false;
-		if (!sourceUrlsEqual(development.url, record.sourceUrl)) return false;
+		if (originIds.has(development.id)) return true;
 		const source = development.verification.source;
 		return (
 			(previousSource !== undefined && sameEvidence(source, previousSource)) ||
 			sameEvidence(source, record.verification.source)
 		);
 	});
+}
+
+export function developmentRenewal(
+	record: PublishedRecordRef,
+): Pick<Development, "url" | "verification"> {
+	return { url: record.sourceUrl, verification: record.verification };
 }
 
 export function mergeSourceReviews(

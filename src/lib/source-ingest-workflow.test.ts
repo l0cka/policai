@@ -1082,7 +1082,12 @@ describe('source ingest approval workflow', () => {
       dates: targetDraft.dates ?? [],
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-01-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -1248,7 +1253,12 @@ describe('source ingest approval workflow', () => {
       sourceUrl: SOURCE_URL,
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -1289,7 +1299,12 @@ describe('source ingest approval workflow', () => {
       dates: draft.dates ?? [],
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-01-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -1563,7 +1578,12 @@ describe('source ingest approval workflow', () => {
       dates: relatedPolicyDraft.dates ?? [],
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-01-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -1776,7 +1796,12 @@ describe('source ingest approval workflow', () => {
       sourceUrl: SOURCE_URL,
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -1879,7 +1904,12 @@ describe('source ingest approval workflow', () => {
       sourceUrl: SOURCE_URL,
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -2063,7 +2093,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -2221,7 +2256,13 @@ describe('source ingest approval workflow', () => {
           source: { ...previousVerification.source, contentHash: 'd'.repeat(64) },
         },
       }),
-      development('dev-other-page', { url: 'https://example.gov.au/catalogue' }),
+      development('dev-other-page', {
+        url: 'https://example.gov.au/catalogue',
+        verification: {
+          ...previousVerification,
+          source: { ...previousVerification.source, url: 'https://example.gov.au/catalogue' },
+        },
+      }),
       development('dev-detected', { status: 'detected' }),
       development('dev-dismissed', { status: 'dismissed' }),
       development('dev-unrelated', { relatedTimelineEventId: 'another-event' }),
@@ -2245,7 +2286,80 @@ describe('source ingest approval workflow', () => {
       expect.objectContaining({ verification: publishedEvent.verification }),
     );
     expect(updateDevelopment.mock.calls).toEqual([
-      ['dev-same-evidence', { verification: publishedEvent.verification }],
+      ['dev-same-evidence', { url: SOURCE_URL, verification: publishedEvent.verification }],
+    ]);
+  });
+
+  it('moves a promoted development to the new page when the published review moves its record', async () => {
+    const catalogueUrl = 'https://example.gov.au/catalogue';
+    const previousVerification = {
+      status: 'verified' as const,
+      source: {
+        url: catalogueUrl,
+        contentHash: 'c'.repeat(64),
+        publishedAt: '2026-07-01',
+        publishedAtPrecision: 'day' as const,
+      },
+      checkedAt: '2026-04-20T00:00:00.000Z',
+      checkedBy: 'reviewer',
+      method: 'manual' as const,
+    };
+    const existingEvent = {
+      id: 'moved-timeline-event',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'AI policy event',
+      description: 'Source-backed timeline description.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: catalogueUrl,
+      verification: previousVerification,
+    };
+    const publishedEvent = {
+      ...existingEvent,
+      sourceUrl: SOURCE_URL,
+      verification: {
+        status: 'verified' as const,
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
+        checkedAt: '2026-07-16T00:00:00.000Z',
+        checkedBy: 'Daniel Alkurdi',
+        method: 'manual' as const,
+      },
+    };
+    getDevelopments.mockResolvedValue([
+      {
+        ...buildLinkedDevelopment({
+          id: 'dev-on-old-page',
+          classification: 'curated',
+          status: 'promoted',
+          relatedTimelineEventId: existingEvent.id,
+          verification: previousVerification,
+        }),
+        url: catalogueUrl,
+      },
+    ]);
+    const review = buildReview({
+      entryKind: 'timeline_event',
+      status: 'approved',
+      reviewedAt: '2026-07-16T00:00:00.000Z',
+      reviewedBy: 'Daniel Alkurdi',
+      targetTimelineEventId: existingEvent.id,
+      targetTimelineEventPreviousSourceUrl: catalogueUrl,
+      targetTimelineRevisionHash: timelineRevisionHash(existingEvent),
+      proposedRecord: publishedEvent,
+    });
+    getSourceReviewById.mockResolvedValue(review);
+    getTimelineEvents.mockResolvedValue([existingEvent]);
+
+    await publishStagedSource(review.id);
+
+    expect(updateDevelopment.mock.calls).toEqual([
+      ['dev-on-old-page', { url: SOURCE_URL, verification: publishedEvent.verification }],
     ]);
   });
 
@@ -2680,7 +2794,12 @@ describe('source ingest approval workflow', () => {
       dates: targetDraft.dates ?? [],
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -3082,7 +3201,12 @@ describe('source ingest approval workflow', () => {
       dates: targetDraft.dates ?? [],
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-01-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -3412,7 +3536,12 @@ describe('source ingest approval workflow', () => {
       ],
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -3506,7 +3635,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2025-01-01T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2025-01-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -3591,7 +3725,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -3683,7 +3822,12 @@ describe('source ingest approval workflow', () => {
       dates: targetDraft.dates ?? [],
       verification: {
         status: 'verified',
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual',
@@ -3768,7 +3912,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-10-20T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-10-20T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -3903,7 +4052,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -3960,7 +4114,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4153,7 +4312,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4201,7 +4365,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4245,7 +4414,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4302,7 +4476,12 @@ describe('source ingest approval workflow', () => {
       sourceUrl: SOURCE_URL,
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4341,7 +4520,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4399,7 +4583,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4436,7 +4625,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4632,7 +4826,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-01T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4712,7 +4911,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-01T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-01T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
@@ -4789,7 +4993,12 @@ describe('source ingest approval workflow', () => {
       lastReviewedAt: '2026-07-16T00:00:00.000Z',
       verification: {
         status: 'verified' as const,
-        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        source: {
+          url: SOURCE_URL,
+          contentHash: 'a'.repeat(64),
+          publishedAt: '2026-07-01',
+          publishedAtPrecision: 'day' as const,
+        },
         checkedAt: '2026-07-16T00:00:00.000Z',
         checkedBy: 'reviewer',
         method: 'manual' as const,
