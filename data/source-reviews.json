@@ -1,5 +1,2768 @@
 [
   {
+    "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+    "sourceUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+    "title": "Administrative Review Tribunal issues its Generative AI Practice Direction",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-08-20-art-issues-generative-ai-practice-direction",
+    "targetTimelineRevisionHash": "5e02725fb5d9e2367cee7d0950de6e7cbbc84cc191703a539d962995f094c024",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:49.044Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "President Justice Emilios Kyrou AO signed the Administrative Review Tribunal (Generative AI) Practice Direction 2026, which commenced on signing and applies to all persons involved in Tribunal proceedings across every jurisdictional area. It was adapted from the Federal Court's GPN-AI and sets verification, explanation and disclosure duties.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+      "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+      "title": "Administrative Review Tribunal (Use of Generative AI)",
+      "retrievedAt": "2026-11-05T02:52:40.000Z",
+      "contentType": "text/html",
+      "contentHash": "6d63615ada5fdae97e82659cb8575b0ddeb8387c98a9ecce8e741f50fc13b32c",
+      "linkedDocuments": [
+        {
+          "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+          "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+          "retrievedAt": "2026-11-05T02:52:40.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-05T02:52:40.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026.",
+        "pageContentHash": "70c958b1eb468795c675e3f9eaeeaa60080d622a775bf2753f25672f1ba6e5eb",
+        "characterCount": 24896
+      },
+      "reviewedDate": {
+        "date": "2026-08-20",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.552Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The practice direction is \"Dated: 20 August 2026\"; paragraph 1.3 states it \"commences and has effect from the date it is signed\", paragraph 1.4 applies it to proceedings \"in all jurisdictional areas of the Tribunal\", and it states it \"has been adapted from the Federal Court of Australia ... (GPN-AI)\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-08-20-art-issues-generative-ai-practice-direction",
+      "date": "2026-08-20",
+      "datePrecision": "day",
+      "title": "Administrative Review Tribunal issues its Generative AI Practice Direction",
+      "description": "President Justice Emilios Kyrou AO signed the Administrative Review Tribunal (Generative AI) Practice Direction 2026, which commenced on signing and applies to all persons involved in Tribunal proceedings across every jurisdictional area. It was adapted from the Federal Court's GPN-AI and sets verification, explanation and disclosure duties.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "art-generative-ai-practice-direction",
+      "sourceUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+          "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+          "title": "Administrative Review Tribunal (Use of Generative AI)",
+          "retrievedAt": "2026-11-05T02:52:40.000Z",
+          "contentType": "text/html",
+          "contentHash": "6d63615ada5fdae97e82659cb8575b0ddeb8387c98a9ecce8e741f50fc13b32c",
+          "linkedDocuments": [
+            {
+              "url": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+              "finalUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
+              "retrievedAt": "2026-11-05T02:52:40.000Z",
+              "contentType": "application/pdf",
+              "contentHash": "0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-05T02:52:40.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026.",
+            "pageContentHash": "70c958b1eb468795c675e3f9eaeeaa60080d622a775bf2753f25672f1ba6e5eb",
+            "characterCount": 24896
+          },
+          "reviewedDate": {
+            "date": "2026-08-20",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.552Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The practice direction is \"Dated: 20 August 2026\"; paragraph 1.3 states it \"commences and has effect from the date it is signed\", paragraph 1.4 applies it to proceedings \"in all jurisdictional areas of the Tribunal\", and it states it \"has been adapted from the Federal Court of Australia ... (GPN-AI)\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.552Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal af05 9811 b989 082c). Proposed by Claude (agent). Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.590Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-08-20",
+        "precision": "day",
+        "notes": "The practice direction is \"Dated: 20 August 2026\"; paragraph 1.3 states it \"commences and has effect from the date it is signed\", paragraph 1.4 applies it to proceedings \"in all jurisdictional areas of the Tribunal\", and it states it \"has been adapted from the Federal Court of Australia ... (GPN-AI)\"."
+      },
+      "notes": "Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026.",
+      "proposedAt": "2026-11-06T01:53:49.060Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.552Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal af05 9811 b989 082c). Proposed by Claude (agent). Daniel Alkurdi downloaded the practice direction PDF in his own browser and supplied it in the project thread on 5 Nov 2026 (art.gov.au resets the declared Policai identity; a single approved Firecrawl read returned HTTP 500). SHA-256 0c870bd4ff1236cd4747703e46aa7fa2bb8ef7caee265461c18448887769f051, byte-identical to the version verified on 24 Aug 2026.",
+    "decision": {
+      "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.585Z"
+  },
+  {
+    "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "title": "Queensland Courts revise generative AI guidelines for judicial officers",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-09-15-qld-courts-genai-guidelines-judicial-officers",
+    "targetTimelineEventPreviousSourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0009/879714/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+    "targetTimelineRevisionHash": "b21ce09991085177e45f321e2778cc2ccf5c76c6890d869e4d4bf89ef875795b",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.845Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "qld",
+      "summary": "Queensland Courts reissued The Use of Generative AI: Guidelines for Judicial Officers in a revised version, adding direction on whether generative AI was used in formulating or expressing an opinion in an expert report.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "title": "The use of Generative AI: Guidelines for judicial officers",
+      "retrievedAt": "2026-11-06T01:51:44.000Z",
+      "contentType": "text/html",
+      "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "retrievedAt": "2026-11-06T01:51:44.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:51:44.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba).",
+        "pageContentHash": "e2c878609db63614362d6ceff52e76830093de7431c4286e19fae8c48ef2b3b6",
+        "characterCount": 15273
+      },
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.465Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The version history records \"Revised version issued on 15 September 2025\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2025-09-15-qld-courts-genai-guidelines-judicial-officers",
+      "date": "2025-09-15",
+      "datePrecision": "day",
+      "title": "Queensland Courts revise generative AI guidelines for judicial officers",
+      "description": "Queensland Courts reissued The Use of Generative AI: Guidelines for Judicial Officers in a revised version, adding direction on whether generative AI was used in formulating or expressing an opinion in an expert report.",
+      "type": "policy_introduced",
+      "jurisdiction": "qld",
+      "relatedPolicyId": "qld-courts-genai-guidelines-judicial-officers",
+      "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+          "title": "The use of Generative AI: Guidelines for judicial officers",
+          "retrievedAt": "2026-11-06T01:51:44.000Z",
+          "contentType": "text/html",
+          "contentHash": "b9dc819137b1f5fe0385415b299bcaf4c2b05b2f13a10ac637fe48d77a81c736",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+              "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf",
+              "retrievedAt": "2026-11-06T01:51:44.000Z",
+              "contentType": "application/pdf",
+              "contentHash": "a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:51:44.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba).",
+            "pageContentHash": "e2c878609db63614362d6ceff52e76830093de7431c4286e19fae8c48ef2b3b6",
+            "characterCount": 15273
+          },
+          "reviewedDate": {
+            "date": "2025-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.465Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The version history records \"Revised version issued on 15 September 2025\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.465Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 9971 c6ac d0d5 8d60). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba)."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.510Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2025-09-15-qld-courts-genai-guidelines-judicial-officers",
+        "date": "2025-09-15",
+        "datePrecision": "day",
+        "title": "Queensland Courts revise generative AI guidelines for judicial officers",
+        "description": "Queensland Courts reissued The Use of Generative AI: Guidelines for Judicial Officers in a revised version, adding direction on whether generative AI was used in formulating or expressing an opinion in an expert report.",
+        "type": "policy_introduced",
+        "jurisdiction": "qld",
+        "relatedPolicyId": "qld-courts-genai-guidelines-judicial-officers",
+        "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0004/890428/the-use-of-generative-ai-guidelines-for-judicial-officers.pdf"
+      },
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "notes": "The version history records \"Revised version issued on 15 September 2025\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba).",
+      "proposedAt": "2026-11-06T01:53:48.861Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.465Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 9971 c6ac d0d5 8d60). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file is byte-identical to the version verified on 25 Aug 2026 (SHA-256 a7cb6bfe2d4a37746341d9127c043ab9b823e7439c64a1cefd9954f1a0ea52ba).",
+    "decision": {
+      "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.506Z"
+  },
+  {
+    "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+    "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+    "title": "Queensland Courts update generative AI guidelines for non-lawyers",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2025-09-15-qld-courts-genai-guidelines-non-lawyers",
+    "targetTimelineEventPreviousSourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0012/798375/Artificial-Intelligence_Guidelines-for-Non-Lawyers.pdf",
+    "targetTimelineRevisionHash": "088c380bda4f27f665f3e3dda0c650518e9751db8756d699a3162da0ea5d7c1a",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.662Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "qld",
+      "summary": "Queensland Courts published an updated version of The Use of Generative Artificial Intelligence (AI): Guidelines for Responsible Use by Non-Lawyers, covering civil and criminal proceedings across the Queensland court and tribunal hierarchy.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "title": "The Use of Generative AI: Guidelines for non-lawyers",
+      "retrievedAt": "2026-11-06T01:51:41.000Z",
+      "contentType": "text/html",
+      "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "retrievedAt": "2026-11-06T01:51:41.000Z",
+          "contentType": "application/pdf",
+          "contentHash": "c56a9a20e1740724ea6c9672563798d36e0dbe9243027fc33714b1aba3714c6b"
+        }
+      ],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:51:41.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026).",
+        "pageContentHash": "6a8998a424bf3de72279b19ca6b6a2b56038ef37a26902807dbcf113c9e2943f",
+        "characterCount": 13733
+      },
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.383Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The PDF's version history states \"Guideline issued on 13 May 2024\" and \"Revised version issued on 15 September 2025\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2025-09-15-qld-courts-genai-guidelines-non-lawyers",
+      "date": "2025-09-15",
+      "datePrecision": "day",
+      "title": "Queensland Courts update generative AI guidelines for non-lawyers",
+      "description": "Queensland Courts published an updated version of The Use of Generative Artificial Intelligence (AI): Guidelines for Responsible Use by Non-Lawyers, covering civil and criminal proceedings across the Queensland court and tribunal hierarchy.",
+      "type": "policy_introduced",
+      "jurisdiction": "qld",
+      "relatedPolicyId": "qld-courts-genai-guidelines-non-lawyers",
+      "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+          "title": "The Use of Generative AI: Guidelines for non-lawyers",
+          "retrievedAt": "2026-11-06T01:51:41.000Z",
+          "contentType": "text/html",
+          "contentHash": "fd9a288e119f57051f998c1aa5a63c2acf5f6cf0339ce1e127afdab25d8a7c2b",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+              "finalUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf",
+              "retrievedAt": "2026-11-06T01:51:41.000Z",
+              "contentType": "application/pdf",
+              "contentHash": "c56a9a20e1740724ea6c9672563798d36e0dbe9243027fc33714b1aba3714c6b"
+            }
+          ],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:51:41.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026).",
+            "pageContentHash": "6a8998a424bf3de72279b19ca6b6a2b56038ef37a26902807dbcf113c9e2943f",
+            "characterCount": 13733
+          },
+          "reviewedDate": {
+            "date": "2025-09-15",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.383Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The PDF's version history states \"Guideline issued on 13 May 2024\" and \"Revised version issued on 15 September 2025\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.383Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1ba0 0434 e409 3b96). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026)."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.428Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2025-09-15-qld-courts-genai-guidelines-non-lawyers",
+        "date": "2025-09-15",
+        "datePrecision": "day",
+        "title": "Queensland Courts update generative AI guidelines for non-lawyers",
+        "description": "Queensland Courts published an updated version of The Use of Generative Artificial Intelligence (AI): Guidelines for Responsible Use by Non-Lawyers, covering civil and criminal proceedings across the Queensland court and tribunal hierarchy.",
+        "type": "policy_introduced",
+        "jurisdiction": "qld",
+        "relatedPolicyId": "qld-courts-genai-guidelines-non-lawyers",
+        "sourceUrl": "https://www.courts.qld.gov.au/__data/assets/pdf_file/0010/867502/artificial-intelligence-guidelines-for-non-lawyers.pdf"
+      },
+      "reviewedDate": {
+        "date": "2025-09-15",
+        "precision": "day",
+        "notes": "The PDF's version history states \"Guideline issued on 13 May 2024\" and \"Revised version issued on 15 September 2025\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026).",
+      "proposedAt": "2026-11-06T01:53:48.678Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.383Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1ba0 0434 e409 3b96). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The old courts.qld.gov.au asset URL now redirects to squizadmin.justice.qld.gov.au, which returns HTTP 403; Queensland Courts now publish the guidelines at this URL. The file differs from the version verified on 25 Aug 2026 (PDF created 10 Mar 2026).",
+    "decision": {
+      "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.422Z"
+  },
+  {
+    "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+    "title": "Victorian Supreme Court Practice Note SC GEN 25",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
+    "targetTimelineEventPreviousSourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes",
+    "targetTimelineRevisionHash": "0b4298c41bce90d739a467c55941726112aba922ea45de2945125a5867596a2e",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.478Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "vic",
+      "summary": "New practice note on AI use by court users replaces the 2024 guidelines.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+      "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+      "title": "SC GEN 25 - The use of Artificial Intelligence by Court users | The Supreme Court of Victoria",
+      "retrievedAt": "2026-11-06T01:49:57.000Z",
+      "contentType": "text/html",
+      "contentHash": "304bf6411b5dfa148b3989fc2a8c38d4ec3c38db0f13f8856bba0b3fbcc20cb7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:49:57.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+        "pageContentHash": "3106c13185e1c882ad1ff25a8c59098647c73e06bbc06feb41bd9b7d044409f9",
+        "characterCount": 10743
+      },
+      "reviewedDate": {
+        "date": "2026-05-14",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.300Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Paragraph 2.1 states \"This Practice Note was issued and commences on 14 May 2026\"; the amendment history says it was issued \"replacing the Guidelines for Litigants ... of May 2024\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
+      "date": "2026-05-14",
+      "title": "Victorian Supreme Court Practice Note SC GEN 25",
+      "description": "New practice note on AI use by court users replaces the 2024 guidelines.",
+      "type": "policy_introduced",
+      "jurisdiction": "vic",
+      "relatedPolicyId": "vic-supreme-court-sc-gen-25",
+      "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+          "finalUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+          "title": "SC GEN 25 - The use of Artificial Intelligence by Court users | The Supreme Court of Victoria",
+          "retrievedAt": "2026-11-06T01:49:57.000Z",
+          "contentType": "text/html",
+          "contentHash": "304bf6411b5dfa148b3989fc2a8c38d4ec3c38db0f13f8856bba0b3fbcc20cb7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:49:57.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+            "pageContentHash": "3106c13185e1c882ad1ff25a8c59098647c73e06bbc06feb41bd9b7d044409f9",
+            "characterCount": 10743
+          },
+          "reviewedDate": {
+            "date": "2026-05-14",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.300Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Paragraph 2.1 states \"This Practice Note was issued and commences on 14 May 2026\"; the amendment history says it was issued \"replacing the Guidelines for Litigants ... of May 2024\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.300Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1a93 b110 a21d b690). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.346Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-05-14-victorian-supreme-court-practice-note-sc-gen-25",
+        "date": "2026-05-14",
+        "title": "Victorian Supreme Court Practice Note SC GEN 25",
+        "description": "New practice note on AI use by court users replaces the 2024 guidelines.",
+        "type": "policy_introduced",
+        "jurisdiction": "vic",
+        "relatedPolicyId": "vic-supreme-court-sc-gen-25",
+        "sourceUrl": "https://www.supremecourt.vic.gov.au/areas/legal-resources/practice-notes/sc-gen-25-the-use-of-artificial-intelligence-by-court-users",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2026-05-14",
+        "precision": "day",
+        "notes": "Paragraph 2.1 states \"This Practice Note was issued and commences on 14 May 2026\"; the amendment history says it was issued \"replacing the Guidelines for Litigants ... of May 2024\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+      "proposedAt": "2026-11-06T01:53:48.492Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.300Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 1a93 b110 a21d b690). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the practice notes catalogue; the permanent SC GEN 25 page replaces it.",
+    "decision": {
+      "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.339Z"
+  },
+  {
+    "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+    "sourceUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+    "title": "ASIC open letter on AI-era cyber resilience",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
+    "targetTimelineEventPreviousSourceUrl": "https://asic.gov.au/newsroom",
+    "targetTimelineRevisionHash": "48e573f1db5e7efd554aa5facff02d71eea4d5b14b8bd2f0790977e2b0a16116",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.420Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "ASIC writes to AFS licensees and market participants on AI-driven cyber threats.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+      "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+      "title": "26-092MR ASIC calls for urgent cyber uplift as AI accelerates cyber threats | ASIC",
+      "retrievedAt": "2026-11-06T01:49:54.000Z",
+      "contentType": "text/html",
+      "contentHash": "fcc0040a9bf955552cc369cc755ced066a09e3e301c217e61b60a3eaf3452aec",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:49:54.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+        "pageContentHash": "6f6fee6072cc96c0160878c155f7f786266a9c13aea3980f9b45d316417daa53",
+        "characterCount": 5419
+      },
+      "reviewedDate": {
+        "date": "2026-05-08",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.217Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Release 26-092MR carries the page metadata displayDate \"8 May 2026\" (dcterms.date.created 2026-05-07); the visible body has no date line. It states ASIC \"is calling on all licensees and market participants to urgently strengthen their cyber resilience measures\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
+      "date": "2026-05-08",
+      "title": "ASIC open letter on AI-era cyber resilience",
+      "description": "ASIC writes to licensees and market participants on AI-driven cyber threats.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+          "finalUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+          "title": "26-092MR ASIC calls for urgent cyber uplift as AI accelerates cyber threats | ASIC",
+          "retrievedAt": "2026-11-06T01:49:54.000Z",
+          "contentType": "text/html",
+          "contentHash": "fcc0040a9bf955552cc369cc755ced066a09e3e301c217e61b60a3eaf3452aec",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:49:54.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+            "pageContentHash": "6f6fee6072cc96c0160878c155f7f786266a9c13aea3980f9b45d316417daa53",
+            "characterCount": 5419
+          },
+          "reviewedDate": {
+            "date": "2026-05-08",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.217Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Release 26-092MR carries the page metadata displayDate \"8 May 2026\" (dcterms.date.created 2026-05-07); the visible body has no date line. It states ASIC \"is calling on all licensees and market participants to urgently strengthen their cyber resilience measures\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.217Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 4827 9999 925b d1df). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.262Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-05-08-asic-open-letter-on-ai-era-cyber-resilience",
+        "date": "2026-05-08",
+        "title": "ASIC open letter on AI-era cyber resilience",
+        "description": "ASIC writes to licensees and market participants on AI-driven cyber threats.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "sourceUrl": "https://asic.gov.au/about-asic/news-centre/find-a-media-release/2026-releases/26-092mr-asic-calls-for-urgent-cyber-uplift-as-ai-accelerates-cyber-threats",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2026-05-08",
+        "precision": "day",
+        "notes": "Release 26-092MR carries the page metadata displayDate \"8 May 2026\" (dcterms.date.created 2026-05-07); the visible body has no date line. It states ASIC \"is calling on all licensees and market participants to urgently strengthen their cyber resilience measures\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+      "proposedAt": "2026-11-06T01:53:48.436Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.217Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 4827 9999 925b d1df). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (curl, single read), staged as a capture because the record moves to this URL. The record previously pointed at the ASIC newsroom listing, which is rendered by script and no longer lists this release; the permanent release 26-092MR replaces it.",
+    "decision": {
+      "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.256Z"
+  },
+  {
+    "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+    "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+    "title": "AEMC proposes grid-connection standards for large data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-03-12-aemc-draft-data-centre-grid-standards",
+    "targetTimelineRevisionHash": "1c930b58c29c11f181af5243ca312df7a2507d0e5d86a0ebee4f31cabd9a22bb",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.366Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "AEMC releases a draft National Electricity Rule establishing technical connection standards for large data centres and other inverter-based loads to protect power-system stability.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+      "finalUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+      "title": "AEMC proposes new grid standards for data centre connections | AEMC",
+      "retrievedAt": "2026-11-06T01:48:09.190Z",
+      "contentType": "text/html",
+      "contentHash": "f849df7cb4018e2c55ff101b25aa097d30b19f76c1334705fedd6d356550e373",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:48:09.190Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "a4d70d6c67f208ebd5255d48226ff3de34a2fe808fd9c34c2c61db5b4c21883e",
+        "characterCount": 8913
+      },
+      "reviewedDate": {
+        "date": "2026-03-12",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.135Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The media release is dated \"12 March 2026\" and states the AEMC \"has released a draft rule proposing new technical standards for large data centres\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-12-aemc-draft-data-centre-grid-standards",
+      "date": "2026-03-12",
+      "datePrecision": "day",
+      "title": "AEMC proposes grid-connection standards for large data centres",
+      "description": "AEMC releases a draft National Electricity Rule establishing technical connection standards for large data centres and other inverter-based loads to protect power-system stability.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+          "finalUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
+          "title": "AEMC proposes new grid standards for data centre connections | AEMC",
+          "retrievedAt": "2026-11-06T01:48:09.190Z",
+          "contentType": "text/html",
+          "contentHash": "f849df7cb4018e2c55ff101b25aa097d30b19f76c1334705fedd6d356550e373",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:48:09.190Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "a4d70d6c67f208ebd5255d48226ff3de34a2fe808fd9c34c2c61db5b4c21883e",
+            "characterCount": 8913
+          },
+          "reviewedDate": {
+            "date": "2026-03-12",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.135Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The media release is dated \"12 March 2026\" and states the AEMC \"has released a draft rule proposing new technical standards for large data centres\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.135Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal ba27 8fa7 5e03 6a21). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.178Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-03-12",
+        "precision": "day",
+        "notes": "The media release is dated \"12 March 2026\" and states the AEMC \"has released a draft rule proposing new technical standards for large data centres\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-06T01:53:48.380Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.135Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal ba27 8fa7 5e03 6a21). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.171Z"
+  },
+  {
+    "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+    "sourceUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+    "title": "Digital secretaries clarify AI recordkeeping and FOI obligations",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-07-02-sddc-ai-recordkeeping-foi",
+    "targetTimelineRevisionHash": "fc8b5cac60ca716c71543135e2b893b3f7b81c0d54ee484cd0c1ead753bd24d7",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.314Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Secretaries’ Digital and Data Committee confirmed APS accountability for AI records under National Archives guidance, commissioned practical recordkeeping and FOI guidance, and discussed frontier-model cyber risks and AI in government security operations centres.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+      "finalUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+      "title": "SDDC Communique 02 July 2026 | digital.gov.au",
+      "retrievedAt": "2026-11-06T01:48:03.750Z",
+      "contentType": "text/html",
+      "contentHash": "0146e4bd9c4c59e21a12cb425f62a27bccb80ca11cd8407af299c3cd1cd74050",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:48:03.750Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "c39cf2f71159c3e0755530b4b07365f09f607b59da6f4974a98da757bcca6959",
+        "characterCount": 4671
+      },
+      "reviewedDate": {
+        "date": "2026-07-02",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:24.059Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The communique states \"Date: 02 July 2026\" and has sections \"Clarifying Record Keeping and FOI Obligations relating to AI\" and \"Update on frontier AI models\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-07-02-sddc-ai-recordkeeping-foi",
+      "date": "2026-07-02",
+      "datePrecision": "day",
+      "title": "Digital secretaries clarify AI recordkeeping and FOI obligations",
+      "description": "The Secretaries’ Digital and Data Committee confirmed APS accountability for AI records under National Archives guidance, commissioned practical recordkeeping and FOI guidance, and discussed frontier-model cyber risks and AI in government security operations centres.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+          "finalUrl": "https://www.digital.gov.au/secretaries-digital-and-data-committee/sddc-communique-02-july-2026",
+          "title": "SDDC Communique 02 July 2026 | digital.gov.au",
+          "retrievedAt": "2026-11-06T01:48:03.750Z",
+          "contentType": "text/html",
+          "contentHash": "0146e4bd9c4c59e21a12cb425f62a27bccb80ca11cd8407af299c3cd1cd74050",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:48:03.750Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "c39cf2f71159c3e0755530b4b07365f09f607b59da6f4974a98da757bcca6959",
+            "characterCount": 4671
+          },
+          "reviewedDate": {
+            "date": "2026-07-02",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:24.059Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The communique states \"Date: 02 July 2026\" and has sections \"Clarifying Record Keeping and FOI Obligations relating to AI\" and \"Update on frontier AI models\"."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:24.059Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 5e36 545e 9f36 a848). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.099Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-07-02",
+        "precision": "day",
+        "notes": "The communique states \"Date: 02 July 2026\" and has sections \"Clarifying Record Keeping and FOI Obligations relating to AI\" and \"Update on frontier AI models\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-06T01:53:48.329Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:24.059Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 5e36 545e 9f36 a848). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.093Z"
+  },
+  {
+    "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+    "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+    "title": "FCFCOA issues Practice Direction on AI (PD-AI)",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-29-fcfcoa-issues-practice-direction-on-ai-pd-ai",
+    "targetTimelineRevisionHash": "b74245e5a268fdaec90a851eb43c226d10674ec90bda89884e7e16be2dda70d8",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:48.262Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Federal Circuit and Family Court practice direction applies to all proceedings in Divisions 1 and 2 and sets responsibilities for litigants, lawyers, experts and other court users.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fcfcoa.gov.au/pd/pd-ai",
+      "finalUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+      "title": "FCFCOA Practice Direction: Use of Artificial Intelligence | Federal Circuit and Family Court of Australia",
+      "retrievedAt": "2026-11-06T01:47:54.704Z",
+      "contentType": "text/html",
+      "contentHash": "1b613411154a4234cdbdea8ddede6062d033b42d58c85128f3cb0e2355260de2",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-06T01:47:54.704Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "6d9cbb0b33b0a93ab660f112e17b1f2df2ea0dd7e3095cffd135c6628fd58220",
+        "characterCount": 19030
+      },
+      "reviewedDate": {
+        "date": "2026-05-29",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T22:09:23.955Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The practice direction states \"Issued: 29 May 2026\"; paragraph 1.1 applies it \"to all proceedings\" in Divisions 1 and 2 and paragraph 1.4 to litigants, lawyers, experts and all other court users."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-29-fcfcoa-issues-practice-direction-on-ai-pd-ai",
+      "date": "2026-05-29",
+      "title": "FCFCOA issues Practice Direction on AI (PD-AI)",
+      "description": "Federal Circuit and Family Court practice direction applies to all proceedings in Divisions 1 and 2 and sets responsibilities for litigants, lawyers, experts and other court users.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "family-court-ai-practice-direction",
+      "sourceUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.fcfcoa.gov.au/pd/pd-ai",
+          "finalUrl": "https://www.fcfcoa.gov.au/pd/pd-ai",
+          "title": "FCFCOA Practice Direction: Use of Artificial Intelligence | Federal Circuit and Family Court of Australia",
+          "retrievedAt": "2026-11-06T01:47:54.704Z",
+          "contentType": "text/html",
+          "contentHash": "1b613411154a4234cdbdea8ddede6062d033b42d58c85128f3cb0e2355260de2",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-06T01:47:54.704Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "6d9cbb0b33b0a93ab660f112e17b1f2df2ea0dd7e3095cffd135c6628fd58220",
+            "characterCount": 19030
+          },
+          "reviewedDate": {
+            "date": "2026-05-29",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T22:09:23.955Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The practice direction states \"Issued: 29 May 2026\"; paragraph 1.1 applies it \"to all proceedings\" in Divisions 1 and 2 and paragraph 1.4 to litigants, lawyers, experts and all other court users."
+          }
+        },
+        "checkedAt": "2026-11-06T22:09:23.955Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 9fee c83f 34c5 7c78). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-06T22:09:24.014Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-05-29",
+        "precision": "day",
+        "notes": "The practice direction states \"Issued: 29 May 2026\"; paragraph 1.1 applies it \"to all proceedings\" in Divisions 1 and 2 and paragraph 1.4 to litigants, lawyers, experts and all other court users."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-06T01:53:48.278Z"
+    },
+    "reviewedAt": "2026-11-06T22:09:23.955Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-2, proposal 9fee c83f 34c5 7c78). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 6 Nov 2026), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. On 6 Nov 2026 the host refused plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T22:06:12.948Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-2:832d8c7d5fe75156c3422d80b23e1460410c790fee979e60cb653ba5e8f1b1b4",
+        "receivedAt": "2026-11-06T22:06:12.948Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiS0lmUXctNm9NQmF1RkxoVXhOOHhuVUlxa09xQUFfdDR2NDZIeXhhTHVlayIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIAa7pCHpjCyfw5LJArgB0NubHfcSM34-qRWpOAOCIrpaAiAHaq9l27Dq8Nn8Uvuj9tQ6xSrzZ-CaiPhaDVibn7fWdw",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-2",
+        "entries": [
+          {
+            "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+            "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+          },
+          {
+            "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+            "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+          },
+          {
+            "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+            "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+          },
+          {
+            "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+            "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+          },
+          {
+            "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+            "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+          },
+          {
+            "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+            "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+          },
+          {
+            "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+            "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+          },
+          {
+            "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+            "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T22:09:24.008Z"
+  },
+  {
+    "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+    "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+    "title": "Australian AI Safety Institute publishes first report on cross-organisation AI-agent risks",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-08-10-aisi-ai-agent-risks-controls-report",
+    "targetTimelineRevisionHash": "2d372baca60a064d4a7ed3d72edd51fce23d0f04230f43a52666976a891a70f9",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.925Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Australian AI Safety Institute published its first report, commissioned from Gradient Institute, offering a three-tier framework for understanding risks, failure types, controls and governance gaps when AI agents interact across organisational boundaries and the open internet.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "finalUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "title": "Report explores risks and controls for artificial intelligence (AI) agents | Department of Industry Science and Resources",
+      "retrievedAt": "2026-11-08T22:45:03.335Z",
+      "contentType": "text/html",
+      "contentHash": "e484cfe2051926d2d30870ecdc166c0578147248685d0cbfe2115271ab6aaae1",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:45:03.335Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "46def88f97b6befc3fc35210aee2eba3535e929cc1ff184b0cf8e8db74502ad0",
+        "characterCount": 1971
+      },
+      "reviewedDate": {
+        "date": "2026-08-10",
+        "precision": "day",
+        "reviewedAt": "2026-11-08T22:50:36.212Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The news item is dated \"10 August 2026\" and says the report, commissioned from Gradient Institute, is \"the Australian AI Safety Institute's first publication\" and \"sets out 3 deployment tiers\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-08-10-aisi-ai-agent-risks-controls-report",
+      "date": "2026-08-10",
+      "datePrecision": "day",
+      "title": "Australian AI Safety Institute publishes first report on cross-organisation AI-agent risks",
+      "description": "The Australian AI Safety Institute published its first report, commissioned from Gradient Institute, offering a three-tier framework for understanding risks, failure types, controls and governance gaps when AI agents interact across organisational boundaries and the open internet.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+          "finalUrl": "https://www.industry.gov.au/news/report-explores-risks-and-controls-artificial-intelligence-ai-agents",
+          "title": "Report explores risks and controls for artificial intelligence (AI) agents | Department of Industry Science and Resources",
+          "retrievedAt": "2026-11-08T22:45:03.335Z",
+          "contentType": "text/html",
+          "contentHash": "e484cfe2051926d2d30870ecdc166c0578147248685d0cbfe2115271ab6aaae1",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:45:03.335Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "46def88f97b6befc3fc35210aee2eba3535e929cc1ff184b0cf8e8db74502ad0",
+            "characterCount": 1971
+          },
+          "reviewedDate": {
+            "date": "2026-08-10",
+            "precision": "day",
+            "reviewedAt": "2026-11-08T22:50:36.212Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The news item is dated \"10 August 2026\" and says the report, commissioned from Gradient Institute, is \"the Australian AI Safety Institute's first publication\" and \"sets out 3 deployment tiers\"."
+          }
+        },
+        "checkedAt": "2026-11-08T22:50:36.212Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal fcfb 0e0f 2cee b2cc). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:36.250Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-08-10",
+        "precision": "day",
+        "notes": "The news item is dated \"10 August 2026\" and says the report, commissioned from Gradient Institute, is \"the Australian AI Safety Institute's first publication\" and \"sets out 3 deployment tiers\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-08T22:45:53.940Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:36.212Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal fcfb 0e0f 2cee b2cc). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:36.245Z"
+  },
+  {
+    "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+    "sourceUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+    "title": "Government responds to the Senate Adopting AI report",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-04-01-government-responds-to-the-senate-adopting-ai-repo",
+    "targetTimelineRevisionHash": "1616f1937fefd9293adba32283cd2064fa423605b005b121f6259cf6f3da8439",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.869Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Response to the Senate Select Committee tabled, consistent with the National AI Plan’s existing-frameworks approach.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+      "finalUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+      "title": "Australian Government response: Senate Select Committee on Adopting Artificial Intelligence (AI) report | Department of Industry Science and Resources",
+      "retrievedAt": "2026-11-08T22:44:57.714Z",
+      "contentType": "text/html",
+      "contentHash": "2511efe9f5b8015199403e4429dcd4ca497f97a27e709f9e146f70cca7b86a56",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:44:57.714Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "401d91d2b40afd82d996f8237f4f2e2b9c1a321b032656590c4ff3f34fede09f",
+        "characterCount": 40371
+      },
+      "publishedAt": "2026-04-01",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-01-government-responds-to-the-senate-adopting-ai-repo",
+      "date": "2026-04-01",
+      "title": "Government responds to the Senate Adopting AI report",
+      "description": "Response to the Senate Select Committee tabled, consistent with the National AI Plan’s existing-frameworks approach.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+          "finalUrl": "https://www.industry.gov.au/publications/australian-government-response-senate-select-committee-adopting-artificial-intelligence-ai-report",
+          "title": "Australian Government response: Senate Select Committee on Adopting Artificial Intelligence (AI) report | Department of Industry Science and Resources",
+          "retrievedAt": "2026-11-08T22:44:57.714Z",
+          "contentType": "text/html",
+          "contentHash": "2511efe9f5b8015199403e4429dcd4ca497f97a27e709f9e146f70cca7b86a56",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:44:57.714Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "401d91d2b40afd82d996f8237f4f2e2b9c1a321b032656590c4ff3f34fede09f",
+            "characterCount": 40371
+          },
+          "publishedAt": "2026-04-01",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-08T22:50:36.135Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 62e9 4689 647f ec32). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:36.173Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-04-01",
+        "precision": "day",
+        "notes": "The publication page states \"Date published: 1 April 2026\" and \"The government tabled this response ... on 1 April 2026\"; it says the regulatory approach \"will continue to build on Australia's robust existing legal and regulatory frameworks\" under the National AI Plan."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-08T22:45:53.883Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:36.135Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 62e9 4689 647f ec32). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:36.168Z"
+  },
+  {
+    "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+    "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+    "title": "eSafety reports on AI companion risks to children",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-03-24-esafety-reports-on-ai-companion-risks-to-children",
+    "targetTimelineRevisionHash": "12ca460abd6474ea9d445e7defd2078ce3cb0c6092ffa895303b5d90cba01d76",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.815Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Report follows transparency notices to four AI companion providers; Character.AI adds age assurance, Chub AI geo-blocks Australia.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+      "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+      "title": "eSafety report shows AI companions are putting children at risk | eSafety Commissioner",
+      "retrievedAt": "2026-11-08T22:44:53.721Z",
+      "contentType": "text/html",
+      "contentHash": "f95737e5fe178432490ca15b1ca7ec53caf174843ff12e317f264558cf151b92",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:44:53.721Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "7451d796ac988310ade4c16acef37aef4376533abd8edf18e47607d60a0cf4a7",
+        "characterCount": 8033
+      },
+      "reviewedDate": {
+        "date": "2026-03-24",
+        "precision": "day",
+        "reviewedAt": "2026-11-08T22:50:36.053Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The media release is dated \"24/3/26\". It states Character AI \"introduced age assurance measures for Australian users\" and Chub AI \"decided to geo-block, or withdraw, its service from Australia\" after the transparency notices."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-24-esafety-reports-on-ai-companion-risks-to-children",
+      "date": "2026-03-24",
+      "title": "eSafety reports on AI companion risks to children",
+      "description": "Report follows transparency notices to four AI companion providers; Character.AI adds age assurance, Chub AI geo-blocks Australia.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+          "finalUrl": "https://www.esafety.gov.au/newsroom/media-releases/esafety-report-shows-ai-companions-are-putting-children-at-risk",
+          "title": "eSafety report shows AI companions are putting children at risk | eSafety Commissioner",
+          "retrievedAt": "2026-11-08T22:44:53.721Z",
+          "contentType": "text/html",
+          "contentHash": "f95737e5fe178432490ca15b1ca7ec53caf174843ff12e317f264558cf151b92",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:44:53.721Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "7451d796ac988310ade4c16acef37aef4376533abd8edf18e47607d60a0cf4a7",
+            "characterCount": 8033
+          },
+          "reviewedDate": {
+            "date": "2026-03-24",
+            "precision": "day",
+            "reviewedAt": "2026-11-08T22:50:36.053Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The media release is dated \"24/3/26\". It states Character AI \"introduced age assurance measures for Australian users\" and Chub AI \"decided to geo-block, or withdraw, its service from Australia\" after the transparency notices."
+          }
+        },
+        "checkedAt": "2026-11-08T22:50:36.053Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal c60c 9483 f34e 2e0e). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:36.095Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-03-24",
+        "precision": "day",
+        "notes": "The media release is dated \"24/3/26\". It states Character AI \"introduced age assurance measures for Australian users\" and Chub AI \"decided to geo-block, or withdraw, its service from Australia\" after the transparency notices."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-08T22:45:53.830Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:36.053Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal c60c 9483 f34e 2e0e). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:36.088Z"
+  },
+  {
+    "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+    "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+    "title": "eSafety industry codes take effect",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-03-09-esafety-industry-codes-take-effect",
+    "targetTimelineRevisionHash": "1e26e8f61ae1816177b6cf38d3d5625085a74a92e3c290492c630fbd66e5db40",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.763Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Codes covering generative AI services and AI companion chatbots become enforceable, with penalties up to $49.5m.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.esafety.gov.au/industry/codes",
+      "finalUrl": "https://www.esafety.gov.au/industry/codes",
+      "title": "Industry codes | eSafety Commissioner",
+      "retrievedAt": "2026-11-08T22:44:30.244Z",
+      "contentType": "text/html",
+      "contentHash": "b200838dde84f206c65395ffb70b8f58653822775d0355827046c920e47bb8d7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:44:30.244Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+        "pageContentHash": "9f640c8f44b9f8a60d00af605c9f29ad00976567ddc7a839ab7d88123a51c359",
+        "characterCount": 8150
+      },
+      "reviewedDate": {
+        "date": "2026-03-09",
+        "precision": "day",
+        "reviewedAt": "2026-11-08T22:50:35.975Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The codes page states the remaining six Age-Restricted Material Codes \"were registered on 9 September 2025 and came into effect on 9 March 2026\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-09-esafety-industry-codes-take-effect",
+      "date": "2026-03-09",
+      "title": "eSafety industry codes take effect",
+      "description": "The remaining six Age-Restricted Material Codes take effect, covering app distribution platforms, equipment providers, social media services, relevant electronic services and designated internet services.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "esafety-genai-industry-codes",
+      "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.esafety.gov.au/industry/codes",
+          "finalUrl": "https://www.esafety.gov.au/industry/codes",
+          "title": "Industry codes | eSafety Commissioner",
+          "retrievedAt": "2026-11-08T22:44:30.244Z",
+          "contentType": "text/html",
+          "contentHash": "b200838dde84f206c65395ffb70b8f58653822775d0355827046c920e47bb8d7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:44:30.244Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+            "pageContentHash": "9f640c8f44b9f8a60d00af605c9f29ad00976567ddc7a839ab7d88123a51c359",
+            "characterCount": 8150
+          },
+          "reviewedDate": {
+            "date": "2026-03-09",
+            "precision": "day",
+            "reviewedAt": "2026-11-08T22:50:35.975Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The codes page states the remaining six Age-Restricted Material Codes \"were registered on 9 September 2025 and came into effect on 9 March 2026\"."
+          }
+        },
+        "checkedAt": "2026-11-08T22:50:35.975Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal cd63 74d1 44b1 99c6). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403)."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:36.013Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-03-09-esafety-industry-codes-take-effect",
+        "date": "2026-03-09",
+        "title": "eSafety industry codes take effect",
+        "description": "The remaining six Age-Restricted Material Codes take effect, covering app distribution platforms, equipment providers, social media services, relevant electronic services and designated internet services.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "esafety-genai-industry-codes",
+        "sourceUrl": "https://www.esafety.gov.au/industry/codes",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2026-03-09",
+        "precision": "day",
+        "notes": "The codes page states the remaining six Age-Restricted Material Codes \"were registered on 9 September 2025 and came into effect on 9 March 2026\"."
+      },
+      "notes": "Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+      "proposedAt": "2026-11-08T22:45:53.778Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:35.975Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal cd63 74d1 44b1 99c6). Proposed by Claude (agent). Firecrawl read with the declared Policai identity (self-hosted, one-off single read on 9 Nov 2026, re-validating the 6 Nov 2026 read, whose text it matches), under Daniel Alkurdi's 1 Nov 2026 approval of one-off declared-identity reads of public pages for review only; no daily collection. The host refuses plain Policai retrieval (connection reset or HTTP 403).",
+    "decision": {
+      "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:36.008Z"
+  },
+  {
+    "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+    "sourceUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+    "title": "OAIC consults on automated decision-making transparency",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-18-oaic-consults-on-automated-decision-making-transpa",
+    "targetTimelineRevisionHash": "3fe9174119bd9354d1382d0c5ab72decd9ad7b5621c748b79352c9038710fa44",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:47.540Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "wa",
+      "summary": "[Document 1: Consultation on Guidance for Transparency in Automated Decision Making] Engage with us Consultations On this page Consultation on Guidance for Transparency in Automated Decision Making Closing date for submissions is Monday 15 June 2026 Published: 18 May 2026 Updated: 16 October 2026 The OAIC invites interested parties to respond to the Issues Paper that will inform our Guidance for Transparency in Automated Decision Making. BackgroundThe Privacy and Other Legislation Amendment Act 2024 introduced an automated decision making (ADM) Obligation.",
+      "tags": [
+        "automated-decision-making",
+        "assurance",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+      "finalUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+      "retrievedAt": "2026-11-08T22:50:35.333Z",
+      "contentType": "text/html",
+      "contentHash": "6abb22b8578076fecb27cb28bf79cd482c576f0c701d3db42f24eab2941a2035",
+      "linkedDocuments": [
+        {
+          "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0030/269670/Western-Australia-AI-Hub.pdf",
+          "finalUrl": "https://www.oaic.gov.au/__data/assets/pdf_file/0030/269670/Western-Australia-AI-Hub.pdf",
+          "retrievedAt": "2026-11-08T22:50:35.405Z",
+          "contentType": "application/pdf",
+          "contentHash": "4bf464b13d970b1b52f68d0ba03dcf6b22b979d8977736af0dfeae79e4f6ab33"
+        }
+      ],
+      "title": "Consultation on Guidance for Transparency in Automated Decision Making",
+      "publishedAt": "2026-05-18",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-18-oaic-consults-on-automated-decision-making-transpa",
+      "date": "2026-05-18",
+      "title": "OAIC consults on automated decision-making transparency",
+      "description": "Issues paper on ADM transparency guidance ahead of Privacy Act obligations commencing 10 December 2026; submissions closed 15 June 2026.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+          "finalUrl": "https://www.oaic.gov.au/engage-with-us/consultations/consultation-on-guidance-for-transparency-in-automated-decision-making",
+          "retrievedAt": "2026-11-08T22:50:35.333Z",
+          "contentType": "text/html",
+          "contentHash": "6abb22b8578076fecb27cb28bf79cd482c576f0c701d3db42f24eab2941a2035",
+          "linkedDocuments": [
+            {
+              "url": "https://www.oaic.gov.au/__data/assets/pdf_file/0030/269670/Western-Australia-AI-Hub.pdf",
+              "finalUrl": "https://www.oaic.gov.au/__data/assets/pdf_file/0030/269670/Western-Australia-AI-Hub.pdf",
+              "retrievedAt": "2026-11-08T22:50:35.405Z",
+              "contentType": "application/pdf",
+              "contentHash": "4bf464b13d970b1b52f68d0ba03dcf6b22b979d8977736af0dfeae79e4f6ab33"
+            }
+          ],
+          "title": "Consultation on Guidance for Transparency in Automated Decision Making",
+          "publishedAt": "2026-05-18",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-08T22:50:35.406Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal d855 69b5 4245 8dcf). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path)."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:35.930Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-05-18",
+        "precision": "day",
+        "notes": "The consultation page states \"Published: 18 May 2026\", \"Closing date for submissions is Monday 15 June 2026\" and \"From 10 December 2026\" for the ADM obligation."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path).",
+      "proposedAt": "2026-11-06T01:53:47.558Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:35.406Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal d855 69b5 4245 8dcf). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path).",
+    "decision": {
+      "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:35.924Z"
+  },
+  {
+    "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+    "title": "Federal Court GPN-LIP directs litigants in person on generative AI use",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-03-05-federal-court-gpn-lip-ai",
+    "targetTimelineRevisionHash": "8019c43836217a1eb7d328d0fdf29db614d7693b640562a480ef4922455ae962",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.637Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The collector retrieval path now gets HTTP 403 from fedcourt.gov.au, so the review no longer depends on a live re-fetch.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "On 5 March 2026 Chief Justice Mortimer issued the Federal Court's Litigants in Person Practice Note (GPN-LIP), which warns self-represented litigants not to use generative AI to decide whether they have a case. It allows AI to help explain a case based on real law and evidence, subject to disclosure on request and full verification, and foreshadows the GPN-AI practice note issued the following month.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "title": "Litigants in person Practice Note (GPN-LIP)",
+      "retrievedAt": "2026-11-08T22:44:08.000Z",
+      "contentType": "text/html",
+      "contentHash": "3d232243b8927fcf2bdada9ed2eda1ed0c68d1c00c5848666564433e65ca28d0",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:44:08.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The collector retrieval path now gets HTTP 403 from fedcourt.gov.au, so the review no longer depends on a live re-fetch.",
+        "pageContentHash": "193234b916400316efd44c7a7e9fa10c5ba5c62d800743e28303d8486f9d65f1",
+        "characterCount": 24328
+      },
+      "reviewedDate": {
+        "date": "2026-03-05",
+        "precision": "day",
+        "reviewedAt": "2026-11-08T22:50:35.004Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The practice note is headed \"D S Mortimer, Chief Justice 05 March 2026\" and is signed \"D S Mortimer Chief Justice 5 March 2026\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-03-05-federal-court-gpn-lip-ai",
+      "date": "2026-03-05",
+      "datePrecision": "day",
+      "title": "Federal Court GPN-LIP directs litigants in person on generative AI use",
+      "description": "On 5 March 2026 Chief Justice Mortimer issued the Federal Court's Litigants in Person Practice Note (GPN-LIP), which warns self-represented litigants not to use generative AI to decide whether they have a case. It allows AI to help explain a case based on real law and evidence, subject to disclosure on request and full verification, and foreshadows the GPN-AI practice note issued the following month.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "federal-court-gpn-lip-ai",
+      "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+          "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-lip",
+          "title": "Litigants in person Practice Note (GPN-LIP)",
+          "retrievedAt": "2026-11-08T22:44:08.000Z",
+          "contentType": "text/html",
+          "contentHash": "3d232243b8927fcf2bdada9ed2eda1ed0c68d1c00c5848666564433e65ca28d0",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:44:08.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The collector retrieval path now gets HTTP 403 from fedcourt.gov.au, so the review no longer depends on a live re-fetch.",
+            "pageContentHash": "193234b916400316efd44c7a7e9fa10c5ba5c62d800743e28303d8486f9d65f1",
+            "characterCount": 24328
+          },
+          "reviewedDate": {
+            "date": "2026-03-05",
+            "precision": "day",
+            "reviewedAt": "2026-11-08T22:50:35.004Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The practice note is headed \"D S Mortimer, Chief Justice 05 March 2026\" and is signed \"D S Mortimer Chief Justice 5 March 2026\"."
+          }
+        },
+        "checkedAt": "2026-11-08T22:50:35.004Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 82ca a8ef 7934 b7a1). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The collector retrieval path now gets HTTP 403 from fedcourt.gov.au, so the review no longer depends on a live re-fetch."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:35.044Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-03-05",
+        "precision": "day",
+        "notes": "The practice note is headed \"D S Mortimer, Chief Justice 05 March 2026\" and is signed \"D S Mortimer Chief Justice 5 March 2026\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The collector retrieval path now gets HTTP 403 from fedcourt.gov.au, so the review no longer depends on a live re-fetch.",
+      "proposedAt": "2026-11-08T22:45:53.655Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:35.004Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 82ca a8ef 7934 b7a1). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The collector retrieval path now gets HTTP 403 from fedcourt.gov.au, so the review no longer depends on a live re-fetch.",
+    "decision": {
+      "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:35.037Z"
+  },
+  {
+    "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+    "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+    "title": "Federal Court issues GPN-AI practice note",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-04-16-federal-court-issues-gpn-ai-practice-note",
+    "targetTimelineRevisionHash": "deaed9db77c16bbced0f47e204bd0166a2907af62acc773600da01ad2b6939a6",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.704Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The linked RTF copy needs a manual transcription; the HTML page carries the full practice note.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "First Federal Court practice note on generative AI in proceedings, with verification and disclosure duties.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+      "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+      "title": "Use of Generative Artificial Intelligence Practice Note (GPN-AI)",
+      "retrievedAt": "2026-11-08T22:44:10.000Z",
+      "contentType": "text/html",
+      "contentHash": "e6dd361373249fb03cee4a07a13535626972db205dad05f182e6989daa270657",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:44:10.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The linked RTF copy needs a manual transcription; the HTML page carries the full practice note.",
+        "pageContentHash": "096161fec4f80641ed9b8d5ad6d330ea0f9a417452b5a8169a4075d700dc746a",
+        "characterCount": 14560
+      },
+      "reviewedDate": {
+        "date": "2026-04-16",
+        "precision": "day",
+        "reviewedAt": "2026-11-08T22:50:34.922Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The GPN-AI page is headed \"D S Mortimer, Chief Justice 16 April 2026\"."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-16-federal-court-issues-gpn-ai-practice-note",
+      "date": "2026-04-16",
+      "title": "Federal Court issues GPN-AI practice note",
+      "description": "Federal Court practice note on generative AI in proceedings, with verification and disclosure duties.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "federal-court-gpn-ai",
+      "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+          "finalUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+          "title": "Use of Generative Artificial Intelligence Practice Note (GPN-AI)",
+          "retrievedAt": "2026-11-08T22:44:10.000Z",
+          "contentType": "text/html",
+          "contentHash": "e6dd361373249fb03cee4a07a13535626972db205dad05f182e6989daa270657",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:44:10.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The linked RTF copy needs a manual transcription; the HTML page carries the full practice note.",
+            "pageContentHash": "096161fec4f80641ed9b8d5ad6d330ea0f9a417452b5a8169a4075d700dc746a",
+            "characterCount": 14560
+          },
+          "reviewedDate": {
+            "date": "2026-04-16",
+            "precision": "day",
+            "reviewedAt": "2026-11-08T22:50:34.922Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The GPN-AI page is headed \"D S Mortimer, Chief Justice 16 April 2026\"."
+          }
+        },
+        "checkedAt": "2026-11-08T22:50:34.922Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 8ff5 ff12 8c3a 8b9b). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The linked RTF copy needs a manual transcription; the HTML page carries the full practice note."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:34.963Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "tl-2026-04-16-federal-court-issues-gpn-ai-practice-note",
+        "date": "2026-04-16",
+        "title": "Federal Court issues GPN-AI practice note",
+        "description": "Federal Court practice note on generative AI in proceedings, with verification and disclosure duties.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "federal-court-gpn-ai",
+        "sourceUrl": "https://www.fedcourt.gov.au/law-and-practice/practice-documents/practice-notes/gpn-ai",
+        "datePrecision": "day"
+      },
+      "reviewedDate": {
+        "date": "2026-04-16",
+        "precision": "day",
+        "notes": "The GPN-AI page is headed \"D S Mortimer, Chief Justice 16 April 2026\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The linked RTF copy needs a manual transcription; the HTML page carries the full practice note.",
+      "proposedAt": "2026-11-08T22:45:53.721Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:34.922Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 8ff5 ff12 8c3a 8b9b). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The linked RTF copy needs a manual transcription; the HTML page carries the full practice note.",
+    "decision": {
+      "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:34.958Z"
+  },
+  {
+    "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+    "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+    "title": "APRA Calls for Step-Change in AI Risk Management",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-04-30-apra-calls-for-step-change-in-ai-risk-management",
+    "targetTimelineRevisionHash": "f0d6c0dce4693471c7dfc03852802a71c7ec3d9a773d5bd818ca5fa51bc5f07a",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:53:45.895Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.55,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Letter APRA Letter to Industry on Artificial Intelligence (AI) In a letter to industry, APRA has called for a step-change in how banks, insurers and superannuation trustees manage AI-related risks as it warns that governance, risk management, assurance and operational resilience practices are not keeping pace with AI adoption. Print Summary of common weaknesses and expectations for regulated entities - April 2026To: All APRA-regulated entitiesArtificial Intelligence (AI) is being rapidly adopted across APRA-regulated industries as entities seek to realise benefits to their businesses and…",
+      "tags": [
+        "assurance",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+      "finalUrl": "https://www.apra.gov.au/news-and-publications/apra-letter-industry-artificial-intelligence-ai",
+      "retrievedAt": "2026-11-08T22:50:34.500Z",
+      "contentType": "text/html",
+      "contentHash": "69cdcde470c06f62c4f4ea47194ec2074234cec5c55bee86a07651a0c09c3ee2",
+      "etag": "\"1794157211\"",
+      "lastModified": "Sun, 08 Nov 2026 17:00:11 GMT",
+      "title": "APRA Letter to Industry on Artificial Intelligence (AI)",
+      "publishedAt": "2026-04-30",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-04-30-apra-calls-for-step-change-in-ai-risk-management",
+      "date": "2026-04-30",
+      "title": "APRA Calls for Step-Change in AI Risk Management",
+      "description": "APRA publishes an industry letter warning banks, insurers and superannuation trustees that AI governance, assurance and operational resilience practices are not keeping pace with AI adoption and frontier-model cyber risks.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "apra-ai-industry-letter-2026",
+      "sourceUrl": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+      "datePrecision": "day",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai",
+          "finalUrl": "https://www.apra.gov.au/news-and-publications/apra-letter-industry-artificial-intelligence-ai",
+          "retrievedAt": "2026-11-08T22:50:34.500Z",
+          "contentType": "text/html",
+          "contentHash": "69cdcde470c06f62c4f4ea47194ec2074234cec5c55bee86a07651a0c09c3ee2",
+          "etag": "\"1794157211\"",
+          "lastModified": "Sun, 08 Nov 2026 17:00:11 GMT",
+          "title": "APRA Letter to Industry on Artificial Intelligence (AI)",
+          "publishedAt": "2026-04-30",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-08T22:50:34.517Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 023a 41e6 7bc0 5b3c). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path)."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:34.880Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-04-30",
+        "precision": "day",
+        "notes": "The APRA letter page states \"Published 30 April 2026\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path).",
+      "proposedAt": "2026-11-06T01:53:45.916Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:34.517Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 023a 41e6 7bc0 5b3c). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 6 Nov 2026 (collector retrieval path).",
+    "decision": {
+      "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:34.874Z"
+  },
+  {
+    "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+    "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+    "title": "NSW asks NESA to examine AI safeguards for student learning and HSC integrity",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-08-10-nsw-nesa-ai-school-safeguards-review",
+    "targetTimelineRevisionHash": "a60e178119aa0a8f83ed867138cccc510414293d10742174b2d5dfd81722aec0",
+    "status": "published",
+    "discoveredAt": "2026-11-08T22:45:53.556Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The capture holds only the release text, from its heading to its last quote, because the page's related-articles list changes daily and broke publication of the 6 Nov staging. The release body matches the version approved in August 2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "nsw",
+      "summary": "The NSW Deputy Premier asked the NSW Education Standards Authority to urgently examine measures to protect student learning and maintain the integrity of the Higher School Certificate as AI use accelerates in schools. No measure had been adopted at the time of the announcement.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students | NSW Government",
+      "retrievedAt": "2026-11-08T22:44:13.000Z",
+      "contentType": "text/html",
+      "contentHash": "dfce917190aa1f37393d0fd635b3e06cc1d621d6f3455c7176c73e9a1f140993",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T22:44:13.000Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The capture holds only the release text, from its heading to its last quote, because the page's related-articles list changes daily and broke publication of the 6 Nov staging. The release body matches the version approved in August 2026.",
+        "pageContentHash": "2da70f59e437c84be4c3d10a87a7028f277659b718a9cb024a73e0ef35f3a346",
+        "characterCount": 3015
+      },
+      "publishedAt": "2026-08-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-08-10-nsw-nesa-ai-school-safeguards-review",
+      "date": "2026-08-10",
+      "datePrecision": "day",
+      "title": "NSW asks NESA to examine AI safeguards for student learning and HSC integrity",
+      "description": "The NSW Deputy Premier asked the NSW Education Standards Authority to urgently examine measures to protect student learning and maintain the integrity of the Higher School Certificate as AI use accelerates in schools. No measure had been adopted at the time of the announcement.",
+      "type": "announcement",
+      "jurisdiction": "nsw",
+      "sourceUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+          "finalUrl": "https://www.nsw.gov.au/ministerial-releases/minns-government-examines-measures-to-halt-ais-impact-on-cognitive-development-of-a-generation-of-nsw-students",
+          "title": "Minns Government examines measures to halt AI’s impact on cognitive development of a generation of NSW students | NSW Government",
+          "retrievedAt": "2026-11-08T22:44:13.000Z",
+          "contentType": "text/html",
+          "contentHash": "dfce917190aa1f37393d0fd635b3e06cc1d621d6f3455c7176c73e9a1f140993",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T22:44:13.000Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The capture holds only the release text, from its heading to its last quote, because the page's related-articles list changes daily and broke publication of the 6 Nov staging. The release body matches the version approved in August 2026.",
+            "pageContentHash": "2da70f59e437c84be4c3d10a87a7028f277659b718a9cb024a73e0ef35f3a346",
+            "characterCount": 3015
+          },
+          "publishedAt": "2026-08-10",
+          "publishedAtPrecision": "day"
+        },
+        "checkedAt": "2026-11-08T22:50:34.113Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 8045 2f10 5bee 556e). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The capture holds only the release text, from its heading to its last quote, because the page's related-articles list changes daily and broke publication of the 6 Nov staging. The release body matches the version approved in August 2026."
+      }
+    },
+    "updatedAt": "2026-11-08T22:50:34.172Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-08-10",
+        "precision": "day",
+        "notes": "The ministerial media release states \"Published: 10 August 2026\" and that the Deputy Premier \"has asked the NSW Education Standards Authority to urgently examine measures\"."
+      },
+      "notes": "Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The capture holds only the release text, from its heading to its last quote, because the page's related-articles list changes daily and broke publication of the 6 Nov staging. The release body matches the version approved in August 2026.",
+      "proposedAt": "2026-11-08T22:45:53.583Z"
+    },
+    "reviewedAt": "2026-11-08T22:50:34.113Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-1, proposal 8045 2f10 5bee 556e). Proposed by Claude (agent). Plain HTTP read with the declared Policai identity on 9 Nov 2026 (curl, single read), staged as a capture of the page text; the text matches the 6 Nov 2026 read. The capture holds only the release text, from its heading to its last quote, because the page's related-articles list changes daily and broke publication of the 6 Nov staging. The release body matches the version approved in August 2026.",
+    "decision": {
+      "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-08T22:49:46.559Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-1:46ea8709bbe7307e9b8351e6accbc7a5d81a0bf8046534c44b75c24a80fd093f",
+        "receivedAt": "2026-11-08T22:49:46.559Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiQ29jSUFqaG15SUhwR2toV3RHTFVYRi04QjdwUWRBSFBORDgyTEcxY2I4TSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIHa6scfDtEnbRSmZQQsTI8BlH70fVrpjl-IMg3CJN6AWAiA-P_Baa5VrcwqN-7sljuA6TTgp0gSRDr4RupSg-qSjRQ",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-1",
+        "entries": [
+          {
+            "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+            "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+          },
+          {
+            "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+            "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+          },
+          {
+            "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+            "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+          },
+          {
+            "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+            "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+          },
+          {
+            "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+            "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+          },
+          {
+            "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+            "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+          },
+          {
+            "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+            "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+          },
+          {
+            "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+            "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+          },
+          {
+            "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+            "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-08T22:50:34.165Z"
+  },
+  {
     "id": "source-review-5ac3d424-c467-416e-8b12-af24afff11c8",
     "sourceUrl": "https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835",
     "title": "Joint Select Committee on AI sends early advice to the Prime Minister",

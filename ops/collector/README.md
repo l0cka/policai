@@ -2,9 +2,9 @@
 
 `policai-collect.sh` is an executable **Python 3** program with the historical
 entry-point name. Do not run it with `bash`. It needs standard-library Python,
-Git, an authenticated GitHub CLI, npm and the public TLS intermediate at
-`~/.local/share/policai/geotrust-tls-rsa-ca-g1.pem`. It reads no cloud
-credentials. Relevance uses the keyword rules unless the unit sets
+Git, the GitHub CLI, npm, the public TLS intermediate at
+`~/.local/share/policai/geotrust-tls-rsa-ca-g1.pem` and a GitHub credential
+(below). It reads no cloud credentials. Relevance uses the keyword rules unless the unit sets
 `USE_CLEF_CLASSIFIER=1`, which uses the local `clef-flash` model. The cloud
 classifier variables (`USE_CLAUDE_CLASSIFIER`, `CLASSIFIER_BASE_URL`,
 `CLASSIFIER_API_KEY`) refuse.
@@ -72,12 +72,38 @@ Receipts:
 The worktree is reset by the next run, so inspect a failed run's evidence
 folder, not the worktree.
 
+## GitHub credential
+
+The run pushes its branch and opens, lists and closes PRs with a fine-grained
+personal access token: repository `l0cka/policai` only, Contents and Pull
+requests read/write, Metadata read. It lives in
+`~/.config/policai-collector/github.env` (mode 600, folder 700) as one
+`GH_TOKEN=` line. The unit loads it with `LoadCredential=github.env`; a run
+outside the unit reads that file directly. The wrapper passes `GH_TOKEN` and
+`GIT_TERMINAL_PROMPT=0` only to its `git` and `gh` calls, so npm, the
+collector and Chromium never see it. The checkout's credential helper
+(`gh auth git-credential`) hands `GH_TOKEN` to Git. A missing, empty or
+repeated `GH_TOKEN` line refuses the run before collection.
+
+The unit cannot use the interactive `gh` login: `gh auth login` stores its
+token in the desktop keyring, and the unit has no session bus or runtime
+directory. Runs from 6 to 9 November 2026 failed at push for that reason
+(#644).
+
+Replace the token before it expires with a hidden prompt:
+
+```sh
+~/.local/bin/set-secret ~/.config/policai-collector/github.env GH_TOKEN
+~/.local/bin/policai-collect.sh --preflight
+```
+
 ## Commands
 
 - `~/.local/bin/policai-collect.sh` runs the scheduled path.
-- `~/.local/bin/policai-collect.sh --preflight` checks that the remote and
-  GitHub are readable and that the lockfile and CA exist. It collects and
-  publishes nothing.
+- `~/.local/bin/policai-collect.sh --preflight` fetches `main`, makes a
+  dry-run push of it to `automation/collection-preflight` (so the remote must
+  accept the credential), lists one PR, and checks that the lockfile and CA
+  exist. It collects and publishes nothing.
 
 ## Verify and install
 
@@ -121,8 +147,9 @@ The systemd user units in `ops/collector/systemd/` are the source for
   and npm cache (writable). Chromium gets private config and cache
   directories, because its crash handler aborts the browser when it cannot
   write them. There is no session bus, so a compromised process cannot ask
-  systemd or another daemon to run code outside the unit. `gh`'s token stays
-  readable because the run pushes and opens the PR. A new path a run needs
+  systemd or another daemon to run code outside the unit. The GitHub
+  credential arrives through `LoadCredential` because the run pushes and opens
+  the PR; it is scoped to this repository. A new path a run needs
   must be added here as a bind.
 - `policai-collect.timer` runs it daily at 19:30 UTC.
 - `policai-collect-alert.service` runs `policai-collect-alert.sh` on failure.
