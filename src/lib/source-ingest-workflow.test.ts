@@ -913,6 +913,100 @@ describe('source ingest approval workflow', () => {
     ).rejects.toThrow('require an explicitly reviewed proposedRecord');
   });
 
+  it('lets a new timeline event take its related policy\'s source page, and no other record\'s', async () => {
+    const draft = buildDraft({ id: 'related-policy', effectiveDate: '2026-07-01' });
+    const relatedPolicy: Policy = {
+      ...draft,
+      effectiveDate: '2026-07-01',
+      dates: draft.dates ?? [],
+      verification: {
+        status: 'verified',
+        source: { url: SOURCE_URL, contentHash: 'a'.repeat(64) },
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+      },
+    };
+    getPolicies.mockResolvedValue([relatedPolicy]);
+    getSourceReviews.mockResolvedValue([
+      buildReview({
+        id: 'related-policy-review',
+        status: 'published',
+        proposedRecord: { ...draft, sourceUrl: SOURCE_URL },
+      }),
+    ]);
+    const browserCapture = {
+      pageTitle: 'Ministers announce an AI decision',
+      pageText: 'Official browser-captured announcement text.',
+      references: [SOURCE_URL],
+      capturedAt: new Date().toISOString(),
+      capturedBy: 'Jane Reviewer',
+      notes: 'Captured from the announcement page.',
+      linkedDocuments: [],
+    };
+    const event = {
+      id: 'tl-related-policy-announced',
+      date: '2026-07-01',
+      datePrecision: 'day' as const,
+      title: 'Ministers announce an AI decision',
+      description: 'Timeline context from the related policy page.',
+      type: 'announcement' as const,
+      jurisdiction: 'federal' as const,
+      sourceUrl: SOURCE_URL,
+    };
+
+    await expect(
+      stageSourceCapture({
+        url: SOURCE_URL,
+        entryKind: 'timeline_event',
+        proposedRecord: event,
+        actor: 'local-mcp-admin',
+        browserCapture,
+      }),
+    ).rejects.toThrow('Source URL belongs to tracked policy records');
+    await expect(
+      stageSourceCapture({
+        url: SOURCE_URL,
+        entryKind: 'timeline_event',
+        proposedRecord: { ...event, relatedPolicyId: 'another-policy' },
+        actor: 'local-mcp-admin',
+        browserCapture,
+      }),
+    ).rejects.toThrow('Source URL belongs to tracked policy records');
+
+    const staged = await stageSourceCapture({
+      url: SOURCE_URL,
+      entryKind: 'timeline_event',
+      proposedRecord: { ...event, relatedPolicyId: relatedPolicy.id },
+      actor: 'local-mcp-admin',
+      browserCapture,
+    });
+
+    expect(staged).toMatchObject({
+      entryKind: 'timeline_event',
+      proposedRecord: { id: event.id, relatedPolicyId: relatedPolicy.id, sourceUrl: SOURCE_URL },
+    });
+    expect(staged.targetPolicyId).toBeUndefined();
+    expect(staged.targetTimelineEventId).toBeUndefined();
+
+    getSourceReviewById.mockResolvedValue(staged);
+    getSourceReviews.mockResolvedValue([
+      buildReview({
+        id: 'related-policy-review',
+        status: 'published',
+        proposedRecord: { ...draft, sourceUrl: SOURCE_URL },
+      }),
+      staged,
+    ]);
+    updateSourceReview.mockImplementationOnce(async (_id, updates) => ({ ...staged, ...updates }));
+    await expect(
+      approveStagedSource({ id: staged.id, actor: 'timeline-reviewer', reuseStagedCapture: true }),
+    ).resolves.toMatchObject({
+      status: 'approved',
+      proposedRecord: { id: event.id, relatedPolicyId: relatedPolicy.id },
+    });
+  });
+
   it('lets a legislative record take a bill page only hand-typed timeline events cite', async () => {
     getTimelineEvents.mockResolvedValue([
       buildTimelineEventFixture({ id: 'tl-bill-introduced', sourceUrl: SOURCE_URL }),
