@@ -30,6 +30,7 @@ ALLOWED = ['data/developments.json', 'public/data/meta.json',
            'data/watch-state.json', 'data/source-reviews.json']
 REGISTER = 'data/policies.json'
 HOST_STATE = ['watch-state.json', 'outbox.json']
+CREDENTIAL_FILE = HOME / '.config/policai-collector/github.env'
 REPO = 'l0cka/policai'
 PREFIX = 'automation/collection-'
 EVIDENCE_DAYS = 30
@@ -86,8 +87,29 @@ def command(args, cwd=SOURCE, limit=45, log=None, check=True, env=None):
         return (out or '').strip() if check else child.returncode
 
 
+def github_env():
+    """Environment for git and gh only: the push token, never npm or the browser.
+
+    The unit loads the token with LoadCredential, so it does not depend on
+    gh's keyring, which the sandbox cannot reach. Without the file the calls
+    fall back to whatever login gh and git already have.
+    """
+    env = dict(os.environ, GIT_TERMINAL_PROMPT='0')
+    directory = os.environ.get('CREDENTIALS_DIRECTORY')
+    path = Path(directory) / 'github.env' if directory else CREDENTIAL_FILE
+    try:
+        lines = path.read_text().splitlines()
+    except OSError:
+        return env
+    for line in lines:
+        name, _, value = line.partition('=')
+        if name.strip() == 'GH_TOKEN' and value.strip():
+            env['GH_TOKEN'] = value.strip()
+    return env
+
+
 def git(*args, cwd=SOURCE):
-    return command(['git', *args], cwd)
+    return command(['git', *args], cwd, env=github_env())
 
 
 def digest(path):
@@ -223,7 +245,7 @@ def publish(run):
                    '--body', f"Collector exit: {run['collection_exit']}. Structural validation passed; "
                    'curated register unchanged. Coverage may be incomplete: see public/data/meta.json. '
                    'Detections show as needs review; editorial approval is per item. '
-                   'Auto-merges when the required checks pass.'], WORK)
+                   'Auto-merges when the required checks pass.'], WORK, env=github_env())
     run['pr'] = url
     run['phase'] = 'published'
     save(run)
@@ -234,11 +256,12 @@ def publish(run):
 def close_older_prs(run):
     """This PR carries the outbox, so every older collection PR is redundant."""
     prs = json.loads(command(['gh', 'pr', 'list', '--repo', REPO, '--state', 'open', '--limit', '100',
-                              '--json', 'url,headRefName'], WORK))
+                              '--json', 'url,headRefName'], WORK, env=github_env()))
     for pr in prs:
         if pr['headRefName'].startswith(PREFIX) and pr['url'] != run['pr']:
             command(['gh', 'pr', 'close', pr['url'], '--repo', REPO, '--comment',
-                     f"Superseded by {run['pr']}, which replays every finding main lacks."], WORK)
+                     f"Superseded by {run['pr']}, which replays every finding main lacks."], WORK,
+                    env=github_env())
 
 
 def prune_evidence():
@@ -284,10 +307,13 @@ def main():
             check_environment()
             if sys.argv[1:] == ['--preflight']:
                 git('ls-remote', '--exit-code', 'origin', 'refs/heads/main')
-                command(['gh', 'pr', 'list', '--repo', REPO, '--limit', '1', '--json', 'url'])
+                command(['gh', 'pr', 'list', '--repo', REPO, '--limit', '1', '--json', 'url'],
+                        env=github_env())
+                # ls-remote needs no login on a public repo; a dry-run push does.
+                git('push', '--dry-run', 'origin', 'HEAD:refs/heads/automation/preflight')
                 if not (SOURCE / 'package-lock.json').is_file() or not Path(os.environ['NODE_EXTRA_CA_CERTS']).is_file():
                     raise Refused('lockfile or CA missing')
-                print('Preflight passed: remote and GitHub readable, lockfile and CA present; '
+                print('Preflight passed: remote and GitHub readable, push credential accepted, lockfile and CA present; '
                       'no collection/publication.')
                 return 0
             prune_evidence()

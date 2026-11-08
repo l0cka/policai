@@ -76,7 +76,7 @@ folder, not the worktree.
 
 - `~/.local/bin/policai-collect.sh` runs the scheduled path.
 - `~/.local/bin/policai-collect.sh --preflight` checks that the remote and
-  GitHub are readable and that the lockfile and CA exist. It collects and
+  GitHub are readable, that a dry-run push is accepted, and that the lockfile and CA exist. It collects and
   publishes nothing.
 
 ## Verify and install
@@ -124,6 +124,14 @@ The systemd user units in `ops/collector/systemd/` are the source for
   systemd or another daemon to run code outside the unit. `gh`'s token stays
   readable because the run pushes and opens the PR. A new path a run needs
   must be added here as a bind.
+- The unit cannot reach the desktop keyring, so `gh auth login` to the keyring
+  leaves the run unable to push (issue #644). The push credential is a
+  fine-grained token for `l0cka/policai` only (Contents and Pull requests
+  read/write), stored as one `GH_TOKEN=` line in mode 600
+  `~/.config/policai-collector/github.env` (create the file with an empty
+  `GH_TOKEN=` line, then `~/.local/bin/set-secret <file> GH_TOKEN`). The unit
+  loads it with `LoadCredential`; the wrapper passes it to `git` and `gh`
+  only, never to npm or Chromium. Renew it before it expires (90 days).
 - `policai-collect.timer` runs it daily at 19:30 UTC.
 - `policai-collect-alert.service` runs `policai-collect-alert.sh` on failure.
 

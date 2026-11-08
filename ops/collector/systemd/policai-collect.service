@@ -9,6 +9,8 @@ ExecStart=%h/.local/bin/policai-collect.sh
 Environment=USE_CLEF_CLASSIFIER=1
 Environment=POLICAI_CHROMIUM_PATH=/usr/bin/chromium
 UnsetEnvironment=DBUS_SESSION_BUS_ADDRESS
+# The push token (GH_TOKEN=...) lives outside gh's keyring, which the sandbox cannot reach.
+LoadCredential=github.env:%h/.config/policai-collector/github.env
 Nice=15
 TimeoutStartSec=3600
 # Runs peak at 2.1 to 2.6 GB; the ceiling stops a runaway browser taking the host.

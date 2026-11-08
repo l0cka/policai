@@ -239,6 +239,25 @@ else:
         self.assertFalse(self.work.exists())
         self.assertFalse((self.home / 'npm.log').exists())
 
+    def test_preflight_fails_when_a_push_would_be_refused(self):
+        self.git('remote', 'set-url', 'origin', str(self.home / 'missing.git'))
+        self.assertEqual(self.run_workflow('--preflight').returncode, 1)
+
+    def test_token_reaches_git_and_gh_but_not_npm(self):
+        creds = self.home / 'creds'
+        creds.mkdir()
+        (creds / 'github.env').write_text('GH_TOKEN=github_pat_test\n')
+        self.env.pop('GH_TOKEN', None)
+        self.env['CREDENTIALS_DIRECTORY'] = str(creds)
+        gh = self.bin / 'gh'
+        gh.write_text(gh.read_text().replace("a = sys.argv[1:]\n", "a = sys.argv[1:]\n"
+                      "pathlib.Path(os.environ['HOME'], 'gh-token').write_text(os.environ.get('GH_TOKEN', ''))\n"))
+        npm = self.bin / 'npm'
+        npm.write_text(npm.read_text().replace('log = ', 'assert "GH_TOKEN" not in os.environ\nlog = ', 1))
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.home / 'gh-token').read_text(), 'github_pat_test')
+
     def test_branch_override_cannot_push_main(self):
         self.env['POLICAI_COLLECT_BRANCH'] = 'other'
         self.assertEqual(self.run_workflow().returncode, 1)
