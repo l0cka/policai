@@ -1,5 +1,68 @@
 [
   {
+    "id": "mcp-audit-0c8408cc-5ec9-469c-ae0f-bfd7a250f504",
+    "createdAt": "2026-11-08T22:50:36.263Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-bfaa5d82-e96e-4c3b-a339-d0eadc8ad9e4",
+    "createdAt": "2026-11-08T22:50:36.185Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c2c436e8-0eb7-4109-9ce2-743cb724f78b",
+    "createdAt": "2026-11-08T22:50:36.106Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-08c1238b-5639-4172-9edd-a160a61a137b",
+    "createdAt": "2026-11-08T22:50:36.027Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-1d57b16a-5891-4bac-923a-c44746e2dddd",
+    "createdAt": "2026-11-08T22:50:35.946Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ca3e7107-162b-4b5c-bed3-71ba90436085",
+    "createdAt": "2026-11-08T22:50:35.054Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-89753e13-82e2-45ec-b1f3-f919309550a8",
+    "createdAt": "2026-11-08T22:50:34.977Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c3a7c9e1-405f-4383-845b-fd003e3f9a55",
+    "createdAt": "2026-11-08T22:50:34.893Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-92f19ae6-00a1-49c8-81b7-dbbd9f5a956c",
+    "createdAt": "2026-11-08T22:50:34.184Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-cc5f6537-b03d-478c-b140-f2588d0fe178",
     "createdAt": "2026-11-08T22:46:05.811Z",
     "actor": "local-mcp-admin",
@@ -3622,69 +3685,6 @@
   {
     "id": "mcp-audit-cf20bf81-23d8-4ae9-8064-04df7469efef",
     "createdAt": "2026-07-19T06:14:44.171Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-8948d8c4-3449-4bb0-bcac-565228b582c6",
-    "createdAt": "2026-07-19T06:14:44.162Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-695e6b0d-b173-414e-ba2f-73b5d3870d92",
-    "createdAt": "2026-07-19T06:14:44.153Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5a105ac7-f444-42af-855a-2fa61a0b8a7f",
-    "createdAt": "2026-07-19T06:14:44.144Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-40e46f05-310a-4c88-8db0-8146c79be558",
-    "createdAt": "2026-07-19T06:14:44.135Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-09b5b5a7-dc2c-490a-8907-4af8828fc95c",
-    "createdAt": "2026-07-19T06:14:44.126Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-51cdbaf5-d9d2-41e2-a0a3-0caa961c4bb2",
-    "createdAt": "2026-07-19T06:14:44.117Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e6de2b51-6e5c-4fe4-aca7-62ae379819cc",
-    "createdAt": "2026-07-19T06:14:44.108Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-5ad37069-cd5b-4e50-8c13-6ecc833d50fa",
-    "createdAt": "2026-07-19T06:14:44.099Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-82e9859a-95e5-4d8b-885f-a57e199cf12e",
-    "createdAt": "2026-07-19T06:14:44.090Z",
     "actor": "local-mcp-admin",
     "toolName": "publish_staged_source",
     "status": "success"
