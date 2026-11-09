@@ -1,5 +1,12 @@
 [
   {
+    "id": "mcp-audit-c98c3c34-8ea8-4adb-ac8f-9f8fe2b88a01",
+    "createdAt": "2026-11-09T01:15:22.266Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-20749415-0a2a-4d4f-b51a-a086462e4c64",
     "createdAt": "2026-11-09T00:13:14.975Z",
     "actor": "local-mcp-admin",
@@ -3682,13 +3689,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-22cfb75d-f6a4-4c50-a400-3065719e8b98",
-    "createdAt": "2026-07-19T06:14:44.225Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
     "status": "success"
   }
 ]
