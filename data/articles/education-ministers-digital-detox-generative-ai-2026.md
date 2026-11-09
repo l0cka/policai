@@ -25,7 +25,7 @@ image:
   licence: "CC-BY-3.0"
   licenceUrl: "https://creativecommons.org/licenses/by/3.0/"
   modifications: "resized"
-  licenceCheckedAt: "2026-11-07"
+  licenceCheckedAt: "2026-11-09"
 ---
 
 On 4 November 2026 the Department of Education published [*A Digital Detox*](https://www.education.gov.au/schooling/resources/digital-detox), recording decisions of the Education Ministers Meeting on 2 November 2026 ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools); [PDF](https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf)). The announcement says ministers agreed to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools)).
