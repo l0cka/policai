@@ -2212,7 +2212,7 @@
   {
     "id": "dev-new-ai-frontier-cyber-threat-guidance-for-boards-gp4ujh",
     "title": "New AI frontier cyber threat guidance for boards of directors",
-    "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+    "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
     "sourceId": "cyber-news",
     "sourceName": "Australian Cyber Security Centre — news",
     "jurisdiction": "federal",
@@ -2230,28 +2230,33 @@
     "verification": {
       "status": "verified",
       "source": {
-        "url": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-        "finalUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
-        "title": "New AI frontier cyber threat guidance for boards of directors | Cyber.gov.au",
-        "retrievedAt": "2026-08-07T05:11:57.458Z",
+        "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+        "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+        "title": "New AI frontier cyber threat guidance for boards of directors",
+        "retrievedAt": "2026-11-09T00:00:00+11:00",
         "contentType": "text/html",
-        "contentHash": "ef74328d7eb33db4174de10c39a6a0ca467818f47da0673bd16a608675736daa",
+        "contentHash": "23d2a01bab5476d7f81ff7c14e80535938ec164ebcb7a4d7561699487632610a",
         "linkedDocuments": [],
         "browserCapture": {
           "method": "browser",
-          "capturedAt": "2026-08-07T05:11:57.458Z",
-          "capturedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
-          "notes": "Captured via self-hosted Firecrawl because the host refuses plain HTTP. ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed.",
-          "pageContentHash": "81c152ac2f2d14064d1380c8386d13288b894b20aac56d2deefbda1e374c66df",
-          "characterCount": 21322
+          "capturedAt": "2026-11-09T00:00:00+11:00",
+          "capturedBy": "Daniel Alkurdi",
+          "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
+          "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
+          "characterCount": 1138
         },
-        "publishedAt": "2026-08-05",
-        "publishedAtPrecision": "day"
+        "reviewedDate": {
+          "date": "2026-08-05",
+          "precision": "day",
+          "reviewedAt": "2026-11-09T01:15:22.156Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
+        }
       },
-      "checkedAt": "2026-08-07T05:11:57.484Z",
-      "checkedBy": "l0cka — editorial decision via verified evidence pack, 2026-08-08",
+      "checkedAt": "2026-11-09T01:15:22.156Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "ACSC frontier-AI guidance for boards — cyber.gov.au states First published 05 Aug 2026, AICD partnership confirmed."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 81c2 10f8 1274 20f2). Proposed by Claude (agent). Re-verification via Firecrawl; primary date retained at 5 Aug 2026."
     },
     "status": "promoted",
     "relatedPolicyId": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director"

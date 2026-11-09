@@ -6,7 +6,7 @@
     "entryKind": "policy",
     "targetPolicyId": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director",
     "targetPolicyBaseRevisionHash": "a9e645cb5506d2c0b648f72a96fd36f8201024b98d71b10a5f4eb8043f9f2e94",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-09T00:13:11.213Z",
     "createdBy": "local-mcp-admin",
     "notes": "Re-verification of the ASD board cyber guidance record via one Firecrawl read (cyber.gov.au refuses the declared Policai/1.0 identity).",
@@ -34,6 +34,13 @@
         "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
         "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
         "characterCount": 1138
+      },
+      "reviewedDate": {
+        "date": "2026-08-05",
+        "precision": "day",
+        "reviewedAt": "2026-11-09T01:15:22.156Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
       }
     },
     "proposedRecord": {
@@ -54,24 +61,24 @@
             "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
             "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
             "title": "New AI frontier cyber threat guidance for boards of directors",
-            "retrievedAt": "2026-10-06T23:37:03.283Z",
+            "retrievedAt": "2026-11-09T00:00:00+11:00",
             "contentType": "text/html",
-            "contentHash": "31f68dcf967fa7d7dc76626d85b3bf6646eb5b1d56d9627c54ee836d0743550b",
+            "contentHash": "23d2a01bab5476d7f81ff7c14e80535938ec164ebcb7a4d7561699487632610a",
             "linkedDocuments": [],
             "browserCapture": {
               "method": "browser",
-              "capturedAt": "2026-10-06T23:37:03.283Z",
-              "capturedBy": "Daniel Alkurdi (Hermes-assisted web review)",
-              "notes": "Official ASD page captured in a browser on 7 October 2026 (AEDT) after cyber.gov.au retired the /about-us/view-all-content path; the Policai collector user agent is refused by cyber.gov.au, so plain HTTP retrieval was not available.",
-              "pageContentHash": "eef4e9dda0e6cb9a3185309d69897aa4244b0da0edb2bfd82359d6c1ff7ce756",
-              "characterCount": 1520
+              "capturedAt": "2026-11-09T00:00:00+11:00",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
+              "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
+              "characterCount": 1138
             },
             "reviewedDate": {
               "date": "2026-08-05",
               "precision": "day",
-              "reviewedAt": "2026-10-06T23:39:50.000Z",
-              "reviewedBy": "Daniel Alkurdi (Hermes-assisted web review)",
-              "notes": "Date retained, not re-confirmed on the current page. The 7 August 2026 capture of the original news item showed 'First published 05 Aug 2026', and Policai detected the item on 5 August 2026. After the site restructure the same news item now displays 'Published 02 Sep 2026'; this discrepancy is flagged for editorial decision."
+              "reviewedAt": "2026-11-09T01:15:22.156Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
             }
           }
         }
@@ -87,9 +94,41 @@
         "ai-governance"
       ],
       "createdAt": "2026-08-05T20:44:21.554Z",
-      "updatedAt": "2026-11-09T00:13:11.213Z"
+      "updatedAt": "2026-11-09T01:15:22.156Z",
+      "lastReviewedAt": "2026-11-09T01:15:22.156Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "title": "New AI frontier cyber threat guidance for boards of directors",
+          "retrievedAt": "2026-11-09T00:00:00+11:00",
+          "contentType": "text/html",
+          "contentHash": "23d2a01bab5476d7f81ff7c14e80535938ec164ebcb7a4d7561699487632610a",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-09T00:00:00+11:00",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
+            "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
+            "characterCount": 1138
+          },
+          "reviewedDate": {
+            "date": "2026-08-05",
+            "precision": "day",
+            "reviewedAt": "2026-11-09T01:15:22.156Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
+          }
+        },
+        "checkedAt": "2026-11-09T01:15:22.156Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 81c2 10f8 1274 20f2). Proposed by Claude (agent). Re-verification via Firecrawl; primary date retained at 5 Aug 2026."
+      }
     },
-    "updatedAt": "2026-11-09T00:13:14.951Z",
+    "updatedAt": "2026-11-09T01:15:22.224Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -99,7 +138,28 @@
       },
       "notes": "Re-verification via Firecrawl; primary date retained at 5 Aug 2026.",
       "proposedAt": "2026-11-09T00:13:14.951Z"
-    }
+    },
+    "targetPolicyRevisionHash": "a9e645cb5506d2c0b648f72a96fd36f8201024b98d71b10a5f4eb8043f9f2e94",
+    "reviewedAt": "2026-11-09T01:15:22.156Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 81c2 10f8 1274 20f2). Proposed by Claude (agent). Re-verification via Firecrawl; primary date retained at 5 Aug 2026.",
+    "decision": {
+      "proposalHash": "81c210f8127420f2a25b7e25af4bc5ce099c8e7c79ce52d76b319a01e98183f3",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-09T00:17:23.390Z",
+      "approval": {
+        "subject": "source-review:source-review-5c267d6f-5b74-4302-9f47-39d36686f7c5:81c210f8127420f2a25b7e25af4bc5ce099c8e7c79ce52d76b319a01e98183f3",
+        "receivedAt": "2026-11-09T00:17:23.390Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoib1pZWWdIZVNPNEI5N3c4U1hUSlpzVW9YMWVkbmtxbDZ3TkhYNGs0dzNvdyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDxhNWCqKgQgrcn_lpXX1TAzUNevcKDm_9yXYbQaMpJQgIgRJOs-NLFc5BO9SmaXzfsirrEDjZXJhEPQFBfDCXwIrU",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-09T01:15:22.212Z"
   },
   {
     "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
