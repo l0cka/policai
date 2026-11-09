@@ -38907,5 +38907,166 @@
     },
     "updatedAt": "2026-11-08T23:39:18.692Z",
     "rejectionReason": "Re-sourced to the 4 November 2026 announcement page per Daniel Alkurdi's 8 Nov 2026 decision card; superseded by source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511. The Digital Detox PDF could not be read through Firecrawl."
+  },
+  {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1pxxuyj",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "093cbad6ec529a4b602b8e2f5f87fb143774fa9c7d16971caae5d7f3e8906c5a",
+    "sourceVersionSequence": 13,
+    "status": "pending_review",
+    "discoveredAt": "2026-11-05T19:30:18.660Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-11-05T19:30:18.660Z",
+      "contentType": "text/html",
+      "contentHash": "e4248268fdde2910d888104ddd27ada46475a563a7b6422121bb70826168eb7b",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1pxxuyj",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-11-05T19:30:18.660Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-11-05T19:30:18.660Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-11-05T19:30:18.660Z",
+          "contentType": "text/html",
+          "contentHash": "e4248268fdde2910d888104ddd27ada46475a563a7b6422121bb70826168eb7b",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-05T19:30:18.660Z"
+  },
+  {
+    "id": "source-review-dev-act-supreme-court-1s1hxec",
+    "sourceUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+    "title": "ACT Supreme Court",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-05T19:30:18.660Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from ACT Supreme Court — practice directions (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "act",
+      "summary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "finalUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "retrievedAt": "2026-11-05T19:30:18.660Z",
+      "contentType": "text/html",
+      "contentHash": "c11fe107f4ccaf596912769a8064341e33c2cdc194b67386adfedc2508c00930",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+          "finalUrl": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+          "retrievedAt": "2026-11-05T19:30:18.660Z",
+          "contentType": "application/pdf",
+          "contentHash": "7f6b0c93d8a18fbe562fe2aaa364a5afd04872e7c6fb2c4263be66ae70802c74"
+        }
+      ],
+      "title": "ACT Supreme Court"
+    },
+    "proposedRecord": {
+      "id": "act-supreme-court",
+      "title": "ACT Supreme Court",
+      "description": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "jurisdiction": "act",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "content": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "aiSummary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-05T19:30:18.660Z",
+      "updatedAt": "2026-11-05T19:30:18.660Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-act-supreme-court-1s1hxec",
+      "title": "ACT Supreme Court",
+      "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "sourceId": "act-sc-practice-directions",
+      "sourceName": "ACT Supreme Court — practice directions",
+      "jurisdiction": "act",
+      "detectedAt": "2026-11-05T19:30:18.660Z",
+      "summary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v1",
+        "assessedAt": "2026-11-05T19:30:18.660Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+          "finalUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+          "retrievedAt": "2026-11-05T19:30:18.660Z",
+          "contentType": "text/html",
+          "contentHash": "c11fe107f4ccaf596912769a8064341e33c2cdc194b67386adfedc2508c00930",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+              "finalUrl": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+              "retrievedAt": "2026-11-05T19:30:18.660Z",
+              "contentType": "application/pdf",
+              "contentHash": "7f6b0c93d8a18fbe562fe2aaa364a5afd04872e7c6fb2c4263be66ae70802c74"
+            }
+          ],
+          "title": "ACT Supreme Court"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-05T19:30:18.660Z"
   }
 ]
