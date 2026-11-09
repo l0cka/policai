@@ -1,5 +1,20 @@
 [
   {
+    "id": "mcp-audit-20749415-0a2a-4d4f-b51a-a086462e4c64",
+    "createdAt": "2026-11-09T00:13:14.975Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e3aa6a15-8b1c-4e7e-9ca9-c7966a27fbf4",
+    "createdAt": "2026-11-09T00:13:11.237Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-72ae3e33-f72e-4f9d-9f74-4548afdcc740",
     "createdAt": "2026-11-08T23:39:35.644Z",
     "actor": "local-mcp-admin",
@@ -3672,20 +3687,6 @@
   {
     "id": "mcp-audit-22cfb75d-f6a4-4c50-a400-3065719e8b98",
     "createdAt": "2026-07-19T06:14:44.225Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-880554ff-fd11-474c-9526-d6c6aca796a2",
-    "createdAt": "2026-07-19T06:14:44.216Z",
-    "actor": "local-mcp-admin",
-    "toolName": "publish_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b4542db2-1040-4785-b32e-bd6edd275c00",
-    "createdAt": "2026-07-19T06:14:44.208Z",
     "actor": "local-mcp-admin",
     "toolName": "publish_staged_source",
     "status": "success"
