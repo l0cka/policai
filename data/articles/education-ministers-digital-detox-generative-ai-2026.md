@@ -5,6 +5,8 @@ summary: On 4 November 2026 the Department of Education published A Digital Deto
 status: published
 publishedAt: 2026-11-07
 cites:
+  - education-ministers-digital-detox-2026
+  - australian-framework-generative-ai-in-schools
   - nsw-nesa-stage-6-take-home-assessment-ai-rules
 sources:
   - https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools
@@ -30,7 +32,7 @@ image:
 
 On 4 November 2026 the Department of Education published [*A Digital Detox*](https://www.education.gov.au/schooling/resources/digital-detox), recording decisions of the Education Ministers Meeting on 2 November 2026 ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools); [PDF](https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf)). The announcement says ministers agreed to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools)).
 
-Policai has staged related developments as detected, not yet verified ([Digital Detox development](/developments#dev-education-ministers-digital-detox-2026); [Framework development](/developments#dev-australian-framework-generative-ai-in-schools)). This note rests on the department's published pages and PDF, not on those unverified entries.
+Policai records the ministers' decisions as [A Digital Detox](/policies/education-ministers-digital-detox-2026) and the related [Australian Framework for Generative Artificial Intelligence (AI) in Schools](/policies/australian-framework-generative-ai-in-schools). This note rests on the department's published pages and PDF alongside those register records.
 
 ## What it says
 
@@ -56,4 +58,4 @@ In NSW, [NESA's Stage 6 take-home assessment and generative AI rules](/policies/
 
 In Policai's analysis, these GenAI decisions are a national policy agreement, not a Commonwealth statute or a single binding school rule. Force for students and schools arrives when each jurisdiction or sector sets timing, scope and application ([PDF](https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf)).
 
-In Policai's analysis, the open questions are how each system will define "secondary school assessments", how built-in AI features in primary technologies will be treated, and how the taskforce's mid-2027 advice will sit beside the Framework. Until Policai's staged Digital Detox and Framework source reviews are approved, those subjects stay off the verified register.
+In Policai's analysis, the open questions are how each system will define "secondary school assessments", how built-in AI features in primary technologies will be treated, and how the taskforce's mid-2027 advice will sit beside the Framework ([Digital Detox record](/policies/education-ministers-digital-detox-2026); [Framework record](/policies/australian-framework-generative-ai-in-schools)).
