@@ -3413,5 +3413,48 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 0b6ecd8c). Proposed by Claude (agent). Requested by Daniel Alkurdi on 2 Nov 2026. Read over plain HTTP with the declared identity. No AFP media release was found."
     }
+  },
+  {
+    "id": "tl-2026-11-04-education-ministers-digital-detox",
+    "date": "2026-11-04",
+    "datePrecision": "day",
+    "title": "A Digital Detox outlines Education Ministers' decisions to restrict AI in schools",
+    "description": "The Department of Education publishes \"A Digital Detox\", a paper on rebalancing technology use in Australian schools. It outlines the decisions taken by Education Ministers to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "education-ministers-digital-detox-2026",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "verification": {
+      "status": "verified",
+      "source": {
+        "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+        "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+        "retrievedAt": "2026-11-08T23:10:25.788Z",
+        "contentType": "text/html",
+        "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+        "linkedDocuments": [],
+        "browserCapture": {
+          "method": "browser",
+          "capturedAt": "2026-11-08T23:10:25.788Z",
+          "capturedBy": "Claude (agent)",
+          "requestedBy": "Daniel Alkurdi",
+          "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-08T23:10:25.788Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+          "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+          "characterCount": 1281
+        },
+        "reviewedDate": {
+          "date": "2026-11-04",
+          "precision": "day",
+          "reviewedAt": "2026-11-09T01:14:30.524Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
+        }
+      },
+      "checkedAt": "2026-11-09T01:14:30.524Z",
+      "checkedBy": "Daniel Alkurdi",
+      "method": "manual",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record."
+    }
   }
 ]
