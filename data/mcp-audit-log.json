@@ -7,6 +7,13 @@
     "status": "success"
   },
   {
+    "id": "mcp-audit-04ce141e-0eae-4a41-a5b0-b2794be9d4cd",
+    "createdAt": "2026-11-09T01:14:30.608Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-20749415-0a2a-4d4f-b51a-a086462e4c64",
     "createdAt": "2026-11-09T00:13:14.975Z",
     "actor": "local-mcp-admin",

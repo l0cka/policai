@@ -164,9 +164,9 @@
   {
     "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
     "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
-    "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+    "title": "A Digital Detox outlines Education Ministers' decisions to restrict AI in schools",
     "entryKind": "timeline_event",
-    "status": "pending_review",
+    "status": "published",
     "discoveredAt": "2026-11-08T23:39:01.554Z",
     "createdBy": "local-mcp-admin",
     "notes": "Re-sourced to the announcement page on Daniel Alkurdi's 8 Nov 2026 decision; the Digital Detox PDF (https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf) returned Firecrawl errors on four attempts. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Timeline proposal only. It is not written to data/timeline.json. relatedPolicyId is the staged policy id and is not on the register until that review is approved.",
@@ -195,6 +195,13 @@
         "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-08T23:10:25.788Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
         "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
         "characterCount": 1281
+      },
+      "reviewedDate": {
+        "date": "2026-11-04",
+        "precision": "day",
+        "reviewedAt": "2026-11-09T01:14:30.524Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
       }
     },
     "proposedRecord": {
@@ -206,9 +213,41 @@
       "type": "announcement",
       "jurisdiction": "federal",
       "relatedPolicyId": "education-ministers-digital-detox-2026",
-      "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools"
+      "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+          "retrievedAt": "2026-11-08T23:10:25.788Z",
+          "contentType": "text/html",
+          "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T23:10:25.788Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-08T23:10:25.788Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+            "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+            "characterCount": 1281
+          },
+          "reviewedDate": {
+            "date": "2026-11-04",
+            "precision": "day",
+            "reviewedAt": "2026-11-09T01:14:30.524Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
+          }
+        },
+        "checkedAt": "2026-11-09T01:14:30.524Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record."
+      }
     },
-    "updatedAt": "2026-11-08T23:39:28.092Z",
+    "updatedAt": "2026-11-09T01:14:30.588Z",
     "proposal": {
       "proposedBy": "Claude (agent)",
       "reviewedDate": {
@@ -218,7 +257,36 @@
       },
       "notes": "Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record.",
       "proposedAt": "2026-11-08T23:39:28.092Z"
-    }
+    },
+    "reviewedAt": "2026-11-09T01:14:30.524Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record.",
+    "decision": {
+      "proposalHash": "60318302754599635208bdcfb053c47af27f42ebd58749258df38cb3deb512c6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-09T00:35:19.286Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-2:b0e32cf36589034618acd12d37d123e34e1cb40b53883c454a475e77d5a0e539",
+        "receivedAt": "2026-11-09T00:35:19.286Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiTXdHaWVBX25FelQtSG51T0p4aVBSQzY3NG5VazI0QW41elFld0V2a2lwTSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIBfc0guLRBXKGiPEcjJtCVTG6EzZJMjPEqgvrrgcBpJQAiBReFxLPVv40XXP7BxjYo996faz8q0h2TeM6NIyM7wbag",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-2",
+        "entries": [
+          {
+            "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
+            "proposalHash": "60318302754599635208bdcfb053c47af27f42ebd58749258df38cb3deb512c6"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-09T01:14:30.563Z"
   },
   {
     "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
