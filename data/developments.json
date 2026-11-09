@@ -1,5 +1,105 @@
 [
   {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1pxxuyj",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-11-05T19:30:18.660Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-05T19:30:18.660Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-11-05T19:30:18.660Z",
+        "contentType": "text/html",
+        "contentHash": "e4248268fdde2910d888104ddd27ada46475a563a7b6422121bb70826168eb7b",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-act-supreme-court-1s1hxec",
+    "title": "ACT Supreme Court",
+    "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+    "sourceId": "act-sc-practice-directions",
+    "sourceName": "ACT Supreme Court — practice directions",
+    "jurisdiction": "act",
+    "detectedAt": "2026-11-05T19:30:18.660Z",
+    "summary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v1",
+      "assessedAt": "2026-11-05T19:30:18.660Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+        "finalUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+        "retrievedAt": "2026-11-05T19:30:18.660Z",
+        "contentType": "text/html",
+        "contentHash": "c11fe107f4ccaf596912769a8064341e33c2cdc194b67386adfedc2508c00930",
+        "linkedDocuments": [
+          {
+            "url": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+            "finalUrl": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+            "retrievedAt": "2026-11-05T19:30:18.660Z",
+            "contentType": "application/pdf",
+            "contentHash": "7f6b0c93d8a18fbe562fe2aaa364a5afd04872e7c6fb2c4263be66ae70802c74"
+          }
+        ],
+        "title": "ACT Supreme Court"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-latest-news-ylua6y",
+    "title": "Latest news",
+    "url": "https://www.courts.qld.gov.au/newsroom/news",
+    "sourceId": "qld-courts-news",
+    "sourceName": "Queensland Courts — news",
+    "jurisdiction": "qld",
+    "publishedAt": "2026-06-01",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-05T19:30:18.660Z",
+    "summary": "Latest news Most recent 04.11.2026 Magistrates Court Practice Direction 7 of 2026 - Dajarra Magistrates Court Relocation 05.11.2026 Supreme Court Amended Practice Direction 1 of 2023 – Commercial List 05.11.2026 Senior judges trade places for the 2026 Judicial Exchange Program All news Sexual Offence Expert Evidence Panel: Legal Stakeholder Survey New version of UCPR Form 138 - Request to Inspect or Copy Court Documents Amended District Court Practice Direction 3 of 2024 - Sexual Violence Case Management New Form DV61 - Application for Leave to Make Further Application for Court Review of Poli",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v1",
+      "assessedAt": "2026-11-05T19:30:18.660Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.courts.qld.gov.au/newsroom/news",
+        "finalUrl": "https://www.courts.qld.gov.au/newsroom/news",
+        "retrievedAt": "2026-11-05T19:30:18.660Z",
+        "contentType": "text/html",
+        "contentHash": "fb954cc4cd2e0f7f77d130ad611afdb5faa908908a419d8b56e9d9850ac368d7",
+        "title": "Latest news",
+        "publishedAt": "2026-06-01",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-education-ministers-digital-detox-2026",
     "title": "A Digital Detox: Education Ministers’ decisions on technology and generative AI in schools",
     "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
