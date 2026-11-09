@@ -15,17 +15,16 @@ sources:
   - https://consultations.ag.gov.au/rights-and-protections/privacy-reform/user_uploads/consultation_paper.pdf
 image:
   src: "/images/articles/agd-personal-data-protection-bill-exposure-draft-2026/lead.jpg"
-  alt: "Parliament House in Canberra under a blue sky, with the building façade and flagpoles in view."
+  alt: "Aerial view of Parliament House in Canberra looking north-east towards Lake Burley Griffin, with the High Court, National Gallery, National Library and Old Parliament House also visible."
   width: 2048
-  height: 1374
-  title: "Canberra (AU), Parliament House -- 2019 -- 1746"
-  creator: "Dietmar Rabich"
-  creatorUrl: "https://commons.wikimedia.org/wiki/User:XRay"
-  sourceUrl: "https://commons.wikimedia.org/wiki/File:Canberra_(AU),_Parliament_House_--_2019_--_1746.jpg"
-  licence: "CC-BY-SA-4.0"
-  licenceUrl: "https://creativecommons.org/licenses/by-sa/4.0/"
+  height: 1533
+  title: "CSIRO ScienceImage 11612 Parliament House Canberra"
+  creator: "CSIRO"
+  sourceUrl: "https://commons.wikimedia.org/wiki/File:CSIRO_ScienceImage_11612_Parliament_House_Canberra.jpg"
+  licence: "CC-BY-3.0"
+  licenceUrl: "https://creativecommons.org/licenses/by/3.0/"
   modifications: "resized"
-  licenceCheckedAt: "2026-11-07"
+  licenceCheckedAt: "2026-11-09"
 ---
 
 On 31 August 2026 the Attorney-General's Department opened a [consultation](/policies/agd-privacy-reform-exposure-draft-2026) on an Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026 and a consultation paper ([consultation hub](https://consultations.ag.gov.au/rights-and-protections/privacy-reform); [media release](https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026)). Submissions closed on 18 September 2026 ([consultation hub](https://consultations.ag.gov.au/rights-and-protections/privacy-reform)). The department says the reforms will bolster privacy protections and help tackle emerging risks from new technologies, including artificial intelligence and wearable devices such as smart glasses, and that the Bill remains subject to further consideration by government ([consultation hub](https://consultations.ag.gov.au/rights-and-protections/privacy-reform)).
