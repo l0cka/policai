@@ -142,6 +142,129 @@
           "proposalHash": "42cd2ff927c243ce9d806fd0bfecb2373c12c6d41cf771cbf5cd89d2b9bfa59a"
         }
       ]
+    },
+    {
+      "id": "2026-11-06-2",
+      "proposedAt": "2026-11-06T01:54:29.233Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-a2ccbf2c-88c8-4848-9c3b-9cc7fa99c8d3",
+          "proposalHash": "9feec83f34c57c787e437583b7a32fd26ce9fd6f6a7c40d4401838a7cc473e0e"
+        },
+        {
+          "id": "source-review-1e00ae5b-6d2e-4399-953d-a2dcdedd0d88",
+          "proposalHash": "5e36545e9f36a848c098a2bf4308e7290b0d977ae5143d24bccf511dc56c6ad0"
+        },
+        {
+          "id": "source-review-2956972a-e243-406b-8a92-3916733f2833",
+          "proposalHash": "ba278fa75e036a211bdc3302a74ba98a6f1f02c9011f2adb62e67010a7973e5e"
+        },
+        {
+          "id": "source-review-801a4788-97b4-486b-8413-3221595d2c9b",
+          "proposalHash": "48279999925bd1df022d72b8210fea4a90defcae00dbbf963b2be7eb66df87d5"
+        },
+        {
+          "id": "source-review-64a30b36-1a11-415c-8414-523324546300",
+          "proposalHash": "1a93b110a21db6905b67acd0c0be17ae615af3cee19ae79f69d10a73f2891287"
+        },
+        {
+          "id": "source-review-6e2e1235-629f-4a7b-ad8a-84a5ed935373",
+          "proposalHash": "1ba00434e4093b9658659c8107172f4a2b0c603aa0401f96cf8a494c1231d333"
+        },
+        {
+          "id": "source-review-2fd69d2b-2234-4a24-a19d-b13e334ec748",
+          "proposalHash": "9971c6acd0d58d60d5f1fddcb23b449359bf7c44792399bf5466af2cf8e57dfa"
+        },
+        {
+          "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
+          "proposalHash": "af059811b989082c1efdc8b73e106ee7ff8f4e5ffa12ffd797e0e1369d70a6b5"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-1",
+      "proposedAt": "2026-11-07T03:52:58.785Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-asd-open-weight-opportunities-2026-11-05",
+          "proposalHash": "de596ccb9a05f342ce1462d0ea80966a08e917199ed5d0463dd6d79337d56db7"
+        },
+        {
+          "id": "source-review-asd-open-weight-secure-operation-2026-11-05",
+          "proposalHash": "eef0eeea34053e57e8bd9dae78c7e066cdad3937978a07e39c4831c9adeb9865"
+        },
+        {
+          "id": "source-review-dev-education-ministers-digital-detox-2026",
+          "proposalHash": "de00c8fcba93940b35fcd86454d20c821083ec735bd57867869df0f9a24e720d"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-2",
+      "proposedAt": "2026-11-07T04:02:04.109Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-dev-australian-framework-generative-ai-in-schools",
+          "proposalHash": "953baf270555d1b5cb98440c48833c1b15a1c80db4b323caae830856db60a123"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-1",
+      "proposedAt": "2026-11-08T22:46:05.810Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-bd40cefe-1ee1-4dd9-861a-92d11c5fc0a9",
+          "proposalHash": "80452f105bee556e583b13b52fc5f5b5430e01b287ce1a503ca4ac28cd2d8eca"
+        },
+        {
+          "id": "source-review-33e3627c-6b0b-45f5-8e52-825e825fb0a9",
+          "proposalHash": "023a41e67bc05b3cac8d653faa8225d552eeb0304a72b460b295f777b143bbce"
+        },
+        {
+          "id": "source-review-6fbd0140-e74b-4830-aee9-6738faeb075d",
+          "proposalHash": "8ff5ff128c3a8b9bd92cc2bc9f1e035bfea410785ff7ee0f4069bceaee6db32b"
+        },
+        {
+          "id": "source-review-0ada36c5-677b-4395-892d-a040e7250fd4",
+          "proposalHash": "82caa8ef7934b7a1a781cb20050b9bf8d4367d5cc3dcee606aef4ac4be5a66d6"
+        },
+        {
+          "id": "source-review-caa8b00f-3888-4035-8fd3-8f172677be06",
+          "proposalHash": "d85569b542458dcfc1e0237303dc34c9c150e2cce4134339efadc36f77b43205"
+        },
+        {
+          "id": "source-review-a22a6bb5-181f-4ba1-b4b7-0ce0a0972d2c",
+          "proposalHash": "cd6374d144b199c6cefa1e092ae31a2774d0dcfa1a6887dc1849b81d8be12267"
+        },
+        {
+          "id": "source-review-1866c08a-0470-4386-b6b6-28dfde087da3",
+          "proposalHash": "c60c9483f34e2e0e2994ee882e0c57aa5a0a5addd72e96d661a2b687149da733"
+        },
+        {
+          "id": "source-review-18bafedf-9535-4250-a052-12860314508f",
+          "proposalHash": "62e94689647fec323f8cd7a76fb14b2551903b5da6f85f170b5a633ab0978c62"
+        },
+        {
+          "id": "source-review-5cdd1ddc-3154-4eac-a95b-273139ceae47",
+          "proposalHash": "fcfb0e0f2ceeb2ccd1ccc2c87863ffd8cdee028c31554afbb8e2d83a01339727"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-2",
+      "proposedAt": "2026-11-08T23:39:35.643Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
+          "proposalHash": "60318302754599635208bdcfb053c47af27f42ebd58749258df38cb3deb512c6"
+        }
+      ]
     }
   ]
 }

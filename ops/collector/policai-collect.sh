@@ -33,7 +33,9 @@ HOST_STATE = ['watch-state.json', 'outbox.json']
 REPO = 'l0cka/policai'
 PREFIX = 'automation/collection-'
 EVIDENCE_DAYS = 30
+GITHUB_CREDENTIAL = 'github.env'
 DEADLINE = 0.0
+GITHUB = None
 
 
 class Refused(Exception):
@@ -88,8 +90,25 @@ def command(args, cwd=SOURCE, limit=45, log=None, check=True, env=None):
         return (out or '').strip() if check else child.returncode
 
 
+def github_env():
+    directory = os.environ.get('CREDENTIALS_DIRECTORY') or str(HOME / '.config/policai-collector')
+    path = Path(directory) / GITHUB_CREDENTIAL
+    try:
+        lines = path.read_text().splitlines()
+    except OSError:
+        raise Refused(f'GitHub credential {GITHUB_CREDENTIAL} missing; nothing collected')
+    tokens = [line[len('GH_TOKEN='):] for line in lines if line.startswith('GH_TOKEN=')]
+    if len(tokens) != 1 or not tokens[0]:
+        raise Refused(f'GitHub credential {GITHUB_CREDENTIAL} needs exactly one non-empty GH_TOKEN line')
+    return dict(os.environ, GH_TOKEN=tokens[0], GIT_TERMINAL_PROMPT='0')
+
+
+def gh(*args, cwd=SOURCE):
+    return command(['gh', *args], cwd, env=GITHUB)
+
+
 def git(*args, cwd=SOURCE):
-    return command(['git', *args], cwd)
+    return command(['git', *args], cwd, env=GITHUB)
 
 
 def digest(path):
@@ -222,12 +241,12 @@ def collect(run):
 
 def publish(run):
     git('push', 'origin', f'HEAD:refs/heads/{run["branch"]}', cwd=WORK)
-    url = command(['gh', 'pr', 'create', '--repo', REPO, '--base', 'main', '--head', run['branch'],
-                   '--title', 'chore(data): collection ' + run['started_at'][:10],
-                   '--body', f"Collector exit: {run['collection_exit']}. Structural validation passed; "
-                   'curated register unchanged. Coverage may be incomplete: see public/data/meta.json. '
-                   'Detections show as needs review; editorial approval is per item. '
-                   'Auto-merges when the required checks pass.'], WORK)
+    url = gh('pr', 'create', '--repo', REPO, '--base', 'main', '--head', run['branch'],
+             '--title', 'chore(data): collection ' + run['started_at'][:10],
+             '--body', f"Collector exit: {run['collection_exit']}. Structural validation passed; "
+             'curated register unchanged. Coverage may be incomplete: see public/data/meta.json. '
+             'Detections show as needs review; editorial approval is per item. '
+             'Auto-merges when the required checks pass.', cwd=WORK)
     run['pr'] = url
     run['phase'] = 'published'
     save(run)
@@ -237,12 +256,12 @@ def publish(run):
 
 def close_older_prs(run):
     """This PR carries the outbox, so every older collection PR is redundant."""
-    prs = json.loads(command(['gh', 'pr', 'list', '--repo', REPO, '--state', 'open', '--limit', '100',
-                              '--json', 'url,headRefName'], WORK))
+    prs = json.loads(gh('pr', 'list', '--repo', REPO, '--state', 'open', '--limit', '100',
+                        '--json', 'url,headRefName', cwd=WORK))
     for pr in prs:
         if pr['headRefName'].startswith(PREFIX) and pr['url'] != run['pr']:
-            command(['gh', 'pr', 'close', pr['url'], '--repo', REPO, '--comment',
-                     f"Superseded by {run['pr']}, which replays every finding main lacks."], WORK)
+            gh('pr', 'close', pr['url'], '--repo', REPO, '--comment',
+               f"Superseded by {run['pr']}, which replays every finding main lacks.", cwd=WORK)
 
 
 def prune_evidence():
@@ -264,6 +283,8 @@ def check_environment():
         raise Refused('USE_CLEF_CLASSIFIER must be unset or 1')
     os.environ['FIRECRAWL_URL'] = 'http://127.0.0.1:3003'
     os.environ['NODE_EXTRA_CA_CERTS'] = str(HOME / '.local/share/policai/geotrust-tls-rsa-ca-g1.pem')
+    global GITHUB
+    GITHUB = github_env()
 
 
 def main():
@@ -287,11 +308,12 @@ def main():
         try:
             check_environment()
             if sys.argv[1:] == ['--preflight']:
-                git('ls-remote', '--exit-code', 'origin', 'refs/heads/main')
-                command(['gh', 'pr', 'list', '--repo', REPO, '--limit', '1', '--json', 'url'])
+                git('fetch', 'origin', 'main')
+                git('push', '--dry-run', 'origin', 'refs/remotes/origin/main:refs/heads/' + PREFIX + 'preflight')
+                gh('pr', 'list', '--repo', REPO, '--limit', '1', '--json', 'url')
                 if not (SOURCE / 'package-lock.json').is_file() or not Path(os.environ['NODE_EXTRA_CA_CERTS']).is_file():
                     raise Refused('lockfile or CA missing')
-                print('Preflight passed: remote and GitHub readable, lockfile and CA present; '
+                print('Preflight passed: push credential accepted, GitHub readable, lockfile and CA present; '
                       'no collection/publication.')
                 return 0
             prune_evidence()

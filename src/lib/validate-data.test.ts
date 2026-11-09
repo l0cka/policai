@@ -20,7 +20,7 @@ import {
 import { emptyWatchState, type WatchState } from '@/lib/pipeline/collect';
 import { ROBOTS_RULES_CAP, ROBOTS_SITEMAPS_CAP, type HostRecord } from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
-import type { CollectionMeta, Policy, SourceRunResult } from '@/types';
+import type { CollectionMeta, Policy, SourceReview, SourceRunResult } from '@/types';
 
 describe('isAllowedSourceHost', () => {
   it('allows https gov.au hosts and the CSIRO exception', () => {
@@ -515,6 +515,50 @@ describe('validatePolicies', () => {
 });
 
 describe('validateSourceReviews', () => {
+  it("lets a timeline review share only its related policy's review page", () => {
+    const policy = buildPolicy({ id: 'related-policy' });
+    const base = {
+      sourceUrl: policy.sourceUrl,
+      title: policy.title,
+      status: 'pending_review' as const,
+      discoveredAt: '2026-07-16T10:00:00.000Z',
+      createdBy: 'collector',
+      analysis: {
+        isRelevant: true,
+        relevanceScore: 1,
+        suggestedType: policy.type,
+        suggestedJurisdiction: policy.jurisdiction,
+        summary: 'Announcement page.',
+      },
+      sourceEvidence: { url: policy.sourceUrl, retrievedAt: '2026-07-16T10:00:00.000Z' },
+      updatedAt: '2026-07-16T10:00:00.000Z',
+    };
+    const policyReview = { ...base, id: 'source-review-policy', entryKind: 'policy' as const, proposedRecord: policy };
+    const event = {
+      id: 'tl-announced',
+      date: '2026-07-16',
+      datePrecision: 'day' as const,
+      title: 'Announced',
+      description: 'Announcement.',
+      type: 'announcement' as const,
+      jurisdiction: policy.jurisdiction,
+      sourceUrl: policy.sourceUrl,
+    };
+    const timelineReview = (relatedPolicyId?: string) => ({
+      ...base,
+      id: `source-review-tl-${relatedPolicyId ?? 'none'}`,
+      entryKind: 'timeline_event' as const,
+      proposedRecord: { ...event, relatedPolicyId },
+    });
+    const duplicates = (reviews: SourceReview[]) =>
+      validateSourceReviews(reviews).errors.filter((error) => error.includes('duplicate sourceUrl'));
+
+    expect(duplicates([policyReview, timelineReview(policy.id)])).toEqual([]);
+    expect(duplicates([timelineReview(policy.id), policyReview])).toEqual([]);
+    expect(duplicates([policyReview, timelineReview()])).toHaveLength(1);
+    expect(duplicates([policyReview, timelineReview('another-policy')])).toHaveLength(1);
+  });
+
   it('validates update targets and chronological review timestamps', () => {
     const policy = buildPolicy({ id: 'existing-policy' });
     const report = validateSourceReviews(
