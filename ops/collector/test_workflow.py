@@ -52,6 +52,8 @@ import json, os, pathlib, sys
 store = pathlib.Path(os.environ['HOME']) / 'prs.json'
 prs = json.loads(store.read_text()) if store.exists() else []
 a = sys.argv[1:]
+if os.environ.get('GH_TOKEN') != 'github_pat_fixture' or os.environ.get('GIT_TERMINAL_PROMPT') != '0':
+    sys.exit('gh: no GitHub credential')
 if a[:2] == ['pr', 'list']:
     print(json.dumps([dict(url=p['url'], headRefName=p['headRefName']) for p in prs if p['state'] == 'OPEN']))
 elif a[:2] == ['pr', 'create']:
@@ -71,7 +73,12 @@ else:
         ca = self.home / '.local/share/policai/geotrust-tls-rsa-ca-g1.pem'
         ca.parent.mkdir(parents=True)
         ca.touch()
-        self.env = dict(os.environ, HOME=str(self.home), PATH=str(self.bin) + ':' + os.environ['PATH'])
+        credentials = self.home / 'credentials'
+        credentials.mkdir()
+        (credentials / 'github.env').write_text('GH_TOKEN=github_pat_fixture\n')
+        self.env = dict(os.environ, HOME=str(self.home), PATH=str(self.bin) + ':' + os.environ['PATH'],
+                        CREDENTIALS_DIRECTORY=str(credentials))
+        self.env.pop('GH_TOKEN', None)
         for name in ('USE_CLAUDE_CLASSIFIER', 'USE_CLEF_CLASSIFIER', 'CLASSIFIER_BASE_URL', 'CLASSIFIER_API_KEY'):
             self.env.pop(name, None)
         for name in list(self.env):
@@ -253,6 +260,33 @@ else:
 
     def test_preflight_does_not_collect(self):
         self.assertEqual(self.run_workflow('--preflight').returncode, 0)
+        self.assertFalse(self.work.exists())
+        self.assertFalse((self.home / 'npm.log').exists())
+
+    def test_github_credential_reaches_git_and_gh_but_not_the_collector(self):
+        self.set_collector(COLLECTOR + 'assert "GH_TOKEN" not in os.environ\n')
+        hook = self.home / 'hooks/pre-push'
+        hook.parent.mkdir()
+        hook.write_text('#!/bin/sh\nprintf "%s %s\\n" "$GH_TOKEN" "$GIT_TERMINAL_PROMPT" >> "$HOME/push.log"\n')
+        hook.chmod(0o755)
+        (self.home / '.gitconfig').write_text('[core]\n\thooksPath = ' + str(hook.parent) + '\n')
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        self.assertEqual(self.receipt()['phase'], 'published')
+        self.assertEqual((self.home / 'push.log').read_text(), 'github_pat_fixture 0\n')
+
+    def test_a_missing_or_empty_github_credential_refuses_before_collecting(self):
+        for name, body in (('missing', None), ('empty', 'GH_TOKEN=\n'), ('repeated', 'GH_TOKEN=a\nGH_TOKEN=b\n')):
+            with self.subTest(name=name):
+                path = self.home / 'credentials' / 'github.env'
+                if body is None:
+                    path.unlink()
+                else:
+                    path.write_text(body)
+                for args in ((), ('--preflight',)):
+                    result = self.run_workflow(*args)
+                    self.assertEqual(result.returncode, 1)
+                    self.assertIn('github.env', result.stderr + result.stdout)
         self.assertFalse(self.work.exists())
         self.assertFalse((self.home / 'npm.log').exists())
 

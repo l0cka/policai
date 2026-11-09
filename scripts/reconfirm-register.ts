@@ -5,7 +5,7 @@
  *
  * Usage:
  *   npm run reconfirm:register -- propose [--kind=policy|timeline|development]
- *       [--due-within=30] [--batch-size=10] [--dry-run]
+ *       [--due-within=30] [--batch-size=10] [--exclude=<id>,<id>] [--dry-run]
  *   npm run reconfirm:register -- approve --batch=<id>
  *
  * Once an editor passkey is registered, `approve` takes the editor's passkey
@@ -17,7 +17,8 @@
  * window (it needs network access to the official sources, so run it on
  * Argus), writes the audit evidence to that kind's data file, and appends
  * batches of unchanged records to data/reconfirmations.json. Changed or
- * unreadable sources are listed for a full review instead.
+ * unreadable sources are listed for a full review instead. --exclude leaves
+ * out records another piece of work is already re-verifying.
  *
  * `approve` needs no network beyond the approvals mailbox. It reads the kind
  * from the batch and renews its records only if every fingerprint still
@@ -119,6 +120,7 @@ async function propose(args: string[]) {
   const records = await readJsonFile<StoredRecord[]>(store.file, []);
   const ledger = await readLedger();
   const excludeIds = await store.excludeIds(records);
+  for (const id of flag(args, 'exclude')?.split(',') ?? []) if (id.trim()) excludeIds.add(id.trim());
 
   const { candidates, records: audited, batches, fullReview } = await proposeReconfirmation(records, ledger, {
     kind,

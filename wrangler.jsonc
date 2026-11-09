@@ -11,6 +11,11 @@
 		"run_worker_first": ["/_bundled/*", "/_rsc/*"]
 	},
 	// OpenNext resizes /_next/image requests through this binding.
+	// Workers Logs keep exceptions and console output for a week, so a failure
+	// like the 6 Nov /_next/image 500s comes with a stack trace.
+	"observability": {
+		"enabled": true
+	},
 	"images": {
 		"binding": "IMAGES"
 	},

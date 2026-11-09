@@ -51,8 +51,11 @@ import {
 	updateSourceReview,
 } from "@/lib/data-service";
 import {
+	developmentRenewal,
 	developmentsRenewedByPublication,
 	linkedDevelopmentId,
+	originDevelopmentIds,
+	reviewPreviousSourceUrl,
 } from "@/lib/source-review";
 import {
 	policyRevisionHash,
@@ -984,18 +987,25 @@ function withProspectiveTimelineEvent(
 	);
 }
 
-// A timeline replacement may share only its already-related policy's canonical
-// URL. Do not exempt that policy's redirect aliases, other records, or drafts.
-function timelineReplacementRelatedPolicy(
+// A new timeline event, or a replacement that keeps its related policy, may
+// share only that policy's canonical URL. Do not exempt that policy's redirect
+// aliases, other records, or drafts.
+function timelineRelatedPolicy(
 	target: TimelineEvent | undefined,
 	proposed: TimelineEventDraft | undefined,
 	sourceUrl: string,
 	replacesSource: boolean,
 	policies: Policy[],
 ): Policy | undefined {
-	if (!replacesSource || !target?.relatedPolicyId ||
-		proposed?.relatedPolicyId !== target.relatedPolicyId) return undefined;
-	return policies.find((policy) => policy.id === target.relatedPolicyId &&
+	const relatedPolicyId = replacesSource
+		? target?.relatedPolicyId && proposed?.relatedPolicyId === target.relatedPolicyId
+			? target.relatedPolicyId
+			: undefined
+		: target
+			? undefined
+			: proposed?.relatedPolicyId;
+	if (!relatedPolicyId) return undefined;
+	return policies.find((policy) => policy.id === relatedPolicyId &&
 		sourceUrlsEqual(policy.sourceUrl, sourceUrl));
 }
 
@@ -1104,9 +1114,22 @@ async function stageSourceUrlUnlocked(input: {
 			);
 		}
 	}
+	const relatedPolicy = input.entryKind === "timeline_event"
+		? timelineRelatedPolicy(
+				targetTimelineEvent, input.proposedRecord as TimelineEventDraft | undefined,
+				canonicalUrl, Boolean(input.replaceTargetSource), trackedPolicies,
+			)
+		: undefined;
+	const sharesRelatedPolicySource =
+		Boolean(input.browserCapture) &&
+		!targetTimelineEvent &&
+		relatedPolicy !== undefined &&
+		matchingTimelineEvents.length === 0 &&
+		matchingPolicies.every((policy) => policy.id === relatedPolicy.id);
 	if (
 		!targetPolicy &&
 		!targetTimelineEvent &&
+		!sharesRelatedPolicySource &&
 		(matchingPolicies.length > 0 || matchingTimelineEvents.length > 0)
 	) {
 		throw new Error(
@@ -1139,6 +1162,7 @@ async function stageSourceUrlUnlocked(input: {
 		);
 		if (
 			!existingReview &&
+			!sharesRelatedPolicySource &&
 			(await sourceUrlExists(canonicalUrl, { legislativeRecord }))
 		) {
 			throw new Error("Source URL already exists in tracked or staged content");
@@ -1259,10 +1283,6 @@ async function stageSourceUrlUnlocked(input: {
 					retrieved.evidence.retrievedAt ?? new Date().toISOString(),
 				};
 			}
-		const relatedPolicy = timelineReplacementRelatedPolicy(
-			targetTimelineEvent, input.proposedRecord as TimelineEventDraft | undefined,
-			canonicalUrl, Boolean(input.replaceTargetSource), trackedPolicies,
-		);
 		const targetRecord = targetPolicy ?? targetTimelineEvent;
 		const candidateIdentityUrls = sourceIdentityUrls(
 			canonicalUrl,
@@ -1932,7 +1952,7 @@ async function approveStagedSourceUnlocked(input: {
 		const timelineCollision = timelineEvents.find(
 			(existing) => existing.id === event.id,
 		);
-		const relatedPolicy = timelineReplacementRelatedPolicy(
+		const relatedPolicy = timelineRelatedPolicy(
 			timelineCollision, event, review.sourceUrl,
 			Boolean(review.targetTimelineEventPreviousSourceUrl), policies,
 		);
@@ -2353,7 +2373,6 @@ async function reconcilePublicationSideEffects(
 	publishedAt: string,
 	options: {
 		preserveExistingDevelopment?: boolean;
-		previousSource?: SourceEvidence;
 	} = {},
 ): Promise<void> {
 	const {
@@ -2377,29 +2396,30 @@ async function reconcilePublicationSideEffects(
 		},
 		dismissalReason: undefined,
 	}, options);
-	await renewRelatedDevelopments(review, verification, options.previousSource);
+	await renewRelatedDevelopments(review, verification);
 	await markCollectionReviewed(review.reviewedAt ?? publishedAt);
 }
 
 async function renewRelatedDevelopments(
 	review: SourceReview,
 	verification: Policy["verification"],
-	previousSource: SourceEvidence | undefined,
 ): Promise<void> {
-	const record = review.proposedRecord as Policy | TimelineEvent;
+	const proposed = review.proposedRecord as Policy | TimelineEvent;
+	const record = {
+		kind: review.entryKind,
+		id: proposed.id,
+		sourceUrl: proposed.sourceUrl,
+		verification,
+	};
 	const renewed = developmentsRenewedByPublication(
 		await getDevelopments(undefined, { access: "admin" }),
-		{
-			kind: review.entryKind,
-			id: record.id,
-			sourceUrl: record.sourceUrl,
-			verification,
-		},
-		previousSource,
+		record,
+		reviewPreviousSourceUrl(review),
 		linkedDevelopmentId(review),
+		originDevelopmentIds(await getSourceReviews(), proposed.id),
 	);
 	for (const development of renewed) {
-		await updateDevelopment(development.id, { verification });
+		await updateDevelopment(development.id, developmentRenewal(record));
 	}
 }
 
@@ -2571,7 +2591,7 @@ async function assertTargetSourceIdentityIsUncontested(
 	if (!target) {
 		throw new Error("Target record for update review was not found");
 	}
-	const relatedPolicy = timelineReplacementRelatedPolicy(
+	const relatedPolicy = timelineRelatedPolicy(
 		timelineEvents.find((event) => event.id === targetTimelineEventId),
 		review.proposedRecord as TimelineEventDraft, review.sourceUrl,
 		Boolean(review.targetTimelineEventPreviousSourceUrl), policies,
@@ -2742,7 +2762,6 @@ async function publishStagedSourceUnlocked(
 	);
 
 	const publishedAt = new Date().toISOString();
-	let previousSource: SourceEvidence | undefined;
 	let reviewForPublication = canonicalRecord
 		? { ...review, proposedRecord: canonicalRecord }
 		: review;
@@ -2794,7 +2813,6 @@ async function publishStagedSourceUnlocked(
 		if (targetTimelineEventId && !existingEvent) {
 			throw new Error("Target timeline event for update review was not found");
 		}
-		previousSource = existingEvent?.verification?.source;
 		if (existingEvent) {
 			if (
 				targetTimelineEventId &&
@@ -2822,6 +2840,7 @@ async function publishStagedSourceUnlocked(
 		} else {
 			const duplicateExists = await sourceUrlExists(review.sourceUrl, {
 				excludeSourceReviewId: review.id,
+				relatedPolicyId: event.relatedPolicyId,
 			});
 			if (duplicateExists) {
 				throw new Error("Source URL already exists in tracked content");
@@ -2860,7 +2879,6 @@ async function publishStagedSourceUnlocked(
 			if (!targetPolicy) {
 				throw new Error("Target policy for update review was not found");
 			}
-			previousSource = targetPolicy.verification.source;
 			const replacesTargetSource = Boolean(
 				review.targetPolicyPreviousSourceUrl &&
 					sourceUrlsEqual(
@@ -2975,9 +2993,7 @@ async function publishStagedSourceUnlocked(
 	// The review is the public transaction boundary. Development promotion and
 	// collection metadata are recoverable side effects, so they must not become
 	// publicly verified before this terminal status is durable.
-	await reconcilePublicationSideEffects(reviewForPublication, publishedAt, {
-		previousSource,
-	});
+	await reconcilePublicationSideEffects(reviewForPublication, publishedAt);
 	return updated;
 }
 

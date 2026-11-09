@@ -1,4 +1,5 @@
 import openNext from "./.open-next/worker.js";
+import { withOriginalImageFallback } from "./src/lib/image-fallback.mjs";
 
 // The data bundle in .open-next/assets/_bundled/ is the unfiltered editorial
 // tree, read only through the ASSETS binding. wrangler.jsonc sends its public
@@ -17,6 +18,9 @@ const worker = {
 		}
 		if (url.pathname.startsWith("/_bundled/")) {
 			return new Response("Not found", { status: 404 });
+		}
+		if (url.pathname === "/_next/image") {
+			return withOriginalImageFallback(() => openNext.fetch(request, env, ctx), request, env);
 		}
 		return openNext.fetch(request, env, ctx);
 	},
