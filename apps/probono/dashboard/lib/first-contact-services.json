@@ -1,0 +1,356 @@
+[
+  {
+    "id": "nsw-lawaccess",
+    "name": "LawAccess NSW",
+    "kind": "legal_aid_helpline",
+    "level": "state",
+    "states": [
+      "NSW"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "general"
+    ],
+    "intake": {
+      "phone": "1300 888 529",
+      "url": "https://www.legalaid.nsw.gov.au/contact-us",
+      "hours": "9am to 5pm Monday to Friday, excluding public holidays"
+    },
+    "eligibility": "Free information service; staff are not lawyers",
+    "provenance": {
+      "catchment": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.hours": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "eligibility": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed"
+  },
+  {
+    "id": "nsw-lac-dv-unit",
+    "name": "Legal Aid NSW Domestic Violence Unit",
+    "kind": "legal_aid_helpline",
+    "level": "state",
+    "states": [
+      "NSW"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "family_violence"
+    ],
+    "intake": {
+      "phone": "1800 979 529",
+      "url": "https://www.legalaid.nsw.gov.au/contact-us"
+    },
+    "eligibility": "Line for victim-survivors",
+    "provenance": {
+      "catchment": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "eligibility": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed"
+  },
+  {
+    "id": "nsw-youth-hotline",
+    "name": "Legal Aid NSW Youth Hotline",
+    "kind": "legal_aid_helpline",
+    "level": "state",
+    "states": [
+      "NSW"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "general"
+    ],
+    "intake": {
+      "phone": "1800 10 18 10",
+      "url": "https://www.legalaid.nsw.gov.au/contact-us",
+      "hours": "9am to midnight on weekdays; 24 hours from Friday 9am to Sunday midnight and on public holidays"
+    },
+    "eligibility": "For people under 18",
+    "provenance": {
+      "catchment": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.hours": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "eligibility": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "cultural": {
+        "url": "https://www.legalaid.nsw.gov.au/contact-us",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed",
+    "cultural": [
+      "under_18"
+    ]
+  },
+  {
+    "id": "vic-legal-help",
+    "name": "Victoria Legal Aid Legal Help",
+    "kind": "legal_aid_helpline",
+    "level": "state",
+    "states": [
+      "VIC"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "general"
+    ],
+    "intake": {
+      "phone": "1300 792 387",
+      "url": "https://www.legalaid.vic.gov.au/contact-us",
+      "hours": "8am to 6pm Monday to Friday, closed on public holidays"
+    },
+    "eligibility": "General legal information; legal advice only for eligible people",
+    "provenance": {
+      "catchment": {
+        "url": "https://www.legalaid.vic.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://www.legalaid.vic.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://www.legalaid.vic.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://www.legalaid.vic.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "intake.hours": {
+        "url": "https://www.legalaid.vic.gov.au/contact-us",
+        "checked": "2026-11-11"
+      },
+      "eligibility": {
+        "url": "https://www.legalaid.vic.gov.au/contact-us",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed"
+  },
+  {
+    "id": "djirra",
+    "name": "Djirra",
+    "kind": "fvpls",
+    "level": "state",
+    "states": [
+      "VIC"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "family_violence",
+      "family_law",
+      "child_protection"
+    ],
+    "intake": {
+      "phone": "1800 354 772",
+      "url": "https://djirra.org.au/contact-us/",
+      "hours": "Offices open 9am to 5pm Monday to Friday"
+    },
+    "eligibility": "Aboriginal women and their children, sistergirls, brotherboys and others",
+    "cultural": [
+      "aboriginal_torres_strait_islander",
+      "family_violence"
+    ],
+    "provenance": {
+      "catchment": {
+        "url": "https://djirra.org.au/contact-us/",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://djirra.org.au/contact-us/",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://djirra.org.au/",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://djirra.org.au/contact-us/",
+        "checked": "2026-11-11"
+      },
+      "intake.hours": {
+        "url": "https://djirra.org.au/contact-us/",
+        "checked": "2026-11-11"
+      },
+      "eligibility": {
+        "url": "https://djirra.org.au/contact-us/",
+        "checked": "2026-11-11"
+      },
+      "cultural": {
+        "url": "https://djirra.org.au/contact-us/",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed"
+  },
+  {
+    "id": "als-nsw-act",
+    "name": "Aboriginal Legal Service NSW/ACT",
+    "kind": "atsils",
+    "level": "state",
+    "states": [
+      "NSW"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "criminal",
+      "child_protection",
+      "family_law",
+      "tenancy",
+      "family_violence",
+      "fines",
+      "employment"
+    ],
+    "intake": {
+      "phone": "1800 765 767",
+      "url": "https://www.alsnswact.org.au/services"
+    },
+    "cultural": [
+      "aboriginal_torres_strait_islander"
+    ],
+    "provenance": {
+      "catchment": {
+        "url": "https://www.alsnswact.org.au/services",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://www.alsnswact.org.au/services",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://www.alsnswact.org.au/services",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://www.alsnswact.org.au/services",
+        "checked": "2026-11-11"
+      },
+      "cultural": {
+        "url": "https://www.alsnswact.org.au/services",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed"
+  },
+  {
+    "id": "vals",
+    "name": "Victorian Aboriginal Legal Service",
+    "kind": "atsils",
+    "level": "state",
+    "states": [
+      "VIC"
+    ],
+    "catchment": {
+      "statewide": true
+    },
+    "problems": [
+      "criminal",
+      "family_law"
+    ],
+    "intake": {
+      "phone": "1800 064 865",
+      "url": "https://www.vals.org.au/about-legal-services/"
+    },
+    "eligibility": "Aboriginal and Torres Strait Islander people; each matter assessed case by case",
+    "cultural": [
+      "aboriginal_torres_strait_islander"
+    ],
+    "provenance": {
+      "catchment": {
+        "url": "https://www.vals.org.au/about-legal-services/",
+        "checked": "2026-11-11"
+      },
+      "problems": {
+        "url": "https://www.vals.org.au/about-legal-services/",
+        "checked": "2026-11-11"
+      },
+      "intake.phone": {
+        "url": "https://www.vals.org.au/about-legal-services/",
+        "checked": "2026-11-11"
+      },
+      "intake.url": {
+        "url": "https://www.vals.org.au/about-legal-services/",
+        "checked": "2026-11-11"
+      },
+      "eligibility": {
+        "url": "https://www.vals.org.au/about-legal-services/",
+        "checked": "2026-11-11"
+      },
+      "cultural": {
+        "url": "https://www.vals.org.au/about-legal-services/",
+        "checked": "2026-11-11"
+      }
+    },
+    "review": "unreviewed"
+  }
+]

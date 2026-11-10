@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Nav from './nav';
 import ThemeToggle, { themeInitScript } from './theme-toggle';
 import CompanionMark from './companion-mark';
+import FirstContactWebMcp from './first-contact-webmcp';
 import { getPool } from '../lib/db';
 import { getLastHealthyAt, getRadarSourceStats, headerStatus, type SourceHealthCounts } from '../lib/health-data';
 import './globals.css';
@@ -97,6 +98,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: siteJsonLd() }} />
       </head>
       <body>
+        <FirstContactWebMcp />
         <a href="#main-content" className="sr-only skip-link">
           Skip to content
         </a>
