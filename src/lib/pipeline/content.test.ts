@@ -211,6 +211,36 @@ describe('PDF content extraction', () => {
     ).rejects.toThrow('no readable document text');
   });
 
+  it('reads a Firecrawl Markdown page as text, without links or heading rules', async () => {
+    const markdown = [
+      '[Skip to main content](https://example.gov.au/release#main-content)',
+      '',
+      'Australia must act now on growing risks from deepfakes',
+      '======================================================',
+      '',
+      'Media Release 09 November 2026 [Listen](https://app.example.com/rsent?url=https%3A%2F%2Fexample.gov.au)',
+      '',
+      '![Commission logo](https://example.gov.au/logo.png)',
+      '## Synthetic media',
+      'The **Commission** calls for [new laws](https://example.gov.au/laws) on deepfakes.',
+    ].join('\n');
+    const document = await extractRetrievedDocument(
+      {
+        body: markdown,
+        durationMs: 1,
+        evidence: {
+          url: 'https://example.gov.au/release',
+          contentType: 'text/plain',
+        },
+      },
+      'https://example.gov.au/release',
+      'Australia must act now on growing risks from deepfakes',
+    );
+    expect(document.text).toBe(
+      'Australia must act now on growing risks from deepfakes Media Release 09 November 2026 Listen Synthetic media The Commission calls for new laws on deepfakes.',
+    );
+  });
+
   it('extracts linked instrument bytes together with a landing page', async () => {
     const bytes = buildTextPdf('Binding AI procurement standard');
     const result = await extractRetrievedDocument(
