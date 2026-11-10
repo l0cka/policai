@@ -1404,8 +1404,12 @@ export async function retrieveSource(
 
       const finalUrl = response.url || currentUrl;
       if (hostsDiffer(finalUrl, currentUrl)) {
-        await response.body?.cancel().catch(() => undefined);
-        deadlineAt += await admitThroughGate(options.gate, finalUrl);
+        try {
+          deadlineAt += await admitThroughGate(options.gate, finalUrl);
+        } catch (error) {
+          await response.body?.cancel().catch(() => undefined);
+          throw error;
+        }
       }
       await withinRetrievalDeadline(
         assertSafeSourceUrl(finalUrl, resolveHost, destinationPolicy),
