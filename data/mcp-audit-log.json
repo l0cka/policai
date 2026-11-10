@@ -676,6 +676,92 @@
     "status": "success"
   },
   {
+    "id": "mcp-audit-222497dc-eebd-4df3-918a-a57b266fa9ea",
+    "createdAt": "2026-11-06T01:44:44.686Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-16c35bc1-c768-4a1c-9a67-7616f82575a6",
+    "createdAt": "2026-11-06T01:44:44.175Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8ea630c7-658d-42f6-8ccc-a1e5ea258a70",
+    "createdAt": "2026-11-06T01:37:18.660Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-cf323b25-7abb-4291-83be-2836eda9b297",
+    "createdAt": "2026-11-06T01:36:51.543Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a34ae2c9-5447-45ba-a53b-65904b81e72d",
+    "createdAt": "2026-11-06T01:36:51.324Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-acd2fc38-ddb4-4128-a78b-ac2e7d82b72d",
+    "createdAt": "2026-11-06T01:34:26.965Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-3eef3ff6-0c56-4f61-9521-5a9c2204a48a",
+    "createdAt": "2026-11-06T01:34:26.814Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.cyber.gov.au/blog/frontier-models-and-their-impact-on-cyber-security",
+    "status": "error",
+    "errorSummary": "read ETIMEDOUT"
+  },
+  {
+    "id": "mcp-audit-3faa5ad6-0606-4e6d-94ff-f4e332606f40",
+    "createdAt": "2026-11-06T01:32:41.130Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-863596e3-892d-4adb-9fb0-c554ed611549",
+    "createdAt": "2026-11-06T01:32:40.735Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.cyber.gov.au/publication/opportunities-for-ai-in-cyber-defence",
+    "status": "error",
+    "errorSummary": "Timed out after 60000ms"
+  },
+  {
+    "id": "mcp-audit-4f75fc27-6873-4bb6-8f12-683bbc1e5572",
+    "createdAt": "2026-11-06T01:30:47.870Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.cyber.gov.au/advisory/agentic-ai-harnesses",
+    "status": "error",
+    "errorSummary": "read ETIMEDOUT"
+  },
+  {
+    "id": "mcp-audit-3ac2f76e-38ce-46a5-b8fe-8d8a2cb7b67f",
+    "createdAt": "2026-11-06T01:29:02.050Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-b1f69971-c6aa-43b1-9e76-1f1851a6935d",
     "createdAt": "2026-11-05T22:01:48.405Z",
     "actor": "local-mcp-admin",
@@ -3602,100 +3688,6 @@
     "createdAt": "2026-07-20T09:58:54.200Z",
     "actor": "local-mcp-admin",
     "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-19955273-4957-4be8-901e-f6996be631ba",
-    "createdAt": "2026-07-20T09:58:54.194Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-79f6eba0-85c3-4b8f-b059-8220b3a5a6c0",
-    "createdAt": "2026-07-20T09:58:54.190Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e76ba358-f337-4a4b-813e-394cbd5dbe43",
-    "createdAt": "2026-07-20T09:54:59.576Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e4041e9d-0e7b-4720-86aa-9c058e626eb6",
-    "createdAt": "2026-07-20T09:54:59.563Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b8343497-4538-49ad-b67f-6575aec68642",
-    "createdAt": "2026-07-20T09:54:59.551Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-3b6ac9fd-ffae-41de-a991-5ec128987535",
-    "createdAt": "2026-07-20T09:54:59.539Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-2dcf70c6-c281-46a7-805b-363f635083d9",
-    "createdAt": "2026-07-20T09:54:59.526Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-202cffa1-b7bb-47cc-903b-d7981078c1d0",
-    "createdAt": "2026-07-20T09:54:59.514Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-db185bf9-ab25-4414-b8db-31e2079edf7e",
-    "createdAt": "2026-07-20T09:54:59.500Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-46fe7d54-dc0c-42aa-b28b-5d552c6aeac7",
-    "createdAt": "2026-07-20T09:54:59.488Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ce9c121b-90d5-4256-9756-4a6ab6957f21",
-    "createdAt": "2026-07-20T09:54:59.475Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.pm.gov.au/media/ai-australias-interests",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-3b878e1d-eb58-4e54-9aaa-eb0f0a361343",
-    "createdAt": "2026-07-20T09:54:59.461Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
     "status": "success"
   }
 ]

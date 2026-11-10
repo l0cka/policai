@@ -39784,5 +39784,350 @@
       "notes": "Dated 2026-11-10 from the Prime Minister's media release. Not verified."
     },
     "updatedAt": "2026-11-10T05:20:00.000Z"
+  },
+  {
+    "id": "source-review-4554eee6-dcbb-4e34-bc12-0383e6e59270",
+    "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
+    "title": "ASD Blueprint for Secure Cloud — Artificial intelligence usage policy requirement",
+    "entryKind": "policy",
+    "targetPolicyId": "asd-blueprint-secure-cloud-ai-usage-policy",
+    "targetPolicyBaseRevisionHash": "d1bd29b392c879f724c76b9fbf6817b0ad534c32a982bd940927b2c4785d5e05",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:32:41.111Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Correction from the 3 Nov 2026 audit (second batch, requested 6 Nov 2026): bare URLs removed from the reader-facing content and replaced with words; the page renders content as plain text. No other change. Prepared by Claude (agent).",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://blueprint.asd.gov.au/security-and-governance/policies",
+      "finalUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
+      "retrievedAt": "2026-11-06T01:44:44.424Z",
+      "contentType": "text/html",
+      "contentHash": "26fc80900e29100acc656fb0c54317de37275059c52719743aea5061f51c907e",
+      "title": "ASD's Blueprint for Secure Cloud",
+      "reviewedDate": {
+        "date": "2023-12-19",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T01:44:44.432Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Rechecked 6 Nov 2026: the ASD Blueprint changelog records '19 December 2023 1.0 - Initial launch of ASD's Blueprint for Secure Cloud'. Unchanged from the verified record."
+      }
+    },
+    "proposedRecord": {
+      "id": "asd-blueprint-secure-cloud-ai-usage-policy",
+      "title": "ASD Blueprint for Secure Cloud — Artificial intelligence usage policy requirement",
+      "description": "ASD's Blueprint for Secure Cloud, first released on 19 December 2023, surfaces an artificial intelligence usage policy as an organisational policy expected under ISM control ISM-2074.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2023-12-19",
+      "agencies": [
+        "Australian Signals Directorate"
+      ],
+      "sourceUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
+      "content": "ASD's Blueprint for Secure Cloud was initially launched on 19 December 2023. The Blueprint is maintained as a living resource; its change log does not record a change specific to this policy. It is better-practice guidance for designing, configuring and deploying secure cloud and hybrid workspaces, with a current focus on Microsoft 365. Its security and governance section links system security planning, the Essential Eight, system security plan annexes, and organisational policies and strategies. The organisational policies checklist explicitly identifies a general-purpose artificial intelligence usage policy as a requirement of ISM control ISM-2074. The Blueprint does not provide a template for this artefact, but positions it as part of the documentation agencies should review, develop and maintain when operating systems built using the Blueprint. ASD Essentials, launched on 15 October 2026, is the transition path from the Essential Eight; ASD keeps the Essential Eight on cyber.gov.au during the transition.",
+      "aiSummary": "ASD Blueprint guidance, first launched in December 2023, identifies a general-purpose AI usage policy as an ISM-2074 organisational policy requirement.",
+      "tags": [
+        "ASD",
+        "Blueprint for Secure Cloud",
+        "ISM-2074",
+        "AI usage policy",
+        "cloud security",
+        "governance"
+      ],
+      "themes": [
+        "ai-governance",
+        "cyber-security"
+      ],
+      "createdAt": "2026-04-20T00:00:00Z",
+      "updatedAt": "2026-11-06T01:44:44.432Z",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2023-12-19",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://blueprint.asd.gov.au/security-and-governance/policies",
+            "finalUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
+            "retrievedAt": "2026-11-06T01:44:44.424Z",
+            "contentType": "text/html",
+            "contentHash": "26fc80900e29100acc656fb0c54317de37275059c52719743aea5061f51c907e",
+            "title": "ASD's Blueprint for Secure Cloud",
+            "reviewedDate": {
+              "date": "2023-12-19",
+              "precision": "day",
+              "reviewedAt": "2026-11-06T01:44:44.432Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Rechecked 6 Nov 2026: the ASD Blueprint changelog records '19 December 2023 1.0 - Initial launch of ASD's Blueprint for Secure Cloud'. Unchanged from the verified record."
+            }
+          }
+        }
+      ],
+      "lastReviewedAt": "2026-11-06T01:44:44.432Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://blueprint.asd.gov.au/security-and-governance/policies",
+          "finalUrl": "https://blueprint.asd.gov.au/security-and-governance/policies",
+          "retrievedAt": "2026-11-06T01:44:44.424Z",
+          "contentType": "text/html",
+          "contentHash": "26fc80900e29100acc656fb0c54317de37275059c52719743aea5061f51c907e",
+          "title": "ASD's Blueprint for Secure Cloud",
+          "reviewedDate": {
+            "date": "2023-12-19",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T01:44:44.432Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 6 Nov 2026: the ASD Blueprint changelog records '19 December 2023 1.0 - Initial launch of ASD's Blueprint for Secure Cloud'. Unchanged from the verified record."
+          }
+        },
+        "checkedAt": "2026-11-06T01:44:44.432Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-1, proposal ec3b a86e ddbd dbc8). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
+      }
+    },
+    "updatedAt": "2026-11-06T01:44:44.669Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2023-12-19",
+        "precision": "day",
+        "notes": "Rechecked 6 Nov 2026: the ASD Blueprint changelog records '19 December 2023 1.0 - Initial launch of ASD's Blueprint for Secure Cloud'. Unchanged from the verified record."
+      },
+      "notes": "Text correction only: bare URLs removed from content.",
+      "proposedAt": "2026-11-06T01:36:51.529Z"
+    },
+    "targetPolicyRevisionHash": "d1bd29b392c879f724c76b9fbf6817b0ad534c32a982bd940927b2c4785d5e05",
+    "reviewedAt": "2026-11-06T01:44:44.432Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-1, proposal ec3b a86e ddbd dbc8). Proposed by Claude (agent). Text correction only: bare URLs removed from content.",
+    "decision": {
+      "proposalHash": "ec3ba86eddbddbc8ae84c04dcdfdcddeefb75d55c7666d0669af0ccff7ff24c7",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T01:43:50.815Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-1:76b42d5ed56d0cc347bc3edb70af6e5deed8575b2be454fca1ef01da693ca80a",
+        "receivedAt": "2026-11-06T01:43:50.815Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWHFCcExzUmRFMUZtWnpJQ3FtMWtxYmNVQUo2cHA4MXpjMi1pYWxMRXpQZyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDCAH6TPyDuxRFH775fYx8RpHIIe6eUgjlrMX-wYMJcpAIgCRdwVSRb6VNnXpy98N5fQ9fbtcbLe42nLsVz2KSbjHE",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-1",
+        "entries": [
+          {
+            "id": "source-review-be56624a-b15a-4692-8125-a03ce9eb6927",
+            "proposalHash": "a7892d5626e140a50b7303b27e31a2d95a0a8187f30ef074f819024072a44e13"
+          },
+          {
+            "id": "source-review-4554eee6-dcbb-4e34-bc12-0383e6e59270",
+            "proposalHash": "ec3ba86eddbddbc8ae84c04dcdfdcddeefb75d55c7666d0669af0ccff7ff24c7"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T01:44:44.661Z"
+  },
+  {
+    "id": "source-review-be56624a-b15a-4692-8125-a03ce9eb6927",
+    "sourceUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+    "title": "Privacy Reform – Consultation on Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026",
+    "entryKind": "policy",
+    "targetPolicyId": "agd-privacy-reform-exposure-draft-2026",
+    "targetPolicyBaseRevisionHash": "30b8a19f1227c159af41e108407de8334ad20726e0d929edd159881d60a09bd5",
+    "status": "published",
+    "discoveredAt": "2026-11-06T01:29:02.034Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Correction from the 3 Nov 2026 audit (second batch, requested 6 Nov 2026): bare URLs removed from the reader-facing content and replaced with words; the page renders content as plain text. No other change. Prepared by Claude (agent).",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+      "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+      "retrievedAt": "2026-11-06T01:44:43.996Z",
+      "contentType": "text/html",
+      "contentHash": "dcd7bc9b4522e80b269c738e323c6be4d7d24e0bbaeeaa40670773088512ce2e",
+      "title": "Privacy Reform – Consultation on Exposure Draft legislation",
+      "reviewedDate": {
+        "date": "2026-08-31",
+        "precision": "day",
+        "reviewedAt": "2026-11-06T01:44:44.001Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Rechecked 6 Nov 2026: the consultation hub page states 'Opened 31 Aug 2026' and 'Closed 18 Sep 2026' as visible text. Unchanged from the verified record."
+      }
+    },
+    "proposedRecord": {
+      "id": "agd-privacy-reform-exposure-draft-2026",
+      "title": "Privacy Reform – Consultation on Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026",
+      "description": "Attorney-General's Department consultation on a Consultation Paper and the Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026, which would modernise the Privacy Act 1988 and, in the department's words, help tackle emerging risks from new technologies including artificial intelligence. Submissions closed on 18 September 2026.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "proposed",
+      "effectiveDate": "2026-08-31",
+      "dates": [
+        {
+          "type": "consultation_opened",
+          "date": "2026-08-31",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "retrievedAt": "2026-11-06T01:44:43.996Z",
+            "contentType": "text/html",
+            "contentHash": "dcd7bc9b4522e80b269c738e323c6be4d7d24e0bbaeeaa40670773088512ce2e",
+            "title": "Privacy Reform – Consultation on Exposure Draft legislation",
+            "reviewedDate": {
+              "date": "2026-08-31",
+              "precision": "day",
+              "reviewedAt": "2026-11-06T01:44:44.001Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Rechecked 6 Nov 2026: the consultation hub page states 'Opened 31 Aug 2026' and 'Closed 18 Sep 2026' as visible text. Unchanged from the verified record."
+            }
+          }
+        },
+        {
+          "type": "consultation_closed",
+          "date": "2026-09-18",
+          "precision": "day",
+          "source": {
+            "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+            "title": "Privacy Reform – Consultation on Exposure Draft legislation - Attorney-General's Department - Citizen Space",
+            "retrievedAt": "2026-11-04T01:44:41.241Z",
+            "contentType": "text/html",
+            "contentHash": "1f54441380b0ccec142bda107d9457a3c393526b78ac0635fd52559a06c1c969",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-04T01:44:41.241Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "One-off read through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), HTTP 200, authorised by Daniel Alkurdi on 4 Nov 2026 after the agd-ministers-media manual check found the 31 Aug 2026 release. pageText is the consultation overview, documents list and dates; the boilerplate Privacy Collection Notice is omitted. Linked PDFs were not downloaded.",
+              "pageContentHash": "25cb20f0a1b59b3c6088b89f9c1a94a2377eca4c35ed85d828f2fdbb77fe1453",
+              "characterCount": 2331
+            },
+            "reviewedDate": {
+              "date": "2026-09-18",
+              "precision": "day",
+              "reviewedAt": "2026-11-04T01:47:12.645Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The consultation hub page states \"Opened 31 Aug 2026\" and \"Closed 18 Sep 2026\" as visible text, not as page metadata. The Attorney-General's media release of 31 August 2026 (https://ministers.ag.gov.au/media-centre/modernising-australias-privacy-laws-digital-age-31-08-2026) says the consultation paper and draft legislation were released that day."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Attorney-General's Department"
+      ],
+      "sourceUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+      "content": "On 31 August 2026 the Attorney-General announced the release of a consultation paper and draft legislation to modernise Australia's privacy laws. The Attorney-General's Department consultation hub lists the consultation as opened on 31 August 2026 and closed on 18 September 2026. It publishes the Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026 and a Consultation Paper. The department says the reforms will bolster privacy protections and help tackle emerging risks from new technologies, including artificial intelligence and wearable devices such as smart glasses, and that the Bill remains subject to further consideration by government. The minister's release lists the key measures: a fair and reasonable test for collecting and using personal information; a right to erasure against large digital platforms; stronger standards for consent; and limits on trading in personal information without clear permission. It says AI-powered tools and devices, such as connected vehicles that continuously collect and process personal information, amplify privacy risks. The reforms build on the Privacy Act Review and the Privacy and Other Legislation Amendment Act 2024 (register id federal-privacy-and-other-legislation-amendment-act-2024) and follow the Government Response to the Privacy Act Review Report (register id government-response-privacy-act-review-report). The Bill had not been introduced to Parliament when this record was staged.",
+      "aiSummary": "Federal consultation (31 August to 18 September 2026) on the Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026, the next tranche of Privacy Act reform, which the Attorney-General's Department says will help tackle privacy risks from AI and other new technologies.",
+      "tags": [
+        "consultation",
+        "exposure draft",
+        "Privacy Act 1988",
+        "privacy reform",
+        "Personal Data Protection Bill",
+        "Attorney-General's Department",
+        "right to erasure"
+      ],
+      "themes": [
+        "privacy-data",
+        "ai-governance"
+      ],
+      "createdAt": "2026-11-04T01:45:30.552Z",
+      "updatedAt": "2026-11-06T01:44:44.001Z",
+      "lastReviewedAt": "2026-11-06T01:44:44.001Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+          "finalUrl": "https://consultations.ag.gov.au/rights-and-protections/privacy-reform",
+          "retrievedAt": "2026-11-06T01:44:43.996Z",
+          "contentType": "text/html",
+          "contentHash": "dcd7bc9b4522e80b269c738e323c6be4d7d24e0bbaeeaa40670773088512ce2e",
+          "title": "Privacy Reform – Consultation on Exposure Draft legislation",
+          "reviewedDate": {
+            "date": "2026-08-31",
+            "precision": "day",
+            "reviewedAt": "2026-11-06T01:44:44.001Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Rechecked 6 Nov 2026: the consultation hub page states 'Opened 31 Aug 2026' and 'Closed 18 Sep 2026' as visible text. Unchanged from the verified record."
+          }
+        },
+        "checkedAt": "2026-11-06T01:44:44.001Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-1, proposal a789 2d56 26e1 40a5). Proposed by Claude (agent). Text correction only: bare URLs removed from content."
+      }
+    },
+    "updatedAt": "2026-11-06T01:44:44.157Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-08-31",
+        "precision": "day",
+        "notes": "Rechecked 6 Nov 2026: the consultation hub page states 'Opened 31 Aug 2026' and 'Closed 18 Sep 2026' as visible text. Unchanged from the verified record."
+      },
+      "notes": "Text correction only: bare URLs removed from content.",
+      "proposedAt": "2026-11-06T01:36:51.304Z"
+    },
+    "targetPolicyRevisionHash": "30b8a19f1227c159af41e108407de8334ad20726e0d929edd159881d60a09bd5",
+    "reviewedAt": "2026-11-06T01:44:44.001Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-06-1, proposal a789 2d56 26e1 40a5). Proposed by Claude (agent). Text correction only: bare URLs removed from content.",
+    "decision": {
+      "proposalHash": "a7892d5626e140a50b7303b27e31a2d95a0a8187f30ef074f819024072a44e13",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-06T01:43:50.815Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-06-1:76b42d5ed56d0cc347bc3edb70af6e5deed8575b2be454fca1ef01da693ca80a",
+        "receivedAt": "2026-11-06T01:43:50.815Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiWHFCcExzUmRFMUZtWnpJQ3FtMWtxYmNVQUo2cHA4MXpjMi1pYWxMRXpQZyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDCAH6TPyDuxRFH775fYx8RpHIIe6eUgjlrMX-wYMJcpAIgCRdwVSRb6VNnXpy98N5fQ9fbtcbLe42nLsVz2KSbjHE",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-06-1",
+        "entries": [
+          {
+            "id": "source-review-be56624a-b15a-4692-8125-a03ce9eb6927",
+            "proposalHash": "a7892d5626e140a50b7303b27e31a2d95a0a8187f30ef074f819024072a44e13"
+          },
+          {
+            "id": "source-review-4554eee6-dcbb-4e34-bc12-0383e6e59270",
+            "proposalHash": "ec3ba86eddbddbc8ae84c04dcdfdcddeefb75d55c7666d0669af0ccff7ff24c7"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-06T01:44:44.149Z"
   }
 ]
