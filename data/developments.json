@@ -1,5 +1,67 @@
 [
   {
+    "id": "dev-rapid-review-into-australian-government-arrangem-ot2vmd",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "sourceId": "pmc-rapid-review-ai-cyber",
+    "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-11-10T19:31:35.174Z",
+    "summary": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-10T19:31:35.174Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "retrievedAt": "2026-11-10T19:31:35.174Z",
+        "contentType": "text/html",
+        "contentHash": "776f363e54ddbcd5bac442e7f9b4f7fa087d2dd788cc08c0c4e7cc772a353c22",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-australia-must-act-now-on-growing-risks-from-dee-njq0yh",
+    "title": "Australia must act now on growing risks from deepfakes",
+    "url": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+    "sourceId": "ahrc-media",
+    "sourceName": "Australian Human Rights Commission — media centre",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-11-11",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-10T19:31:35.174Z",
+    "summary": "[Skip to main content](https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes#main-content) Australia must act now on growing risks from deepfakes ====================================================== Synthetic media is eroding trust in information, democracy and human rights in Australia Technology and data Media Release 09 November 2026 [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=14232&lang=en_au&readid=readspeaker-content&url=https%3A%2F%2Fhumanrights.gov.au%2Fabout-us%2Fmedia-c",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v2",
+      "assessedAt": "2026-11-10T19:31:35.174Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+        "finalUrl": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+        "retrievedAt": "2026-11-10T19:31:35.174Z",
+        "contentType": "text/plain",
+        "contentHash": "eed2da2686fc41b21809cbe0c85a45d523abcabb7b92d926c6c723b010b0b57f",
+        "title": "Australia must act now on growing risks from deepfakes",
+        "publishedAt": "2026-11-11",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1pxxuyj",
     "title": "Senate opens inquiry into artificial intelligence and data centres",
     "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
