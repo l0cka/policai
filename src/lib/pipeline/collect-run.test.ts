@@ -446,6 +446,11 @@ describe('withoutInvalidChanges', () => {
     });
   });
 
+  it('fails when a validation error names no record', () => {
+    const run = () => withoutInvalidChanges([], [{ id: 'a', ok: true }], () => ({ errors: ['duplicate ids'], warnings: [] }));
+    expect(run).toThrow(/not attributable to a record: duplicate ids/);
+  });
+
   it('reverts a rejected change to main and drops a rejected new record', () => {
     const main = [{ id: 'kept', ok: true }];
     expect(withoutInvalidChanges(main, [{ id: 'kept', ok: false }, { id: 'new', ok: false }], validate)).toEqual({

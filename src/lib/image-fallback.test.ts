@@ -18,9 +18,16 @@ describe('withOriginalImageFallback', () => {
   });
 
   it('serves the stored original when optimization throws', async () => {
-    const response = await withOriginalImageFallback(failing, image('/articles/a.png'), env);
+    const response = await withOriginalImageFallback(failing, image('/images/articles/a.png'), env);
     expect(response.status).toBe(200);
-    expect(await response.text()).toBe('original /articles/a.png');
+    expect(await response.text()).toBe('original /images/articles/a.png');
+  });
+
+  it('never falls back to the bundled data or other paths', async () => {
+    for (const src of ['/_bundled/files.json', '/images/../_bundled/files.json', '/data/policies.json', '/images/..%2F_bundled/files.json']) {
+      await expect(withOriginalImageFallback(failing, image(src), env)).rejects.toThrow('IMAGES_TRANSFORM_ERROR');
+    }
+    expect(assetsFetch).not.toHaveBeenCalled();
   });
 
   it('never falls back to another origin', async () => {

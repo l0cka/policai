@@ -146,8 +146,8 @@ maintenance and migration command.
 Each script's header comment lists its flags.
 
 - `bundle-data.mjs` writes `data/` and `public/data/` into
-  `src/lib/bundled-files.generated.ts` for the Cloudflare Workers build.
-  `npm run build` and `npm test` run it first.
+  `.open-next/assets/_bundled/files.json` for the Cloudflare Workers build.
+  Only `npm run build:cloudflare` runs it.
 - `sync-design-tokens.mjs` copies `design/tokens.css` into both apps. Add
   `--check` to fail on drift instead of writing.
 - `collector-proposals.ts` (`npm run collector:proposals`) lists automatic

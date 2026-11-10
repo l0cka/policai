@@ -247,9 +247,12 @@ and the audit stays blind to the values the stored scheme ignored until then.
 
 Linked PDF, Word, and RTF documents are retrieved and their byte hashes are folded into the landing page's fingerprint. A landing
 page therefore changes when a document is replaced at the same URL, even if
-both the HTML and the words “Download policy” stay the same. If a linked
-instrument cannot be retrieved as a document, the source check fails rather
-than silently blessing only the landing page. Expected PDF, Word, and RTF byte
+both the HTML and the words “Download policy” stay the same. A linked
+instrument that fails byte validation fails the source check. One that answers
+with an empty body is listed in `skippedLinked` as `no_document_bytes` and left
+out of the fingerprint, so a page whose attachments are all empty is
+fingerprinted from the landing page alone and its hash changes when a
+previously fingerprinted document returns empty. Expected PDF, Word, and RTF byte
 signatures are validated before the response is included in the fingerprint.
 An ordinary HTML link is not an attachment merely because its text mentions a
 policy document: it must use a binary extension, declare a document type, carry
@@ -1113,7 +1116,7 @@ It must not claim TTY typing.
 | `not_found` | Unknown review id |
 | `approve_not_allowed` (403) | `action` was `approve`; Daniel approves with his passkey instead |
 | `invalid_action` / `invalid_request` (400) | Unknown action, or missing fields |
-| `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record reviews cannot be dismissed |
+| `dismiss_blocked` / `tracked_record_dismiss` | Tracked-record and approved reviews cannot be dismissed |
 | `reviewer_not_allowlisted` | Reviewer not in allowlist |
 | `invalid_attestation` | Missing reply / message id / card id |
 | `github_token_unconfigured` (503) | Worker missing the `POLICAI_SIGNAL_GITHUB_TOKEN` secret; nothing ran |
@@ -1146,9 +1149,11 @@ GitHub API instead. The route works in
 Targets:
 
 - `pr` (default): branch `signal/<action>-<reviewId>`. If an open PR already
-  has that head, the response returns it with `persistence.existing: true`
-  and no new commit, so a rerun is safe. A leftover branch with no open PR is
-  force-updated. Dan merges; the bot never merges.
+  has that head, the response returns that PR with `persistence.existing: true`
+  and no new commit. It does not compare the decision or the base, so a retry
+  after `main` moved, or with a different attestation, does not save the new
+  decision until Dan merges or closes the open PR. A leftover branch with no
+  open PR is force-updated. Dan merges; the bot never merges.
 - `main` (`POLICAI_SIGNAL_COMMIT_TARGET=main`): fast-forward `main` without
   force. If `main` moved after the read, the request fails with `main_moved`
   and nothing is written. Send the same request again to decide against the

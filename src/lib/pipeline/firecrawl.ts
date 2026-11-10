@@ -81,6 +81,19 @@ export async function scrapeWithFirecrawl(
     };
   }
   await admitThroughGate(options.gate, url);
+  try {
+    await assertSafeSourceUrl(
+      url,
+      options.resolveHost ?? resolveHostAddresses,
+      'public-https',
+    );
+  } catch (error) {
+    return {
+      ok: false,
+      reason: 'invalid_provenance',
+      detail: error instanceof Error ? error.message : String(error),
+    };
+  }
   const timeoutMs =
     options.timeoutMs ??
     (hasCompletedACall ? WARM_TIMEOUT_MS : COLD_START_TIMEOUT_MS);

@@ -1,3 +1,4 @@
+import { assertPublicDestination } from './public-fetch.js';
 import { fetchPageTitle, mapWithConcurrency } from './page-title.js';
 import { cleanListingTitle } from './listing-title.js';
 
@@ -160,6 +161,7 @@ export function countRepeats(titles: (string | null)[]): Set<string> {
 }
 
 export async function fetchFirecrawl(url: string, itemLinkPattern: string): Promise<RawItem[]> {
+  await assertPublicDestination(url);
   const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
   const res = await fetch(`${base}/v1/scrape`, {
     method: 'POST',
