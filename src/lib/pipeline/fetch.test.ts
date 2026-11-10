@@ -1707,11 +1707,13 @@ describe('retrieveSource host gate', () => {
       return response;
     };
     const allowed = buildRecordingHostGate();
-    await retrieveSource('https://example.gov.au/start', {
+    const admittedPage = await retrieveSource('https://example.gov.au/start', {
       fetchImpl: vi.fn(async () => landed('https://other.gov.au/policy')) as unknown as typeof fetch,
       gate: allowed.gate,
       hashLinkedDocuments: false,
     });
+    expect(admittedPage.body).toContain('AI policy');
+    expect(admittedPage.evidence.finalUrl).toBe('https://other.gov.au/policy');
     expect(allowed.admitted).toEqual(['https://example.gov.au/start', 'https://other.gov.au/policy']);
 
     const refusing = buildRecordingHostGate((url) =>
