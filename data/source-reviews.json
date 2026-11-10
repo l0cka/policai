@@ -1,5 +1,247 @@
 [
   {
+    "id": "source-review-dev-rapid-review-into-australian-government-arrangem-ot2vmd",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "entryKind": "policy",
+    "targetPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "targetPolicyBaseRevisionHash": "7834060b8e83130fb609be4f4c8b81a1aee66c47f4846611038287b38ec250f1",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-10T19:31:35.174Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current. Re-verify the existing register record before restoring it to public reads. Detected by PM&C — Rapid review into AI-driven cyber incident arrangements (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "terms of reference",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "retrievedAt": "2026-11-10T19:31:35.174Z",
+      "contentType": "text/html",
+      "contentHash": "776f363e54ddbcd5bac442e7f9b4f7fa087d2dd788cc08c0c4e7cc772a353c22",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+    },
+    "proposedRecord": {
+      "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "description": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "proposed",
+      "effectiveDate": "2026-09-24",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-24",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+            "retrievedAt": "2026-10-26T12:48:03Z",
+            "contentType": "text/html",
+            "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-26T12:48:03Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+              "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+              "characterCount": 1616
+            },
+            "reviewedDate": {
+              "date": "2026-09-24",
+              "precision": "day",
+              "reviewedAt": "2026-10-27T08:01:01.423Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ],
+      "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "content": "On 24 September 2026 the Prime Minister announced a Department of the Prime Minister and Cabinet (PM&C)-led rapid review of whether existing legislative, governance and information-sharing arrangements are fit for purpose to prepare for and respond to cyber incidents involving artificial intelligence. PM&C published formal terms of reference the same day (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident; release date Thursday 24 September 2026). The review page states that PM&C leads the review in collaboration with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. Per the terms of reference, recommendations scope covers: reporting requirements relating to AI-driven cyber incidents, AI-identified cyber vulnerabilities and cyber-related AI safety incidents (including obligations, thresholds, pathways and systems); Commonwealth governance and information-sharing arrangements for managing incidents involving AI (including roles, responsibilities and escalation pathways); engagement and information-sharing obligations of AI firms (including notification requirements and cooperation arrangements during incidents); the adequacy of existing system and legislative, regulatory and enforcement frameworks in deterring AI-driven cyber incidents (including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective); and mechanisms to strengthen networks and systems of government departments and agencies against AI vulnerabilities. PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident is recorded separately as timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access. This record is the government rapid review with published terms of reference; it is not a completed instrument and it is not OpenAI's later company taskforce.",
+      "aiSummary": "PM&C-led rapid review announced 24 September 2026 with published terms of reference on whether legislative, governance and information-sharing arrangements are fit for AI-driven cyber incidents; recommendations to inform Australia's AI Standards.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "terms of reference",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "themes": [
+        "cyber-security",
+        "ai-governance",
+        "risk-assurance",
+        "standards",
+        "agentic-ai"
+      ],
+      "createdAt": "2026-10-20T05:20:00.000Z",
+      "updatedAt": "2026-11-10T19:31:35.174Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-rapid-review-into-australian-government-arrangem-ot2vmd",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "sourceId": "pmc-rapid-review-ai-cyber",
+      "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-11-10T19:31:35.174Z",
+      "summary": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-11-10T19:31:35.174Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "retrievedAt": "2026-11-10T19:31:35.174Z",
+          "contentType": "text/html",
+          "contentHash": "776f363e54ddbcd5bac442e7f9b4f7fa087d2dd788cc08c0c4e7cc772a353c22",
+          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+        }
+      },
+      "status": "detected"
+    },
+    "sourceVersionSequence": 2,
+    "updatedAt": "2026-11-10T19:31:35.174Z"
+  },
+  {
+    "id": "source-review-dev-australia-must-act-now-on-growing-risks-from-dee-njq0yh",
+    "sourceUrl": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+    "title": "Australia must act now on growing risks from deepfakes",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-10T19:31:35.174Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Australian Human Rights Commission — media centre (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "[Skip to main content](https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes#main-content) Australia must act now on growing risks from deepfakes ====================================================== Synthetic media is eroding trust in information, democracy and human rights in Australia Technology and data Media Release 09 November 2026 [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=14232&lang=en_au&readid=readspeaker-content&url=https%3A%2F%2Fhumanrights.gov.au%2Fabout-us%2Fmedia-c",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+      "finalUrl": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+      "retrievedAt": "2026-11-10T19:31:35.174Z",
+      "contentType": "text/plain",
+      "contentHash": "eed2da2686fc41b21809cbe0c85a45d523abcabb7b92d926c6c723b010b0b57f",
+      "title": "Australia must act now on growing risks from deepfakes",
+      "publishedAt": "2026-11-11",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "australia-must-act-now-on-growing-risks-from-deepfakes",
+      "title": "Australia must act now on growing risks from deepfakes",
+      "description": "[Skip to main content](https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes#main-content) Australia must act now on growing risks from deepfakes ====================================================== Synthetic media is eroding trust in information, democracy and human rights in Australia Technology and data Media Release 09 November 2026 [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=14232&lang=en_au&readid=readspeaker-content&url=https%3A%2F%2Fhumanrights.gov.au%2Fabout-us%2Fmedia-c",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-11",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-11",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+            "finalUrl": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+            "retrievedAt": "2026-11-10T19:31:35.174Z",
+            "contentType": "text/plain",
+            "contentHash": "eed2da2686fc41b21809cbe0c85a45d523abcabb7b92d926c6c723b010b0b57f",
+            "title": "Australia must act now on growing risks from deepfakes",
+            "publishedAt": "2026-11-11",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+      "content": "[Skip to main content](https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes#main-content) Australia must act now on growing risks from deepfakes ====================================================== Synthetic media is eroding trust in information, democracy and human rights in Australia Technology and data Media Release 09 November 2026 [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=14232&lang=en_au&readid=readspeaker-content&url=https%3A%2F%2Fhumanrights.gov.au%2Fabout-us%2Fmedia-c",
+      "aiSummary": "[Skip to main content](https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes#main-content) Australia must act now on growing risks from deepfakes ====================================================== Synthetic media is eroding trust in information, democracy and human rights in Australia Technology and data Media Release 09 November 2026 [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=14232&lang=en_au&readid=readspeaker-content&url=https%3A%2F%2Fhumanrights.gov.au%2Fabout-us%2Fmedia-c",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-10T19:31:35.174Z",
+      "updatedAt": "2026-11-10T19:31:35.174Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-australia-must-act-now-on-growing-risks-from-dee-njq0yh",
+      "title": "Australia must act now on growing risks from deepfakes",
+      "url": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+      "sourceId": "ahrc-media",
+      "sourceName": "Australian Human Rights Commission — media centre",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-11-11",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-10T19:31:35.174Z",
+      "summary": "[Skip to main content](https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes#main-content) Australia must act now on growing risks from deepfakes ====================================================== Synthetic media is eroding trust in information, democracy and human rights in Australia Technology and data Media Release 09 November 2026 [Listen](https://app-oc.readspeaker.com/cgi-bin/rsent?customerid=14232&lang=en_au&readid=readspeaker-content&url=https%3A%2F%2Fhumanrights.gov.au%2Fabout-us%2Fmedia-c",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v2",
+        "assessedAt": "2026-11-10T19:31:35.174Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+          "finalUrl": "https://humanrights.gov.au/about-us/media-centre/media-releases/technology-and-human-rights/australia-must-act-now-on-growing-risks-from-deepfakes",
+          "retrievedAt": "2026-11-10T19:31:35.174Z",
+          "contentType": "text/plain",
+          "contentHash": "eed2da2686fc41b21809cbe0c85a45d523abcabb7b92d926c6c723b010b0b57f",
+          "title": "Australia must act now on growing risks from deepfakes",
+          "publishedAt": "2026-11-11",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-10T19:31:35.174Z"
+  },
+  {
     "id": "source-review-5c267d6f-5b74-4302-9f47-39d36686f7c5",
     "sourceUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
     "title": "New AI frontier cyber threat guidance for boards of directors",
@@ -39068,8 +39310,7 @@
       "status": "detected"
     },
     "updatedAt": "2026-11-05T19:30:18.660Z"
-  }
-,
+  },
   {
     "id": "source-review-inky-2026-11-10-rapid-review-recommendations",
     "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
