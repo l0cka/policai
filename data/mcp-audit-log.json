@@ -1,5 +1,63 @@
 [
   {
+    "id": "mcp-audit-c98c3c34-8ea8-4adb-ac8f-9f8fe2b88a01",
+    "createdAt": "2026-11-09T01:15:22.266Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-04ce141e-0eae-4a41-a5b0-b2794be9d4cd",
+    "createdAt": "2026-11-09T01:14:30.608Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-20749415-0a2a-4d4f-b51a-a086462e4c64",
+    "createdAt": "2026-11-09T00:13:14.975Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e3aa6a15-8b1c-4e7e-9ca9-c7966a27fbf4",
+    "createdAt": "2026-11-09T00:13:11.237Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-72ae3e33-f72e-4f9d-9f74-4548afdcc740",
+    "createdAt": "2026-11-08T23:39:35.644Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-dfe7d2ee-883b-4e53-afb9-1813b45b1400",
+    "createdAt": "2026-11-08T23:39:28.112Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a597158b-f2ea-4909-a11a-c91698315723",
+    "createdAt": "2026-11-08T23:39:18.708Z",
+    "actor": "local-mcp-admin",
+    "toolName": "reject_staged_source",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e05136a8-a39a-4b47-8abd-dfd0fd7ae72c",
+    "createdAt": "2026-11-08T23:39:01.577Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_capture",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-0c8408cc-5ec9-469c-ae0f-bfd7a250f504",
     "createdAt": "2026-11-08T22:50:36.263Z",
     "actor": "local-mcp-admin",
@@ -3630,68 +3688,6 @@
     "createdAt": "2026-07-20T09:58:54.200Z",
     "actor": "local-mcp-admin",
     "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-19955273-4957-4be8-901e-f6996be631ba",
-    "createdAt": "2026-07-20T09:58:54.194Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-79f6eba0-85c3-4b8f-b059-8220b3a5a6c0",
-    "createdAt": "2026-07-20T09:58:54.190Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e76ba358-f337-4a4b-813e-394cbd5dbe43",
-    "createdAt": "2026-07-20T09:54:59.576Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e4041e9d-0e7b-4720-86aa-9c058e626eb6",
-    "createdAt": "2026-07-20T09:54:59.563Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b8343497-4538-49ad-b67f-6575aec68642",
-    "createdAt": "2026-07-20T09:54:59.551Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-3b6ac9fd-ffae-41de-a991-5ec128987535",
-    "createdAt": "2026-07-20T09:54:59.539Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-2dcf70c6-c281-46a7-805b-363f635083d9",
-    "createdAt": "2026-07-20T09:54:59.526Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-202cffa1-b7bb-47cc-903b-d7981078c1d0",
-    "createdAt": "2026-07-20T09:54:59.514Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
     "status": "success"
   }
 ]

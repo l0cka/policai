@@ -256,6 +256,17 @@
       ]
     },
     {
+      "id": "2026-11-08-2",
+      "proposedAt": "2026-11-08T23:39:35.643Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
+          "proposalHash": "60318302754599635208bdcfb053c47af27f42ebd58749258df38cb3deb512c6"
+        }
+      ]
+    },
+    {
       "id": "2026-11-06-1",
       "proposedAt": "2026-11-06T01:37:18.659Z",
       "proposedBy": "Claude (agent)",

@@ -51,8 +51,11 @@ import {
 	updateSourceReview,
 } from "@/lib/data-service";
 import {
+	developmentRenewal,
 	developmentsRenewedByPublication,
 	linkedDevelopmentId,
+	originDevelopmentIds,
+	reviewPreviousSourceUrl,
 } from "@/lib/source-review";
 import {
 	policyRevisionHash,
@@ -2370,7 +2373,6 @@ async function reconcilePublicationSideEffects(
 	publishedAt: string,
 	options: {
 		preserveExistingDevelopment?: boolean;
-		previousSource?: SourceEvidence;
 	} = {},
 ): Promise<void> {
 	const {
@@ -2394,29 +2396,30 @@ async function reconcilePublicationSideEffects(
 		},
 		dismissalReason: undefined,
 	}, options);
-	await renewRelatedDevelopments(review, verification, options.previousSource);
+	await renewRelatedDevelopments(review, verification);
 	await markCollectionReviewed(review.reviewedAt ?? publishedAt);
 }
 
 async function renewRelatedDevelopments(
 	review: SourceReview,
 	verification: Policy["verification"],
-	previousSource: SourceEvidence | undefined,
 ): Promise<void> {
-	const record = review.proposedRecord as Policy | TimelineEvent;
+	const proposed = review.proposedRecord as Policy | TimelineEvent;
+	const record = {
+		kind: review.entryKind,
+		id: proposed.id,
+		sourceUrl: proposed.sourceUrl,
+		verification,
+	};
 	const renewed = developmentsRenewedByPublication(
 		await getDevelopments(undefined, { access: "admin" }),
-		{
-			kind: review.entryKind,
-			id: record.id,
-			sourceUrl: record.sourceUrl,
-			verification,
-		},
-		previousSource,
+		record,
+		reviewPreviousSourceUrl(review),
 		linkedDevelopmentId(review),
+		originDevelopmentIds(await getSourceReviews(), proposed.id),
 	);
 	for (const development of renewed) {
-		await updateDevelopment(development.id, { verification });
+		await updateDevelopment(development.id, developmentRenewal(record));
 	}
 }
 
@@ -2759,7 +2762,6 @@ async function publishStagedSourceUnlocked(
 	);
 
 	const publishedAt = new Date().toISOString();
-	let previousSource: SourceEvidence | undefined;
 	let reviewForPublication = canonicalRecord
 		? { ...review, proposedRecord: canonicalRecord }
 		: review;
@@ -2811,7 +2813,6 @@ async function publishStagedSourceUnlocked(
 		if (targetTimelineEventId && !existingEvent) {
 			throw new Error("Target timeline event for update review was not found");
 		}
-		previousSource = existingEvent?.verification?.source;
 		if (existingEvent) {
 			if (
 				targetTimelineEventId &&
@@ -2878,7 +2879,6 @@ async function publishStagedSourceUnlocked(
 			if (!targetPolicy) {
 				throw new Error("Target policy for update review was not found");
 			}
-			previousSource = targetPolicy.verification.source;
 			const replacesTargetSource = Boolean(
 				review.targetPolicyPreviousSourceUrl &&
 					sourceUrlsEqual(
@@ -2993,9 +2993,7 @@ async function publishStagedSourceUnlocked(
 	// The review is the public transaction boundary. Development promotion and
 	// collection metadata are recoverable side effects, so they must not become
 	// publicly verified before this terminal status is durable.
-	await reconcilePublicationSideEffects(reviewForPublication, publishedAt, {
-		previousSource,
-	});
+	await reconcilePublicationSideEffects(reviewForPublication, publishedAt);
 	return updated;
 }
 

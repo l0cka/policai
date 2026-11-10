@@ -21,9 +21,10 @@ fi
 
 echo "[enrich] starting $(date -Is)"
 
-# Fetching the queue and saving results happen outside the model's capability
-# boundary. Feed and page text is untrusted: the model may fetch public pages
-# and emit schema-constrained data, but it cannot run commands or write files.
+# Fetching the queue and its pages and saving results happen outside the
+# model's capability boundary. list-unenriched attaches each thin item's page,
+# read through the worker's public-address guard. Feed and page text is
+# untrusted: the model has no tools, so it can only emit schema-constrained data.
 PROBONO_DOCKER_BIN="${PROBONO_DOCKER_BIN:-docker}"
 PROBONO_CLAUDE_BIN="${PROBONO_CLAUDE_BIN:-/home/l0cka/.local/bin/claude}"
 
@@ -43,12 +44,12 @@ only the schema-constrained result.
 $items_json"
 
 # Haiku keeps enrichment on the subscription while consuming far less of its
-# usage allowance than the default model. --tools is the hard capability
-# boundary; --allowedTools only pre-approves the one retained tool.
-agent_output="$($PROBONO_CLAUDE_BIN -p "$prompt" \
+# usage allowance than the default model. --tools "" is the hard capability
+# boundary: no built-in tool is available. The prompt goes on stdin: with
+# pages attached it can pass the 128 KB limit on one command-line argument.
+agent_output="$(printf '%s' "$prompt" | $PROBONO_CLAUDE_BIN -p \
   --model claude-haiku-4-5-20251001 \
-  --tools "WebFetch" \
-  --allowedTools "WebFetch" \
+  --tools "" \
   --permission-mode dontAsk \
   --safe-mode \
   --disable-slash-commands \

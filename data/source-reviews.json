@@ -1,5 +1,294 @@
 [
   {
+    "id": "source-review-5c267d6f-5b74-4302-9f47-39d36686f7c5",
+    "sourceUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+    "title": "New AI frontier cyber threat guidance for boards of directors",
+    "entryKind": "policy",
+    "targetPolicyId": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director",
+    "targetPolicyBaseRevisionHash": "a9e645cb5506d2c0b648f72a96fd36f8201024b98d71b10a5f4eb8043f9f2e94",
+    "status": "published",
+    "discoveredAt": "2026-11-09T00:13:11.213Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Re-verification of the ASD board cyber guidance record via one Firecrawl read (cyber.gov.au refuses the declared Policai/1.0 identity).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "title": "New AI frontier cyber threat guidance for boards of directors",
+      "retrievedAt": "2026-11-09T00:00:00+11:00",
+      "contentType": "text/html",
+      "contentHash": "23d2a01bab5476d7f81ff7c14e80535938ec164ebcb7a4d7561699487632610a",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-09T00:00:00+11:00",
+        "capturedBy": "Daniel Alkurdi",
+        "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
+        "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
+        "characterCount": 1138
+      },
+      "reviewedDate": {
+        "date": "2026-08-05",
+        "precision": "day",
+        "reviewedAt": "2026-11-09T01:15:22.156Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
+      }
+    },
+    "proposedRecord": {
+      "id": "new-ai-frontier-cyber-threat-guidance-for-boards-of-director",
+      "title": "New AI frontier cyber threat guidance for boards of directors",
+      "description": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-08-05",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-08-05",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+            "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+            "title": "New AI frontier cyber threat guidance for boards of directors",
+            "retrievedAt": "2026-11-09T00:00:00+11:00",
+            "contentType": "text/html",
+            "contentHash": "23d2a01bab5476d7f81ff7c14e80535938ec164ebcb7a4d7561699487632610a",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-09T00:00:00+11:00",
+              "capturedBy": "Daniel Alkurdi",
+              "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
+              "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
+              "characterCount": 1138
+            },
+            "reviewedDate": {
+              "date": "2026-08-05",
+              "precision": "day",
+              "reviewedAt": "2026-11-09T01:15:22.156Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
+            }
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+      "content": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "aiSummary": "Boards of directors and senior leaders need to understand how newer frontier AI models are reshaping cyber threats. As advances in frontier AI models make it easier for cybercriminals to identify and exploit vulnerabilities, organisations face a growing threat from AI-enabled cyber attacks. To help boards respond, we have released in partnership with the Australian Institute of Company Directors (AICD), Frontier AI cyber threat considerations for boards of directors. The publication outlines frontier AI cyber threats and provides practical guidance to help organisations strengthen governance, ",
+      "tags": [],
+      "themes": [
+        "frontier-ai",
+        "cyber-security",
+        "ai-governance"
+      ],
+      "createdAt": "2026-08-05T20:44:21.554Z",
+      "updatedAt": "2026-11-09T01:15:22.156Z",
+      "lastReviewedAt": "2026-11-09T01:15:22.156Z",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "finalUrl": "https://www.cyber.gov.au/news/new-ai-frontier-cyber-threat-guidance-for-boards-of-directors",
+          "title": "New AI frontier cyber threat guidance for boards of directors",
+          "retrievedAt": "2026-11-09T00:00:00+11:00",
+          "contentType": "text/html",
+          "contentHash": "23d2a01bab5476d7f81ff7c14e80535938ec164ebcb7a4d7561699487632610a",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-09T00:00:00+11:00",
+            "capturedBy": "Daniel Alkurdi",
+            "notes": "Method: self-hosted Firecrawl scrape (HTTP 200, main content only, one read on 9 Nov 2026), because cyber.gov.au refuses the Policai/1.0 identity. Main-content extraction shows no publication date line; the 5 Aug 2026 primary date is retained and 2 Sep 2026 is treated as the cyber.gov.au restructure re-date, not a new publication date (Daniel Alkurdi's call).",
+            "pageContentHash": "74242900586aa144250414ae568a1cbf2c4894d7a7e1200fdcfb217f132d7210",
+            "characterCount": 1138
+          },
+          "reviewedDate": {
+            "date": "2026-08-05",
+            "precision": "day",
+            "reviewedAt": "2026-11-09T01:15:22.156Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
+          }
+        },
+        "checkedAt": "2026-11-09T01:15:22.156Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 81c2 10f8 1274 20f2). Proposed by Claude (agent). Re-verification via Firecrawl; primary date retained at 5 Aug 2026."
+      }
+    },
+    "updatedAt": "2026-11-09T01:15:22.224Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-08-05",
+        "precision": "day",
+        "notes": "Primary date 5 Aug 2026 kept per Daniel Alkurdi. The 2 Sep 2026 date shown after the cyber.gov.au restructure is a re-date, not a new publication date. The 9 Nov 2026 Firecrawl read of main content showed no date line."
+      },
+      "notes": "Re-verification via Firecrawl; primary date retained at 5 Aug 2026.",
+      "proposedAt": "2026-11-09T00:13:14.951Z"
+    },
+    "targetPolicyRevisionHash": "a9e645cb5506d2c0b648f72a96fd36f8201024b98d71b10a5f4eb8043f9f2e94",
+    "reviewedAt": "2026-11-09T01:15:22.156Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (proposal 81c2 10f8 1274 20f2). Proposed by Claude (agent). Re-verification via Firecrawl; primary date retained at 5 Aug 2026.",
+    "decision": {
+      "proposalHash": "81c210f8127420f2a25b7e25af4bc5ce099c8e7c79ce52d76b319a01e98183f3",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-09T00:17:23.390Z",
+      "approval": {
+        "subject": "source-review:source-review-5c267d6f-5b74-4302-9f47-39d36686f7c5:81c210f8127420f2a25b7e25af4bc5ce099c8e7c79ce52d76b319a01e98183f3",
+        "receivedAt": "2026-11-09T00:17:23.390Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoib1pZWWdIZVNPNEI5N3c4U1hUSlpzVW9YMWVkbmtxbDZ3TkhYNGs0dzNvdyIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEUCIQDxhNWCqKgQgrcn_lpXX1TAzUNevcKDm_9yXYbQaMpJQgIgRJOs-NLFc5BO9SmaXzfsirrEDjZXJhEPQFBfDCXwIrU",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      }
+    },
+    "publishedAt": "2026-11-09T01:15:22.212Z"
+  },
+  {
+    "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
+    "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+    "title": "A Digital Detox outlines Education Ministers' decisions to restrict AI in schools",
+    "entryKind": "timeline_event",
+    "status": "published",
+    "discoveredAt": "2026-11-08T23:39:01.554Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Re-sourced to the announcement page on Daniel Alkurdi's 8 Nov 2026 decision; the Digital Detox PDF (https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf) returned Firecrawl errors on four attempts. Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Timeline proposal only. It is not written to data/timeline.json. relatedPolicyId is the staged policy id and is not on the register until that review is approved.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The Department of Education publishes \"A Digital Detox\", a paper on rebalancing technology use in Australian schools. It outlines the decisions taken by Education Ministers to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+      "retrievedAt": "2026-11-08T23:10:25.788Z",
+      "contentType": "text/html",
+      "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+      "linkedDocuments": [],
+      "browserCapture": {
+        "method": "browser",
+        "capturedAt": "2026-11-08T23:10:25.788Z",
+        "capturedBy": "Claude (agent)",
+        "requestedBy": "Daniel Alkurdi",
+        "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-08T23:10:25.788Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+        "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+        "characterCount": 1281
+      },
+      "reviewedDate": {
+        "date": "2026-11-04",
+        "precision": "day",
+        "reviewedAt": "2026-11-09T01:14:30.524Z",
+        "reviewedBy": "Daniel Alkurdi",
+        "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
+      }
+    },
+    "proposedRecord": {
+      "id": "tl-2026-11-04-education-ministers-digital-detox",
+      "date": "2026-11-04",
+      "datePrecision": "day",
+      "title": "A Digital Detox outlines Education Ministers' decisions to restrict AI in schools",
+      "description": "The Department of Education publishes \"A Digital Detox\", a paper on rebalancing technology use in Australian schools. It outlines the decisions taken by Education Ministers to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "education-ministers-digital-detox-2026",
+      "sourceUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+      "verification": {
+        "status": "verified",
+        "source": {
+          "url": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "finalUrl": "https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools",
+          "title": "A Digital Detox for rebalancing technology use in Australian schools - Department of Education, Australian Government",
+          "retrievedAt": "2026-11-08T23:10:25.788Z",
+          "contentType": "text/html",
+          "contentHash": "9ed810f5ded4cf4c90f6c59d8ef0b9d21138c1f6c2227f1f49469feaeeaf1ba7",
+          "linkedDocuments": [],
+          "browserCapture": {
+            "method": "browser",
+            "capturedAt": "2026-11-08T23:10:25.788Z",
+            "capturedBy": "Claude (agent)",
+            "requestedBy": "Daniel Alkurdi",
+            "notes": "One-off read through the repo's Firecrawl client (scrapeWithFirecrawl, self-hosted Argus Firecrawl) at 2026-11-08T23:10:25.788Z, presenting the declared identity Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Policai/1.0 (+https://policai.org). The host resets or times out plain HTTP from Argus. One read per page approved by Daniel Alkurdi on 7 Nov 2026. pageText is the normalised text of the page's main element; references are its official gov.au links. Linked documents were not downloaded.",
+            "pageContentHash": "c4d932443916e19fe22d078eeeaf53ca33ce3eb0a101844827e3f8d9ac8064da",
+            "characterCount": 1281
+          },
+          "reviewedDate": {
+            "date": "2026-11-04",
+            "precision": "day",
+            "reviewedAt": "2026-11-09T01:14:30.524Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
+          }
+        },
+        "checkedAt": "2026-11-09T01:14:30.524Z",
+        "checkedBy": "Daniel Alkurdi",
+        "method": "manual",
+        "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record."
+      }
+    },
+    "updatedAt": "2026-11-09T01:14:30.588Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "reviewedDate": {
+        "date": "2026-11-04",
+        "precision": "day",
+        "notes": "The announcement page shows the dateline \"4 November 2026\" as visible text under its heading (Firecrawl capture of 8 Nov 2026 23:10 UTC); the page carries no date metadata and gives no other date for the event."
+      },
+      "notes": "Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record.",
+      "proposedAt": "2026-11-08T23:39:28.092Z"
+    },
+    "reviewedAt": "2026-11-09T01:14:30.524Z",
+    "reviewedBy": "Daniel Alkurdi",
+    "approvalNotes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record.",
+    "decision": {
+      "proposalHash": "60318302754599635208bdcfb053c47af27f42ebd58749258df38cb3deb512c6",
+      "decidedBy": "Daniel Alkurdi",
+      "decidedAt": "2026-11-09T00:35:19.286Z",
+      "approval": {
+        "subject": "source-review-batch:2026-11-08-2:b0e32cf36589034618acd12d37d123e34e1cb40b53883c454a475e77d5a0e539",
+        "receivedAt": "2026-11-09T00:35:19.286Z",
+        "response": {
+          "id": "XhV2jMH5Pk3DFVqK4xnJ85w-Ao3p_LEINPYfE41BepuBbKMbJfFD",
+          "authenticatorData": "GiR9VGn-U84I6mMmWZGtlq6HkNM16Fd726fcgdpH2q8dAAAAAA",
+          "clientDataJSON": "eyJ0eXBlIjoid2ViYXV0aG4uZ2V0IiwiY2hhbGxlbmdlIjoiTXdHaWVBX25FelQtSG51T0p4aVBSQzY3NG5VazI0QW41elFld0V2a2lwTSIsIm9yaWdpbiI6Imh0dHBzOi8vcG9saWNhaS5vcmciLCJjcm9zc09yaWdpbiI6ZmFsc2V9",
+          "signature": "MEQCIBfc0guLRBXKGiPEcjJtCVTG6EzZJMjPEqgvrrgcBpJQAiBReFxLPVv40XXP7BxjYo996faz8q0h2TeM6NIyM7wbag",
+          "userHandle": "pAeIIetrkZV0AVLl_AJykQ"
+        }
+      },
+      "batch": {
+        "id": "2026-11-08-2",
+        "entries": [
+          {
+            "id": "source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511",
+            "proposalHash": "60318302754599635208bdcfb053c47af27f42ebd58749258df38cb3deb512c6"
+          }
+        ]
+      }
+    },
+    "publishedAt": "2026-11-09T01:14:30.563Z"
+  },
+  {
     "id": "source-review-714b9876-a589-4c7e-8c1f-4222caaa2b98",
     "sourceUrl": "https://www.art.gov.au/sites/default/files/2026-08/Administrative%20Review%20Tribunal%20%28Generative%20AI%29%20Practice%20Direction.pdf",
     "title": "Administrative Review Tribunal issues its Generative AI Practice Direction",
@@ -38565,7 +38854,7 @@
     "sourceUrl": "https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf",
     "title": "Education Ministers agree a digital detox for schools",
     "entryKind": "timeline_event",
-    "status": "pending_review",
+    "status": "rejected",
     "discoveredAt": "2026-11-04T21:19:19.864Z",
     "createdBy": "cursor-agent",
     "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint. Timeline proposal only. It is not written to data/timeline.json. relatedPolicyId is the staged policy id and is not on the register until that review is approved.",
@@ -38616,7 +38905,643 @@
         "notes": "Staged for editorial review. Not verified. Pages and the Digital Detox PDF were read on 5 Nov 2026 (Australia/Sydney) as rendered text. A direct TLS connection to www.education.gov.au completed and returned no body from this environment, so no SHA-256 of the response bytes is stored. Do not treat publishedAt as a collector fingerprint."
       }
     },
-    "updatedAt": "2026-11-04T21:19:19.864Z"
+    "updatedAt": "2026-11-08T23:39:18.692Z",
+    "rejectionReason": "Re-sourced to the 4 November 2026 announcement page per Daniel Alkurdi's 8 Nov 2026 decision card; superseded by source-review-b6875e4a-c8ee-4e2d-800d-ca6228e8d511. The Digital Detox PDF could not be read through Firecrawl."
+  },
+  {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-1pxxuyj",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "093cbad6ec529a4b602b8e2f5f87fb143774fa9c7d16971caae5d7f3e8906c5a",
+    "sourceVersionSequence": 13,
+    "status": "pending_review",
+    "discoveredAt": "2026-11-05T19:30:18.660Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-11-05T19:30:18.660Z",
+      "contentType": "text/html",
+      "contentHash": "e4248268fdde2910d888104ddd27ada46475a563a7b6422121bb70826168eb7b",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-1pxxuyj",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-11-05T19:30:18.660Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-11-05T19:30:18.660Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-11-05T19:30:18.660Z",
+          "contentType": "text/html",
+          "contentHash": "e4248268fdde2910d888104ddd27ada46475a563a7b6422121bb70826168eb7b",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-05T19:30:18.660Z"
+  },
+  {
+    "id": "source-review-dev-act-supreme-court-1s1hxec",
+    "sourceUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+    "title": "ACT Supreme Court",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-05T19:30:18.660Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from ACT Supreme Court — practice directions (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "act",
+      "summary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "finalUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "retrievedAt": "2026-11-05T19:30:18.660Z",
+      "contentType": "text/html",
+      "contentHash": "c11fe107f4ccaf596912769a8064341e33c2cdc194b67386adfedc2508c00930",
+      "linkedDocuments": [
+        {
+          "url": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+          "finalUrl": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+          "retrievedAt": "2026-11-05T19:30:18.660Z",
+          "contentType": "application/pdf",
+          "contentHash": "7f6b0c93d8a18fbe562fe2aaa364a5afd04872e7c6fb2c4263be66ae70802c74"
+        }
+      ],
+      "title": "ACT Supreme Court"
+    },
+    "proposedRecord": {
+      "id": "act-supreme-court",
+      "title": "ACT Supreme Court",
+      "description": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "jurisdiction": "act",
+      "type": "guideline",
+      "status": "active",
+      "agencies": [],
+      "sourceUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "content": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "aiSummary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-05T19:30:18.660Z",
+      "updatedAt": "2026-11-05T19:30:18.660Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-act-supreme-court-1s1hxec",
+      "title": "ACT Supreme Court",
+      "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+      "sourceId": "act-sc-practice-directions",
+      "sourceName": "ACT Supreme Court — practice directions",
+      "jurisdiction": "act",
+      "detectedAt": "2026-11-05T19:30:18.660Z",
+      "summary": "[Document 1: ACT Supreme Court]\nPractice DirectionsCourt of Appeal Practice Directions available hereQuick LinksGeneral(PD 9 of 2026)effective 14 August 2026Robing of Practitioners in the Supreme Court and Court of Appeal (PDF 372KB)(PD 4 of 2026)effective 2 March 2026 Use of Pseudonyms in the Supreme Court and Court of Appeal (PDF 365KB)(PD 1 of 2025)Pronunciation and forms of address (PDF 366KB) (PD 1 of 2023) Protocol for media in the ACT Supreme Court (PDF 328KB) Form - Application to record/broadcast a sentence decision (PDF 179KB) (PD 2 of 2022) Citation of Authority (PDF 60.4KB) (PD 1 o",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v1",
+        "assessedAt": "2026-11-05T19:30:18.660Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+          "finalUrl": "https://www.courts.act.gov.au/supreme/law-and-practice/practice-notes-and-directions-and-notices-to-practitioners/practice-directions",
+          "retrievedAt": "2026-11-05T19:30:18.660Z",
+          "contentType": "text/html",
+          "contentHash": "c11fe107f4ccaf596912769a8064341e33c2cdc194b67386adfedc2508c00930",
+          "linkedDocuments": [
+            {
+              "url": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+              "finalUrl": "https://www.courts.act.gov.au/__data/assets/pdf_file/0006/3093963/Practice-Direction-4-of-2018-Standard-Sentence-Directions.pdf",
+              "retrievedAt": "2026-11-05T19:30:18.660Z",
+              "contentType": "application/pdf",
+              "contentHash": "7f6b0c93d8a18fbe562fe2aaa364a5afd04872e7c6fb2c4263be66ae70802c74"
+            }
+          ],
+          "title": "ACT Supreme Court"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-05T19:30:18.660Z"
+  },
+  {
+    "id": "source-review-inky-2026-11-10-rapid-review-recommendations",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "title": "Rapid review recommendations released (10 November 2026)",
+    "entryKind": "policy",
+    "targetPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "targetPolicyBaseRevisionHash": "7834060b8e83130fb609be4f4c8b81a1aee66c47f4846611038287b38ec250f1",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-10T05:20:00.000Z",
+    "createdBy": "inky-quill",
+    "notes": "Signal handoff 10 November 2026 (Inky Quill). Withholding update of the verified rapid-review record. The public record stays as last verified until Daniel Alkurdi approves this review. Proposed status is closed because the review has reported; the recommendations are not an enacted instrument. No recommendations PDF was linked; the PM&C recommendations resource is the source. Not marked verified and lastReviewedAt is not set on the draft.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "Recommendations of the PM&C rapid review into an AI-driven cyber incident were released on 10 November 2026 (18 recommendations). The Government accepts them and has commenced implementation.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "recommendations",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Office of AI",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "publisher": "Department of the Prime Minister and Cabinet",
+      "publishedAt": "2026-11-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "description": "PM&C rapid review of arrangements for an AI-driven cyber incident. On 10 November 2026 the Prime Minister released its 18 recommendations. The Government says it accepts them and has commenced implementation. Announced with terms of reference on 24 September 2026.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "closed",
+      "effectiveDate": "2026-09-24",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-24",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+            "retrievedAt": "2026-10-26T12:48:03Z",
+            "contentType": "text/html",
+            "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-26T12:48:03Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+              "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+              "characterCount": 1616
+            },
+            "reviewedDate": {
+              "date": "2026-09-24",
+              "precision": "day",
+              "reviewedAt": "2026-10-27T08:01:01.423Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+            }
+          }
+        },
+        {
+          "type": "issued",
+          "date": "2026-11-10",
+          "precision": "day",
+          "source": {
+            "url": "https://www.pmc.gov.au/resources/rapid-review-australian-government-arrangements-ai-driven-cyber-incident/rapid-review-australian-government-arrangements-ai-driven-cyber-incident-recommendations",
+            "title": "Rapid Review into Australian Government arrangements for an AI-driven cyber incident recommendations",
+            "publisher": "Department of the Prime Minister and Cabinet",
+            "publishedAt": "2026-11-10",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Office of AI",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ],
+      "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "content": "On 10 November 2026 the Prime Minister released the recommendations of the Rapid Review into Australian Government arrangements for an AI-driven cyber incident and said the Government accepts them and has commenced work to implement them (https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents). PM&C publishes the recommendations on its review resource (https://www.pmc.gov.au/resources/rapid-review-australian-government-arrangements-ai-driven-cyber-incident/rapid-review-australian-government-arrangements-ai-driven-cyber-incident-recommendations). The release says the review makes 18 recommendations, including mandatory AI company reporting of misaligned behaviour or cyber incidents; consideration of criminal-law reform for serious misconduct; greater engagement with international counterparts and frontier AI developers; and strengthening resilience and response to AI incidents, including information sharing and cyber security. The recommendations page lists all 18. No separate recommendations PDF was linked from the Prime Minister's release or the PM&C recommendations page on 10 November 2026; the resource page is the recommendations text. The review was announced on 24 September 2026, when PM&C published terms of reference (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident). The 10 November release says the review was undertaken by PM&C in collaboration with the National Cyber Security Coordinator, the Office of AI, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. The review page still describes the review as examining whether legislative, governance and information-sharing arrangements are fit for purpose, and its Recommendations section is dated 10 November 2026. This record is the completed rapid review and its published recommendations. It is not an enacted law. The same day's separate announcement that the Government will legislate mandatory safety and security protections for frontier AI companies is recorded as australian-ai-standards-frontier-safety-obligations-2026. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident remains timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access.",
+      "aiSummary": "Recommendations of the PM&C rapid review into an AI-driven cyber incident were released on 10 November 2026 (18 recommendations). The Government accepts them and has commenced implementation.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "recommendations",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "themes": [
+        "cyber-security",
+        "ai-governance",
+        "risk-assurance",
+        "standards",
+        "agentic-ai"
+      ],
+      "createdAt": "2026-10-20T05:20:00.000Z",
+      "updatedAt": "2026-11-10T05:20:00.000Z"
+    },
+    "proposal": {
+      "proposedBy": "Inky Quill (agent)",
+      "proposedAt": "2026-11-10T05:20:00.000Z",
+      "proposedRecord": {
+        "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+        "description": "PM&C rapid review of arrangements for an AI-driven cyber incident. On 10 November 2026 the Prime Minister released its 18 recommendations. The Government says it accepts them and has commenced implementation. Announced with terms of reference on 24 September 2026.",
+        "jurisdiction": "federal",
+        "type": "policy",
+        "status": "closed",
+        "effectiveDate": "2026-09-24",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-09-24",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+              "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+              "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+              "retrievedAt": "2026-10-26T12:48:03Z",
+              "contentType": "text/html",
+              "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+              "linkedDocuments": [],
+              "browserCapture": {
+                "method": "browser",
+                "capturedAt": "2026-10-26T12:48:03Z",
+                "capturedBy": "Claude (agent)",
+                "requestedBy": "Daniel Alkurdi",
+                "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+                "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+                "characterCount": 1616
+              },
+              "reviewedDate": {
+                "date": "2026-09-24",
+                "precision": "day",
+                "reviewedAt": "2026-10-27T08:01:01.423Z",
+                "reviewedBy": "Daniel Alkurdi",
+                "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+              }
+            }
+          },
+          {
+            "type": "issued",
+            "date": "2026-11-10",
+            "precision": "day",
+            "source": {
+              "url": "https://www.pmc.gov.au/resources/rapid-review-australian-government-arrangements-ai-driven-cyber-incident/rapid-review-australian-government-arrangements-ai-driven-cyber-incident-recommendations",
+              "title": "Rapid Review into Australian Government arrangements for an AI-driven cyber incident recommendations",
+              "publisher": "Department of the Prime Minister and Cabinet",
+              "publishedAt": "2026-11-10",
+              "publishedAtPrecision": "day"
+            }
+          }
+        ],
+        "agencies": [
+          "Department of the Prime Minister and Cabinet",
+          "National Cyber Security Coordinator",
+          "Office of AI",
+          "Australian Signals Directorate",
+          "Australian AI Safety Institute",
+          "Services Australia"
+        ],
+        "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "content": "On 10 November 2026 the Prime Minister released the recommendations of the Rapid Review into Australian Government arrangements for an AI-driven cyber incident and said the Government accepts them and has commenced work to implement them (https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents). PM&C publishes the recommendations on its review resource (https://www.pmc.gov.au/resources/rapid-review-australian-government-arrangements-ai-driven-cyber-incident/rapid-review-australian-government-arrangements-ai-driven-cyber-incident-recommendations). The release says the review makes 18 recommendations, including mandatory AI company reporting of misaligned behaviour or cyber incidents; consideration of criminal-law reform for serious misconduct; greater engagement with international counterparts and frontier AI developers; and strengthening resilience and response to AI incidents, including information sharing and cyber security. The recommendations page lists all 18. No separate recommendations PDF was linked from the Prime Minister's release or the PM&C recommendations page on 10 November 2026; the resource page is the recommendations text. The review was announced on 24 September 2026, when PM&C published terms of reference (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident). The 10 November release says the review was undertaken by PM&C in collaboration with the National Cyber Security Coordinator, the Office of AI, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. The review page still describes the review as examining whether legislative, governance and information-sharing arrangements are fit for purpose, and its Recommendations section is dated 10 November 2026. This record is the completed rapid review and its published recommendations. It is not an enacted law. The same day's separate announcement that the Government will legislate mandatory safety and security protections for frontier AI companies is recorded as australian-ai-standards-frontier-safety-obligations-2026. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident remains timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access.",
+        "aiSummary": "Recommendations of the PM&C rapid review into an AI-driven cyber incident were released on 10 November 2026 (18 recommendations). The Government accepts them and has commenced implementation.",
+        "tags": [
+          "rapid review",
+          "PM&C",
+          "cyber security",
+          "AI incident reporting",
+          "recommendations",
+          "OpenAI",
+          "Medicare portal"
+        ],
+        "themes": [
+          "cyber-security",
+          "ai-governance",
+          "risk-assurance",
+          "standards",
+          "agentic-ai"
+        ],
+        "createdAt": "2026-10-20T05:20:00.000Z",
+        "updatedAt": "2026-11-10T05:20:00.000Z"
+      },
+      "expectedTargetRevisionHash": "7834060b8e83130fb609be4f4c8b81a1aee66c47f4846611038287b38ec250f1",
+      "officialSourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "notes": "Update so the record no longer describes an in-progress review. Status closed: the Prime Minister released the recommendations on 10 November 2026 and said the Government accepts them and has commenced implementation. Recommendations source is the PM&C resource page linked from the Prime Minister's release (no PDF). Do not treat this draft as verified."
+    },
+    "updatedAt": "2026-11-10T05:20:00.000Z"
+  },
+  {
+    "id": "source-review-inky-2026-11-10-frontier-ai-safety-obligations",
+    "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+    "title": "Mandatory frontier AI safety and security protections (Australian AI Standards)",
+    "entryKind": "policy",
+    "targetPolicyId": "australian-ai-standards-frontier-safety-obligations-2026",
+    "targetPolicyBaseRevisionHash": "5580df04ba5f4c85f4ea6bd26f81059e2a1a61234d47bd0c252f8298f9ffba70",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-10T05:20:00.000Z",
+    "createdBy": "inky-quill",
+    "notes": "Signal handoff 10 November 2026 (Inky Quill). Own proposed record, not an attachment to the 15 July 2026 timeline event, because there is no Australian AI Standards register record and that event is the data-centre standards and Office of AI announcement. The unverified draft is in policies.json (needs_review, no lastReviewedAt). This review withholds it until Daniel Alkurdi approves. Not marked verified.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "Proposed Australian AI Standards legislation would impose six mandatory safety and security obligations on frontier AI companies, enforced by a new AI safety regulator working with the Australian AI Safety Institute. Announced 10 November 2026; legislative text not yet published.",
+      "tags": [
+        "Australian AI Standards",
+        "frontier AI",
+        "AI safety regulator",
+        "incident notification",
+        "proposed legislation"
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "Department of Home Affairs",
+        "Department of Industry, Science and Resources",
+        "Australian AI Safety Institute"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+      "title": "New Australian AI safety and security protections",
+      "publisher": "Prime Minister of Australia",
+      "publishedAt": "2026-11-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "australian-ai-standards-frontier-safety-obligations-2026",
+      "title": "Mandatory frontier AI safety and security protections (Australian AI Standards)",
+      "description": "Announced on 10 November 2026: the Government will legislate mandatory safety and security protections for frontier AI companies operating in Australia, through Australian AI Standards legislation, enforced by a proposed AI safety regulator. Details of the legislation are not yet published.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "proposed",
+      "effectiveDate": "2026-11-10",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-10",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+            "title": "New Australian AI safety and security protections",
+            "publisher": "Prime Minister of Australia",
+            "publishedAt": "2026-11-10",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "Department of Home Affairs",
+        "Department of Industry, Science and Resources",
+        "Australian AI Safety Institute"
+      ],
+      "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+      "content": "On 10 November 2026 the Prime Minister, the Deputy Prime Minister, the Minister for Home Affairs and Cyber Security and the Minister for Industry and Innovation announced that the Government will legislate mandatory artificial intelligence safety and security protections for all frontier AI companies that wish to operate in Australia, through Australian AI Standards legislation (https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections). The release says the protections would be enforced by a new targeted regulator for AI safety, working with the Australian AI Safety Institute, and that the regulator would be able to enforce significant penalties. It says companies will be required to: maintain security controls across all stages of development and deployment; identify and manage serious risks associated with their models; allow independent evaluation of their models; provide mandatory notification of incidents to the Australian Government rapidly; maintain and publish safety and security frameworks; and respond to updated standards and rules as technologies change. The release says these protections align with interim report recommendations from the Joint Select Committee on Artificial Intelligence, and that further details of the legislation will become available in due course. No bill, exposure draft or commencement date is published on this page. This is a separate announcement from the same day's release of the rapid review recommendations (pmc-rapid-review-ai-driven-cyber-incident-2026). It is not the 15 July 2026 announcement of Australian AI Standards for large AI data centres and the Office of AI (timeline event tl-2026-07-15-australian-ai-standards-office-of-ai), and there is no existing register record for the Australian AI Standards legislation to attach it to.",
+      "aiSummary": "Proposed Australian AI Standards legislation would impose six mandatory safety and security obligations on frontier AI companies, enforced by a new AI safety regulator working with the Australian AI Safety Institute. Announced 10 November 2026; legislative text not yet published.",
+      "tags": [
+        "Australian AI Standards",
+        "frontier AI",
+        "AI safety regulator",
+        "incident notification",
+        "proposed legislation"
+      ],
+      "themes": [
+        "frontier-ai",
+        "standards",
+        "ai-governance",
+        "cyber-security",
+        "risk-assurance"
+      ],
+      "createdAt": "2026-11-10T05:20:00.000Z",
+      "updatedAt": "2026-11-10T05:20:00.000Z"
+    },
+    "proposal": {
+      "proposedBy": "Inky Quill (agent)",
+      "proposedAt": "2026-11-10T05:20:00.000Z",
+      "proposedRecord": {
+        "id": "australian-ai-standards-frontier-safety-obligations-2026",
+        "title": "Mandatory frontier AI safety and security protections (Australian AI Standards)",
+        "description": "Announced on 10 November 2026: the Government will legislate mandatory safety and security protections for frontier AI companies operating in Australia, through Australian AI Standards legislation, enforced by a proposed AI safety regulator. Details of the legislation are not yet published.",
+        "jurisdiction": "federal",
+        "type": "policy",
+        "status": "proposed",
+        "effectiveDate": "2026-11-10",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-11-10",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+              "title": "New Australian AI safety and security protections",
+              "publisher": "Prime Minister of Australia",
+              "publishedAt": "2026-11-10",
+              "publishedAtPrecision": "day"
+            }
+          }
+        ],
+        "agencies": [
+          "Department of the Prime Minister and Cabinet",
+          "Department of Home Affairs",
+          "Department of Industry, Science and Resources",
+          "Australian AI Safety Institute"
+        ],
+        "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+        "content": "On 10 November 2026 the Prime Minister, the Deputy Prime Minister, the Minister for Home Affairs and Cyber Security and the Minister for Industry and Innovation announced that the Government will legislate mandatory artificial intelligence safety and security protections for all frontier AI companies that wish to operate in Australia, through Australian AI Standards legislation (https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections). The release says the protections would be enforced by a new targeted regulator for AI safety, working with the Australian AI Safety Institute, and that the regulator would be able to enforce significant penalties. It says companies will be required to: maintain security controls across all stages of development and deployment; identify and manage serious risks associated with their models; allow independent evaluation of their models; provide mandatory notification of incidents to the Australian Government rapidly; maintain and publish safety and security frameworks; and respond to updated standards and rules as technologies change. The release says these protections align with interim report recommendations from the Joint Select Committee on Artificial Intelligence, and that further details of the legislation will become available in due course. No bill, exposure draft or commencement date is published on this page. This is a separate announcement from the same day's release of the rapid review recommendations (pmc-rapid-review-ai-driven-cyber-incident-2026). It is not the 15 July 2026 announcement of Australian AI Standards for large AI data centres and the Office of AI (timeline event tl-2026-07-15-australian-ai-standards-office-of-ai), and there is no existing register record for the Australian AI Standards legislation to attach it to.",
+        "aiSummary": "Proposed Australian AI Standards legislation would impose six mandatory safety and security obligations on frontier AI companies, enforced by a new AI safety regulator working with the Australian AI Safety Institute. Announced 10 November 2026; legislative text not yet published.",
+        "tags": [
+          "Australian AI Standards",
+          "frontier AI",
+          "AI safety regulator",
+          "incident notification",
+          "proposed legislation"
+        ],
+        "themes": [
+          "frontier-ai",
+          "standards",
+          "ai-governance",
+          "cyber-security",
+          "risk-assurance"
+        ],
+        "createdAt": "2026-11-10T05:20:00.000Z",
+        "updatedAt": "2026-11-10T05:20:00.000Z"
+      },
+      "expectedTargetRevisionHash": "5580df04ba5f4c85f4ea6bd26f81059e2a1a61234d47bd0c252f8298f9ffba70",
+      "officialSourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+      "notes": "New proposed record for the announced Australian AI Standards safety and security obligations. Status stays proposed. Not verified."
+    },
+    "updatedAt": "2026-11-10T05:20:00.000Z"
+  },
+  {
+    "id": "source-review-inky-2026-11-10-rapid-review-recommendations-timeline",
+    "sourceUrl": "https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents",
+    "title": "Government releases rapid review recommendations on an AI-driven cyber incident",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-11-10-pmc-rapid-review-ai-recommendations",
+    "targetTimelineRevisionHash": "7440727f61126985a5e010c499bb0358302239ac77efae2b6c8194731708f5e9",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-10T05:20:00.000Z",
+    "createdBy": "inky-quill",
+    "notes": "Signal handoff 10 November 2026 (Inky Quill). Unverified timeline draft for Daniel Alkurdi. The event is in timeline.json with verification status needs_review, so it is not on the public timeline. Not marked verified.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "On 10 November 2026 the Prime Minister released the 18 recommendations of the Rapid Review into Australian Government arrangements for an AI-driven cyber incident. The release says the Government accepts the recommendations and has commenced work to implement them. Recommendations named in the release include mandatory AI company reporting of misaligned behaviour or cyber incidents, consideration of criminal-law reform for serious misconduct, international engagement with counterparts and frontier AI developers, and stronger incident resilience and information sharing. PM&C publishes the recommendations on its review resource. This is the recommendations release. It is not the separate same-day announcement of mandatory frontier AI safety legislation.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents",
+      "title": "Strengthening Australia against AI-driven cyber incidents",
+      "publisher": "Prime Minister of Australia",
+      "publishedAt": "2026-11-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-11-10-pmc-rapid-review-ai-recommendations",
+      "date": "2026-11-10",
+      "datePrecision": "day",
+      "title": "Government releases rapid review recommendations on an AI-driven cyber incident",
+      "description": "On 10 November 2026 the Prime Minister released the 18 recommendations of the Rapid Review into Australian Government arrangements for an AI-driven cyber incident. The release says the Government accepts the recommendations and has commenced work to implement them. Recommendations named in the release include mandatory AI company reporting of misaligned behaviour or cyber incidents, consideration of criminal-law reform for serious misconduct, international engagement with counterparts and frontier AI developers, and stronger incident resilience and information sharing. PM&C publishes the recommendations on its review resource. This is the recommendations release. It is not the separate same-day announcement of mandatory frontier AI safety legislation.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+      "sourceUrl": "https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents"
+    },
+    "proposal": {
+      "proposedBy": "Inky Quill (agent)",
+      "proposedAt": "2026-11-10T05:20:00.000Z",
+      "proposedRecord": {
+        "id": "tl-2026-11-10-pmc-rapid-review-ai-recommendations",
+        "date": "2026-11-10",
+        "datePrecision": "day",
+        "title": "Government releases rapid review recommendations on an AI-driven cyber incident",
+        "description": "On 10 November 2026 the Prime Minister released the 18 recommendations of the Rapid Review into Australian Government arrangements for an AI-driven cyber incident. The release says the Government accepts the recommendations and has commenced work to implement them. Recommendations named in the release include mandatory AI company reporting of misaligned behaviour or cyber incidents, consideration of criminal-law reform for serious misconduct, international engagement with counterparts and frontier AI developers, and stronger incident resilience and information sharing. PM&C publishes the recommendations on its review resource. This is the recommendations release. It is not the separate same-day announcement of mandatory frontier AI safety legislation.",
+        "type": "announcement",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+        "sourceUrl": "https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents"
+      },
+      "notes": "Dated 2026-11-10 from the Prime Minister's media release. Not verified."
+    },
+    "updatedAt": "2026-11-10T05:20:00.000Z"
+  },
+  {
+    "id": "source-review-inky-2026-11-10-frontier-ai-protections-timeline",
+    "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+    "title": "Government announces mandatory frontier AI safety protections and a new AI safety regulator",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-11-10-frontier-ai-safety-security-protections",
+    "targetTimelineRevisionHash": "7e6ece3f896b643d0c3c7988d431215dae252a3b2ee5f7ec3371bcc9b42fdec1",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-10T05:20:00.000Z",
+    "createdBy": "inky-quill",
+    "notes": "Signal handoff 10 November 2026 (Inky Quill). Unverified timeline draft for Daniel Alkurdi. The event is in timeline.json with verification status needs_review, so it is not on the public timeline. Not marked verified.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "On 10 November 2026 the Government announced it will legislate mandatory safety and security protections for all frontier AI companies operating in Australia, through Australian AI Standards legislation. The release says a new targeted AI safety regulator would enforce the protections, working with the Australian AI Safety Institute, with significant penalties. Six obligations are named: security controls across development and deployment; identify and manage serious model risks; allow independent evaluation; rapid mandatory incident notification; maintain and publish safety and security frameworks; and respond to updated standards and rules. The release says further details of the legislation will be available in due course. This is not the 15 July 2026 data-centre standards announcement.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+      "title": "New Australian AI safety and security protections",
+      "publisher": "Prime Minister of Australia",
+      "publishedAt": "2026-11-10",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-11-10-frontier-ai-safety-security-protections",
+      "date": "2026-11-10",
+      "datePrecision": "day",
+      "title": "Government announces mandatory frontier AI safety protections and a new AI safety regulator",
+      "description": "On 10 November 2026 the Government announced it will legislate mandatory safety and security protections for all frontier AI companies operating in Australia, through Australian AI Standards legislation. The release says a new targeted AI safety regulator would enforce the protections, working with the Australian AI Safety Institute, with significant penalties. Six obligations are named: security controls across development and deployment; identify and manage serious model risks; allow independent evaluation; rapid mandatory incident notification; maintain and publish safety and security frameworks; and respond to updated standards and rules. The release says further details of the legislation will be available in due course. This is not the 15 July 2026 data-centre standards announcement.",
+      "type": "policy_introduced",
+      "jurisdiction": "federal",
+      "relatedPolicyId": "australian-ai-standards-frontier-safety-obligations-2026",
+      "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections"
+    },
+    "proposal": {
+      "proposedBy": "Inky Quill (agent)",
+      "proposedAt": "2026-11-10T05:20:00.000Z",
+      "proposedRecord": {
+        "id": "tl-2026-11-10-frontier-ai-safety-security-protections",
+        "date": "2026-11-10",
+        "datePrecision": "day",
+        "title": "Government announces mandatory frontier AI safety protections and a new AI safety regulator",
+        "description": "On 10 November 2026 the Government announced it will legislate mandatory safety and security protections for all frontier AI companies operating in Australia, through Australian AI Standards legislation. The release says a new targeted AI safety regulator would enforce the protections, working with the Australian AI Safety Institute, with significant penalties. Six obligations are named: security controls across development and deployment; identify and manage serious model risks; allow independent evaluation; rapid mandatory incident notification; maintain and publish safety and security frameworks; and respond to updated standards and rules. The release says further details of the legislation will be available in due course. This is not the 15 July 2026 data-centre standards announcement.",
+        "type": "policy_introduced",
+        "jurisdiction": "federal",
+        "relatedPolicyId": "australian-ai-standards-frontier-safety-obligations-2026",
+        "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections"
+      },
+      "notes": "Dated 2026-11-10 from the Prime Minister's media release. Not verified."
+    },
+    "updatedAt": "2026-11-10T05:20:00.000Z"
   },
   {
     "id": "source-review-4554eee6-dcbb-4e34-bc12-0383e6e59270",

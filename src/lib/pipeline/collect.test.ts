@@ -6,6 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { frlAiInstrumentSearch } from '@/lib/legislation/frl-search';
 import { buildPolicy, buildTimelineEvent } from '@/test/factories';
 import { WATCH_SOURCES, type WatchSource } from './sources';
+import { CLEF_PROMPT_VERSION } from './clef-classify';
 import { retrieveSource } from './fetch';
 
 // vi.mock is hoisted above every import, including plain top-level const
@@ -4213,7 +4214,7 @@ describe('collect with a model relevance scorer', () => {
     ).toMatchObject({
       classification: 'ai',
       relevanceScore: 0.6,
-      assessment: { method: 'ai', promptVersion: 'clef-noul-v1' },
+      assessment: { method: 'ai', promptVersion: CLEF_PROMPT_VERSION },
     });
   });
 
@@ -4351,7 +4352,7 @@ describe('qualifiesForReview', () => {
     classification: 'ai',
     tags: [],
     agencies: [],
-    assessment: { method: 'ai', promptVersion: 'clef-noul-v1' },
+    assessment: { method: 'ai', promptVersion: CLEF_PROMPT_VERSION },
   } satisfies Classification;
 
   it('stages a tracked change detection even when it is labelled ai and capped', () => {

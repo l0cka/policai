@@ -26,6 +26,10 @@ export function htmlToText(html: string): string {
     .trim();
 }
 
+function dropImages(markdown: string): string {
+  return markdown.replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\n{3,}/g, '\n\n').trim();
+}
+
 /* Drop markdown link targets and images; they carry no dates. */
 export function compactMarkdown(markdown: string): string {
   return markdown
@@ -49,7 +53,11 @@ export function isUsablePage(text: string | null | undefined): text is string {
   return !(t.length < 3000 && BOT_WALL_RE.test(t));
 }
 
-export async function fetchViaFirecrawl(url: string, timeoutMs = 120_000): Promise<string | null> {
+export async function fetchViaFirecrawl(
+  url: string,
+  timeoutMs = 120_000,
+  { keepLinks = false }: { keepLinks?: boolean } = {},
+): Promise<string | null> {
   const base = process.env.FIRECRAWL_URL ?? 'http://127.0.0.1:3003';
   try {
     await assertPublicDestination(url);
@@ -62,7 +70,7 @@ export async function fetchViaFirecrawl(url: string, timeoutMs = 120_000): Promi
     if (!res.ok) return null;
     const body = (await res.json()) as { data?: { markdown?: string } };
     const md = body.data?.markdown;
-    const text = md ? compactMarkdown(md) : null;
+    const text = md ? (keepLinks ? dropImages(md) : compactMarkdown(md)) : null;
     return isUsablePage(text) ? text : null;
   } catch {
     return null;
@@ -94,4 +102,22 @@ export async function fetchPageText(url: string): Promise<PageText | null> {
   const direct = await fetchDirect(url);
   if (direct) return { text: direct, via: 'direct' };
   return null;
+}
+
+/**
+ * An item's page for the enrichment agent, which has no fetch tool of its own.
+ * Firecrawl's markdown keeps link targets, so the agent can still name the
+ * consultation or application page; the plain GET is the fallback. Capped,
+ * because the agent needs the opening of the article, not all of it.
+ */
+export async function fetchItemPage(
+  url: string,
+  { maxChars = 6000, firecrawlTimeoutMs = 45_000 } = {},
+): Promise<PageText | null> {
+  if (!/^https?:\/\//i.test(url)) return null;
+  const fc = await fetchViaFirecrawl(url, firecrawlTimeoutMs, { keepLinks: true });
+  const page: PageText | null = fc
+    ? { text: fc, via: 'firecrawl' }
+    : await fetchDirect(url).then((text) => (text ? { text, via: 'direct' as const } : null));
+  return page && { ...page, text: page.text.slice(0, maxChars) };
 }

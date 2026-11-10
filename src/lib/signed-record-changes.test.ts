@@ -124,6 +124,57 @@ describe('validateSignedRecordChanges', () => {
     expect(errors).toEqual([expect.stringMatching(/^developments:dev-new-guidance-abc123: a published record changed/)])
   })
 
+  describe('renewing a development from its record\'s earlier signed publication', () => {
+    const signedPolicy = buildPolicy({
+      verification: {
+        ...published.verification,
+        status: 'verified',
+        method: 'manual',
+        checkedAt: '2026-11-01T00:00:00.000Z',
+        checkedBy: 'Daniel Alkurdi',
+      },
+    })
+    const signedReview = {
+      ...publishedReview('source-review-signed', signedPolicy),
+      reviewedAt: signedPolicy.verification.checkedAt,
+      sourceEvidence: signedPolicy.verification.source,
+    } as SourceReview
+    const stale = development({
+      status: 'promoted',
+      classification: 'curated',
+      relatedPolicyId: signedPolicy.id,
+      url: 'https://example.gov.au/retired-page',
+      verification: {
+        status: 'verified',
+        method: 'manual',
+        checkedAt: '2026-08-01T00:00:00.000Z',
+        checkedBy: 'Daniel Alkurdi',
+        source: { url: 'https://example.gov.au/retired-page', contentHash: 'e'.repeat(64) },
+      },
+    })
+    const renewed = { ...stale, url: signedPolicy.sourceUrl, verification: signedPolicy.verification }
+    const origin = { id: `source-review-${stale.id}`, status: 'published', proposedRecord: { id: signedPolicy.id } } as SourceReview
+    const run = (reviews: SourceReview[], head = renewed) =>
+      validateSignedRecordChanges(
+        state({ policies: [signedPolicy], developments: [head], sourceReviews: reviews }),
+        state({ policies: [signedPolicy], developments: [stale], sourceReviews: reviews }),
+      ).errors
+
+    it('accepts renewing the development the record was promoted from', () => {
+      expect(run([signedReview, origin])).toEqual([])
+    })
+
+    it('refuses copying the verification onto a related development on another page', () => {
+      expect(run([signedReview])).toEqual([expect.stringMatching(/^developments:dev-new-guidance-abc123: a published record changed/)])
+    })
+
+    it('refuses a renewal from an unsigned publication or one that also edits the development', () => {
+      const unsigned = { ...signedReview, decision: { ...signedReview.decision!, approval: undefined } } as SourceReview
+      expect(run([unsigned, origin])).toHaveLength(1)
+      expect(run([signedReview, origin], { ...renewed, title: 'A title nobody approved' })).toHaveLength(1)
+    })
+  })
+
   it('accepts a collection pull request: new detections, staged reviews and source audit times', () => {
     const staged = {
       id: 'source-review-dev-new-guidance-abc123',
