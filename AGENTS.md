@@ -4,19 +4,20 @@
 
 This repository contains two independent applications. The guide below describes
 the root Policai application. Pro Bono Radar lives in `apps/probono`; read
-`apps/probono/AGENTS.md` before working there. Its dashboard and worker retain
+`apps/probono/AGENTS.md` before working there. Its dashboard and worker keep
 separate manifests and lockfiles. Do not install them as root npm workspaces.
 
-Policai's canonical data remains Git-backed JSON. Pro Bono Radar uses PostgreSQL;
-its database, credentials, and backups must never enter Git. Sharing a repository
-does not merge their publication rules, processes, or deployment authority.
+Policai's canonical data is Git-backed JSON. Pro Bono Radar uses PostgreSQL;
+its database, credentials, and backups must never enter Git. The two
+applications keep separate publication rules, processes, and deployment
+authority.
 
 Run the root `npm run check` and the affected child checks before handing off a
 cross-application change. Keep production runtimes independent. A push to `main`
-deploys: Cloudflare Workers Builds redeploys each site the change touches, and the host
-dispatcher on Argus rebuilds the Pro Bono worker image for code changes under
-`apps/probono/` outside `dashboard/` (`docs/hosting-argus.md`, Lane routing,
-lists the paths that only fast-forward).
+deploys. Cloudflare Workers Builds redeploys each site the change touches, and
+the host dispatcher on Argus rebuilds the Pro Bono worker image for code
+changes under `apps/probono/` outside `dashboard/`. "Lane routing" in
+`docs/hosting-argus.md` lists the paths that only fast-forward.
 
 ## Shared design tokens
 
@@ -25,9 +26,8 @@ scale (`--type-*`, `--tracking-eyebrow`), font roles (`--font-sans`,
 `--font-display`, `--font-mono`), spacing (`--space-*`), radii
 (`--radius`, `--radius-control`, `--radius-pill`), focus ring
 (`--focus-ring-*`), core, status and row-hover colours, rules, shadows and
-motion. The
-A2J Workers build sees only `apps/probono/dashboard`, so neither app imports
-across that boundary. `node scripts/sync-design-tokens.mjs` writes
+motion. The A2J Workers build sees only `apps/probono/dashboard`, so neither
+app imports across that boundary. `node scripts/sync-design-tokens.mjs` writes
 byte-identical copies to `src/app/design-tokens.css` and
 `apps/probono/dashboard/app/design-tokens.css`; both apps import their copy
 from `globals.css`. Never edit a copy. `src/lib/design-tokens-sync.test.ts`
@@ -38,9 +38,9 @@ there.
 
 ## Project Overview
 
-Policai is an Australian AI policy tracker. It maintains a curated register of AI policy, regulation, governance and court guidance across federal and state/territory jurisdictions, plus an automated "developments" feed of newly detected policy activity.
+Policai is an Australian AI policy tracker. It keeps a curated register of AI policy, regulation, governance and court guidance across federal, state and territory jurisdictions, and an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`; at build time `scripts/bundle-data.mjs` writes `data/` and `public/data/` to an asset the Worker reads, and Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on the maintainer's server (Argus) and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`. At build time `scripts/bundle-data.mjs` writes `data/` and `public/data/` to an asset the Worker reads. Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on Argus and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 
@@ -50,13 +50,13 @@ Policai is an Australian AI policy tracker. It maintains a curated register of A
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
 - **Retrieval:** plain HTTP first; self-hosted Firecrawl for `html-index` listing pages and candidate pages, falling back to headless Chromium (Playwright); RSS, register and document sources never read their own page through Firecrawl. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below) and passes through one `HostGate` (`src/lib/pipeline/host-gate.ts`: robots.txt, a 2 s gap per host, `Retry-After`, a per-run breaker; docs/collector.md "Politeness"). Firecrawl `map` and `crawl` are not used.
-- **Analysis:** keyword heuristic by default; the local `clef-flash` model on Argus (`src/lib/pipeline/clef-classify.ts`) when `USE_CLEF_CLASSIFIER=1` and the GPU and model are available, falling back to keyword rules otherwise — both classifier paths cap stored/displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`); direct-document change detections on tracked records store `relevanceScore: 1` by design (change-certainty, not classifier confidence) and stay editor-gated
+- **Analysis:** keyword heuristic by default; the local `clef-flash` model on Argus (`src/lib/pipeline/clef-classify.ts`) when `USE_CLEF_CLASSIFIER=1` and the GPU and model are available, with keyword rules as the fallback. Confidence limits are under Developments in Data Model & Flow.
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Hosting:** Cloudflare Workers through OpenNext (`npm run build:cloudflare`, `wrangler.jsonc`)
-- **Automation:** a daily scheduled collector run on the maintainer's server
+- **Automation:** a daily scheduled collector run on Argus
 
-**Collector identity:** The collector identifies itself as `Policai/1.0 (+https://policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. No source carries an identity exception; the E24 exception for 16 Commonwealth sources expired at 2026-10-21 00:00 AEDT (#162), and granting a new one needs Daniel's approval.
+**Collector identity:** The collector identifies itself as `Policai/1.0 (+https://policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. No source carries an identity exception. Granting one needs Daniel's approval.
 
 ## Commands
 
@@ -67,7 +67,7 @@ npm run lint           # ESLint (flat config)
 npm run test           # Vitest
 npm run validate:data  # structural validation of the data files
 npm run check:freshness # overdue-review ratchet for policies, timeline events, developments (data/freshness-budget.json)
-npm run check          # lint + typecheck + test + validate:data + build — run before handing off
+npm run check          # lint + typecheck + test + validate:data + build; run before handing off
 npm run collect        # one collection pass (-- --dry-run to preview, -- --source=<id> for one source)
 npm run audit:sources  # live audit of automatic watch sources
 npm run audit:register # compare curated source fingerprints
@@ -124,14 +124,14 @@ docs/                             # collector.md + docs index
 
 1. **Register** (`data/policies.json`): curated policy records. Changed only through explicit editorial approval (human or MCP-assisted). `/data/policies.json` and API/site reads expose only verified, non-trashed, non-withheld records. The collector never writes it. The host wrapper `ops/collector/policai-collect.sh` fails a collection run that changes it. `validate:data` fails a PR that changes what readers see of a published policy, timeline event or development unless a passkey-signed decision on that PR covers it (`src/lib/signed-record-changes.ts`; docs/collector.md).
    A `legislation` or `regulation` record may carry `legislative`: its official id (APH bill id, Federal Register title id, or a state register URL) and dated, sourced lifecycle events (introduced, referred, passed, assented, registered, tabled, commenced, amended, repealed, and the ends: lapsed, withdrawn, negatived, disallowed). `src/lib/legislation/model.ts` replays the events through one transition function; `validate:data` fails on an out-of-order event, a `status` that disagrees with the events, or a `commenced`, `amended` or `repealed` record date that is none of that kind's events. Every non-trashed `legislation` record must carry it (snapshots in approved or published source reviews are exempt); on `regulation` it is optional, because registered eSafety industry codes and consultations are not Federal Register instruments.
-2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label — `heuristic` (deterministic keyword rules, the default) or `ai` (local Clef classification, active when `USE_CLEF_CLASSIFIER=1`), plus `curated` for promoted register entries. Both classifier paths cap confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1` — the score records change-certainty for a known instrument, not classifier confidence — and are equally editor-gated. `/data/developments.json` filters dismissed entries. Public feed entries render `id={development.id}` so `/developments#<id>` reveals past the other tab and filters (#223); dismissed rows never reach the browser. `docs/editorial-policy.md` allows those fragment links.
+2. **Developments** (`data/developments.json`): automated radar feed. Each entry has provenance (`sourceId`, `url`), a relevance score, and a `classification` label: `heuristic` (deterministic keyword rules, the default), `ai` (local Clef classification, active when `USE_CLEF_CLASSIFIER=1`), or `curated` for promoted register entries. Both classifier paths cap stored and displayed confidence at 0.65 (`MACHINE_CONFIDENCE_CAP`) and show as "Needs review". Direct-document change detections on tracked records carry `relevanceScore: 1`. That score records change-certainty for a known instrument, not classifier confidence, and these detections are equally editor-gated. `/data/developments.json` filters dismissed entries. Public feed entries render `id={development.id}`, so `/developments#<id>` reveals the entry past the other tab and filters; dismissed rows never reach the browser. `docs/editorial-policy.md` allows those fragment links.
 3. **Editorial directories** (`data/timeline.json`, `data/agencies.json`,
    `data/commonwealth-agencies.json`): may contain records awaiting review and
    are never served statically; `/data/*.json` route handlers apply public
    verification filters.
    The DTA framework artifact is also editorial and is withheld whenever its
    related register policy is withheld.
-4. **Collector** (`src/lib/pipeline/collect.ts`): pure orchestrator — fetch sources → extract candidates → diff against `data/watch-state.json` → classify → return developments/review candidates/state/meta. The CLI (`scripts/collect.ts`) persists them. On Argus it also reads and stages the collector's host state and outbox (`POLICAI_COLLECTOR_STATE`, `scripts/collect-run.ts`), so an unmerged collection PR loses nothing. Every fresh-vs-stored fingerprint comparison uses `matchesRetrievedContent` (pending document candidates, ordered re-staging, re-approval `reviewedDate`, adoption-path snapshot gate, and register audit `--write-evidence`; #249). HTML fingerprints under the current, #244 and pre-#195 schemes stay structurally disjoint (`publicationDates` / `date-platform:` / neither), so a page that gains `dcterms.created` or a Drupal generator after its current fingerprint was stored reads as changed (#262; `docs/collector.md`).
+4. **Collector** (`src/lib/pipeline/collect.ts`): a pure orchestrator. It fetches sources, extracts candidates, diffs them against `data/watch-state.json`, classifies them, and returns developments, review candidates, state and meta. The CLI (`scripts/collect.ts`) persists them. On Argus it also reads and stages the collector's host state and outbox (`POLICAI_COLLECTOR_STATE`, `scripts/collect-run.ts`), so an unmerged collection PR loses nothing. Every fresh-vs-stored fingerprint comparison uses `matchesRetrievedContent` (pending document candidates, ordered re-staging, re-approval `reviewedDate`, adoption-path snapshot gate, and register audit `--write-evidence`). HTML fingerprints under the current, #244 and pre-#195 schemes stay structurally disjoint (`publicationDates` / `date-platform:` / neither), so a page that gains `dcterms.created` or a Drupal generator after its current fingerprint was stored reads as changed (`docs/collector.md`).
 5. **Review**: high-confidence detections are staged in `data/source-reviews.json`; a separate approval action is required before publishing creates a register record. Changed direct-document sources stage a version-specific review with `targetPolicyId`, temporarily withhold the existing policy publicly, and update that policy in place after approval.
 6. **Coverage**: automatic sources report usable-content health in `public/data/meta.json`; protected sources are tracked in `data/source-monitoring.json`.
    **Reuse terms** (`data/site-reuse.json`, parsed by `src/lib/watch-coverage/site-reuse.ts`): one entry per body host with what its copyright page permits (`stated` with a Creative Commons id, `all_rights_reserved` or `custom` terms, plus `termsUrl`; or `not_stated` / `refused` with a note) and `checkedAt`. `validate:data` errors on a host no body owns and warns on an unchecked body host. Shown at `/status/reuse` and as "Site reuse terms" on `/policies/[id]`. Re-check with `npm run survey:site-reuse -- --out=<file>` on the collector host (declared identity, robots.txt, 2 s gap); the survey only gathers evidence, an editor writes the file.
@@ -161,24 +161,25 @@ and still serves `buildNetworkData` nodes and edges.
   The value is 1, so every theme in the controlled vocabulary with a public
   record is a row: `validate:data` requires two non-trashed register records
   per theme (fewer than two public records is only a warning), and a hidden
-  theme cannot show where coverage is missing. The
-  original threshold of 6 filtered free-form tags. Raise it if the
+  theme cannot show where coverage is missing. Raise the threshold if the
   vocabulary grows past what one table can show; uncharted themes are then
   counted in the footnote.
 - **Rendering:** the route is prerendered (`revalidate = 3600`, no `dynamic`
   export). It never reads `searchParams` on the server: `CoverageMap` reads
-  the selection from the query string in the browser. Build time reads
+  the selection from the query string in the browser. The build reads
   `policies.json` through the public `getPolicies()` projection and builds
-  the matrix, which is small (one pass over the public records). `src/app/coverage/page.test.tsx` guards the export, asserts SSR
-  table HTML, and asserts that withheld, unverified and trashed records never
-  reach a cell or a drill-down list.
+  the matrix in one pass over the public records.
+  `src/app/coverage/page.test.tsx` guards the export, asserts SSR table HTML,
+  and asserts that withheld, unverified and trashed records never reach a
+  cell or a drill-down list.
 - **Copy:** every count and sentence on the page (standfirst, footnote, empty
   state) comes from `coverageStandfirst`, `coverageFootnote` and
   `coverageEmptySentence`. Do not type numbers into the page. The footnote
   agrees in number for 0, 1, 2 and many themes; its cases are a table in
   `coverage-data.test.ts`. An empty register must read "None of the N themes
-  … has a verified record yet". Clauses join with "; ", so a threshold-6 empty
-  chart does not run "and" between the below-threshold and unused groups.
+  … has a verified record yet". Clauses join with "; ", so an empty chart
+  with both below-threshold and unused themes does not run "and" between
+  the two groups.
 - **URL:** `?theme=<key>&j=<jurisdiction>` selects a cell, `theme` alone a row,
   `j` alone a column, and `by=type` (with `type=<key>`) switches the axis.
   Unknown values are ignored. Opening and closing use `replaceState`; moving
@@ -194,10 +195,9 @@ and still serves `buildNetworkData` nodes and edges.
   their table semantics in some browsers, so every table element carries its
   explicit ARIA role (`table`, `rowgroup`, `row`, `columnheader`,
   `rowheader`, `cell`). A selection loaded from the URL scrolls the
-  drill-down row into view (the `<tr class="coverage-drill-row">`, not the
-  inner `.coverage-drill` panel — putting `scroll-margin-top` only on the
-  panel left shared phone links under the sticky header and column strip,
-  #329). The browser adds the row's `scroll-margin-top`
+  drill-down row (the `<tr class="coverage-drill-row">`, not the inner
+  `.coverage-drill` panel) into view. A `scroll-margin-top` only on the
+  panel leaves shared phone links under the sticky header and column strip. The browser adds the row's `scroll-margin-top`
   to the document's `scroll-padding-top` (`--scroll-clear-top` in
   `globals.css`: `6.5rem`, and `9rem` from `min-width: 40rem`), so the
   margin is the clearance wanted, the site header height
@@ -239,16 +239,14 @@ no heading.
   then the newest primary date, then the title in `en-AU` order. A superseded
   record appears once. `related-policies.test.ts` pins every tie-breaker.
 - **Shares line:** the shared themes in the viewed record's theme order.
-- **Counts:** the list and the "Show all N related" total come from the
-  data, so they move with the theme vocabulary. #303 cited 24 related items
-  for `federal-court-gpn-ai`; that predates #307 and the page computes the
-  number.
+- **Counts:** the page computes the list and the "Show all N related" total
+  from the data, so they move with the theme vocabulary.
 - **Rendering:** the server renders every item and the first eight are in
   the HTML. Only `src/components/related/expandable-list.tsx` is a client
   component (the expander). Do not re-add a `loading.{tsx,ts,jsx,js}` in
-  `src/app/policies/[id]/` or any parent segment up to `src/app`: React
+  `src/app/policies/[id]/` or any parent segment up to `src/app`. React
   outlines a Suspense boundary that large into hidden segments that a script
-  reveals, so without JavaScript the page stayed on its skeleton and showed
+  reveals, so without JavaScript the page stays on its skeleton and shows
   6 of the 8 items. Trade-off: a first uncached client navigation keeps the
   previous page until the server renders (about 40 to 80 ms; no pending cue).
   `no-route-boundary.test.ts` guards the route and its parents, and
@@ -285,7 +283,6 @@ uses it. The rules for voice, formats and citations are in
   `not_public` record is shown without its title or link.
   `POLICAI_ARTICLES_DIR` points reads at another directory, for previews
   with fixtures (`src/test/fixtures/articles/`).
-
 - **Body links:** a link is on-site only when it starts with `/` or `#`, or
   is absolute, and resolves to `https://policai.org`. Protocol-relative
   (`//host/...`) and backslash (`/\host/...`) forms resolve to another host,
@@ -310,10 +307,9 @@ the piece's `cites` on the base revision lacks it. Every citation of a new
 piece, or of a piece that was a draft on the base, is added. An existing
 citation never blocks an edit, so a correction or update can always be
 appended to a piece whose source went under review. The base revision is
-`GITHUB_BASE_SHA` when set (CI passes the PR base),
-otherwise the merge-base of `HEAD` and `origin/main`. When `GITHUB_BASE_SHA`
-is set but cannot be read, `validate:data` fails, so the transition rules
-never pass silently. When it is unset and no merge-base can be read, every
+`GITHUB_BASE_SHA` when set (CI passes the PR base), otherwise the merge-base
+of `HEAD` and `origin/main`. When `GITHUB_BASE_SHA` is set but cannot be
+read, `validate:data` fails, so the transition rules never pass silently. When it is unset and no merge-base can be read, every
 piece counts as new.
 
 ### Article figures
@@ -331,12 +327,12 @@ each block renders on its own.
 
 Figure YAML and frontmatter are parsed by `parseYaml` in
 `src/lib/frontmatter.ts` with the YAML core schema, so dates stay text and
-must be real calendar dates: `2026-02-30` is an error, not 2 March (js-yaml
-default schema would roll that to 2 March; #282). A figure block is one YAML
+must be real calendar dates: `2026-02-30` is an error, where the js-yaml
+default schema would roll it to 2 March. A figure block is one YAML
 document, so a `---` line inside it is an error instead of ending the block
-early and silently dropping later fields (#282). Matrix column names, matrix
-row headers and timeline date-and-title pairs must not repeat (duplicate React
-keys otherwise; #282).
+early and dropping later fields. Matrix column names, matrix row headers
+and timeline date-and-title pairs must not repeat, because they are React
+keys.
 
 | Field | Kinds | Rule |
 | --- | --- | --- |
@@ -365,23 +361,24 @@ as a whole, not the records it counts: a review-due record in the count
 raises no error and no banner (PM, 2026-10-17). Its source line reads
 "Policai register, N public records, as at <date>", where the date is the
 date the page was generated, as a calendar date in Australia/Sydney (Daniel,
-2026-10-17, #293; supersedes the collection/`lastHealthyAt` date from #282).
-`readPublicArticles` takes it from the same `now` that builds the public
-projection it counts, so the date is when the count was taken and reveals
-nothing about hidden records. `/analysis/[slug]` prerenders every published piece at build
+2026-10-17, #293). `readPublicArticles` takes it from the same `now` that
+builds the public projection it counts, so the date is when the count was
+taken and reveals nothing about hidden records. The server render formats
+the date, so a reader's timezone cannot change it.
+
+`/analysis/[slug]` prerenders every published piece at build
 (`generateStaticParams` over `getArticles()`, `revalidate` 3600), so the
 count and its date come from the deploy that built the page (Dan,
-2026-10-26, #560; supersedes the per-request render). The count stays true
-for that date because the data only changes through commits, and every
-commit redeploys. On Workers a per-request render cost 440 to 655 ms of CPU.
-A test in `src/app/analysis/article-figures.test.tsx` fails if the
-route exports `dynamic` again or `generateStaticParams()` drops the
+2026-10-26, #560). The count stays true for that date because the data
+only changes through commits, and every commit redeploys. On Workers a
+per-request render cost 440 to 655 ms of CPU. A test in
+`src/app/analysis/article-figures.test.tsx` fails if the route exports
+`dynamic` again or `generateStaticParams()` drops the
 `figure-kinds-published` fixture.
-The date is formatted
-in the server render, so a reader's timezone cannot change it.
-`validateArticles` (`registerChartErrors`) fails a
-published chart whose query matches no public record, gives fewer than 3 or
-more than 10 bars, or highlights a value with no records. The prose must not
+
+`validateArticles` (`registerChartErrors`) fails a published chart whose
+query matches no public record, gives fewer than 3 or more than 10 bars, or
+highlights a value with no records. The prose must not
 restate a chart's numbers, since they change as the register changes.
 
 `src/components/article-figures.tsx` renders figures as server HTML and CSS
@@ -474,11 +471,11 @@ Defined in `src/types/index.ts`; import them from `@/types`. The one exception i
 - **Jurisdiction:** `federal | nsw | vic | qld | wa | sa | tas | act | nt`
 - **PolicyType:** `legislation | regulation | guideline | framework | standard | practice_note | policy | tool | funding_program`
 - **PolicyStatus:** `proposed | active | amended | superseded | closed | repealed | trashed` (unverified and `trashed` records are hidden from public register reads; `superseded` records carry `supersededBy`)
-- **Policy** — register entity (with optional `supersededBy`, `lastReviewedAt`)
-- **ThemeId** — `Policy.themes[]` entries: keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme on fewer than 2 non-trashed register records is a `validate:data` error. A listed theme on fewer than 2 public records is only a warning, because withholding a record for an update review, or an unverified record, can cause it during an ordinary collection run. The real-data test (`src/lib/validate-themes.test.ts`) asserts the register count only, so CI fails on the same condition as `validate:data`. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. A new theme must be on at least 2 records in the same PR. Renaming or removing a theme needs a data migration of `data/policies.json` in the same PR: a rerunnable codemod like `scripts/apply-themes-2026-10-17.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/coverage` charts records by `themes` and jurisdiction, and `/api/network` connects records that share `themes`.
-- **PolicyDate** — `Policy.dates[]` entries: `type` (`POLICY_DATE_TYPES`), calendar `date`, required `precision` (`day | month | year`; month/year dates anchor on the first day and never render a day), optional `primary` and `source`. Exactly one date is primary and backs `effectiveDate`.
-- **Deadline date types** (`DEADLINE_DATE_TYPES`): `consultation_closed | compliance_due | scheduled_review` — dates that fall due on an instrument rather than change it. They cannot be primary; future ones feed the homepage "Upcoming deadlines" rail and `/this-week` (`src/lib/this-week.ts`). Values are editorial, source-verified entries like any other date.
-- **Development**, **CollectionMeta** — feed + collector metadata
+- **Policy:** register entity (with optional `supersededBy`, `lastReviewedAt`)
+- **ThemeId:** `Policy.themes[]` entries, keys of `THEMES` in `src/lib/themes.ts`, the controlled topic vocabulary the Editorial Manager owns (issue #305). Every record, trashed or not, has 1 to 5 unique themes. A listed theme on fewer than 2 non-trashed register records is a `validate:data` error. A listed theme on fewer than 2 public records is only a warning, because withholding a record for an update review, or an unverified record, can cause it during an ordinary collection run. The real-data test (`src/lib/validate-themes.test.ts`) asserts the register count only, so CI fails on the same condition as `validate:data`. Adding, renaming or removing a theme is an editorial decision made in a PR that edits `src/lib/themes.ts`. A new theme must be on at least 2 records in the same PR. Renaming or removing a theme needs a data migration of `data/policies.json` in the same PR: a rerunnable codemod like `scripts/apply-themes-2026-10-17.ts`. `tags` stay free-form keywords for search, `keywords` metadata, related records and the courts view; they are not themes. `/coverage` charts records by `themes` and jurisdiction, and `/api/network` connects records that share `themes`.
+- **PolicyDate:** `Policy.dates[]` entries, `type` (`POLICY_DATE_TYPES`), calendar `date`, required `precision` (`day | month | year`; month/year dates anchor on the first day and never render a day), optional `primary` and `source`. Exactly one date is primary and backs `effectiveDate`.
+- **Deadline date types** (`DEADLINE_DATE_TYPES`): `consultation_closed | compliance_due | scheduled_review`, dates that fall due on an instrument rather than change it. They cannot be primary; future ones feed the homepage "Upcoming deadlines" rail and `/this-week` (`src/lib/this-week.ts`). Values are editorial, source-verified entries like any other date.
+- **Development**, **CollectionMeta:** feed and collector metadata
 - **TimelineEvent**, **Agency**, **SourceReview**, **McpAuditLog**
 
 Use the display-name helpers (`getPolicyTypeName()`, `getPolicyStatusName()`, `getJurisdictionName()`) for untrusted strings, and the `--status-*` colour tokens from `design/tokens.css` (the `StatusPill` in `src/components/policy-indicators.tsx` applies them).
@@ -504,7 +501,7 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
 
 - Change the relevant canonical file in `public/data/` or `data/` (or use the
   MCP tools), then run `npm run validate:data`.
-- Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates — if a day-level date can't be verified, say so in `content` rather than inventing precision.
+- Every policy needs a real, verified `sourceUrl` (https, `.gov.au` or allow-listed host) and accurate dates. If a day-level date can't be verified, say so in `content` rather than inventing precision.
 - Mark replaced instruments `superseded` (+ `supersededBy`) and dead consultations `closed`; don't delete history.
 - Stamp `lastReviewedAt` when you have verified a record against its source.
 - Give every policy 1 to 5 `themes` from `src/lib/themes.ts`. Collector and staged drafts carry `themes: []`, and approval and publication refuse a policy without themes, so propose a new policy (`propose_source_decision`) with an explicit `proposedRecord` that sets them. Re-verification drafts keep the record's existing themes. `npm run validate:data` runs both `validatePolicyThemes` and `validateThemeCoverage` (`scripts/validate-data.ts`; `src/lib/validate-data-script.test.ts` fails if either call is removed). Publication also refuses an approved snapshot whose themes were emptied, set to an unknown id, omitted, nested (a non-string entry is named by type and JSON value, not as an unknown theme id), or grown past five, and does not call `createPolicy` or `updatePolicy` (`src/lib/source-ingest-workflow.test.ts`). Through MCP, `list_themes` (read-only) returns each key and label from `THEMES` with the per-record and per-theme limits. When a record has theme errors, the last error for that record ends with `; valid theme ids are <keys>` (not a separate `<id>: valid theme ids are <keys>` line). Approve and publish refusals join those errors, so they name the keys too.
@@ -519,7 +516,7 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
   `collectionStripProps` and `formatCollectedAt` in
   `src/lib/collection-strip.ts` (a plain module, so the server layout may call
   them), pinned to `Australia/Sydney`. It never shows `lastHealthyAt`, which
-  would date the strip to the last fully healthy run (#304). Below `sm` a
+  would date the strip to the last fully healthy run. Below `sm` a
   degraded run still shows a `degraded` marker beside the collected date.
   `formatCollectedAt` falls back when the stamp is missing or unparseable.
 - A server module (one without `'use client'`) imports only components from a
@@ -527,9 +524,9 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
   function, becomes a client reference in the RSC payload, which the browser
   resolves only after that module's chunk loads. Put shared values in a plain
   module instead. `src/app/client-boundary.test.ts` enforces this. A client
-  reference inside `<head>` caused #284: when it suspended during hydration,
-  React replayed the `<head>` singleton and lost its place in the document, so
-  about 0.2% of loads (several percent under CPU load) failed with React #418.
+  reference inside `<head>` that suspends during hydration makes React replay
+  the `<head>` singleton and lose its place in the document, and the load
+  fails with React #418.
 - Theme: `src/components/layout/theme-init.ts` holds the storage key and the
   static init script. The root layout renders the script in `<head>` so a
   stored light or dark choice applies before first paint, with no flash of the
