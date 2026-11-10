@@ -460,10 +460,15 @@ async function extractSingleRetrievedDocument(
     url,
     fallbackTitle,
   );
-  const text = extractSemanticDocumentText(retrieved.body).slice(
-    0,
-    MAX_EXTRACTED_CHARACTERS,
-  );
+  // Firecrawl hands pages over as Markdown, served as text/plain. Read it
+  // as Markdown, so skip links, link targets and heading rules never reach
+  // the classifier or a staged summary.
+  const isMarkdown = contentType === 'text/plain' && !hasHtmlMarkup;
+  const text = (
+    isMarkdown
+      ? plainTextFromMarkdown(retrieved.body)
+      : extractSemanticDocumentText(retrieved.body)
+  ).slice(0, MAX_EXTRACTED_CHARACTERS);
   if (text.length < MIN_READABLE_HTML_CHARACTERS) {
     throw new Error(
       'HTML source contains no readable document text',
@@ -475,6 +480,18 @@ async function extractSingleRetrievedDocument(
     publishedAt: candidate.dateHint,
     publishedAtPrecision: candidate.dateHintPrecision,
   };
+}
+
+function plainTextFromMarkdown(markdown: string): string {
+  return markdown
+    .replace(/\[skip to [^\]]*\]\([^)]*\)/gi, ' ')
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/^\s{0,3}(?:=+|-{3,})\s*$/gm, ' ')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/(\*\*|__)(.+?)\1/g, '$2')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export async function extractRetrievedDocument(
