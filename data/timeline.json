@@ -3457,4 +3457,49 @@
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record."
     }
   }
+,
+  {
+    "id": "tl-2026-11-10-pmc-rapid-review-ai-recommendations",
+    "date": "2026-11-10",
+    "datePrecision": "day",
+    "title": "Government releases rapid review recommendations on an AI-driven cyber incident",
+    "description": "On 10 November 2026 the Prime Minister released the 18 recommendations of the Rapid Review into Australian Government arrangements for an AI-driven cyber incident. The release says the Government accepts the recommendations and has commenced work to implement them. Recommendations named in the release include mandatory AI company reporting of misaligned behaviour or cyber incidents, consideration of criminal-law reform for serious misconduct, international engagement with counterparts and frontier AI developers, and stronger incident resilience and information sharing. PM&C publishes the recommendations on its review resource. This is the recommendations release. It is not the separate same-day announcement of mandatory frontier AI safety legislation.",
+    "type": "announcement",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "sourceUrl": "https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pm.gov.au/media/strengthening-australia-against-ai-driven-cyber-incidents",
+        "title": "Strengthening Australia against AI-driven cyber incidents",
+        "publisher": "Prime Minister of Australia",
+        "publishedAt": "2026-11-10",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal handoff of 10 November 2026 (Inky Quill). The Prime Minister's media release is dated Tuesday 10 November 2026. The recommendations text is the PM&C resource linked from that release, not a separate PDF. Not fingerprinted and not marked verified."
+    }
+  },
+  {
+    "id": "tl-2026-11-10-frontier-ai-safety-security-protections",
+    "date": "2026-11-10",
+    "datePrecision": "day",
+    "title": "Government announces mandatory frontier AI safety protections and a new AI safety regulator",
+    "description": "On 10 November 2026 the Government announced it will legislate mandatory safety and security protections for all frontier AI companies operating in Australia, through Australian AI Standards legislation. The release says a new targeted AI safety regulator would enforce the protections, working with the Australian AI Safety Institute, with significant penalties. Six obligations are named: security controls across development and deployment; identify and manage serious model risks; allow independent evaluation; rapid mandatory incident notification; maintain and publish safety and security frameworks; and respond to updated standards and rules. The release says further details of the legislation will be available in due course. This is not the 15 July 2026 data-centre standards announcement.",
+    "type": "policy_introduced",
+    "jurisdiction": "federal",
+    "relatedPolicyId": "australian-ai-standards-frontier-safety-obligations-2026",
+    "sourceUrl": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pm.gov.au/media/new-australian-ai-safety-and-security-protections",
+        "title": "New Australian AI safety and security protections",
+        "publisher": "Prime Minister of Australia",
+        "publishedAt": "2026-11-10",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal handoff of 10 November 2026 (Inky Quill). The Prime Minister's media release is dated Tuesday 10 November 2026. Not fingerprinted and not marked verified. Linked proposed record australian-ai-standards-frontier-safety-obligations-2026 is also needs_review."
+    }
+  }
 ]
