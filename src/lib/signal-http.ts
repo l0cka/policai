@@ -193,6 +193,11 @@ function dismissBlockers(review: SourceReview): string[] {
 	if (review.status === "published") {
 		blockers.push("Published sources cannot be rejected");
 	}
+	if (review.status === "approved") {
+		blockers.push(
+			"Approved sources await publication and cannot be dismissed without a passkey decision",
+		);
+	}
 	return blockers;
 }
 

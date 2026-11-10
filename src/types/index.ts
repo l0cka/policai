@@ -199,6 +199,11 @@ export type ShownCourtRequirement = Pick<
 /** What the courts page ships up front: who a requirement binds, for the audience filter. */
 export type CourtRequirementActor = Pick<CourtRequirement, "id" | "policyId" | "actor">;
 
+export type ApiCourtRequirement = Omit<ShownCourtRequirement, "source"> & {
+	source: ShownCourtRequirement["source"] & Pick<CourtRequirement["source"], "url">;
+	policy: PublicCourtRequirement["policy"];
+};
+
 export interface PublicCourtRequirement extends CourtRequirement {
 	policy: Pick<
 		Policy,

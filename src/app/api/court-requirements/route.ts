@@ -1,4 +1,7 @@
-import { getPublicCourtRequirements } from "@/lib/court-requirements";
+import {
+	getPublicCourtRequirements,
+	toShownRequirement,
+} from "@/lib/court-requirements";
 import {
 	checkPublicApiRequest,
 	publicApiError,
@@ -8,6 +11,7 @@ import {
 import { parseSourceUrl } from "@/lib/source-url";
 import {
 	COURT_REQUIREMENT_MODALITIES,
+	type ApiCourtRequirement,
 	JURISDICTIONS,
 	type CourtRequirementModality,
 	type Jurisdiction,
@@ -62,7 +66,16 @@ export async function GET(request: Request) {
 	});
 
 	return publicApiJson({
-		data: requirements.slice(0, limit),
+		data: requirements
+			.slice(0, limit)
+			.map((requirement): ApiCourtRequirement => {
+				const shown = toShownRequirement(requirement);
+				return {
+					...shown,
+					source: { ...shown.source, url: requirement.source.url },
+					policy: requirement.policy,
+				};
+			}),
 		total: requirements.length,
 		success: true,
 	});

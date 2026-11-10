@@ -123,6 +123,14 @@ describe('scrapeWithFirecrawl', () => {
     );
   });
 
+  it('refuses a host that resolves to a private address before calling Firecrawl', async () => {
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const result = await scrapeWithFirecrawl('https://example.test/', { resolveHost: async () => ['10.0.0.5'] });
+    expect(result).toMatchObject({ ok: false, reason: 'invalid_provenance' });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('refuses exempt requests before calling Firecrawl', async () => {
     const fetchMock = vi.fn();
     vi.stubGlobal('fetch', fetchMock);
@@ -248,9 +256,10 @@ describe('scrapeWithFirecrawl', () => {
 
     const result = await scrapeWithFirecrawl(
       'https://www.oaic.gov.au/',
-      { resolveHost: async () => ['10.0.0.5'] },
+      { resolveHost: async (host) => (host === 'internal.example.gov.au' ? ['10.0.0.5'] : ['93.184.216.34']) },
     );
 
+    expect(fetch).toHaveBeenCalledTimes(1);
     expect(result).toMatchObject({
       ok: false,
       reason: 'invalid_provenance',

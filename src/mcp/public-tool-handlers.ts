@@ -3,7 +3,7 @@ import type {
   CourtRequirementModality,
   Development,
   Policy,
-  PublicCourtRequirement,
+  ApiCourtRequirement,
   TimelineEvent,
 } from "@/types";
 
@@ -165,7 +165,7 @@ export async function handleSearchCourtRequirements(
   },
   options: PublicClientOptions = {},
 ) {
-  const response = await requestApi<ApiListResponse<PublicCourtRequirement>>(
+  const response = await requestApi<ApiListResponse<ApiCourtRequirement>>(
     "/api/court-requirements",
     {
       search: input.query,

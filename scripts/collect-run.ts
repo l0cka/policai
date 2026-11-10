@@ -95,7 +95,15 @@ export function withoutInvalidChanges<T extends { id: string }>(
       const error = errors.find((message) => message.startsWith(`${item.id}: `));
       if (error && !unchanged(item)) rejected.set(item.id, error);
     }
-    if (rejected.size === 0) return { items, dropped };
+    if (rejected.size === 0) {
+      const unattributed = errors.filter(
+        (message) => !items.some((item) => message.startsWith(`${item.id}: `)),
+      );
+      if (unattributed.length > 0) {
+        throw new Error(`Validation errors not attributable to a record: ${unattributed.join('; ')}`);
+      }
+      return { items, dropped };
+    }
     dropped.push(...rejected.values());
     items = items.flatMap((item) => {
       if (!rejected.has(item.id)) return [item];

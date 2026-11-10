@@ -8,7 +8,7 @@ import {
   POLICY_TYPES,
   type Development,
   type Policy,
-  type PublicCourtRequirement,
+  type ApiCourtRequirement,
 } from '@/types';
 
 type ToolInput = Record<string, unknown>;
@@ -255,7 +255,7 @@ function createTools(fetchImpl: Fetch): WebMcpTool[] {
         }
         params.set('limit', String(optionalInteger(input, 'limit', 1, 100) ?? 50));
 
-        const requirements = await fetchApi<PublicCourtRequirement[]>(
+        const requirements = await fetchApi<ApiCourtRequirement[]>(
           `/api/court-requirements?${params}`,
           fetchImpl,
           options?.signal,

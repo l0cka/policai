@@ -117,13 +117,7 @@ describe("cross-check with #661", () => {
       head as never,
       base as never,
     );
-    console.log(
-      kind,
-      "propose:",
-      proposeOnly.errors,
-      "approve:",
-      approveErrors.errors,
-    );
-    expect(true).toBe(true);
+    expect(proposeOnly.errors).toEqual([]);
+    expect(approveErrors.errors).toEqual([]);
   });
 });

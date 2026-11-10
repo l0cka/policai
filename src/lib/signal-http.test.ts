@@ -171,6 +171,15 @@ describe("signal HTTP apply", () => {
 		expect(reject).not.toHaveBeenCalled();
 	});
 
+	it("blocks dismiss of an approved review awaiting publication", async () => {
+		const reject = vi.fn();
+
+		const result = await dismiss(review({ status: "approved" }), reject);
+
+		expect(result).toMatchObject({ ok: false, code: "dismiss_blocked" });
+		expect(reject).not.toHaveBeenCalled();
+	});
+
 	it("dismisses idempotently when already rejected", async () => {
 		const reject = vi.fn();
 
