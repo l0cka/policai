@@ -292,15 +292,24 @@ Candidates that survive dedup are classified by keyword heuristic by default.
 With `USE_CLEF_CLASSIFIER=1`, the local `clef-flash` model on Argus decides
 relevance instead (`src/lib/pipeline/clef-classify.ts`). Each candidate's
 title, source name and a 600-character excerpt go to Ollama's System One
-endpoint on `127.0.0.1:11434` as one `noul` question ("Is this item
-Australian AI policy, regulation, governance or court guidance?"), and the
+endpoint on `127.0.0.1:11434` as one `noul` question: does the item's own
+text show a specific Australian policy instrument, official decision or
+official publication about AI, as opposed to general news, commentary, a
+speech, a company story, a navigation page or an incidental mention? The
 model's P(true) becomes the score. An item at 0.5 or above is relevant.
 Summary, type and jurisdiction still come from the keyword rules, and the
-assessment records `promptVersion: 'clef-noul-v1'`. The log carries one
+assessment records `promptVersion: 'clef-noul-v3'`. The log carries one
 `model score` line per scored candidate, so a dismissal's confidence can be
 read back. Register search hits (Federal Register, SA, Vic and state bill
 lists) are scored too. Without a score they keep the fixed 0.55 search-match
 rule (`register-search-v1`).
+
+The wording asks for a specific instrument rather than for "AI" in general
+because the earlier question read every item from an AI-focused source as
+relevant. On the 119 editor-reviewed developments, `npx tsx
+scripts/compare-classifier.ts` scores the model against the promoted and
+dismissed decisions: the general question agreed on 48, this one agrees on
+79, with no promoted item lost.
 
 Clef never fails a run. `scripts/collect.ts` checks once per run that at least
 13 GB of GPU memory is free (`nvidia-smi`, which must report exactly one GPU;
