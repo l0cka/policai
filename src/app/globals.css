@@ -104,6 +104,7 @@
   --paper: light-dark(#f8f7f3, #151b18);
   --paper-raised: light-dark(#fffefa, #1b231e);
   --paper-sunk: light-dark(#eeeee7, #111713);
+  --analysis-hero-muted: light-dark(#4a504a, #d2dad2);
 
   --map-fill-0: light-dark(#e8e5e0, #242c36);
   --map-fill-1: light-dark(#c7d2e0, #2e3d53);
@@ -1169,7 +1170,7 @@
   font-family: var(--font-mono);
   font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
-  color: light-dark(#4d534d, #d2dad2);
+  color: var(--analysis-hero-muted);
 }
 .analysis-hero-arrow {
   display: inline-flex;
@@ -1191,7 +1192,7 @@
   font-size: var(--type-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: light-dark(#4d534d, #d2dad2);
+  color: var(--analysis-hero-muted);
 }
 .analysis-hero-title {
   margin-top: var(--space-2);
@@ -1217,7 +1218,7 @@
   max-width: 44rem;
   font-size: var(--type-ui);
   line-height: 1.45;
-  color: light-dark(#4d534d, #d2dad2);
+  color: var(--analysis-hero-muted);
   overflow-wrap: anywhere;
   display: -webkit-box;
   -webkit-box-orient: vertical;
