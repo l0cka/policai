@@ -1169,7 +1169,7 @@
   font-family: var(--font-mono);
   font-size: var(--type-label);
   font-variant-numeric: tabular-nums;
-  color: var(--muted-foreground);
+  color: light-dark(#4d534d, #d2dad2);
 }
 .analysis-hero-arrow {
   display: inline-flex;
@@ -1191,7 +1191,7 @@
   font-size: var(--type-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  color: light-dark(#4d534d, #d2dad2);
 }
 .analysis-hero-title {
   margin-top: var(--space-2);
@@ -1217,7 +1217,7 @@
   max-width: 44rem;
   font-size: var(--type-ui);
   line-height: 1.45;
-  color: var(--muted-foreground);
+  color: light-dark(#4d534d, #d2dad2);
   overflow-wrap: anywhere;
   display: -webkit-box;
   -webkit-box-orient: vertical;
