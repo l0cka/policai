@@ -3,9 +3,9 @@ import { robotsAllows } from '@/lib/pipeline/robots';
 import type { SourceKind } from '@/lib/pipeline/sources';
 import type { Body } from './bodies';
 
-export type ProposalEvidence = 'robots_sitemap' | 'sitemap_xml' | 'feed_link' | 'well_known_feed';
+type ProposalEvidence = 'robots_sitemap' | 'sitemap_xml' | 'feed_link' | 'well_known_feed';
 
-export interface SourceProposal {
+interface SourceProposal {
   url: string;
   kind: Extract<SourceKind, 'rss' | 'html-index'>;
   evidence: ProposalEvidence;
@@ -14,13 +14,13 @@ export interface SourceProposal {
   sampleTitles: string[];
 }
 
-export interface Discovery {
+interface Discovery {
   proposals: SourceProposal[];
   /** Requests that were refused, failed or disallowed by robots.txt. */
   skipped: Array<{ url: string; reason: string }>;
 }
 
-export interface DiscoverDeps {
+interface DiscoverDeps {
   gate: HostGate;
   /** Retrieves one URL through `gate` under the declared identity. */
   fetchText: (url: string) => Promise<string>;
@@ -39,7 +39,7 @@ const PUBLISHING_TERMS =
   /(media|news|release|announcement|statement|speech|publication|report|consultation|submission|guidance|guideline|policy|policies|framework|strategy|notice|update)/i;
 
 /** Higher for paths and titles that read like a publishing stream about AI. */
-export function relevanceScore(text: string): number {
+function relevanceScore(text: string): number {
   return (AI_TERMS.test(text) ? 3 : 0) + (PUBLISHING_TERMS.test(text) ? 1 : 0);
 }
 
@@ -80,7 +80,7 @@ export function feedTitles(xml: string): string[] {
 }
 
 /** `<loc>` values, and whether the document is a sitemap index. */
-export function sitemapLocations(xml: string): { index: boolean; urls: string[] } {
+function sitemapLocations(xml: string): { index: boolean; urls: string[] } {
   return {
     index: /<sitemapindex\b/i.test(xml),
     urls: [...xml.matchAll(/<loc>\s*([\s\S]*?)\s*<\/loc>/gi)].map((match) => decodeEntities(match[1])),

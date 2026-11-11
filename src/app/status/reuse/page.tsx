@@ -145,7 +145,7 @@ export default async function ReusePage() {
                         <td className="py-2.5 pr-3 align-top">
                           <Terms entry={row.entry} />
                         </td>
-                        <td className={`py-2.5 align-top text-muted-foreground ${WIDE_ONLY}`}>
+                        <td className={`py-2.5 align-top whitespace-nowrap text-muted-foreground ${WIDE_ONLY}`}>
                           {row.entry ? day(row.entry.checkedAt) : null}
                         </td>
                       </tr>

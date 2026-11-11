@@ -28,13 +28,13 @@ export function AnalysisHero({ articles }: { articles: HeroArticle[] }) {
               ) : null}
             </p>
             <p className="analysis-hero-title">
-              <Link href={`/analysis/${article.slug}`} className="hover:text-primary">
+              <Link href={`/analysis/${article.slug}`} prefetch={false} className="hover:text-primary">
                 {article.title}
               </Link>
             </p>
             <p className="analysis-hero-teaser">{article.summary}</p>
             <p className="mt-3">
-              <Link href={`/analysis/${article.slug}`} className="analysis-hero-read">
+              <Link href={`/analysis/${article.slug}`} prefetch={false} className="analysis-hero-read">
                 Read this piece<span aria-hidden="true"> →</span>
               </Link>
             </p>

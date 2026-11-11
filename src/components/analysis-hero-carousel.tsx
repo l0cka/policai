@@ -100,7 +100,7 @@ export function AnalysisHeroCarousel({
               </button>
             </div>
           ) : null}
-          <Link href="/analysis" className="analysis-hero-eyebrow whitespace-nowrap hover:text-primary">
+          <Link href="/analysis" prefetch={false} className="analysis-hero-eyebrow whitespace-nowrap hover:text-primary">
             All analysis
           </Link>
           <a
