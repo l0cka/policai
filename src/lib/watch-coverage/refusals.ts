@@ -12,7 +12,7 @@ export type RefusalKind = Extract<ManualBecause, 'identity_refused' | 'bot_block
 /** What Policai does about it: a decision on record, or none yet. */
 export type RefusalResponse = 'manual' | 'await_allowlist' | 'undecided';
 
-export interface SiteRefusal {
+interface SiteRefusal {
   sourceId: string;
   sourceName: string;
   url: string;

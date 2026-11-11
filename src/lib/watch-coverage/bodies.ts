@@ -6,7 +6,7 @@ import { isValidCalendarDate } from '@/lib/calendar-date';
 export type BodyId = string & { readonly __brand: 'BodyId' };
 export type Tier = 'A' | 'B' | 'C';
 
-export type BodyScope =
+type BodyScope =
   | { status: 'in_scope'; decidedAt: string; decidedBy: string }
   | { status: 'out_of_scope'; decidedAt: string; decidedBy: string; reason: string }
   | { status: 'unassessed' };
