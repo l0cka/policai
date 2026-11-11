@@ -292,13 +292,13 @@ Candidates that survive dedup are classified by keyword heuristic by default.
 With `USE_CLEF_CLASSIFIER=1`, the local `clef-flash` model on Argus decides
 relevance instead (`src/lib/pipeline/clef-classify.ts`). Each candidate's
 title, source name and a 600-character excerpt go to Ollama's System One
-endpoint on `127.0.0.1:11434` as one `noul` question: does the item's own
-text show a specific Australian policy instrument, official decision or
+endpoint on `127.0.0.1:11434` as one `noul` question: does the item name or
+describe a specific Australian policy instrument, official decision or
 official publication about AI, as opposed to general news, commentary, a
 speech, a company story, a navigation page or an incidental mention? The
 model's P(true) becomes the score. An item at 0.5 or above is relevant.
 Summary, type and jurisdiction still come from the keyword rules, and the
-assessment records `promptVersion: 'clef-noul-v3'`. The log carries one
+assessment records `promptVersion: 'clef-noul-v4'`. The log carries one
 `model score` line per scored candidate, so a dismissal's confidence can be
 read back. Register search hits (Federal Register, SA, Vic and state bill
 lists) are scored too. Without a score they keep the fixed 0.55 search-match
@@ -306,10 +306,29 @@ rule (`register-search-v1`).
 
 The wording asks for a specific instrument rather than for "AI" in general
 because the earlier question read every item from an AI-focused source as
-relevant. On the 119 editor-reviewed developments, `npx tsx
-scripts/compare-classifier.ts` scores the model against the promoted and
-dismissed decisions: the general question agreed on 48, this one agrees on
-79, with no promoted item lost.
+relevant. Measured on the promoted and dismissed decisions in the 119
+editor-reviewed developments:
+
+| Question | Title and summary | Title only |
+| --- | --- | --- |
+| earlier general ("is this about AI policy") | 48 of 119 agree | 49 of 119, 34 of 38 promoted found |
+| current specific ("names or describes an instrument") | 77 of 119 agree, 38 of 38 promoted found | 71 of 119, 30 of 38 promoted found |
+
+`npx tsx scripts/compare-classifier.ts` reproduces the left column for the
+current question; the earlier question and the title-only column were scored
+with the same model and request shape over the same records. Read those
+limits before trusting the number. The script scores each record's title and
+its `summary`, and a promoted record's summary is editor-written prose that
+names the instrument, where the run itself sends the discovery excerpt before
+the page is fetched. The excerpt is not stored, so recall on the text
+production actually sends is unmeasured; the title-only column is the closest
+available stand-in, and it is why the current wording stops short of
+demanding that the instrument be spelled out.
+Every wording considered was scored against this same labelled set, so the
+figure is optimistic, and the id-half and by-class splits are robustness
+checks on it, not a held-out validation. Only candidates the run has not seen
+before are scored, so a wording change applies to URLs first discovered after
+it lands, never to URLs already dismissed.
 
 Clef never fails a run. `scripts/collect.ts` checks once per run that at least
 13 GB of GPU memory is free (`nvidia-smi`, which must report exactly one GPU;
