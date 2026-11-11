@@ -1,5 +1,181 @@
 [
   {
+    "id": "source-review-a413478e-d0e0-4abe-a8a9-865bbad4fad5",
+    "sourceUrl": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+    "title": "Make a Submission",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-11T05:13:04.326Z",
+    "createdBy": "Inky Quill (Signal handoff)",
+    "notes": "Signal handoff 11 Nov 2026. Dates confirmed on the official engagement page timeline: Scoping Paper open for submissions 29 October 2026; Scoping Paper closes 30 November 2026. Not verified. No lastReviewedAt. Linked in the description to timeline event tl-2026-10-08-sa-royal-commission-into-ai.",
+    "analysis": {
+      "isRelevant": false,
+      "relevanceScore": 0,
+      "suggestedType": null,
+      "suggestedJurisdiction": null,
+      "summary": "",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+      "finalUrl": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+      "retrievedAt": "2026-11-11T05:13:04.254Z",
+      "contentType": "text/html",
+      "contentHash": "38fe37b451aa83305116405a4280ea2758b153ea08bf1fa1e577995f3d4f9dea",
+      "title": "Make a Submission"
+    },
+    "proposedRecord": {
+      "id": "sa-ai-royal-commission-scoping-paper-2026",
+      "title": "Royal Commission into Artificial Intelligence Scoping Paper",
+      "description": "The South Australian Royal Commission into Artificial Intelligence published its first Scoping Paper and opened submissions. The paper asks for views on six themes and five questions. Submissions close on 30 November 2026. This consultation follows the 8 October 2026 appointment of the commissioners and release of the terms of reference (timeline event tl-2026-10-08-sa-royal-commission-into-ai). It is not a change to the South Australian AI strategy discussion paper.",
+      "jurisdiction": "sa",
+      "type": "policy",
+      "status": "proposed",
+      "dates": [
+        {
+          "type": "consultation_opened",
+          "date": "2026-10-29",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+            "title": "Make a Submission | Engage Royal Commission into AI",
+            "publisher": "Royal Commission into Artificial Intelligence (South Australia)",
+            "reviewedDate": {
+              "date": "2026-10-29",
+              "precision": "day",
+              "reviewedAt": "2026-11-11T05:13:02.398Z",
+              "reviewedBy": "Inky Quill (Signal handoff)",
+              "notes": "The engagement page timeline states \"Scoping Paper open for submissions\" on 29 October 2026. The commission homepage lists \"First call for AI Royal Commission submissions\" under 29 October 2026 (https://www.royalcommissionai.sa.gov.au/)."
+            }
+          }
+        },
+        {
+          "type": "consultation_closed",
+          "date": "2026-11-30",
+          "precision": "day",
+          "source": {
+            "url": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+            "title": "Make a Submission | Engage Royal Commission into AI",
+            "publisher": "Royal Commission into Artificial Intelligence (South Australia)",
+            "reviewedDate": {
+              "date": "2026-11-30",
+              "precision": "day",
+              "reviewedAt": "2026-11-11T05:13:02.398Z",
+              "reviewedBy": "Inky Quill (Signal handoff)",
+              "notes": "The engagement page timeline states \"Scoping Paper closes\" on 30 November 2026."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Royal Commission into Artificial Intelligence"
+      ],
+      "sourceUrl": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+      "content": "The engagement page asks readers to read the Scoping Paper and share views by response, submission or voicemail. It says the paper seeks responses to the themes and issues it raises, as the first phase of the inquiry, so the Commission can clarify priority themes for later consultation. Its timeline lists \"Scoping Paper open for submissions\" on 29 October 2026 and \"Scoping Paper closes\" on 30 November 2026. The Commission news page \"First call for AI Royal Commission submissions\" (https://www.royalcommissionai.sa.gov.au/news/first-call-for-ai-royal-commission-submissions) names six themes: AI in society; better services for people and the state; growing innovation in South Australia; managing the economic transition; education, training and skills of the future; and safe and trusted AI. It says the paper asks five questions. The PDF is https://www.royalcommissionai.sa.gov.au/_resources/documents/RCAI_Scoping_Paper.pdf. Linked to the existing appointment milestone tl-2026-10-08-sa-royal-commission-into-ai. Not verified.",
+      "aiSummary": "South Australia's AI Royal Commission opened submissions on its first Scoping Paper on 29 October 2026. Submissions close on 30 November 2026.",
+      "tags": [
+        "royal commission",
+        "scoping paper",
+        "consultation",
+        "South Australia"
+      ],
+      "themes": [
+        "ai-governance",
+        "strategy-adoption",
+        "responsible-ai",
+        "public-sector"
+      ],
+      "createdAt": "2026-11-11T05:13:02.398Z",
+      "updatedAt": "2026-11-11T05:13:02.398Z"
+    },
+    "updatedAt": "2026-11-11T05:13:04.382Z",
+    "proposal": {
+      "proposedBy": "Inky Quill (Signal handoff)",
+      "proposedRecord": {
+        "id": "sa-ai-royal-commission-scoping-paper-2026",
+        "title": "Royal Commission into Artificial Intelligence Scoping Paper",
+        "description": "The South Australian Royal Commission into Artificial Intelligence published its first Scoping Paper and opened submissions. The paper asks for views on six themes and five questions. Submissions close on 30 November 2026. This consultation follows the 8 October 2026 appointment of the commissioners and release of the terms of reference (timeline event tl-2026-10-08-sa-royal-commission-into-ai). It is not a change to the South Australian AI strategy discussion paper.",
+        "jurisdiction": "sa",
+        "type": "policy",
+        "status": "proposed",
+        "dates": [
+          {
+            "type": "consultation_opened",
+            "date": "2026-10-29",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+              "title": "Make a Submission | Engage Royal Commission into AI",
+              "publisher": "Royal Commission into Artificial Intelligence (South Australia)",
+              "reviewedDate": {
+                "date": "2026-10-29",
+                "precision": "day",
+                "reviewedAt": "2026-11-11T05:13:04.254Z",
+                "reviewedBy": "Inky Quill (Signal handoff)",
+                "notes": "The engagement page timeline states \"Scoping Paper open for submissions\" on 29 October 2026. The commission homepage lists \"First call for AI Royal Commission submissions\" under 29 October 2026 (https://www.royalcommissionai.sa.gov.au/)."
+              },
+              "finalUrl": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+              "retrievedAt": "2026-11-11T05:13:04.254Z",
+              "contentType": "text/html",
+              "contentHash": "38fe37b451aa83305116405a4280ea2758b153ea08bf1fa1e577995f3d4f9dea"
+            }
+          },
+          {
+            "type": "consultation_closed",
+            "date": "2026-11-30",
+            "precision": "day",
+            "source": {
+              "url": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+              "title": "Make a Submission | Engage Royal Commission into AI",
+              "publisher": "Royal Commission into Artificial Intelligence (South Australia)",
+              "reviewedDate": {
+                "date": "2026-11-30",
+                "precision": "day",
+                "reviewedAt": "2026-11-11T05:13:04.254Z",
+                "reviewedBy": "Inky Quill (Signal handoff)",
+                "notes": "The engagement page timeline states \"Scoping Paper closes\" on 30 November 2026."
+              },
+              "finalUrl": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+              "retrievedAt": "2026-11-11T05:13:04.254Z",
+              "contentType": "text/html",
+              "contentHash": "38fe37b451aa83305116405a4280ea2758b153ea08bf1fa1e577995f3d4f9dea"
+            }
+          }
+        ],
+        "agencies": [
+          "Royal Commission into Artificial Intelligence"
+        ],
+        "sourceUrl": "https://engage.royalcommissionai.sa.gov.au/make-submission",
+        "content": "The engagement page asks readers to read the Scoping Paper and share views by response, submission or voicemail. It says the paper seeks responses to the themes and issues it raises, as the first phase of the inquiry, so the Commission can clarify priority themes for later consultation. Its timeline lists \"Scoping Paper open for submissions\" on 29 October 2026 and \"Scoping Paper closes\" on 30 November 2026. The Commission news page \"First call for AI Royal Commission submissions\" (https://www.royalcommissionai.sa.gov.au/news/first-call-for-ai-royal-commission-submissions) names six themes: AI in society; better services for people and the state; growing innovation in South Australia; managing the economic transition; education, training and skills of the future; and safe and trusted AI. It says the paper asks five questions. The PDF is https://www.royalcommissionai.sa.gov.au/_resources/documents/RCAI_Scoping_Paper.pdf. Linked to the existing appointment milestone tl-2026-10-08-sa-royal-commission-into-ai. Not verified.",
+        "aiSummary": "South Australia's AI Royal Commission opened submissions on its first Scoping Paper on 29 October 2026. Submissions close on 30 November 2026.",
+        "tags": [
+          "royal commission",
+          "scoping paper",
+          "consultation",
+          "South Australia"
+        ],
+        "themes": [
+          "ai-governance",
+          "strategy-adoption",
+          "responsible-ai",
+          "public-sector"
+        ],
+        "createdAt": "2026-11-11T05:13:02.398Z",
+        "updatedAt": "2026-11-11T05:13:02.398Z"
+      },
+      "reviewedDate": {
+        "date": "2026-10-29",
+        "precision": "day",
+        "notes": "The engagement page timeline states Scoping Paper open for submissions on 29 October 2026. The close date on the same timeline is 30 November 2026. Neither date is page metadata."
+      },
+      "notes": "Pending editorial review. Dates are taken from visible text on the official engagement page, not from page metadata. Do not treat this as verified.",
+      "proposedAt": "2026-11-11T05:13:04.382Z"
+    }
+  },
+  {
     "id": "source-review-dev-rapid-review-into-australian-government-arrangem-ot2vmd",
     "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
     "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
