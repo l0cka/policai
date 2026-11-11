@@ -6,7 +6,6 @@ import { Footer } from '@/components/layout/Footer';
 import { SectionNav } from '@/components/layout/SectionNav';
 import { themeInitScript } from '@/components/layout/theme-init';
 import { BackToTop } from '@/components/ui/back-to-top';
-import { TooltipProvider } from '@/components/ui/tooltip';
 import { WebMcpTools } from '@/components/webmcp-tools';
 import { getCollectionMeta } from '@/lib/data-service';
 import {
@@ -69,13 +68,11 @@ export default async function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:text-sm focus:font-medium">
           Skip to content
         </a>
-        <TooltipProvider>
-          <Header {...collectionStripProps(collectionMeta)} />
-          <SectionNav />
-          <main id="main-content" className="flex-1">{children}</main>
-          <Footer />
-          <BackToTop />
-        </TooltipProvider>
+        <Header {...collectionStripProps(collectionMeta)} />
+        <SectionNav />
+        <main id="main-content" className="flex-1">{children}</main>
+        <Footer />
+        <BackToTop />
       </body>
     </html>
   );

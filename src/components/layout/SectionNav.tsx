@@ -20,6 +20,7 @@ export function SectionNav() {
             <Link
               key={view.href}
               href={view.href}
+              prefetch={active ? false : undefined}
               aria-current={active ? 'page' : undefined}
               className={cn(
                 'relative flex min-h-11 shrink-0 items-center text-sm transition-colors duration-[var(--dur-fast)]',
