@@ -7,9 +7,9 @@ import type { Body } from './bodies';
  * article images, NC and ND are recorded: this describes what a site permits,
  * not what Policai may republish.
  */
-export type CreativeCommonsId = string & { readonly __brand: 'CreativeCommonsId' };
+type CreativeCommonsId = string & { readonly __brand: 'CreativeCommonsId' };
 
-export type ReuseTerms =
+type ReuseTerms =
   | { kind: 'creative_commons'; licence: CreativeCommonsId; exceptions?: string }
   | { kind: 'all_rights_reserved'; summary: string }
   | { kind: 'custom'; summary: string };
@@ -31,7 +31,7 @@ const CC_VERSIONS: Readonly<Record<string, readonly string[]>> = {
   AU: ['2.0', '2.1', '2.5', '3.0'],
 };
 
-export interface CreativeCommonsTerms {
+interface CreativeCommonsTerms {
   label: string;
   url: string;
 }
@@ -149,7 +149,7 @@ export function siteReuseCoverage(
   };
 }
 
-export interface SiteReuseRow {
+interface SiteReuseRow {
   host: Host;
   bodyNames: string[];
   jurisdiction: Body['jurisdiction'];

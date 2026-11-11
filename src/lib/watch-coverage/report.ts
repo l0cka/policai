@@ -7,7 +7,7 @@ import { reviewIsCurrent } from '@/lib/source-monitoring';
 import type { Body, BodyId, Tier } from './bodies';
 
 /** What one enabled source contributes to its body's coverage. */
-export type SourceStanding =
+type SourceStanding =
   | { kind: 'ok'; lastSuccessAt: string }
   | { kind: 'failing'; since: string; runs: number; cls: FailureClass }
   | { kind: 'refusal_undecided'; since: string; runs: number; cls: 'identity_refused' | 'robots_disallowed' }
@@ -21,9 +21,9 @@ export type SourceStanding =
   | { kind: 'not_yet_run' };
 
 /** `pending`: every source is newly admitted and not yet checked. */
-export type BodyCoverage = 'automatic' | 'manual' | 'failing' | 'pending' | 'uncovered';
+type BodyCoverage = 'automatic' | 'manual' | 'failing' | 'pending' | 'uncovered';
 
-export interface WatchCoverageCell {
+interface WatchCoverageCell {
   jurisdiction: Jurisdiction;
   tier: Tier;
   bodies: number;
@@ -34,7 +34,7 @@ export interface WatchCoverageCell {
   uncovered: number;
 }
 
-export interface WatchCoverageReport {
+interface WatchCoverageReport {
   asOf: string;
   cells: WatchCoverageCell[];
   /** In-scope bodies with no working source, tier A first. */
