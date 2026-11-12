@@ -7,7 +7,7 @@ publishedAt: 2026-11-02
 updatedAt: 2026-11-12
 corrections:
   - date: 2026-11-12
-    text: "The summary said most instruments require a record of each AI use; only the Commonwealth and NSW require a register of AI use cases, and the summary now says so. The comparison gave OVIC's privacy guidance as Victoria's main instrument; it now gives the Administrative Guideline for the safe and responsible use of Generative AI in the Victorian Public Sector. The vendor-comparison sentence cited the register record, which does not say it; it now cites the AI Reference Architecture introduction. The analysis now says a triage or scoring tool counts as decision-making only where it substantially and directly informs a decision."
+    text: "The summary said most instruments require a record of each AI use; only the Commonwealth and NSW require a register of AI use cases, and the summary now says so. The comparison gave OVIC's privacy guidance as Victoria's main instrument; it now gives the Administrative Guideline for the safe and responsible use of Generative AI in the Victorian Public Sector, and no longer cites OVIC's enterprise guidance. The vendor-comparison sentence cited the register record, which does not say it; it now cites the AI Reference Architecture introduction. The analysis now says a triage or scoring tool counts as decision-making only where it substantially and directly informs a decision."
 cites:
   - national-framework-assurance-ai-government
   - policy-responsible-use-ai-government-v2
@@ -19,7 +19,6 @@ cites:
   - nsw-identifying-ai-guidance
   - nsw-ai-procurement-essentials
   - vic-ovic-public-generative-ai-guidance
-  - vic-ovic-enterprise-generative-ai-guidance
   - victoria-genai-guideline-vps
   - queensland-ai-governance-policy
   - queensland-use-of-generative-ai-in-government
@@ -74,7 +73,7 @@ Each has its own instrument, and the details differ: what kind of risk assessmen
 kind: matrix
 title: Only some governments send higher-risk AI uses to a central body for review
 alt: "Comparison of nine governments' main AI instruments. NSW sends high- and critical-risk uses to the AI Review Committee, Western Australia sends some assessments to its AI Advisory Board, and the Commonwealth has high-risk uses reported to the DTA. Queensland uses a FAIRA, with a shorter FAIRA LITE for low-risk use."
-caption: The main instrument for each government, as recorded in the register on 12 November 2026. "Not stated" means the register record does not describe central review.
+caption: The main instrument for each government, as recorded in the register on 12 November 2026. "Not stated" means the register record does not describe it.
 wide: true
 cites: [policy-responsible-use-ai-government-v2, nsw-ai-operational-policy, victoria-genai-guideline-vps, queensland-ai-governance-policy, wa-ai-policy-assurance-framework, sa-artificial-intelligence-ethics-policy, tas-guidance-for-the-use-of-artificial-intelligence-in-government, act-ai-policy, nt-artificial-intelligence-assurance-framework]
 sources:
@@ -83,7 +82,7 @@ columns: [Government, Main instrument, Assessment or approach, Central review]
 rows:
   - ["Commonwealth", "Policy for the Responsible Use of AI in Government (mandatory)", "AI use case impact assessment", "High-risk uses reported to the DTA through the accountable official"]
   - ["New South Wales", "NSW AI Operational Policy (mandatory)", "AI Assessment Framework, when registration requires it", { text: "High- and critical-risk uses go to the AI Review Committee", emphasis: true }]
-  - ["Victoria", "Administrative Guideline for the safe and responsible use of generative AI", "Minimum requirements for safe and responsible use of generative AI", ~]
+  - ["Victoria", "Administrative Guideline for the safe and responsible use of generative AI", ~, ~]
   - ["Queensland", "AI governance policy (mandated)", "FAIRA, or FAIRA LITE for low-risk use", ~]
   - ["Western Australia", "AI Policy and Assurance Framework", "Self-assessment of AI and automated decision projects", { text: "AI Advisory Board for mid-range risk or higher, Digital Capability Fund money, or cost over $5 million", emphasis: true }]
   - ["South Australia", "AI Ethics Policy (mandatory)", "Align with the AI Ethics Principles and the national framework", ~]

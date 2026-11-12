@@ -7,7 +7,7 @@ publishedAt: 2026-11-01
 updatedAt: 2026-11-12
 corrections:
   - date: 2026-11-12
-    text: "The quoted paragraph (da) was cited to page 39 of the third reading print, which Policai had not read; it is now cited to item 1 of the amendment sheet circulated by Ms Chaney, which holds that wording. The APH status sentence now gives the date it was read, 5 November 2026. Two sentences now say that Schedule 3 would repeal the registered codes 12 months after Royal Assent, and that removal notices are about nudify apps rather than issued against them."
+    text: "The quoted paragraph (da) was cited to page 39 of the third reading print. Policai holds that wording only from item 1 of the amendment sheet circulated by Ms Chaney, so the quote is now cited there. The APH status sentence now gives the date it was read, 5 November 2026. Two sentences now say that Schedule 3 would repeal the registered codes 12 months after Royal Assent, and that removal notices are about nudify apps rather than issued against them."
 cites:
   - federal-online-safety-amendment-digital-duty-of-care-bill-2026
   - esafety-genai-industry-codes
