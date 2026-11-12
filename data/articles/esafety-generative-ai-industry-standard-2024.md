@@ -7,7 +7,7 @@ publishedAt: 2026-11-12
 updatedAt: 2026-11-12
 corrections:
   - date: 2026-11-12
-    text: "The title and summary said the standard binds generative AI services; it binds only high impact generative AI services, and excludes a service whose controls make the risk immaterial. The piece now also cites commencement to section 2, states the full section 20(3) exceptions, ties the section 22(3)(f) information or links to generated material, and notes that section 36(9)(b) applies where relevant."
+    text: "The title and summary said the standard binds generative AI services; it binds only high impact generative AI services, and excludes a service whose controls make the risk immaterial. The piece now also cites commencement to section 2, states the section 20(3) exceptions more fully, ties the section 22(3)(f) information or links to generated material, notes that section 36(9)(b) applies where relevant, and removes an unsourced comparison with other AI policy proposals."
 cites:
   - federal-online-safety-designated-internet-services-industry-standard-2024
   - federal-online-safety-relevant-electronic-services-industry-standard-2024
@@ -63,4 +63,4 @@ The Digital Duty of Care Bill 2026 would replace the existing industry code fram
 
 ## Analysis
 
-In Policai's analysis, the standard is narrow in subject but demanding within it. It concerns two classes of the most serious material, not AI safety in general, but within that scope it already asks high impact generative AI providers for model testing, output provenance and screening of training data. Its note on limited visibility and control is the main concession to providers that build on third-party models. The live question for the Senate committee is whether the duty of care bill carries these model-level measures forward in some form or leaves them to be rebuilt under the new framework once the standard is repealed.
+In Policai's analysis, the standard is narrow in subject but demanding within it. It concerns two classes of the most serious material, not AI safety in general; within that scope it already asks high impact generative AI providers for model testing, output provenance and screening of training data. Its note on limited visibility and control is the main concession to providers that build on third-party models. The live question for the Senate committee is whether the duty of care bill carries these model-level measures forward in some form or leaves them to be rebuilt under the new framework once the standard is repealed.
