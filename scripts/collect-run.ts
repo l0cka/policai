@@ -204,6 +204,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     trackedPolicies: policies,
     trackedTimelineEvents: timelineEvents,
     sourceReviews: reviews,
+    replayedReviewIds: carried.sourceReviews.map((review) => review.id),
     fetchImpl: run.fetchImpl,
     browserFetchImpl: run.browserFetchImpl,
     recycleBrowser: run.recycleBrowser,

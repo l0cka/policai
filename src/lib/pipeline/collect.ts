@@ -112,6 +112,7 @@ export interface CollectOptions {
   trackedTimelineEvents?: readonly TimelineEvent[];
   /** Persisted reviews used to recover document-version ordering after partial writes. */
   sourceReviews?: readonly SourceReview[];
+  replayedReviewIds?: readonly string[];
   previousMeta?: CollectionMeta;
   fetchImpl?: typeof fetch;
   /**
@@ -1155,13 +1156,29 @@ function readingHeldSince(
   return since;
 }
 
+function changeReviewsOfReadingSince(
+  reviews: readonly SourceReview[],
+  source: WatchSource,
+  verifiedAt: string,
+  isCurrentReading: (hash: string | undefined) => boolean,
+): SourceReview[] {
+  return reviews.filter(
+    (review) =>
+      review.status === 'pending_review' &&
+      review.createdBy === 'collector' &&
+      review.sourceVersionSequence !== undefined &&
+      review.linkedDevelopment?.sourceId === source.id &&
+      isCurrentReading(review.sourceEvidence.contentHash) &&
+      Date.parse(review.discoveredAt) > Date.parse(verifiedAt),
+  );
+}
+
 function retractTransitionsOfVerifiedReading(
   state: WatchState,
   source: WatchSource,
   verifiedAt: string,
-  reviews: readonly SourceReview[],
   isCurrentReading: (hash: string | undefined) => boolean,
-): string[] {
+): void {
   const stagedAfterVerification = (at: string) =>
     Date.parse(at) > Date.parse(verifiedAt);
   let verifiedVersion = state.sourceSnapshots[source.id]?.changeCount ?? 0;
@@ -1184,17 +1201,6 @@ function retractTransitionsOfVerifiedReading(
       changeCount: verifiedVersion,
     };
   }
-  return reviews
-    .filter(
-      (review) =>
-        review.status === 'pending_review' &&
-        review.createdBy === 'collector' &&
-        review.sourceVersionSequence !== undefined &&
-        review.linkedDevelopment?.sourceId === source.id &&
-        isCurrentReading(review.sourceEvidence.contentHash) &&
-        stagedAfterVerification(review.discoveredAt),
-    )
-    .map((review) => review.id);
 }
 
 /**
@@ -1210,6 +1216,7 @@ async function readDocumentSource(
   trackedPoliciesByUrl: ReadonlyMap<string, Policy>,
   trackedTimelineEventsByUrl: ReadonlyMap<string, TimelineEvent>,
   reviews: readonly SourceReview[],
+  replayedReviewIds: ReadonlySet<string>,
 ): Promise<DocumentReading> {
   let discovered: Candidate[] = [];
   let directDocument: DocumentReading['directDocument'] = null;
@@ -1259,20 +1266,33 @@ async function readDocumentSource(
     previous,
     isCurrentReading,
   );
-  const verifiedReading =
+  const stagedSinceVerified =
     verifiedAt !== undefined &&
     heldSince !== undefined &&
     isCurrentReading(previous?.contentHash) &&
-    Date.parse(verifiedAt) >= Date.parse(heldSince);
+    Date.parse(verifiedAt) >= Date.parse(heldSince)
+      ? changeReviewsOfReadingSince(
+          reviews,
+          source,
+          verifiedAt,
+          isCurrentReading,
+        )
+      : null;
+  const verifiedReading =
+    verifiedAt !== undefined &&
+    stagedSinceVerified !== null &&
+    stagedSinceVerified.every((review) => replayedReviewIds.has(review.id));
   const retractedReviewIds = verifiedReading
-    ? retractTransitionsOfVerifiedReading(
-        state,
-        source,
-        verifiedAt,
-        reviews,
-        isCurrentReading,
-      )
+    ? stagedSinceVerified.map((review) => review.id)
     : [];
+  if (verifiedReading) {
+    retractTransitionsOfVerifiedReading(
+      state,
+      source,
+      verifiedAt,
+      isCurrentReading,
+    );
+  }
   const canonicalIsCurrent =
     isThisReading(canonicalContentHash, previous) || verifiedReading;
   const adoptedReading =
@@ -1517,6 +1537,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
   const developments: Development[] = [];
   const reviewCandidates: SourceReview[] = [];
   const retractedReviewIds: string[] = [];
+  const replayedReviewIds = new Set(options.replayedReviewIds ?? []);
   const errors: string[] = [];
   const sourceResults: SourceRunResult[] = [];
 
@@ -1613,6 +1634,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             trackedPoliciesByUrl,
             trackedTimelineEventsByUrl,
             options.sourceReviews ?? [],
+            replayedReviewIds,
           );
           retractedReviewIds.push(...reading.retractedReviewIds);
           discovered = reading.discovered;

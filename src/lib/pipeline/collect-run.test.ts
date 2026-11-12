@@ -576,6 +576,35 @@ describe('collection CLI write path', () => {
         }
       });
 
+      it('leaves a false change main already carries for an editor, without staging it again or reusing its sequence', async () => {
+        await seedMainState('Version one.');
+        writeRegister('2026-07-01T00:00:00.000Z');
+        await collectDocument('2026-11-11T19:34:38.995Z', 'Version one.');
+        const [merged] = pendingReviews();
+        promote();
+        writeRegister(EDITOR_CAPTURE);
+
+        for (const now of ['2026-11-12T19:30:36.269Z', '2026-11-13T19:30:00.000Z']) {
+          await collectDocument(now, 'Version one.');
+          promote();
+
+          expect(pendingReviews().map((review) => review.id)).toEqual([merged.id]);
+          expect(outbox(stateDir)).toEqual({ developments: [], sourceReviews: [] });
+        }
+
+        const changed = await reading('Version two.');
+        await collectDocument('2026-11-14T19:30:00.000Z', 'Version two.');
+
+        expect(
+          pendingReviews()
+            .map((review) => [review.sourceVersionSequence, review.sourceEvidence.contentHash])
+            .sort(),
+        ).toEqual([
+          [2, merged.sourceEvidence.contentHash],
+          [3, changed.current],
+        ]);
+      });
+
       it('keeps one pending review for a version when the unmerged run that staged it is replayed', async () => {
         await seedMainState('Version one.');
         writeRegister('2026-07-01T00:00:00.000Z');

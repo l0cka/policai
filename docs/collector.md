@@ -163,8 +163,12 @@ reading after the editor's capture. It deletes those versions from `seen`,
 returns the snapshot's `changeCount` to the verified version and its
 `lastChangedAt` to the first sighting, and reports the pending collector
 reviews for them in `retractedReviewIds`. `scripts/collect-run.ts` drops a
-retracted review and its development from the outbox replay. It never removes
-one main already carries: that review stays for an editor to reject. The
+retracted review and its development from the outbox replay. Retraction covers
+only reviews replayed from the outbox (`replayedReviewIds`). While main carries
+a pending review staged against that reading, the rule is off for the source:
+the review stays for an editor to reject, its version stays unresolved in
+`seen`, and nothing more is staged. Deleting that version instead would let
+the next run re-open it from the review and stage it a second time. The
 2026-11-11 run's state was promoted to the host before #717 merged, so the
 2026-11-12 run (#723) staged the same two OVIC changes again; retraction
 clears them on the next run without an edit to host state.
@@ -174,7 +178,12 @@ id, which is derived from that version's fingerprint. The fingerprint can be an
 earlier scheme's hash of the same reading while the review's evidence stores
 the current hash; matching on the evidence hash opened a second version, which
 the next run processed into a second pending review for the same target and
-sequence. A weekly document source is read on every run while one of its
+sequence. `src/lib/pipeline/collect-run.pr-723.test.ts` replays the state and
+outbox behind #723 (`src/test/fixtures/collector/pr-723.json`, policy bodies
+truncated) with the three page readings stubbed: the four OVIC reviews are
+retracted and the Senate inquiry change (sequence 14) stays. The stub takes
+the July OVIC fingerprints as an earlier scheme's hash of the current reading,
+as the 2026-11-11 run did. A weekly document source is read on every run while one of its
 versions awaits review, so a retraction, a reversion or a further change is
 seen the next day instead of up to six days later.
 An unreadable changed version that later returns to the verified baseline also
