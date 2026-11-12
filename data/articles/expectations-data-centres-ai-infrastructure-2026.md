@@ -4,6 +4,10 @@ title: "The Commonwealth's five expectations for AI data centres"
 summary: Since March 2026 the Australian Government has set five expectations for new and expanded data centres and AI infrastructure, covering the national interest, energy, water, jobs and local compute access. Energy-intensive proposals that do not align closely will not be prioritised in Commonwealth regulatory assessments.
 status: published
 publishedAt: 2026-10-22
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The social licence quotation linked to the register record, which does not hold those words; it now links to the expectations page. The analysis said the expectations create no reporting duty, which sat against the water expectation's call to report on water use; it now says they create no binding reporting duty. The scope sentence now attributes the co-location guidance to the document. The consultation sentence said the Government will work with the states and territories on mandatory standards; the consultation says its responses will inform Australia's AI standards, which the Government plans to develop with the states and territories and then legislate. The sentence now says so."
 cites:
   - expectations-data-centres-ai-infrastructure-2026
   - pmc-ai-infrastructure-consultation-2026
@@ -25,7 +29,7 @@ image:
   licenceCheckedAt: "2026-10-22"
 ---
 
-On 23 March 2026 the Department of Industry, Science and Resources published the Australian Government's expectations of data centres and AI infrastructure developers ([expectations](https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers)). The department says meeting them "will be the foundation of their social licence to operate in Australia" ([record](/policies/expectations-data-centres-ai-infrastructure-2026)).
+On 23 March 2026 the Department of Industry, Science and Resources published the Australian Government's [expectations of data centres and AI infrastructure developers](/policies/expectations-data-centres-ai-infrastructure-2026) ([expectations](https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers)). The department says meeting them "will be the foundation of their social licence to operate in Australia" ([expectations](https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers)).
 
 ## What it says
 
@@ -41,12 +45,12 @@ The expectations are not a new law. They "work alongside existing national, stat
 
 ## Who it affects
 
-The expectations apply to new or expanded developments in Australia. Operators of co-location sites, hyperscale operations and large-scale AI compute centres, which the document calls "AI factories", should consider how they apply. They do not apply to small-scale edge or on-site enterprise data centres ([expectations](https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers)).
+The expectations apply to new or expanded developments in Australia. The document says operators of co-location sites, hyperscale operations and large-scale AI compute centres, which it calls "AI factories", should consider how they apply. They do not apply to small-scale edge or on-site enterprise data centres ([expectations](https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers)).
 
 The Government says it will work with states, territories and market participants to build the expectations into their processes, particularly through the Energy and Climate Change Ministerial Council ([expectations](https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers)).
 
 ## Analysis
 
-In Policai's analysis, the expectations are a statement of policy with one practical consequence: where a project sits in the queue for Commonwealth assessment. They create no penalty and no reporting duty of their own. The detailed commitments, such as paying a share of grid and water costs, are framed as what developers "should" do.
+In Policai's analysis, the expectations are a statement of policy with one practical consequence: where a project sits in the queue for Commonwealth assessment. They create no penalty and no binding reporting duty of their own. The detailed commitments, such as paying a share of grid and water costs or reporting on water use, are framed as what developers "should" do.
 
-That may change. The Office of AI's [consultation on AI infrastructure](/policies/pmc-ai-infrastructure-consultation-2026) closed on 9 October 2026, and its [consultation page](https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia) says the Government will work with the states and territories on mandatory standards for how data centres use energy, water and land, and then plans to legislate them. The Senate inquiry into AI and data centres, which tabled a progress report on 20 October 2026, is now due to report on 23 March 2027 ([inquiry page](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P)). In Policai's analysis, until a standard or law is made, the expectations shape which projects the Commonwealth assesses first rather than binding developers directly.
+That may change. The Office of AI's [consultation on AI infrastructure](/policies/pmc-ai-infrastructure-consultation-2026) closed on 9 October 2026, and its [consultation page](https://www.pmc.gov.au/domestic-policy/office-ai/getting-it-right-building-ai-infrastructure-works-australia) says its responses, including on how large data centres use energy, water and land, will inform Australia's AI standards, which the Government plans to develop with the states and territories and then legislate ([record](/policies/pmc-ai-infrastructure-consultation-2026)). The Senate inquiry into AI and data centres, which tabled a progress report on 20 October 2026, is now due to report on 23 March 2027 ([inquiry page](https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P)). In Policai's analysis, until a standard or law is made, the expectations shape which projects the Commonwealth assesses first rather than binding developers directly.

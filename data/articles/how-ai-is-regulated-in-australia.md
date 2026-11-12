@@ -4,6 +4,10 @@ title: How AI is regulated across Australian jurisdictions
 summary: Australia has no general AI Act. AI is governed by existing laws, a few AI-specific laws, government-use policies in every jurisdiction, voluntary national guidance and court practice notes. This guide maps each layer to the register.
 status: published
 publishedAt: 2026-10-16
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "Update: the online safety entry now says the Online Safety Amendment (Digital Duty of Care) Bill 2026 would repeal the industry codes 12 months after Royal Assent, and the Commonwealth entry now says version 2.1 of the Policy for the Responsible Use of AI in Government was published on 21 October 2026. Correction: the guide said the AI infrastructure consultation commits to mandatory standards; the consultation says its responses will inform Australia's AI standards, which the Government plans to develop with the states and territories and then legislate. It also said most government AI instruments are mandatory policies; it now says most are mandatory for the agencies they cover. The guide also now states the Fair Work Commission's spelling, grammar and formatting exclusion and the exceptions in SC Gen 23."
 cites:
   - national-ai-plan-2025
   - safe-and-responsible-ai-australia-proposals-paper
@@ -50,8 +54,7 @@ instruments? There is no single answer, because there is no general AI law.
 This guide describes five layers of AI governance: laws that apply to AI as they apply to any
 technology, a small number of laws written for AI, policies that govern how
 each government uses AI, voluntary national guidance, and the rules courts
-and tribunals set for the people who appear before them. This guide explains
-each layer and links to the register records behind it.
+and tribunals set for the people who appear before them.
 
 ## Is there an Australian AI Act?
 
@@ -73,14 +76,14 @@ establishing an AI Safety Institute.
 That position covers AI in general. It does not rule out law on particular
 uses. The Department of the Prime Minister and Cabinet's
 [consultation on AI infrastructure](/policies/pmc-ai-infrastructure-consultation-2026),
-which closed on 9 October 2026, states that the Government will work with
-the states and territories on mandatory standards for data centres and AI
-training, and then plans to legislate them.
+which closed on 9 October 2026, states that its responses will inform
+Australia's AI standards, which the Government announced on 15 July 2026 and
+plans to develop with the states and territories and then legislate.
 
 ## Which laws already apply to AI?
 
-The existing laws that support the National AI Plan apply to AI as they apply to
-any other technology. The register tracks the guidance regulators issue on
+Existing technology-neutral laws apply to AI as they apply to any other
+technology. The register tracks the guidance regulators issue on
 how they apply to AI.
 
 Privacy law is one example. From 10 December 2026, an entity covered
@@ -100,9 +103,11 @@ A few instruments target AI directly.
 
 - **Online safety.** The eSafety Commissioner registered six
   [industry codes](/policies/esafety-genai-industry-codes) under the Online
-  Safety Act on 9 September 2025, and they took effect on 9 March 2026. The
-  register records that they include obligations for generative AI services
-  and AI companion chatbots.
+  Safety Act 2021 on 9 September 2025, and they took effect on 9 March 2026.
+  The register records that they include obligations for generative AI
+  services and AI companion chatbots. The Online Safety Amendment (Digital
+  Duty of Care) Bill 2026, introduced on 15 October 2026 and not yet law,
+  would repeal these codes 12 months after Royal Assent.
 - **Electoral advertising in South Australia.** Amendments to the Electoral
   Act 1985 that commenced on 10 October 2025
   [prohibit distributing an AI-generated electoral advertisement](/policies/sa-electoral-ai-generated-advertisements)
@@ -119,19 +124,20 @@ A few instruments target AI directly.
 
 Every Australian government has a policy, framework or guidance for how its
 own agencies use AI. These instruments apply to government agencies and
-public servants, not the private sector. Most are mandatory policies;
-Tasmania's is guidance.
+public servants, not the private sector. Most are mandatory for the
+agencies they cover; Tasmania's is expressly guidance.
 
 In June 2024, Data and Digital Ministers agreed the
 [National framework for the assurance of AI in government](/policies/national-framework-assurance-ai-government).
 It is a joint approach by the Australian, state and territory governments,
 built on five cornerstones, with practices that apply Australia's AI Ethics
-Principles. Each government has its own instrument.
+Principles.
 
 - **Commonwealth.** The
   [Policy for the Responsible Use of AI in Government](/policies/policy-responsible-use-ai-government-v2),
-  version 2.0, took effect on 15 December 2025 for non-corporate Commonwealth
-  entities, with specified exceptions. It requires accountable officials,
+  took effect as version 2.0 on 15 December 2025 for non-corporate
+  Commonwealth entities, with specified exceptions; version 2.1, with minor
+  updates, was published on 21 October 2026. It requires accountable officials,
   transparency statements, AI use-case registers, impact assessments and
   staff training. The Digital Transformation Agency's
   [AI technical standard](/policies/ai-technical-standard) sets out best
@@ -203,16 +209,15 @@ people without a lawyer.
   use may be required.
 - The Supreme Court of New South Wales's
   [Practice Note SC Gen 23](/policies/nsw-supreme-court-sc-gen-23),
-  which commenced on 3 February 2025, prohibits using generative AI to
+  which commenced on 3 February 2025, prohibits, subject to stated
+  exceptions, using generative AI to
   generate the content of affidavits and witness statements, and requires the
   Court's prior leave to use it for expert reports.
 - From 20 October 2026, the Fair Work Commission's
   [guidance note](/policies/fwc-genai-guidance-note) requires anyone who uses
-  generative AI to prepare a document for a Commission case to disclose it and
+  generative AI to prepare a document for a Commission case, other than only
+  to check spelling or grammar or to format it, to disclose it and
   to state that a person has checked the document.
-
-The rules differ between courts. Policai tracks them on the
-[court guidance page](/courts).
 
 ## Analysis
 

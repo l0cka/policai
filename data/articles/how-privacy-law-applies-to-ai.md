@@ -1,9 +1,13 @@
 ---
 type: explainer
 title: How Australian privacy law applies to AI
-summary: There is no separate privacy law for AI. The Privacy Act 1988 applies whenever an AI system handles personal information, the regulator has said how, and from 10 December 2026 privacy policies must describe significant decisions made or informed by computer programs. Victoria's public sector has its own rules.
+summary: There is no separate privacy law for AI. The Privacy Act 1988 applies whenever an AI system used by an agency or a covered organisation handles personal information, the regulator has said how, and from 10 December 2026 privacy policies must describe significant decisions made or informed by computer programs. Victoria's public sector has its own rules.
 status: published
 publishedAt: 2026-11-02
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The summary and lead said the Privacy Act applies whenever an AI system handles personal information; it applies when the system is used by an agency or an organisation the Act covers. The guide now also notes the Attorney-General's Department's consultation on the Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026, and the timeline title now says the automated-decision duty is the last provision of the 2024 Act to commence."
 cites:
   - oaic-guidance-commercial-ai-products
   - oaic-guidance-developing-training-genai
@@ -12,6 +16,7 @@ cites:
   - federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025
   - vic-ovic-public-generative-ai-guidance
   - vic-ovic-enterprise-generative-ai-guidance
+  - agd-privacy-reform-exposure-draft-2026
 sources:
   - https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products
   - https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models
@@ -21,7 +26,7 @@ sources:
   - https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector
 ---
 
-Does Australian privacy law apply to artificial intelligence (AI)? Yes. There is no separate AI privacy law, but the Privacy Act 1988 applies whenever an AI system collects, uses or discloses personal information. The privacy regulator has explained how, and a new duty to explain decisions made or informed by computer programs applies from 10 December 2026. This guide answers the common questions and links to the register records behind each answer.
+Does Australian privacy law apply to artificial intelligence (AI)? Yes. There is no separate AI privacy law, but the Privacy Act 1988 applies whenever an AI system used by an agency or a covered organisation collects, uses or discloses personal information. The privacy regulator has explained how, and a new duty to explain decisions made or informed by computer programs applies from 10 December 2026. This guide answers the common questions and links to the register records behind each answer.
 
 ## Does the Privacy Act cover AI?
 
@@ -51,7 +56,7 @@ The same guidance says:
 
 Not automatically. The OAIC says "Just because data is publicly available or otherwise accessible does not mean it can legally be used to train or fine-tune generative AI models or systems" ([OAIC developer guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models)). Web scraping "may constitute a covert and therefore unfair means of collection", depending on the circumstances.
 
-Sensitive information, including many photographs and recordings of people, generally needs consent. Where training on data already held was not a purpose of collecting it, the OAIC says a reasonably expected secondary use "will be difficult to establish" in many cases ([OAIC developer guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models)).
+Sensitive information, including many photographs and recordings of people, generally needs consent ([OAIC developer guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models)). Where training on data already held was not a purpose of collecting it, the OAIC says a reasonably expected secondary use "will be difficult to establish" in many cases ([OAIC developer guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-developing-and-training-generative-ai-models)).
 
 ## What changes on 10 December 2026?
 
@@ -63,7 +68,7 @@ The fact sheet lists decisions generally in scope, including recruitment screeni
 
 ```figure
 kind: timeline
-title: The automated-decision duty is the last of the 2024 privacy changes to start
+title: The automated-decision duty is the last provision of the 2024 Act to commence
 alt: "Timeline from October 2024 to December 2026: OAIC AI guidance in October 2024, most of the 2024 Act in force in December 2024, the privacy tort in June 2025, OAIC transparency guidance in September 2026, and the automated-decision duty from 10 December 2026."
 caption: Dates as recorded in the register.
 asAt: 2026-11-02
@@ -85,13 +90,15 @@ entries:
 
 The same Act created a statutory tort for serious invasions of privacy, which commenced on 10 June 2025. It also provided for a Children's Online Privacy Code and gave the Information Commissioner new enforcement powers ([record](/policies/federal-privacy-and-other-legislation-amendment-act-2024)). None of these is limited to AI, but each can apply to AI systems that handle personal information.
 
-## Are there proposals on deepfakes?
+## What changes are proposed?
 
 A private senator's bill, the [My Face, My Rights Bill 2025](/policies/federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025), would add a right to sue under the Privacy Act for the wrongful use or disclosure of deepfake material of a person's face or voice. It was introduced in the Senate on 24 November 2025 and is not law ([record](/policies/federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025)).
 
+The Attorney-General's Department consulted from 31 August to 18 September 2026 on an [Exposure Draft Privacy Amendment (Personal Data Protection) Bill 2026](/policies/agd-privacy-reform-exposure-draft-2026), which the department says would modernise the Privacy Act 1988. The department says the Bill remains subject to further consideration by government; it is not law ([record](/policies/agd-privacy-reform-exposure-draft-2026)).
+
 ## What about state governments?
 
-Victoria's public sector has its own privacy law, the Privacy and Data Protection Act 2014, and its own regulator ([record](/policies/vic-ovic-public-generative-ai-guidance)). The Office of the Victorian Information Commissioner (OVIC) says public sector organisations "should ensure their staff, contracted service providers and other personnel do not enter personal information into publicly available Generative AI tools" ([OVIC guidance](https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector)). It says doing so "will likely be a contravention of the Information Privacy Principles" in that Act ([OVIC guidance](https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector)).
+Victoria is one example. Its public sector has its own privacy law, the Privacy and Data Protection Act 2014, and its own regulator ([record](/policies/vic-ovic-public-generative-ai-guidance)). The Office of the Victorian Information Commissioner (OVIC) says public sector organisations "should ensure their staff, contracted service providers and other personnel do not enter personal information into publicly available Generative AI tools" ([OVIC guidance](https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector)). It says doing so "will likely be a contravention of the Information Privacy Principles" in that Act ([OVIC guidance](https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector)).
 
 For AI tools bought at an enterprise level, OVIC expects organisations to assess their information security and carry out privacy impact assessments before they adopt the tool ([OVIC enterprise guidance](https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector); [record](/policies/vic-ovic-enterprise-generative-ai-guidance)).
 

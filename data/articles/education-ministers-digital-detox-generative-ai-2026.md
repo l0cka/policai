@@ -4,6 +4,10 @@ title: "Education Ministers agree to restrict generative AI in primary schools a
 summary: On 4 November 2026 the Department of Education published A Digital Detox, recording Education Ministers' 2 November decisions to restrict student use of generative AI in primary schools and in secondary school assessments, with timing, scope and application set by each jurisdiction or sector.
 status: published
 publishedAt: 2026-11-07
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The image description did not match the photograph. It described weatherboard buildings, a verandah, a brick wall and a bare tree; it now describes the red-brick school front, its sign, the shrubs and the leafy tree that the photograph shows."
 cites:
   - education-ministers-digital-detox-2026
   - australian-framework-generative-ai-in-schools
@@ -17,7 +21,7 @@ sources:
   - https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules
 image:
   src: "/images/articles/education-ministers-digital-detox-generative-ai-2026/lead.jpg"
-  alt: "The weatherboard buildings and verandah of Bruthen Primary School in Victoria, behind a low brick wall and a bare winter tree."
+  alt: "The red-brick front of Bruthen Primary School in Victoria, signed 'Bruthen School 1141', behind native shrubs and a large leafy tree on a grassy roadside bank."
   width: 2048
   height: 1470
   title: "Bruthen Primary School"
@@ -30,9 +34,9 @@ image:
   licenceCheckedAt: "2026-11-09"
 ---
 
-On 4 November 2026 the Department of Education published [*A Digital Detox*](https://www.education.gov.au/schooling/resources/digital-detox), recording decisions of the Education Ministers Meeting on 2 November 2026 ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools); [PDF](https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf)). The announcement says ministers agreed to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools)).
+On 4 November 2026 the Department of Education published [*A Digital Detox*](https://www.education.gov.au/schooling/resources/digital-detox), recording decisions of the Education Ministers Meeting on 2 November 2026 ([announcement](https://www.education.gov.au/schooling/announcements/digital-detox-rebalancing-technology-use-australian-schools); [PDF](https://www.education.gov.au/download/20853/digital-detox/46397/document/pdf)). The announcement says ministers agreed to reduce screen use, restrict the use of AI, and establish the Australian Schools Digital Detox Taskforce.
 
-Policai records the ministers' decisions as [A Digital Detox](/policies/education-ministers-digital-detox-2026) and the related [Australian Framework for Generative Artificial Intelligence (AI) in Schools](/policies/australian-framework-generative-ai-in-schools). This note rests on the department's published pages and PDF alongside those register records.
+Policai records the ministers' decisions as [A Digital Detox](/policies/education-ministers-digital-detox-2026) and the related [Australian Framework for Generative Artificial Intelligence (AI) in Schools](/policies/australian-framework-generative-ai-in-schools).
 
 ## What it says
 
