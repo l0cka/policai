@@ -133,9 +133,22 @@ differs from the collector's own reading of the same version. When the live
 bytes match the reading the collector staged as the latest sequence, and that
 sequence was published under the canonical fingerprint, the collector adopts
 its reading as that published version: it marks the transition processed,
-completes the check, and stages nothing. Any other mismatch still stages a
-review. Without this rule such a source never completes a check, and
-`/status` reports it overdue.
+completes the check, and stages nothing. Without this rule such a source never
+completes a check, and `/status` reports it overdue.
+An editorial publication that the collector did not stage (a correction
+batch or a manual re-verification, with no `sourceVersionSequence`) leaves
+no transition to adopt. Editorial retrieval is plain HTTP, while a
+`fetchStrategy: 'browser'` source is read through Firecrawl or Chromium, so
+the two hash different markup for the same page. The collector therefore
+accepts the record's fingerprint as its current version when its reading
+still matches its own snapshot and the record's `verification.source.retrievedAt`
+is no earlier than when the collector first saw that reading
+(`lastChangedAt`, else `firstCheckedAt`). The editor captured the page after
+the collector already saw these bytes, so the editor saw this version. If the
+capture predates that reading, or the reading differs from the snapshot, the
+mismatch still stages a review. Before this rule the 2026-11-05 OVIC
+corrections (#668) raised false changes on both OVIC generative AI records in
+the 2026-11-11 run (#713).
 An unreadable changed version that later returns to the verified baseline also
 creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still
