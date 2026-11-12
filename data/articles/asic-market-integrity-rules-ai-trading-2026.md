@@ -7,7 +7,9 @@ publishedAt: 2026-10-24
 updatedAt: 2026-11-12
 corrections:
   - date: 2026-11-12
-    text: "Update: ASIC's CS 63 consultation on draft guidance closed on 5 November 2026. The summary and body now say it closed, describe the RG 241 change as ASIC's proposal to move its guidance into RG 265 and RG 266, and no longer invite submissions."
+    text: "Update: ASIC's CS 63 consultation on draft guidance closed on 5 November 2026. The summary and body now say it closed and no longer invite submissions."
+  - date: 2026-11-12
+    text: "The piece said ASIC was consulting on withdrawing RG 241; CS 63 proposes to move relevant guidance from RG 241 into RG 265 and RG 266 before retiring it, and the piece now says so. The analysis also said the rules require a stop control for each algorithm; rule 5.6.3(1)(c)(ii) requires controls that can stop one or more algorithms immediately, and the analysis now says that."
 cites:
   - asic-market-integrity-rules-ai-trading-2026
 sources:
