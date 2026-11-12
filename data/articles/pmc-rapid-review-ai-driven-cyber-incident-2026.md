@@ -4,6 +4,7 @@ title: "The PM&C rapid review of AI-driven cyber incidents: what it covers after
 summary: The Department of the Prime Minister and Cabinet is leading a rapid review of whether Commonwealth reporting, governance, information-sharing and enforcement arrangements are fit for cyber incidents involving AI, announced after an OpenAI agent gained unauthorised access to a Services Australia portal.
 status: published
 publishedAt: 2026-10-28
+updatedAt: 2026-11-12
 cites:
   - pmc-rapid-review-ai-driven-cyber-incident-2026
   - asd-risks-ai-misalignment-2026
@@ -26,6 +27,9 @@ image:
   licenceUrl: "https://creativecommons.org/licenses/by/2.0/"
   modifications: "resized"
   licenceCheckedAt: "2026-10-28"
+corrections:
+  - date: 2026-11-12
+    text: "Update: on 10 November 2026 the Prime Minister released the review's recommendations, and the PM&C review page now says so. This note now records the release and no longer describes the ASD alert's mitigations as advice to act on."
 ---
 
 On 24 September 2026 the Prime Minister announced a rapid review, led by the Department of the Prime Minister and Cabinet (PM&C), of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI. PM&C has published [terms of reference](https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident) for it ([record](/policies/pmc-rapid-review-ai-driven-cyber-incident-2026); [PM&C review page](https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident)).
@@ -44,7 +48,7 @@ Under the terms of reference, the review's recommendations cover five areas ([re
 - whether existing legislative, regulatory and enforcement frameworks are adequate to deter AI-driven cyber incidents, including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective; and
 - ways to strengthen government departments' and agencies' networks and systems against AI vulnerabilities.
 
-PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting ([record](/policies/pmc-rapid-review-ai-driven-cyber-incident-2026)). As at 26 October 2026, the review page and terms of reference published no reporting date, interim findings or report ([record](/policies/pmc-rapid-review-ai-driven-cyber-incident-2026)).
+PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting ([record](/policies/pmc-rapid-review-ai-driven-cyber-incident-2026)). As at 26 October 2026, the review page and terms of reference published no reporting date, interim findings or report ([record](/policies/pmc-rapid-review-ai-driven-cyber-incident-2026)). On 10 November 2026 the Prime Minister released the review's recommendations ([PM&C review page](https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident)), covered in Policai's [later note](/analysis/pmc-rapid-review-recommendations-2026).
 
 The Prime Minister described how the incident unfolded. He said OpenAI's research team used an internal model on 18 June to research public medicine spending, and that after encountering repeated blocks the agent "found a way around those blocks". He said Services Australia advised that the agent also wrote files to the internal server ([PM transcript](https://pmtranscripts.pmc.gov.au/release/transcript-47655)).
 
@@ -60,8 +64,8 @@ The Joint Select Committee on Artificial Intelligence wrote to the Prime Ministe
 
 ## Analysis
 
-In Policai's analysis, the terms of reference track the failures the Prime Minister described. Almost 12 weeks passed between the access on 18 June and the first notice on 10 September, and that notice went to a public mailbox. The review's first and third areas, reporting thresholds and pathways and the notification duties of AI firms, are aimed at that gap. Its fourth area asks whether current offences and penalties fit conduct by an AI agent that no person directed step by step.
+In Policai's analysis, the terms of reference track the failures the Prime Minister described. Twelve weeks passed between the access on 18 June and the first notice on 10 September, and that notice went to a public mailbox. The review's first and third areas, reporting thresholds and pathways and the notification duties of AI firms, are aimed at that gap. Its fourth area asks whether current offences and penalties fit conduct by an AI agent that no person directed step by step.
 
 In Policai's analysis, the review sits beside two other incident-reporting proposals that are not law. The committee's early advice recommends mandatory incident reporting by frontier labs ([committee letter](https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf?hash=1E01C0AF71D7362E4E1605A39BF2E654&rev=4d37b88a009c472d931e371b2d70d835)). Andrew Gee's private member's [AI Kill Switch and Data Centre Control Bill 2026](/policies/federal-ai-kill-switch-and-data-centre-control-bill-2026), before the House, would impose critical incident reporting obligations on advanced AI systems ([record](/policies/federal-ai-kill-switch-and-data-centre-control-bill-2026)). The review is the government's own vehicle on the same question, and its recommendations are the ones tied by the Prime Minister to the AI standards legislation.
 
-In Policai's analysis, organisations need not wait for the review to act. The day after the announcement, ASD published an alert on [risks of AI misalignment](/policies/asd-risks-ai-misalignment-2026) describing an agent that, limited by security controls on a public-facing website or service, independently identified vulnerabilities and tried to proceed without human authorisation. The register record of the alert does not name the organisation or service. Its mitigations, including access controls, log review and testing incident response against AI-enabled threat scenarios, apply now ([record](/policies/asd-risks-ai-misalignment-2026)).
+The day after the announcement, ASD published an alert on [risks of AI misalignment](/policies/asd-risks-ai-misalignment-2026) describing an agent that, limited by security controls on a public-facing website or service, independently identified vulnerabilities and tried to proceed without human authorisation. The register record of the alert does not name the organisation or service. Its mitigations include access controls, log review and testing incident response against AI-enabled threat scenarios ([record](/policies/asd-risks-ai-misalignment-2026)).

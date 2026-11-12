@@ -4,7 +4,7 @@ title: "Identifying AI: NSW guidance now ends in AIAF Platform registration"
 summary: NSW's Identifying AI guidance now tells agencies to register any solution that uses, or may use, AI in the AIAF Platform, which is mandatory from 30 September 2026.
 status: published
 publishedAt: 2026-10-16
-updatedAt: 2026-10-17
+updatedAt: 2026-11-12
 cites:
   - nsw-identifying-ai-guidance
   - nsw-ai-operational-policy
@@ -58,4 +58,4 @@ NSW Government agencies and the public servants who buy, build and manage their 
 
 In Policai's analysis, the agency no longer decides alone whether an assessment is needed: it registers the use case, and the registration process decides. Every use case that may involve AI therefore passes through one government-wide channel. On the guidance's own test, many everyday products with built-in transcription, summarisation or chat features could need registering.
 
-Two official pages describe the transition differently. The [AIAF page](https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework) says agencies "must use the AIAF Platform for all new AI use case registrations and assessments" from 30 September 2026. The [Operational Policy page](https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy) says agencies "must continue to apply the existing AI Assessment Framework Excel-based assessment process to all AI use cases until the platform is fully adopted". Neither says how existing Excel assessments move to the platform. Agencies may want to confirm with NSW GovAI.
+Two official pages describe the transition differently. The [AIAF page](https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework) says agencies "must use the AIAF Platform for all new AI use case registrations and assessments" from 30 September 2026. The [Operational Policy page](https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-strategy-and-operational-policy/nsw-ai-operational-policy) says agencies "must continue to apply the existing AI Assessment Framework Excel-based assessment process to all AI use cases until the platform is fully adopted". Neither says how existing Excel assessments move to the platform.
