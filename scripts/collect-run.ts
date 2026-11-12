@@ -204,6 +204,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     trackedPolicies: policies,
     trackedTimelineEvents: timelineEvents,
     sourceReviews: reviews,
+    replayedReviewIds: carried.sourceReviews.map((review) => review.id),
     fetchImpl: run.fetchImpl,
     browserFetchImpl: run.browserFetchImpl,
     recycleBrowser: run.recycleBrowser,
@@ -280,14 +281,31 @@ export async function runCollection(run: CollectionRun): Promise<void> {
     return;
   }
 
+  const retracted = carried.sourceReviews.filter((review) =>
+    result.retractedReviewIds.includes(review.id),
+  );
+  const retractedIds = new Set(
+    retracted.flatMap((review) => [review.id, review.linkedDevelopment?.id]),
+  );
+  const keptReviews = reviews.filter((review) => !retractedIds.has(review.id));
+  const keptDevelopments = developments.filter(
+    (development) => !retractedIds.has(development.id),
+  );
+  if (retracted.length > 0) {
+    console.log(
+      `[collect] Outbox: retracted ${retracted.length} change reviews for sources verified unchanged: ` +
+        retracted.map((review) => review.id).join(', '),
+    );
+  }
+
   const checkedReviews = withoutInvalidChanges(
     mainReviews,
-    mergeSourceReviews(reviews, reviewCandidates),
+    mergeSourceReviews(keptReviews, reviewCandidates),
     (items) => validateSourceReviews(items, { policies, timelineEvents }),
   );
   const mergedReviews = checkedReviews.items;
   const developmentById = new Map(
-    reconcileLinkedDevelopments(mergedReviews, developments).map(
+    reconcileLinkedDevelopments(mergedReviews, keptDevelopments).map(
       (development) => [development.id, development],
     ),
   );
