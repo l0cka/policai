@@ -11216,8 +11216,7 @@
       "notes": "Approved by Daniel Alkurdi on decision card https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd7FLgWUimaNTrYmuUesGeEMj#cmsg_019nKBbCzGtpRmfKqX3Xisd7AT3vB94wCMG1opY8KBzfmT (proposal ddfd041f). Proposed by Claude (agent). Proposed for Dan's approval card after #558 merged withheld. Argus re-fetched the PDF on 28 Oct 2026 and its SHA-256 matched the staged hash."
     },
     "lastReviewedAt": "2026-10-28T02:31:19.849Z"
-  }
-,
+  },
   {
     "id": "australian-ai-standards-frontier-safety-obligations-2026",
     "title": "Mandatory frontier AI safety and security protections (Australian AI Standards)",
@@ -11276,6 +11275,73 @@
         "publishedAtPrecision": "day"
       },
       "notes": "Unverified editorial draft from the Policai Signal handoff of 10 November 2026 (Inky Quill). The Prime Minister's media release is dated Tuesday 10 November 2026 and states the Government will legislate these protections, with details in due course. No source fingerprint, no checkedAt, no checkedBy and no lastReviewedAt. Not marked verified. Staged for Daniel Alkurdi's approval."
+    }
+  },
+  {
+    "id": "dewr-best-practice-guide-ai-adoption-workplace-draft-2026",
+    "title": "Best Practice Guide on the Adoption of AI in the Workplace (draft)",
+    "description": "Draft voluntary guide released on 12 November 2026 by the Minister for Employment and Workplace Relations, setting out eight principles under three themes (Plan, Enable, Embed) for adopting AI in workplaces with the workforce. Open for public consultation until 27 January 2027.",
+    "jurisdiction": "federal",
+    "type": "guideline",
+    "status": "proposed",
+    "effectiveDate": "2026-11-12",
+    "dates": [
+      {
+        "type": "published",
+        "date": "2026-11-12",
+        "precision": "day",
+        "primary": true,
+        "source": {
+          "url": "https://ministers.dewr.gov.au/rishworth/draft-best-practice-guide-ai-adoption-workplace-released",
+          "title": "Draft best practice guide for AI adoption in the workplace released",
+          "publisher": "Minister for Employment and Workplace Relations",
+          "publishedAt": "2026-11-12",
+          "publishedAtPrecision": "day"
+        }
+      },
+      {
+        "type": "consultation_closed",
+        "date": "2027-01-27",
+        "precision": "day",
+        "source": {
+          "url": "https://ministers.dewr.gov.au/rishworth/draft-best-practice-guide-ai-adoption-workplace-released",
+          "title": "Draft best practice guide for AI adoption in the workplace released",
+          "publisher": "Minister for Employment and Workplace Relations",
+          "publishedAt": "2026-11-12",
+          "publishedAtPrecision": "day"
+        }
+      }
+    ],
+    "agencies": [
+      "Department of Employment and Workplace Relations"
+    ],
+    "sourceUrl": "https://ministers.dewr.gov.au/rishworth/draft-best-practice-guide-ai-adoption-workplace-released",
+    "content": "On 12 November 2026 the Minister for Employment and Workplace Relations, Amanda Rishworth, released the draft Best Practice Guide on the Adoption of AI in the Workplace (https://ministers.dewr.gov.au/rishworth/draft-best-practice-guide-ai-adoption-workplace-released). The release describes it as a guide focused on collaborative workplace transformation, developed through roundtables and forums with unions, employer peak representatives, academics, small businesses and large employers. It says the guide is underpinned by three themes, Plan, Enable and Embed, and sets out eight principles: capturing the opportunity; identifying use cases and assessing workplace readiness; cooperative planning and worker engagement; designing work and jobs; building capability; managing workforce transformation; establishing AI governance; and proactively managing risks and work health and safety. The release says each business will adapt the guide to its circumstances; it does not describe the guide as imposing obligations. The draft is open for public consultation through the department's consultation hub (https://consultations.dewr.gov.au/adopting-ai-in-the-workplace-best-practice-guide-draft) until 27 January 2027, per the release. The guide document itself was not read for this draft; the consultation hub page did not render for automated fetches.",
+    "aiSummary": "Draft voluntary DEWR guide on adopting AI in the workplace with eight principles under Plan, Enable and Embed, including worker engagement, job design, AI governance and work health and safety. Consultation closes 27 January 2027.",
+    "tags": [
+      "AI adoption",
+      "workplace",
+      "worker consultation",
+      "best practice guide",
+      "consultation"
+    ],
+    "themes": [
+      "employment",
+      "strategy-adoption",
+      "ai-governance"
+    ],
+    "createdAt": "2026-11-12T05:40:00.000Z",
+    "updatedAt": "2026-11-12T05:40:00.000Z",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ministers.dewr.gov.au/rishworth/draft-best-practice-guide-ai-adoption-workplace-released",
+        "title": "Draft best practice guide for AI adoption in the workplace released",
+        "publisher": "Minister for Employment and Workplace Relations",
+        "publishedAt": "2026-11-12",
+        "publishedAtPrecision": "day"
+      },
+      "notes": "Unverified editorial draft from the Policai Signal watch of 12 November 2026 (Inky Quill). The ministerial release is dated 12 November 2026 and states consultation is open until 27 January 2027. The guide PDF and the consultation hub page were not read. No source fingerprint, no checkedAt, no checkedBy and no lastReviewedAt. Not marked verified. Staged for Daniel Alkurdi's approval."
     }
   }
 ]
