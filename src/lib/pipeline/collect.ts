@@ -1103,6 +1103,15 @@ interface DocumentReading {
   deferSourceSuccess: boolean;
 }
 
+function verifiedSinceReading(
+  verified: SourceEvidence,
+  snapshot: SourceSnapshot | undefined,
+): boolean {
+  const readingSince = snapshot?.lastChangedAt ?? snapshot?.firstCheckedAt;
+  if (!verified.retrievedAt || !readingSince) return false;
+  return Date.parse(verified.retrievedAt) >= Date.parse(readingSince);
+}
+
 /**
  * Compares a document source's current reading with its snapshot and the
  * tracked record's verified fingerprint, and advances the snapshot and
@@ -1157,10 +1166,11 @@ async function readDocumentSource(
     ? trackedPolicy.verification.source.contentHash
     : trackedTimelineEvent?.verification.source.contentHash;
   const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
-  const canonicalIsCurrent = isThisReading(
-    canonicalContentHash,
-    previous,
-  );
+  const canonicalIsCurrent =
+    isThisReading(canonicalContentHash, previous) ||
+    (trackedRecord !== undefined &&
+      verifiedSinceReading(trackedRecord.verification.source, previous) &&
+      isCurrentReading(previous?.contentHash));
   const adoptedReading =
     trackedRecord &&
     canonicalContentHash &&

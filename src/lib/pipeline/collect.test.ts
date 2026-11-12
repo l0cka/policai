@@ -1544,6 +1544,103 @@ describe('collect', () => {
     });
   });
 
+  describe('a tracked record republished from another transport\'s capture', () => {
+    const page = (text: string) =>
+      `<html><body><main><h1>AI governance policy</h1><p>${text}</p></main></body></html>`;
+    const editorialHash = 'd'.repeat(64);
+
+    async function collectorReading(text: string): Promise<string> {
+      const retrieved = await retrieveSource(DOCUMENT_SOURCE.url, {
+        fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: page(text) }),
+        hashLinkedDocuments: true,
+      });
+      return retrieved.evidence.contentHash as string;
+    }
+
+    function setup(readingHash: string, editorialRetrievedAt: string) {
+      const trackedPolicy = buildPolicy({
+        id: 'tracked-document-policy',
+        sourceUrl: DOCUMENT_SOURCE.url,
+        verification: {
+          status: 'verified',
+          checkedAt: '2026-11-05T22:01:46.968Z',
+          checkedBy: 'reviewer',
+          method: 'manual',
+          source: {
+            url: DOCUMENT_SOURCE.url,
+            contentHash: editorialHash,
+            retrievedAt: editorialRetrievedAt,
+          },
+        },
+      });
+      const state: WatchState = {
+        ...emptyWatchState(),
+        sourceSnapshots: {
+          [DOCUMENT_SOURCE.id]: {
+            contentHash: readingHash,
+            firstCheckedAt: '2026-07-23T20:36:08.370Z',
+            lastCheckedAt: '2026-11-05T19:30:18.660Z',
+            lastChangedAt: '2026-07-23T20:36:08.370Z',
+            changeCount: 1,
+          },
+        },
+      };
+      const run = (current: WatchState, text: string, day: string) =>
+        collect({
+          sources: [DOCUMENT_SOURCE],
+          state: current,
+          existingDevelopments: [],
+          trackedUrls: [DOCUMENT_SOURCE.url],
+          trackedPolicies: [trackedPolicy],
+          fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: page(text) }),
+          now: () => new Date(`${day}T19:34:38.995Z`),
+        });
+      return { trackedPolicy, state, run };
+    }
+
+    it('stages nothing while the page is unchanged since before the editor captured it, then detects a real change', async () => {
+      const readingHash = await collectorReading('Version one.');
+      const { trackedPolicy, state, run } = setup(
+        readingHash,
+        '2026-11-05T22:01:46.862Z',
+      );
+
+      const unchanged = await run(state, 'Version one.', '2026-11-11');
+      expect(unchanged.reviewCandidates).toEqual([]);
+      expect(unchanged.developments).toEqual([]);
+      expect(unchanged.state.seen).toEqual({});
+      expect(unchanged.state.sourceSnapshots[DOCUMENT_SOURCE.id]).toEqual({
+        contentHash: readingHash,
+        firstCheckedAt: '2026-07-23T20:36:08.370Z',
+        lastCheckedAt: '2026-11-11T19:34:38.995Z',
+        lastChangedAt: '2026-07-23T20:36:08.370Z',
+        changeCount: 1,
+      });
+
+      const changed = await run(unchanged.state, 'Version two.', '2026-11-18');
+      expect(changed.reviewCandidates).toHaveLength(1);
+      expect(changed.reviewCandidates[0]).toMatchObject({
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 2,
+      });
+    });
+
+    it('still stages a review when the editor captured the page before the collector first saw this reading', async () => {
+      const readingHash = await collectorReading('Version one.');
+      const { trackedPolicy, state, run } = setup(
+        readingHash,
+        '2026-07-01T00:00:00.000Z',
+      );
+
+      const result = await run(state, 'Version one.', '2026-11-11');
+      expect(result.reviewCandidates).toHaveLength(1);
+      expect(result.reviewCandidates[0]).toMatchObject({
+        targetPolicyId: trackedPolicy.id,
+        sourceVersionSequence: 2,
+      });
+    });
+  });
+
   describe('fingerprints stored before dcterms.created and the date platform were fingerprinted', () => {
     const drupalPage = (created: string, text = 'Version one.') => `
       <html><head>
