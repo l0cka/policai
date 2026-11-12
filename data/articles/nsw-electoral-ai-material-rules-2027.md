@@ -4,6 +4,7 @@ title: "NSW election law now bans deceptive AI depictions of real people and req
 summary: New sections 189A and 189B of the NSW Electoral Act 2017 make it an offence, during the regulated period, to publish AI-generated electoral material showing a real person doing something they did not do without their written consent, and to publish realistic AI-generated material without a disclosure statement. The 13 March 2027 State election will be the first general election they apply to.
 status: published
 publishedAt: 2026-10-25
+updatedAt: 2026-11-12
 cites:
   - nsw-electoral-legislation-amendment-elections-act-2026
   - sa-electoral-ai-generated-advertisements
@@ -54,4 +55,4 @@ In Policai's analysis, this is binding AI-specific law, still rare in Australia.
 
 In Policai's analysis, the offences are narrower than a general deepfake ban. They reach only depictions of real people doing things they did not do, or material that would pass as real, and only in a regulated period of about three weeks.
 
-In Policai's analysis, unlike the South Australian scheme, neither section gives the Electoral Commissioner a power to order withdrawal or correction. Negotiated take-down with platforms is likely to carry much of the practical weight. The main open question for the Commission's guidance is lightly edited footage, where "altered significantly" may be tested.
+In Policai's analysis, unlike the South Australian scheme, neither section gives the Electoral Commissioner a power to order withdrawal or correction. The main open question for the Commission's guidance is lightly edited footage, where "altered significantly" may be tested.

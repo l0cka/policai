@@ -4,7 +4,7 @@ title: "Policai weekly: 30 September–7 October 2026"
 summary: The OAIC's guidance on the new automated decision-making transparency duty, the Senate data centres inquiry, and the Fair Work Commission's generative AI rules, which start on 20 October.
 status: published
 publishedAt: 2026-10-16
-updatedAt: 2026-10-22
+updatedAt: 2026-11-12
 cites:
   - oaic-app-1-7-adm-transparency-guidance
   - fwc-genai-guidance-note
@@ -51,7 +51,7 @@ From 20 October, under the [guidance note](https://www.fwc.gov.au/documents/reso
 
 ## Why it matters
 
-In Policai's analysis, the OAIC's reading of "computer program" is most likely to catch organisations out. Its first worked example is a spreadsheet formula that ranks clients for health and aged care services, and the OAIC treats it as in scope. A review of only "AI" systems before 10 December may miss rule-based tools that do the same work. The OAIC advises entities in doubt to "take a cautious approach".
+In Policai's analysis, the OAIC's reading of "computer program" is most likely to catch organisations out. Its first worked example is a spreadsheet formula that ranks clients for health and aged care services, and the OAIC treats it as in scope. The OAIC advises entities in doubt to "take a cautious approach".
 
 The [guidance note](https://www.fwc.gov.au/documents/resources/guidance-note-use-of-generative-ai-in-commission-cases.pdf) applies to anyone who uses generative AI to prepare a document lodged in a Commission case, not only lawyers (clause 6). Self-represented parties who draft with a chatbot will need the disclosure and the checking statement.
 

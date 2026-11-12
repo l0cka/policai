@@ -4,6 +4,7 @@ title: "Policai weekly: 15–21 October 2026"
 summary: The Digital Duty of Care Bill's introduction, ASD's new Essentials framework and its AI guidance, the Fair Work Commission's generative AI rules taking effect, and a later reporting date for the Senate data centres inquiry.
 status: published
 publishedAt: 2026-10-22
+updatedAt: 2026-11-12
 cites:
   - fwc-genai-guidance-note
   - esafety-genai-industry-codes
@@ -56,6 +57,6 @@ The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced in t
 
 ## Why it matters
 
-In Policai's analysis, the bill and ASD's framework both treat AI as part of wider systems rather than a separate category. The bill would replace AI-specific online-safety codes with a general duty, and ASD folds AI into its general cyber controls. ASD says: "Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations" ([news item](https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience)). Organisations that report Essential Eight maturity to a regulator may want to check which framework that regulator expects.
+In Policai's analysis, the bill and ASD's framework both treat AI as part of wider systems rather than a separate category. The bill would replace AI-specific online-safety codes with a general duty, and ASD folds AI into its general cyber controls. ASD says: "Until associated regulatory changes are communicated by regulators, organisations should continue to meet their current regulatory obligations" ([news item](https://www.cyber.gov.au/news/asd-essentials-evolving-our-approach-to-cyber-security-resilience)).
 
 The Joint Select Committee's report is now due almost four months before the Senate data centres report. Its early advice recommended nationally consistent standards for data centres, implemented through state and territory planning laws ([committee letter](https://static.aph.gov.au/-/media/Committees/ai_ctte/JSC_AI_letter_20261012_Final.pdf)).

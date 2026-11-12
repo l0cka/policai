@@ -4,6 +4,7 @@ title: "NESA's take-home assessment limit and generative AI rules for the HSC"
 summary: "NSW schools may now set no more than one take-home assessment task, worth at most 15%, in each HSC course, and must not rely on AI-detection software to find malpractice."
 status: published
 publishedAt: 2026-10-29
+updatedAt: 2026-11-12
 cites:
   - nsw-nesa-stage-6-take-home-assessment-ai-rules
 sources:
@@ -24,17 +25,20 @@ image:
   licenceUrl: https://creativecommons.org/licenses/by/2.5/
   modifications: resized
   licenceCheckedAt: 2026-10-29
+corrections:
+  - date: 2026-11-12
+    text: "Correction: this note said Rule 2.1.1 does the same for Preliminary courses and quoted the take-home definition as rule text. The Preliminary exemptions differ, and the definition is in the rules' footnotes. The note now says so."
 ---
 
-The NSW Education Standards Authority (NESA) has written a limit on take-home assessment, and new rules on generative AI, into its Assessment Certification Examination (ACE) Rules for the Higher School Certificate ([register record](/policies/nsw-nesa-stage-6-take-home-assessment-ai-rules); [ACE Rule 2.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)). The HSC limit applies from Term 4 2026, when the Class of 2027 starts its HSC courses, and the Preliminary limit from Term 1 2027 ([NESA notice](https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules)).
+The NSW Education Standards Authority (NESA) has written a limit on take-home assessment, and new rules on generative AI, into its Assessment Certification Examination (ACE) Rules for the Higher School Certificate (HSC) ([register record](/policies/nsw-nesa-stage-6-take-home-assessment-ai-rules); [ACE Rule 2.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)). The HSC limit applies from Term 4 2026, when the Class of 2027 starts its HSC courses, and the Preliminary limit from Term 1 2027 ([NESA notice](https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules)).
 
 NESA announced the limit on 31 August 2026, after Education Minister Prue Car asked it to examine how to protect student learning as AI spreads in schools ([NESA notice](https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules); [department release](https://education.nsw.gov.au/news/latest-news/new-rules-for-schools-on-ai-in-take-home-hsc-assessments)). The rule pages carry change notices dated 16 September 2026 ([ACE Rule 2.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs); [ACE Rule 10.1](https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice)).
 
 ## What it says
 
-For each HSC course, schools "must not exceed one take-home assessment task, worth a maximum of 15%, except for courses with major projects or HSC practical exams that are exempt" ([ACE Rule 2.1.2](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)). Rule 2.1.1 does the same for Preliminary courses ([ACE Rule 2.1.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)).
+For each HSC course, schools "must not exceed one take-home assessment task, worth a maximum of 15%, except for courses with major projects or HSC practical exams that are exempt" ([ACE Rule 2.1.2](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)). Rule 2.1.1 sets the same limit for Preliminary courses, with its own exemptions ([ACE Rule 2.1.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)).
 
-A take-home task is any task that is not "completed in a classroom or formal written examination setting, or under teacher-approved monitoring conditions" ([ACE Rule 2.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)).
+The rules' footnotes define a take-home task as one that is not an in-school task, that is, one not "completed in a classroom or formal written examination setting, or under teacher-approved monitoring conditions" ([ACE Rule 2.1](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)).
 
 The department says the cap equals 7.5% of the total HSC mark, since school-based assessment is half the result ([department release](https://education.nsw.gov.au/news/latest-news/new-rules-for-schools-on-ai-in-take-home-hsc-assessments)).
 
@@ -42,7 +46,7 @@ Fourteen courses with a major project or HSC practical exam are exempt, includin
 
 On generative AI, teachers must award marks "based on evidence of the student's own knowledge, skills and understanding, and not the use of generative artificial intelligence" ([ACE Rule 2.1.2](https://curriculum.nsw.edu.au/ace-rules/ace2/assessment-programs)).
 
-The malpractice rule now requires schools to "not rely on software tools for the detection of generative artificial intelligence when determining whether malpractice has occured" ([ACE Rule 10.1.2](https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice)). NESA's notice says detection software, if used at all, should be "only one input for teacher professional review, not as sole proof of AI use or malpractice" ([NESA notice](https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules)). Schools and sectors still decide whether generative AI is permitted in a task or course ([ACE Rule 10.1](https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice)).
+The malpractice rule now requires schools to "not rely on software tools for the detection of generative artificial intelligence when determining whether malpractice has occured [sic]" ([ACE Rule 10.1.2](https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice)). NESA's notice says detection software, if used at all, should be "only one input for teacher professional review, not as sole proof of AI use or malpractice" ([NESA notice](https://www.nsw.gov.au/education-and-training/nesa/news/all/new-take-home-assessment-rules)). Schools and sectors still decide whether generative AI is permitted in a task or course ([ACE Rule 10.1](https://curriculum.nsw.edu.au/ace-rules/ace10/malpractice)).
 
 ## Who it affects
 
