@@ -1,11 +1,16 @@
 ---
 type: instrument_note
 title: "The Digital Duty of Care Bill would repeal every eSafety industry code and standard, including the AI rules, after a 12-month transition"
-summary: A government bill introduced on 15 October 2026 would repeal Division 7 of Part 9 of the Online Safety Act, which supports all online-safety industry codes and standards, including those covering generative AI and AI companions. The repeal would start the day after a 12-month period from Royal Assent. The bill is before the House and is not law.
+summary: A government bill introduced on 15 October 2026 would repeal Division 7 of Part 9 of the Online Safety Act, which supports all online-safety industry codes and standards, including those covering generative AI and AI companions. The repeal would start the day after a 12-month period from Royal Assent. The House passed the bill with amendments on 28 October 2026; it is not law.
 status: published
 publishedAt: 2026-10-18
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "Update: the House of Representatives passed the bill with amendments on 28 October 2026. The summary and lead said the bill was before the House; they now record its passage and link Policai's note on the passed text. The section and item references in the piece remain those of the bill as introduced."
 cites:
   - esafety-genai-industry-codes
+  - federal-online-safety-amendment-digital-duty-of-care-bill-2026
 sources:
   - https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553
   - https://parlinfo.aph.gov.au/parlInfo/download/legislation/bills/r7553_first-reps/toc_word/26131b01.docx
@@ -28,7 +33,7 @@ image:
   licenceCheckedAt: "2026-10-18"
 ---
 
-The Australian Government introduced the Online Safety Amendment (Digital Duty of Care) Bill 2026 in the House of Representatives on 15 October 2026, and the second reading was moved the same day ([Parliament of Australia](https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553)). Its status is "Before Reps". It is a proposed law, not an Act.
+The Australian Government introduced the Online Safety Amendment (Digital Duty of Care) Bill 2026 in the House of Representatives on 15 October 2026, and the second reading was moved the same day ([Parliament of Australia](https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553)). The House passed the bill with amendments on 28 October 2026 ([record](/policies/federal-online-safety-amendment-digital-duty-of-care-bill-2026); see Policai's [note on the passed text](/analysis/digital-duty-of-care-bill-passes-house-2026)). It is a proposed law, not an Act.
 
 ## What it says
 
