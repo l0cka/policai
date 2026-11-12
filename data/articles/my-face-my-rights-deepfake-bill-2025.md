@@ -4,6 +4,10 @@ title: "The My Face, My Rights Bill would let eSafety order deepfakes down and l
 summary: A private senator's bill before the Senate would add a deepfake complaints and removal scheme to the Online Safety Act, with civil penalties of 500 penalty units, and a new right to sue in the Privacy Act for the wrongful use or disclosure of deepfake material. It covers realistic, technology-made false depictions of an Australian adult's or child's face or voice. It is not law.
 status: published
 publishedAt: 2026-10-21
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The analysis said the definition turns on what the material shows, not the tool used. The definition also requires the material to be made false using technology, and the analysis now says so."
 cites:
   - federal-online-safety-other-legislation-amendment-my-face-my-rights-bill-2025
 sources:
@@ -49,4 +53,4 @@ The scheme would reach social media, relevant electronic and designated internet
 
 In Policai's analysis, the bill takes two routes to the same harm. The eSafety route is fast and turns on posting without consent. The court route reaches any use or disclosure, and its profit limb means a commercial use of a person's synthetic face or voice, such as a cloned voice in an advertisement, could ground a claim without any loss to the person depicted.
 
-The definition turns on what the material shows, not the tool used, so the bill does not depend on a definition of AI.
+The definition turns on what the material shows and whether technology made it false, not on any particular tool, so the bill does not depend on a definition of AI.

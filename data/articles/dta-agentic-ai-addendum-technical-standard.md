@@ -4,6 +4,10 @@ title: "DTA's Agentic AI addendum extends the AI technical standard for agencies
 summary: The Digital Transformation Agency's Agentic AI addendum, last updated 4 June 2026, gives best-practice guidance for Australian Government agencies implementing agentic AI. It sits beside the AI technical standard, whose statements and criteria remain applicable, and agencies exploring, developing or using agentic AI are expected to apply both.
 status: published
 publishedAt: 2026-11-04
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The lead implied that the PDF carries the 4 June 2026 date; that is the date the addendum page lists as its last update."
 cites:
   - agentic-ai-addendum-technical-standard-2026
   - ai-technical-standard
@@ -31,7 +35,7 @@ image:
   licenceCheckedAt: "2026-11-04"
 ---
 
-The Digital Transformation Agency (DTA) publishes the [Agentic AI addendum to the AI technical standard for Australian Government](/policies/agentic-ai-addendum-technical-standard-2026) on [digital.gov.au](https://www.digital.gov.au/policy/ai/agentic-ai-addendum) and as a [PDF](https://www.digital.gov.au/sites/default/files/documents/2026-06/Addendum-Agentic-AI.pdf) that the page lists as last updated on 4 June 2026 ([addendum page](https://www.digital.gov.au/policy/ai/agentic-ai-addendum)). The page says it provides best-practice guidance for Australian Government agencies implementing agentic AI, as an addendum to the [AI technical standard](/policies/ai-technical-standard) for secure and governed implementation of agentic AI systems ([addendum page](https://www.digital.gov.au/policy/ai/agentic-ai-addendum)).
+The Digital Transformation Agency (DTA) publishes the [Agentic AI addendum to the AI technical standard for Australian Government](/policies/agentic-ai-addendum-technical-standard-2026) on [digital.gov.au](https://www.digital.gov.au/policy/ai/agentic-ai-addendum), which the page lists as last updated on 4 June 2026, and as a [PDF](https://www.digital.gov.au/sites/default/files/documents/2026-06/Addendum-Agentic-AI.pdf) ([addendum page](https://www.digital.gov.au/policy/ai/agentic-ai-addendum)). The page says it provides best-practice guidance for Australian Government agencies implementing agentic AI, as an addendum to the [AI technical standard](/policies/ai-technical-standard) for secure and governed implementation of agentic AI systems ([addendum page](https://www.digital.gov.au/policy/ai/agentic-ai-addendum)).
 
 ## What it says
 

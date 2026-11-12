@@ -4,6 +4,10 @@ title: "DTA's AI Reference Architecture is voluntary guidance for government AI 
 summary: On 30 October 2026 the Digital Transformation Agency published the AI Reference Architecture (AIRA) and a Companion Guide. AIRA is an architectural foundation for Australian Government AI systems and supports the AI Plan for the APS 2025 and the Policy for the Responsible Use of AI in Government. Lucy Poole says in the release that using the architecture is voluntary and that it does not replace applicable requirements.
 status: published
 publishedAt: 2026-11-02
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "Lucy Poole's title was given as Deputy CEO - Digital Strategy, Planning and Performance, which Policai could not confirm against the release. She is now described as a DTA Deputy CEO."
 cites:
   - dta-ai-reference-architecture
   - policy-responsible-use-ai-government-v2
@@ -30,7 +34,7 @@ image:
   licenceCheckedAt: "2026-11-02"
 ---
 
-The Digital Transformation Agency (DTA) published the AI Reference Architecture (AIRA) and a Companion Guide on 30 October 2026 ([media release](https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems)). The introduction describes AIRA as an architectural foundation for designing, implementing and governing artificial intelligence (AI) across the Australian Government, and says it supports the [AI Plan for the Australian Public Service 2025](/policies/aps-ai-plan-2025) and the [Policy for the Responsible Use of AI in Government](/policies/policy-responsible-use-ai-government-v2) ([introduction](https://www.digital.gov.au/ai-reference-architecture/introduction)). The AIRA page marks both accessible PDFs as last updated on 23 October 2026 ([AIRA page](https://www.digital.gov.au/ai-reference-architecture)).
+The Digital Transformation Agency (DTA) published the [AI Reference Architecture (AIRA)](/policies/dta-ai-reference-architecture) and a Companion Guide on 30 October 2026 ([media release](https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems)). The introduction describes AIRA as an architectural foundation for designing, implementing and governing artificial intelligence (AI) across the Australian Government, and says it supports the [AI Plan for the Australian Public Service 2025](/policies/aps-ai-plan-2025) and the [Policy for the Responsible Use of AI in Government](/policies/policy-responsible-use-ai-government-v2) ([introduction](https://www.digital.gov.au/ai-reference-architecture/introduction)). The AIRA page marks both accessible PDFs as last updated on 23 October 2026 ([AIRA page](https://www.digital.gov.au/ai-reference-architecture)).
 
 ## What it says
 
@@ -38,7 +42,7 @@ The release sets out four constructs (a functional stack, communication, trustwo
 
 The introduction says agencies can use AIRA, after a problem has been defined and validated, to shape a target architecture, compare vendor offerings, and govern a system, including by informing an [AI use case impact assessment](https://www.digital.gov.au/ai/ai-in-government-policy/ai-use-case-impact-assessment) and tracing requirements in the [AI technical standard](/policies/ai-technical-standard) ([introduction](https://www.digital.gov.au/ai-reference-architecture/introduction)). It says AIRA does not replace problem-framing guidance, a business case, procurement documentation, a return-on-investment calculation or detailed implementation guidance ([introduction](https://www.digital.gov.au/ai-reference-architecture/introduction)).
 
-Lucy Poole, Deputy CEO - Digital Strategy, Planning and Performance, says in the release: "Using the architecture is voluntary. It supports agencies to meet applicable requirements, but does not replace them" ([media release](https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems)).
+DTA Deputy CEO Lucy Poole says in the release: "Using the architecture is voluntary. It supports agencies to meet applicable requirements, but does not replace them" ([media release](https://www.dta.gov.au/media-releases/ai-reference-architecture-new-blueprint-help-government-agencies-design-ai-systems)).
 
 The Companion Guide sets out four scenarios: enabling AI within an existing vendor platform, designing a new in-house service, procuring an agentic call centre solution, and integrating AI in case management ([Companion Guide](https://www.digital.gov.au/ai-reference-architecture/companion-guide)). It says the scenarios do not identify a single correct architecture, and it groups control as "govern", "configure and govern", or "design, configure and govern", with "govern" the baseline in every scenario ([Companion Guide](https://www.digital.gov.au/ai-reference-architecture/companion-guide)).
 

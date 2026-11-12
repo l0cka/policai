@@ -4,6 +4,10 @@ title: How AI is regulated in Australian financial services
 summary: There is no AI law for banks, insurers, super funds or traders. APRA and ASIC use the powers they already have. APRA has told the entities it supervises what it expects on AI risk, ASIC has written binding rules for trading algorithms, and a new privacy duty on automated decisions applies from 10 December 2026.
 status: published
 publishedAt: 2026-11-02
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The guide said the false or misleading trading rule now reaches orders that have that effect. The change commences in March 2028, and it applies where a participant ought reasonably suspect that an order would have that effect. The privacy paragraph described APP 1.7 too broadly; it now states the personal information condition and the substantially and directly related test. The analysis no longer predicts which expectations will take longest, and the rule finder line now says it lists instruments that say they cover an audience."
 cites:
   - national-ai-plan-2025
   - apra-ai-industry-letter-2026
@@ -75,25 +79,25 @@ ASIC has amended its market integrity rules for securities and futures markets t
 
 A trading algorithm is one that automatically sets one or more details of an order "with limited or no human intervention" ([securities instrument, item 33](https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/text/original/pdf)). Under the amended rules, a trading participant must govern and test each algorithm before use, be able to stop one immediately, monitor its trading and keep records for seven years ([securities instrument, rr 5.6.3 to 5.6.3B](https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/text/original/pdf)). ASIC's explanatory statement calls the stop control the "kill switch" ([ES para 52](https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/es/original/pdf)).
 
-The rule against false or misleading trading now also reaches orders that have that effect, not only orders meant to. ASIC says this covers orders from agentic AI systems "whether or not a person intended that effect" ([ES para 29](https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/es/original/pdf)).
+From March 2028, the rule against false or misleading trading also applies where a participant ought reasonably suspect that an order would have that effect, not only where it was intended to ([r 5.7.1(2)(c)(ii)](https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/text/original/pdf)). ASIC says this covers orders from agentic AI systems "whether or not a person intended that effect" ([ES para 29](https://www.legislation.gov.au/F2026L01223/asmade/2026-09-17/es/original/pdf)).
 
 The rules commence 18 months after registration. The register records a Federal Register start date of 17 March 2028 for the securities rules, while ASIC gives 18 March 2028 ([record](/policies/asic-market-integrity-rules-ai-trading-2026); [CS 63](https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241)). ASIC consulted on updated guidance, with comments due by 5 November 2026 ([CS 63](https://www.asic.gov.au/regulatory-resources/find-a-document/consultations/cs-63-proposed-updates-to-rg-265-and-rg-266-and-withdrawal-of-rg-241)).
 
 ## What does privacy law add?
 
-From 10 December 2026, an entity covered by the Australian Privacy Principles (APPs) must say in its privacy policy when it uses computer programs to make, or help make, decisions that significantly affect people ([record](/policies/oaic-app-1-7-adm-transparency-guidance)). The Office of the Australian Information Commissioner's (OAIC) fact sheet lists loan and credit approvals and insurance eligibility among the decisions generally in scope ([fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF)). In the OAIC's reading, human review of an output does not by itself take a decision out of scope ([record](/policies/oaic-app-1-7-adm-transparency-guidance)).
+From 10 December 2026, an entity covered by the Australian Privacy Principles (APPs) must describe in its privacy policy the kinds of personal information it uses in computer programs, and the kinds of decisions those programs make or do something substantially and directly related to making, where the decision could reasonably be expected to significantly affect an individual's rights or interests ([record](/policies/oaic-app-1-7-adm-transparency-guidance)). The Office of the Australian Information Commissioner's (OAIC) fact sheet lists loan and credit approvals and insurance eligibility among the decisions generally in scope ([fact sheet](https://www.oaic.gov.au/__data/assets/pdf_file/0021/269013/APP-1.7-1.9-Transparency-Obligation-Fact-Sheet.PDF)). In the OAIC's reading, human review of an output does not by itself take a decision out of scope ([record](/policies/oaic-app-1-7-adm-transparency-guidance)).
 
 The OAIC's [guidance on commercial AI products](/policies/oaic-guidance-commercial-ai-products) also applies. It says entering personal information into an AI system is a use or disclosure under APP 6, and that AI-generated or inferred personal information "is a collection of personal information and must comply with APP 3" ([OAIC guidance](https://www.oaic.gov.au/privacy/privacy-guidance-for-organisations-and-government-agencies/guidance-on-privacy-and-the-use-of-commercially-available-ai-products)).
 
 ## Analysis
 
-In Policai's analysis, a financial firm faces three kinds of AI rule at once. APRA's letter creates no new prudential standard, but APRA will supervise against its reading of the existing ones. ASIC's trading rules and the privacy duty are law, with fixed start dates.
+In Policai's analysis, a firm that is also a trading participant can face three kinds of AI rule at once. APRA's letter creates no new prudential standard, but APRA will supervise against its reading of the existing ones. ASIC's trading rules and the privacy duty are law, with fixed start dates.
 
-For most firms the first practical step is the same under all three: know where AI is used. APRA asks for an inventory of AI tools and uses, ASIC's rules need every trading algorithm governed and tested, and the privacy duty needs a firm to know which significant decisions involve a computer program. The expectations APRA reports few large entities met, such as tested exit plans for critical AI providers and ongoing model monitoring, are likely to take longest.
+In Policai's analysis, each of the three depends on knowing where AI is used. APRA asks for an inventory of AI tools and uses, ASIC's rules need every trading algorithm governed and tested, and the privacy duty needs a firm to know which significant decisions involve a computer program.
 
 ## Where to follow this
 
 - The [register](/) lists every instrument in this guide.
 - [This week](/this-week) shows newly verified developments and dates coming up.
-- The [rule finder](/rule-finder) asks a few questions and lists the rules that may apply to you.
+- The [rule finder](/rule-finder) asks a few questions and lists the instruments that say they cover a given audience.
 - [How AI is regulated across Australian jurisdictions](/analysis/how-ai-is-regulated-in-australia) covers the wider picture.
