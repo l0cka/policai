@@ -147,6 +147,7 @@ export interface CollectResult {
   state: WatchState;
   meta: CollectionMeta;
   errors: string[];
+  retractedReviewIds: string[];
 }
 
 export function collectionRunFailed(
@@ -365,7 +366,16 @@ function recoverPersistedDocumentTransitions(
       review.linkedDevelopment?.sourceId ??
       sourceIdByUrl.get(sourceUrlIdentity(review.sourceUrl));
     if (!sourceId) continue;
-    const candidate: Candidate = {
+    const staged =
+      review.status === 'pending_review'
+        ? Object.values(state.seen).find(
+            (entry) =>
+              entry.sourceId === sourceId &&
+              entry.candidate?.changeFingerprint !== undefined &&
+              review.id === `source-review-${developmentId(entry.candidate)}`,
+          )?.candidate
+        : undefined;
+    const candidate: Candidate = staged ?? {
       title: review.title,
       url: review.linkedDevelopment?.url ?? review.sourceUrl,
       text: review.analysis.summary,
@@ -573,7 +583,15 @@ function isSourceDue(
   now: Date,
 ): boolean {
   if (source.schedule === 'daily') return true;
-  return isWeeklyDue(state.lastCheckedBySource[source.id], now);
+  return (
+    isWeeklyDue(state.lastCheckedBySource[source.id], now) ||
+    Object.values(state.seen).some(
+      (entry) =>
+        entry.sourceId === source.id &&
+        entry.status === 'awaiting_review' &&
+        parseChangeFingerprint(entry.candidate?.changeFingerprint) !== null,
+    )
+  );
 }
 
 /** A weekly check is due once its last success is six days old, or there is none. */
@@ -618,6 +636,12 @@ function sourceEvidence(
   };
 }
 
+function developmentId(candidate: Candidate): string {
+  const { title, url, changeFingerprint } = canonicalCandidate(candidate);
+  const identity = changeFingerprint ? `${url}:${changeFingerprint}` : url;
+  return `dev-${slugify(title, 48) || 'item'}-${hashUrl(identity)}`;
+}
+
 function buildDevelopment(
   candidate: Candidate,
   source: WatchSource,
@@ -627,11 +651,8 @@ function buildDevelopment(
 ): Development {
   candidate = canonicalCandidate(candidate);
   const verificationSource = sourceEvidence(evidence, candidate);
-  const identity = candidate.changeFingerprint
-    ? `${candidate.url}:${candidate.changeFingerprint}`
-    : candidate.url;
   return {
-    id: `dev-${slugify(candidate.title, 48) || 'item'}-${hashUrl(identity)}`,
+    id: developmentId(candidate),
     title: candidate.title,
     url: candidate.url,
     sourceId: source.id,
@@ -1101,15 +1122,79 @@ interface DocumentReading {
   /** An update review for a tracked record, staged once per new version. */
   staged: { development: Development; review: SourceReview } | null;
   deferSourceSuccess: boolean;
+  retractedReviewIds: string[];
 }
 
-function verifiedSinceReading(
-  verified: SourceEvidence,
+function readingHeldSince(
+  state: WatchState,
+  sourceId: string,
   snapshot: SourceSnapshot | undefined,
-): boolean {
-  const readingSince = snapshot?.lastChangedAt ?? snapshot?.firstCheckedAt;
-  if (!verified.retrievedAt || !readingSince) return false;
-  return Date.parse(verified.retrievedAt) >= Date.parse(readingSince);
+  isCurrentReading: (hash: string | undefined) => boolean,
+): string | undefined {
+  const firstSeenByVersion = new Map<number, string>();
+  for (const entry of Object.values(state.seen)) {
+    if (entry.sourceId !== sourceId) continue;
+    const parsed = parseChangeFingerprint(entry.candidate?.changeFingerprint);
+    if (!parsed || !isCurrentReading(parsed.contentHash)) continue;
+    const earliest = firstSeenByVersion.get(parsed.changeCount);
+    if (!earliest || Date.parse(entry.firstSeenAt) < Date.parse(earliest)) {
+      firstSeenByVersion.set(parsed.changeCount, entry.firstSeenAt);
+    }
+  }
+  let since = snapshot?.lastChangedAt ?? snapshot?.firstCheckedAt;
+  for (
+    let version = maximumChangeCountForSource(state, sourceId);
+    firstSeenByVersion.has(version);
+    version--
+  ) {
+    const firstSeenAt = firstSeenByVersion.get(version) as string;
+    if (!since || Date.parse(firstSeenAt) < Date.parse(since)) {
+      since = firstSeenAt;
+    }
+  }
+  return since;
+}
+
+function retractTransitionsOfVerifiedReading(
+  state: WatchState,
+  source: WatchSource,
+  verifiedAt: string,
+  reviews: readonly SourceReview[],
+  isCurrentReading: (hash: string | undefined) => boolean,
+): string[] {
+  const stagedAfterVerification = (at: string) =>
+    Date.parse(at) > Date.parse(verifiedAt);
+  let verifiedVersion = state.sourceSnapshots[source.id]?.changeCount ?? 0;
+  for (const [key, entry] of Object.entries(state.seen)) {
+    if (entry.sourceId !== source.id) continue;
+    const parsed = parseChangeFingerprint(entry.candidate?.changeFingerprint);
+    if (
+      parsed &&
+      isCurrentReading(parsed.contentHash) &&
+      stagedAfterVerification(entry.firstSeenAt)
+    ) {
+      delete state.seen[key];
+      verifiedVersion = Math.min(verifiedVersion, parsed.changeCount - 1);
+    }
+  }
+  const snapshot = state.sourceSnapshots[source.id];
+  if (snapshot) {
+    state.sourceSnapshots[source.id] = {
+      ...snapshot,
+      changeCount: verifiedVersion,
+    };
+  }
+  return reviews
+    .filter(
+      (review) =>
+        review.status === 'pending_review' &&
+        review.createdBy === 'collector' &&
+        review.sourceVersionSequence !== undefined &&
+        review.linkedDevelopment?.sourceId === source.id &&
+        isCurrentReading(review.sourceEvidence.contentHash) &&
+        stagedAfterVerification(review.discoveredAt),
+    )
+    .map((review) => review.id);
 }
 
 /**
@@ -1124,6 +1209,7 @@ async function readDocumentSource(
   nowIso: string,
   trackedPoliciesByUrl: ReadonlyMap<string, Policy>,
   trackedTimelineEventsByUrl: ReadonlyMap<string, TimelineEvent>,
+  reviews: readonly SourceReview[],
 ): Promise<DocumentReading> {
   let discovered: Candidate[] = [];
   let directDocument: DocumentReading['directDocument'] = null;
@@ -1166,11 +1252,29 @@ async function readDocumentSource(
     ? trackedPolicy.verification.source.contentHash
     : trackedTimelineEvent?.verification.source.contentHash;
   const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
+  const verifiedAt = trackedRecord?.verification.source.retrievedAt;
+  const heldSince = readingHeldSince(
+    state,
+    source.id,
+    previous,
+    isCurrentReading,
+  );
+  const verifiedReading =
+    verifiedAt !== undefined &&
+    heldSince !== undefined &&
+    isCurrentReading(previous?.contentHash) &&
+    Date.parse(verifiedAt) >= Date.parse(heldSince);
+  const retractedReviewIds = verifiedReading
+    ? retractTransitionsOfVerifiedReading(
+        state,
+        source,
+        verifiedAt,
+        reviews,
+        isCurrentReading,
+      )
+    : [];
   const canonicalIsCurrent =
-    isThisReading(canonicalContentHash, previous) ||
-    (trackedRecord !== undefined &&
-      verifiedSinceReading(trackedRecord.verification.source, previous) &&
-      isCurrentReading(previous?.contentHash));
+    isThisReading(canonicalContentHash, previous) || verifiedReading;
   const adoptedReading =
     trackedRecord &&
     canonicalContentHash &&
@@ -1241,6 +1345,7 @@ async function readDocumentSource(
       directDocument: null,
       staged: transition.isNew ? staged : null,
       deferSourceSuccess: true,
+      retractedReviewIds,
     };
   } else if (trackedRecord) {
     const changeCount = maximumChangeCountForSource(
@@ -1252,7 +1357,11 @@ async function readDocumentSource(
       firstCheckedAt: previous?.firstCheckedAt ?? nowIso,
       lastCheckedAt: nowIso,
       ...(previous?.lastChangedAt
-        ? { lastChangedAt: previous.lastChangedAt }
+        ? {
+            lastChangedAt: verifiedReading
+              ? heldSince
+              : previous.lastChangedAt,
+          }
         : {}),
       ...(previous && !isCurrentReading(previous.contentHash)
         ? { lastChangedAt: nowIso }
@@ -1313,7 +1422,13 @@ async function readDocumentSource(
       changeFingerprint: `${contentHash}:${changeCount}`,
     }];
   }
-  return { discovered, directDocument, staged: null, deferSourceSuccess: false };
+  return {
+    discovered,
+    directDocument,
+    staged: null,
+    deferSourceSuccess: false,
+    retractedReviewIds,
+  };
 }
 
 /**
@@ -1401,6 +1516,7 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
 
   const developments: Development[] = [];
   const reviewCandidates: SourceReview[] = [];
+  const retractedReviewIds: string[] = [];
   const errors: string[] = [];
   const sourceResults: SourceRunResult[] = [];
 
@@ -1496,7 +1612,9 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
             nowIso,
             trackedPoliciesByUrl,
             trackedTimelineEventsByUrl,
+            options.sourceReviews ?? [],
           );
+          retractedReviewIds.push(...reading.retractedReviewIds);
           discovered = reading.discovered;
           directDocument = reading.directDocument;
           deferSourceSuccess = reading.deferSourceSuccess;
@@ -2004,5 +2122,12 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
     },
   };
 
-  return { developments, reviewCandidates, state, meta, errors };
+  return {
+    developments,
+    reviewCandidates,
+    state,
+    meta,
+    errors,
+    retractedReviewIds,
+  };
 }

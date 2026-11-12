@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { createHash } from 'node:crypto';
-import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -12,6 +12,7 @@ import { publicAutomaticCollectionMeta } from '@/lib/collection-coverage';
 import type { CollectionMeta, Development, SourceReview } from '@/types';
 import type { WatchState } from './collect';
 import { createHostGate, robotsFetcher } from './host-gate';
+import { retrieveSource } from './fetch';
 import { WATCH_SOURCES, type WatchSource } from './sources';
 
 const SOURCE: WatchSource = {
@@ -421,6 +422,244 @@ describe('collection CLI write path', () => {
       expect(
         readJson<{ collector: { lastRunErrors: string[] } }>('public', 'data', 'meta.json').collector.lastRunErrors,
       ).toEqual(expect.arrayContaining([expect.stringMatching(/^dropped invalid record bad-finding: /)]));
+    });
+
+    describe('a weekly document source tracked by a register record', () => {
+      const DOCUMENT: WatchSource = {
+        id: 'cli-test-document',
+        bodyId: 'test-body',
+        name: 'CLI test guidance page',
+        jurisdiction: 'vic',
+        category: 'regulator',
+        url: 'https://www.example.gov.au/guidance/generative-ai',
+        kind: 'document',
+        schedule: 'weekly',
+        enabled: true,
+        automation: 'automatic',
+      };
+      const FIRST_READ = '2026-07-23T20:36:08.370Z';
+      const EDITOR_CAPTURE = '2026-11-05T22:01:46.862Z';
+      const page = (text: string) =>
+        `<html><head></head><body><main><h1>Generative AI guidance</h1><p>${text}</p></main></body></html>`;
+      const documentFetch = (text: string) =>
+        vi.fn(async (input: RequestInfo | URL) =>
+          String(input) === DOCUMENT.url
+            ? new Response(page(text), { status: 200, headers: { 'content-type': 'text/html' } })
+            : new Response('not found', { status: 404 }),
+        ) as unknown as typeof fetch;
+      const reading = async (text: string) => {
+        const retrieved = await retrieveSource(DOCUMENT.url, { fetchImpl: documentFetch(text) });
+        return {
+          current: retrieved.evidence.contentHash as string,
+          legacy: retrieved.earlierContentHashes?.[1] as string,
+        };
+      };
+      const transitionKey = (hash: string, sequence: number) =>
+        `${DOCUMENT.url}#policai-change=${hash}:${sequence}`;
+      const trackedPolicy = (retrievedAt: string) =>
+        buildPolicy({
+          id: 'tracked-guidance',
+          title: 'Generative AI guidance',
+          jurisdiction: 'vic',
+          sourceUrl: DOCUMENT.url,
+          verification: {
+            status: 'verified',
+            checkedAt: retrievedAt,
+            checkedBy: 'reviewer',
+            method: 'manual',
+            source: { url: DOCUMENT.url, contentHash: 'd'.repeat(64), retrievedAt },
+          },
+        });
+      const writeRegister = (retrievedAt: string) =>
+        writeFileSync(registerFile(), JSON.stringify([trackedPolicy(retrievedAt)], null, 2) + '\n');
+      const seedMainState = async (text: string) => {
+        const { current, legacy } = await reading(text);
+        const state: WatchState = {
+          seen: {
+            [transitionKey(legacy, 1)]: {
+              firstSeenAt: FIRST_READ,
+              sourceId: DOCUMENT.id,
+              status: 'processed',
+              processedAt: FIRST_READ,
+              candidate: {
+                title: 'Generative AI guidance',
+                url: DOCUMENT.url,
+                text: '',
+                changeFingerprint: `${legacy}:1`,
+              },
+            },
+          },
+          lastCheckedBySource: { [DOCUMENT.id]: '2026-11-05T19:30:18.660Z' },
+          sourceSnapshots: {
+            [DOCUMENT.id]: {
+              contentHash: current,
+              firstCheckedAt: FIRST_READ,
+              lastCheckedAt: '2026-11-05T19:30:18.660Z',
+              lastChangedAt: FIRST_READ,
+              changeCount: 1,
+            },
+          },
+          hosts: {},
+          sourceHealth: {},
+        };
+        writeFileSync(path.join(rootDir, 'data', 'watch-state.json'), JSON.stringify(state));
+        return { current, legacy, state };
+      };
+      const collectDocument = (now: string, text: string) => {
+        const fetchImpl = documentFetch(text);
+        return runCollection({
+          rootDir,
+          sources: [DOCUMENT],
+          dryRun: false,
+          fetchImpl,
+          now: () => new Date(now),
+          stateDir,
+          hostGate: createHostGate({
+            hosts: {},
+            refused: new Map(),
+            fetchRobots: robotsFetcher({ fetchImpl }),
+            now: Date.now,
+            sleep: async () => {},
+          }),
+        });
+      };
+      const restoreMain = (state: WatchState) => {
+        resetMain();
+        writeFileSync(path.join(rootDir, 'data', 'watch-state.json'), JSON.stringify(state));
+      };
+      const pendingReviews = () =>
+        (existsSync(path.join(rootDir, 'data', 'source-reviews.json'))
+          ? readJson<SourceReview[]>('data', 'source-reviews.json')
+          : []
+        ).filter((review) => review.status === 'pending_review');
+      const stageFalseChange = async () => {
+        const seeded = await seedMainState('Version one.');
+        writeRegister('2026-07-01T00:00:00.000Z');
+        await collectDocument('2026-11-11T19:34:38.995Z', 'Version one.');
+        expect(outbox().sourceReviews.map((review) => review.sourceVersionSequence)).toEqual([2]);
+        expect(outbox().sourceReviews[0].sourceEvidence.contentHash).toBe(seeded.current);
+        const staged = JSON.parse(
+          readFileSync(path.join(stateDir, 'next', 'watch-state.json'), 'utf8'),
+        ) as WatchState;
+        expect(staged.sourceSnapshots?.[DOCUMENT.id]).toMatchObject({
+          contentHash: seeded.current,
+          lastChangedAt: '2026-11-11T19:34:38.995Z',
+          changeCount: 2,
+        });
+        expect(staged.seen[transitionKey(seeded.legacy, 2)].status).toBe('processed');
+        promote();
+        restoreMain(seeded.state);
+        writeRegister(EDITOR_CAPTURE);
+        return seeded;
+      };
+
+      it('retracts a change an earlier run staged for an unchanged page the editor verified since the collector first read it', async () => {
+        const seeded = await stageFalseChange();
+
+        for (const now of ['2026-11-12T19:30:36.269Z', '2026-11-13T19:30:00.000Z']) {
+          await collectDocument(now, 'Version one.');
+
+          expect(pendingReviews()).toEqual([]);
+          expect(readJson<Development[]>('data', 'developments.json')).toEqual([]);
+          expect(outbox()).toEqual({ developments: [], sourceReviews: [] });
+          const state = readJson<WatchState>('data', 'watch-state.json');
+          expect(state.sourceSnapshots?.[DOCUMENT.id]).toEqual({
+            contentHash: seeded.current,
+            firstCheckedAt: FIRST_READ,
+            lastCheckedAt: '2026-11-12T19:30:36.269Z',
+            lastChangedAt: FIRST_READ,
+            changeCount: 1,
+          });
+          expect(Object.keys(state.seen)).toEqual([transitionKey(seeded.legacy, 1)]);
+          promote();
+          restoreMain(seeded.state);
+        }
+      });
+
+      it('keeps one pending review for a version when the unmerged run that staged it is replayed', async () => {
+        await seedMainState('Version one.');
+        writeRegister('2026-07-01T00:00:00.000Z');
+        await collectDocument('2026-11-11T19:34:38.995Z', 'Version one.');
+        const [staged] = outbox().sourceReviews;
+        const main = readJson<WatchState>('data', 'watch-state.json');
+
+        for (const now of ['2026-11-12T19:30:36.269Z', '2026-11-13T19:30:00.000Z']) {
+          promote();
+          restoreMain(main);
+          await collectDocument(now, 'Version one.');
+
+          expect(pendingReviews().map((review) => review.id)).toEqual([staged.id]);
+          expect(outbox().sourceReviews.map((review) => review.id)).toEqual([staged.id]);
+          expect(outbox().developments.map((development) => development.id)).toEqual([
+            staged.linkedDevelopment?.id,
+          ]);
+        }
+      });
+
+      it('stages one review for a real change after a retracted one and keeps it through a replay', async () => {
+        const seeded = await stageFalseChange();
+        await collectDocument('2026-11-12T19:30:36.269Z', 'Version one.');
+        promote();
+        restoreMain(seeded.state);
+        const changed = await reading('Version two.');
+
+        await collectDocument('2026-11-19T19:30:00.000Z', 'Version two.');
+
+        expect(pendingReviews()).toHaveLength(1);
+        expect(pendingReviews()[0]).toMatchObject({
+          targetPolicyId: 'tracked-guidance',
+          sourceVersionSequence: 2,
+          sourceEvidence: { contentHash: changed.current },
+        });
+        const [real] = pendingReviews();
+        promote();
+        restoreMain(seeded.state);
+
+        await collectDocument('2026-11-20T19:30:00.000Z', 'Version two.');
+
+        expect(pendingReviews().map((review) => review.id)).toEqual([real.id]);
+        expect(readJson<WatchState>('data', 'watch-state.json').sourceSnapshots?.[DOCUMENT.id]).toMatchObject({
+          contentHash: changed.current,
+          changeCount: 2,
+        });
+      });
+
+      it('stages the next real change once beside a pending review main already carries, and keeps both through a replay', async () => {
+        await seedMainState('Version one.');
+        writeRegister(EDITOR_CAPTURE);
+        await collectDocument('2026-11-12T19:30:36.269Z', 'Version two.');
+        const [merged] = pendingReviews();
+        expect(merged.sourceVersionSequence).toBe(2);
+        promote();
+        const main = readJson<WatchState>('data', 'watch-state.json');
+        const mainReviews = readFileSync(path.join(rootDir, 'data', 'source-reviews.json'), 'utf8');
+        const mainDevelopments = readFileSync(path.join(rootDir, 'data', 'developments.json'), 'utf8');
+        const changed = await reading('Version three.');
+
+        await collectDocument('2026-11-13T19:30:00.000Z', 'Version three.');
+
+        const sequences = () =>
+          pendingReviews()
+            .map((review) => [review.sourceVersionSequence, review.sourceEvidence.contentHash])
+            .sort();
+        expect(sequences()).toEqual([
+          [2, merged.sourceEvidence.contentHash],
+          [3, changed.current],
+        ]);
+        const next = pendingReviews().find((review) => review.sourceVersionSequence === 3) as SourceReview;
+        promote();
+        restoreMain(main);
+        writeFileSync(path.join(rootDir, 'data', 'source-reviews.json'), mainReviews);
+        writeFileSync(path.join(rootDir, 'data', 'developments.json'), mainDevelopments);
+
+        await collectDocument('2026-11-14T19:30:00.000Z', 'Version three.');
+
+        expect(sequences()).toEqual([
+          [2, merged.sourceEvidence.contentHash],
+          [3, changed.current],
+        ]);
+        expect(outbox().sourceReviews.map((review) => review.id)).toEqual([next.id]);
+      });
     });
 
     it('writes nothing to the promoted state itself', async () => {

@@ -5,7 +5,7 @@ The collector is the automation behind the Developments feed: it watches officia
 ## What one collection pass does
 
 1. Loads the seen-URL registry (`data/watch-state.json`) and the existing feed (`data/developments.json`).
-2. For each due source marked `automation: automatic` in [`src/lib/pipeline/sources.ts`](../src/lib/pipeline/sources.ts) (daily sources every run, weekly sources every 6+ days):
+2. For each due source marked `automation: automatic` in [`src/lib/pipeline/sources.ts`](../src/lib/pipeline/sources.ts) (daily sources every run, weekly sources every 6+ days, or every run while a document version awaits review):
    - admits every request through the host gate (robots.txt, a 2 s gap per
      host, `Retry-After`; see Politeness below),
    - fetches the index page or RSS feed,
@@ -142,13 +142,41 @@ no transition to adopt. Editorial retrieval is plain HTTP, while a
 the two hash different markup for the same page. The collector therefore
 accepts the record's fingerprint as its current version when its reading
 still matches its own snapshot and the record's `verification.source.retrievedAt`
-is no earlier than when the collector first saw that reading
-(`lastChangedAt`, else `firstCheckedAt`). The editor captured the page after
-the collector already saw these bytes, so the editor saw this version. If the
-capture predates that reading, or the reading differs from the snapshot, the
-mismatch still stages a review. Before this rule the 2026-11-05 OVIC
-corrections (#668) raised false changes on both OVIC generative AI records in
-the 2026-11-11 run (#713).
+is no earlier than when the collector first saw that reading. The editor
+captured the page after the collector already saw these bytes, so the editor
+saw this version. If the capture predates that reading, or the reading differs
+from the snapshot, the mismatch still stages a review. Before this rule the
+2026-11-05 OVIC corrections (#668) raised false changes on both OVIC generative
+AI records in the 2026-11-11 run (#713).
+
+"When the collector first saw that reading" is the snapshot's `lastChangedAt`
+(else `firstCheckedAt`), moved back to the earliest `firstSeenAt` of the
+source's latest consecutive versions in `seen` whose fingerprint is the current
+reading. Staging a review sets `lastChangedAt` and `changeCount` even when the
+page did not change, so a false staging would otherwise date the reading after
+the editor's capture and switch the rule off for good. A version with a
+different fingerprint ends the walk, so a page that changed and changed back
+counts from its return.
+
+When the rule holds, the collector also retracts what was staged against that
+reading after the editor's capture. It deletes those versions from `seen`,
+returns the snapshot's `changeCount` to the verified version and its
+`lastChangedAt` to the first sighting, and reports the pending collector
+reviews for them in `retractedReviewIds`. `scripts/collect-run.ts` drops a
+retracted review and its development from the outbox replay. It never removes
+one main already carries: that review stays for an editor to reject. The
+2026-11-11 run's state was promoted to the host before #717 merged, so the
+2026-11-12 run (#723) staged the same two OVIC changes again; retraction
+clears them on the next run without an edit to host state.
+
+A pending review is matched to the version the collector staged it from by its
+id, which is derived from that version's fingerprint. The fingerprint can be an
+earlier scheme's hash of the same reading while the review's evidence stores
+the current hash; matching on the evidence hash opened a second version, which
+the next run processed into a second pending review for the same target and
+sequence. A weekly document source is read on every run while one of its
+versions awaits review, so a retraction, a reversion or a further change is
+seen the next day instead of up to six days later.
 An unreadable changed version that later returns to the verified baseline also
 creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still
@@ -875,7 +903,10 @@ With `POLICAI_COLLECTOR_STATE` set, `scripts/collect-run.ts` reads its watch
 state from `<dir>/watch-state.json` instead of main's, and replays the
 developments and source reviews in `<dir>/outbox.json` whose ids main does not
 carry. It writes the next state and outbox to `<dir>/next/`. A failed run
-therefore never blocks the next one, and an unmerged PR loses nothing.
+therefore never blocks the next one, and an unmerged PR loses nothing. The one
+exception is a change review the run retracts because its source was verified
+unchanged (see "Publication may re-capture the source" above): it and its
+development leave the outbox.
 
 The CLI persists source reviews and developments before advancing
 `watch-state.json`. Stable review/development ids make a retry idempotent if an
