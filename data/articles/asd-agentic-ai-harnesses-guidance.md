@@ -48,4 +48,4 @@ The register records the audience as executive decision-makers, chief informatio
 
 ## Analysis
 
-In Policai's analysis, the advisory moves the governance question from which model an organisation uses to what the agent can reach and who approves it. A question that follows from the list above is where each control is enforced. The register classes the advisory as a guideline.
+In Policai's analysis, the advisory moves the governance question from which model an organisation uses to what the agent can reach and who approves it. The register classes the advisory as a guideline.

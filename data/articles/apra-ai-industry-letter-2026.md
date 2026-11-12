@@ -4,6 +4,10 @@ title: "APRA expects boards to understand AI well enough to challenge it"
 summary: APRA's April 2026 letter to all regulated entities sets minimum expectations for AI governance, security, supplier risk and assurance, and says APRA will take stronger supervisory action where entities fail to manage AI risk. A joint APRA–ASIC paper in August 2026 asks entities to act now.
 status: published
 publishedAt: 2026-10-20
+updatedAt: 2026-11-12
+corrections:
+  - date: 2026-11-12
+    text: "The piece described CPS 230 and CPS 234 as standards the joint APRA–ASIC paper lists; the paper lists them among resources entities may consider, and the piece now says so."
 cites:
   - apra-ai-industry-letter-2026
   - asic-apra-resilience-at-frontier-ai-speed-2026
@@ -29,7 +33,7 @@ On 30 April 2026 the Australian Prudential Regulation Authority (APRA) wrote to 
 
 ## What it says
 
-APRA found that "assurance practices are not keeping pace with the scale, speed and complexity of AI", and that many boards "are still developing the technical literacy required to provide effective challenge" ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)). It expects boards, at a minimum, to understand AI well enough to set strategic direction and provide "effective challenge and oversight", and to oversee an AI strategy consistent with the entity's risk appetite, with monitoring, reporting and defined triggers for action.
+APRA found that "assurance practices are not keeping pace with the scale, speed and complexity of AI", and that many boards "are still developing the technical literacy required to provide effective challenge" ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)). It expects boards, at a minimum, to understand AI well enough to set strategic direction and provide "effective challenge and oversight", and to oversee an AI strategy consistent with the entity's risk appetite, with monitoring, reporting and defined triggers for action ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)).
 
 An attachment for accountable executives sets minimum expectations in four areas ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)):
 
@@ -48,6 +52,6 @@ The letter is addressed to all APRA-regulated entities. APRA says the lessons fr
 
 ## Analysis
 
-In Policai's analysis, the letter creates no new prudential standard. It states how APRA reads its existing framework for AI, and APRA will supervise against that reading. The expectations most likely to need new work are tested exit arrangements for critical AI providers and continuous monitoring of models, because APRA reports that few of the large entities it examined had them.
+In Policai's analysis, the letter creates no new prudential standard. It states how APRA reads its existing framework for AI, and APRA will supervise against that reading. The expectations most likely to need new work are tested exit arrangements for critical AI providers and continuous monitoring of models, because APRA reports that few of the large entities it examined had them ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)).
 
-APRA says it is finalising its forward plan for supervising AI risk and will consider whether further policy action is needed ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)). Until that plan is public, the reference points are the letter and the standards the joint paper lists, CPS 230 Operational Risk Management and CPS 234 Information Security ([p 4](https://download.asic.gov.au/media/imunrchk/asic-and-apra-resilience-at-frontier-ai-speed-roundatable.pdf)).
+APRA says it is finalising its forward plan for supervising AI risk and will consider whether further policy action is needed ([APRA letter](https://www.apra.gov.au/apra-letter-to-industry-on-artificial-intelligence-ai)). Until that plan is public, the reference points are the letter and the resources the joint paper lists, including CPS 230 Operational Risk Management and CPS 234 Information Security ([p 4](https://download.asic.gov.au/media/imunrchk/asic-and-apra-resilience-at-frontier-ai-speed-roundatable.pdf)).
