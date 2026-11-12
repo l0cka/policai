@@ -1,5 +1,214 @@
 [
   {
+    "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-8pus30",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "sourceId": "senate-ai-data-centres",
+    "sourceName": "Senate inquiry — artificial intelligence and data centres",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-11-12T19:30:36.269Z",
+    "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-12T19:30:36.269Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+        "retrievedAt": "2026-11-12T19:30:36.269Z",
+        "contentType": "text/html",
+        "contentHash": "e2cdf6f4d433bdd1e0573ec09a88f356b51b079f8a91703e925e50524bb36a18",
+        "title": "Senate opens inquiry into artificial intelligence and data centres"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-use-of-enterprise-generative-ai-tools-in-the-vic-f46ns1",
+    "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+    "sourceId": "ovic-enterprise-generative-ai",
+    "sourceName": "OVIC — enterprise generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-11-12T19:30:36.269Z",
+    "summary": "The official source content for \"Use of enterprise Generative AI tools in the Victorian public sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-12T19:30:36.269Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "retrievedAt": "2026-11-12T19:30:36.269Z",
+        "contentType": "text/html",
+        "contentHash": "8a6def4ecb45afad7d7d3cd3a1de5f8a3d67e7854784f5f07f9d16f451b9719c",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "retrievedAt": "2026-11-12T19:30:36.269Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "retrievedAt": "2026-11-12T19:30:36.269Z",
+            "contentType": "application/pdf",
+            "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910"
+          }
+        ],
+        "title": "Use of enterprise Generative AI tools in the Victorian public sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-use-of-publicly-available-generative-ai-tools-in-1i5v7bh",
+    "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+    "sourceId": "ovic-public-generative-ai",
+    "sourceName": "OVIC — publicly available generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-11-12T19:30:36.269Z",
+    "summary": "The official source content for \"Use of publicly available Generative AI tools in the Victorian public sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-12T19:30:36.269Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "retrievedAt": "2026-11-12T19:30:36.269Z",
+        "contentType": "text/html",
+        "contentHash": "0d6dd8a3e99451ce27828f4286d10e67c1797051b512fea3a6128ca43273b008",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "retrievedAt": "2026-11-12T19:30:36.269Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "retrievedAt": "2026-11-12T19:30:36.269Z",
+            "contentType": "application/pdf",
+            "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f"
+          }
+        ],
+        "title": "Use of publicly available Generative AI tools in the Victorian public sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-use-of-enterprise-generative-ai-tools-in-the-vic-15kcbs2",
+    "title": "Use of enterprise Generative AI tools in the Victorian public sector",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+    "sourceId": "ovic-enterprise-generative-ai",
+    "sourceName": "OVIC — enterprise generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-11-11T19:34:38.995Z",
+    "summary": "The official source content for \"Use of enterprise Generative AI tools in the Victorian public sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-11T19:34:38.995Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-enterprise-generative-ai-tools-in-the-victorian-public-sector",
+        "retrievedAt": "2026-11-11T19:34:38.995Z",
+        "contentType": "text/html",
+        "contentHash": "8a6def4ecb45afad7d7d3cd3a1de5f8a3d67e7854784f5f07f9d16f451b9719c",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "retrievedAt": "2026-11-11T19:34:38.995Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "21b91a6beef29d79cac96e4834954a9080bdd0baed484d7e75dffa8c5d1c9774"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-enterprise-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "retrievedAt": "2026-11-11T19:34:38.995Z",
+            "contentType": "application/pdf",
+            "contentHash": "8c676d11fc2790c5030db7d76ccf723c4a270370784fc71cd696783661ce5910"
+          }
+        ],
+        "title": "Use of enterprise Generative AI tools in the Victorian public sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-use-of-publicly-available-generative-ai-tools-in-1nbqxl3",
+    "title": "Use of publicly available Generative AI tools in the Victorian public sector",
+    "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+    "sourceId": "ovic-public-generative-ai",
+    "sourceName": "OVIC — publicly available generative AI guidance",
+    "jurisdiction": "vic",
+    "detectedAt": "2026-11-11T19:34:38.995Z",
+    "summary": "The official source content for \"Use of publicly available Generative AI tools in the Victorian public sector\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-11T19:34:38.995Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "finalUrl": "https://ovic.vic.gov.au/privacy/resources-for-organisations/use-of-personal-information-with-publicly-available-generative-ai-tools-in-the-victorian-public-sector",
+        "retrievedAt": "2026-11-11T19:34:38.995Z",
+        "contentType": "text/html",
+        "contentHash": "0d6dd8a3e99451ce27828f4286d10e67c1797051b512fea3a6128ca43273b008",
+        "linkedDocuments": [
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.docx",
+            "retrievedAt": "2026-11-11T19:34:38.995Z",
+            "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "contentHash": "5bc1239c17aa4eb1607da37aca7c2e60db694e721f04f487af0d62485d6ffe39"
+          },
+          {
+            "url": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "finalUrl": "https://ovic.vic.gov.au/wp-content/uploads/2026/06/20260626-Resource-Use-of-publicly-available-Generative-AI-tools-in-the-Victorian-public-sector.pdf",
+            "retrievedAt": "2026-11-11T19:34:38.995Z",
+            "contentType": "application/pdf",
+            "contentHash": "678bb1b621b2965102be1656046c009fa72249cb0d394b169b8124022559658f"
+          }
+        ],
+        "title": "Use of publicly available Generative AI tools in the Victorian public sector"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-rapid-review-into-australian-government-arrangem-ot2vmd",
     "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
     "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
