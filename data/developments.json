@@ -3811,31 +3811,24 @@
       "source": {
         "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
         "finalUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
-        "title": "Artificial Intelligence Assurance Framework",
-        "retrievedAt": "2026-07-20T13:03:58.965Z",
+        "retrievedAt": "2026-11-13T01:50:31.044Z",
         "contentType": "text/html",
-        "contentHash": "882c30e08acf01fbd22aad0500c362e861a3562a9e15ed351f11789dc4a644d4",
-        "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-20T13:03:58.965Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Controlled browser review of the current official Department of Corporate and Digital Development page after the legacy Digital Territory URL redirected and the server-side editorial retriever returned HTTP 403.",
-          "pageContentHash": "965ebf436c4110e1776c208036a69a7b81ec48d48d85697d4aa38c5bbd36eb64",
-          "characterCount": 647
-        },
+        "contentHash": "4815d228196159377db31c72d06bbb513aadcf79b8a9caacb02a5fdeae349730",
+        "title": "Artificial Intelligence Assurance Framework",
+        "publishedAt": "2026-02-25",
+        "publishedAtPrecision": "day",
         "reviewedDate": {
           "date": "2025-11-01",
           "precision": "month",
-          "reviewedAt": "2026-07-20T13:04:10.601Z",
+          "reviewedAt": "2026-11-13T01:50:31.045Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
+          "notes": "Page read 13 Nov 2026 identifies the framework as (November 2025); month precision retained."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedAt": "2026-11-13T01:50:31.045Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-13-1, proposal ffb4 cc15 f59b 129b). Proposed by Claude (agent)."
     },
     "status": "promoted",
     "relatedPolicyId": "nt-artificial-intelligence-assurance-framework"
@@ -3861,32 +3854,36 @@
       "status": "verified",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-        "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-        "title": "NSW AI Assessment Framework | Digital NSW",
-        "retrievedAt": "2026-07-19T06:12:45.941Z",
+        "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+        "retrievedAt": "2026-11-13T01:50:25.538Z",
         "contentType": "text/html",
-        "contentHash": "002847f2550a0859411daf5b20589813ba648da2438679b163f0c5d73b07c8ff",
-        "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-19T06:12:45.941Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
-          "pageContentHash": "1b3c4af8197eb0c14a99952ee29c7a5d2811814495c51e7b6d31c9d34f501214",
-          "characterCount": 11931
-        },
+        "contentHash": "e91bf00aad4e907f07302c07f7d657ca938df70a64b60cfdf68d4583cf1b3cdd",
+        "etag": "\"386420079c6d842ec75269cc562d717c\"",
+        "lastModified": "Mon, 09 Nov 2026 20:12:16 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://digital.nsw.gov.au/sites/default/files/2024-05/Digital-Assurance-Framework-2024.pdf",
+            "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2024-05/Digital-Assurance-Framework-2024.pdf",
+            "retrievedAt": "2026-11-13T01:50:25.628Z",
+            "contentType": "application/pdf",
+            "contentHash": "259b4e9dd8fb7ec3b843e40603477fcc20d7943f7e6a1e4a33db8e9ad5fa2329",
+            "etag": "\"57ac6dc9a860d3734cf9467c204b0ffe\"",
+            "lastModified": "Mon, 09 Nov 2026 21:21:35 GMT"
+          }
+        ],
+        "title": "NSW AI Assessment Framework",
         "reviewedDate": {
           "date": "2026-01-27",
           "precision": "day",
-          "reviewedAt": "2026-07-19T06:14:28.866Z",
+          "reviewedAt": "2026-11-13T01:50:25.629Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
+          "notes": "Source page text read 13 Nov 2026: \"On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI\"."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
+      "checkedAt": "2026-11-13T01:50:25.629Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching).",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-13-1, proposal f497 30d1 d4a8 8e11). Proposed by Claude (agent).",
       "lastSourceAuditAt": "2026-07-16T10:00:09.104Z"
     },
     "publishedAt": "2026-01-27",

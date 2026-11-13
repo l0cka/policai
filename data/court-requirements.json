@@ -3860,7 +3860,7 @@
     ],
     "source": {
       "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-      "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+      "contentHash": "f609f3d5331057376c92a79e17743eace5bedeafb4f892b3d360f89169b96e6b",
       "locator": "paragraphs 3.1-3.3",
       "quote": "Judicial Officers must not use GenAI for judicial decision-making. 3.2 Judicial Officers consider each matter that comes before them and exercise their judgment to reach a decision and, where appropriate, provide reasons for that decision. 3.3 Paragraph 3.1 above does not prevent supportive uses of AI by Judicial Officers or Court staff."
     },
@@ -3871,9 +3871,9 @@
     },
     "verification": {
       "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass: quote expanded to the contiguous passage 3.1-3.3 so the supportive-use exception is supported by the quote. Prohibition verbatim."
+      "reviewedAt": "2026-11-13T02:00:00.000Z",
+      "reviewedBy": "Daniel Alkurdi",
+      "notes": "Re-verified as drafted on a Policai decision card (2026-11-13) after source-review batch 2026-11-13-1 refreshed the record source fingerprint; the exact quote was compared word for word with the Supreme Court of Victoria page read on 13 Nov 2026 (clauses 3.1 to 3.6)."
     }
   },
   {
@@ -3892,7 +3892,7 @@
     ],
     "source": {
       "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-      "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+      "contentHash": "f609f3d5331057376c92a79e17743eace5bedeafb4f892b3d360f89169b96e6b",
       "locator": "paragraphs 3.3-3.4",
       "quote": "Paragraph 3.1 above does not prevent supportive uses of AI by Judicial Officers or Court staff. 3.4 Permissible supportive uses of AI include using it to organise and locate case materials, produce summaries and chronologies from case materials, as an aid to legal research and for proof-reading. These uses are not a substitute for reading and/or listening to evidence and submissions, or fact finding when that is called for in judicial decision-making."
     },
@@ -3903,9 +3903,9 @@
     },
     "verification": {
       "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass: first-pass quote was truncated at 'fact finding' and omitted 3.3, which supplies the actor ('Judicial Officers or Court staff'). Quote expanded to complete contiguous 3.3-3.4 text."
+      "reviewedAt": "2026-11-13T02:00:00.000Z",
+      "reviewedBy": "Daniel Alkurdi",
+      "notes": "Re-verified as drafted on a Policai decision card (2026-11-13) after source-review batch 2026-11-13-1 refreshed the record source fingerprint; the exact quote was compared word for word with the Supreme Court of Victoria page read on 13 Nov 2026 (clauses 3.1 to 3.6)."
     }
   },
   {
@@ -3924,7 +3924,7 @@
     ],
     "source": {
       "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-      "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+      "contentHash": "f609f3d5331057376c92a79e17743eace5bedeafb4f892b3d360f89169b96e6b",
       "locator": "paragraph 3.5",
       "quote": "For case related matters, Judicial Officers and Court staff must only use AI tools approved by the Court."
     },
@@ -3935,9 +3935,9 @@
     },
     "verification": {
       "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass: verbatim; condition preserved. The first-pass separate item on how the Court gives approval (second sentence of 3.5) was removed as descriptive of the Court's approval criteria rather than an operative obligation."
+      "reviewedAt": "2026-11-13T02:00:00.000Z",
+      "reviewedBy": "Daniel Alkurdi",
+      "notes": "Re-verified as drafted on a Policai decision card (2026-11-13) after source-review batch 2026-11-13-1 refreshed the record source fingerprint; the exact quote was compared word for word with the Supreme Court of Victoria page read on 13 Nov 2026 (clauses 3.1 to 3.6)."
     }
   },
   {
@@ -3955,7 +3955,7 @@
     ],
     "source": {
       "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-      "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
+      "contentHash": "f609f3d5331057376c92a79e17743eace5bedeafb4f892b3d360f89169b96e6b",
       "locator": "paragraph 3.6",
       "quote": "Judicial Officers should provide the staff assisting them with clear directions regarding the appropriate use of AI and the level of disclosure the Judicial Officer requires."
     },
@@ -3966,9 +3966,9 @@
     },
     "verification": {
       "status": "verified",
-      "reviewedAt": "2026-08-26T14:01:41.059Z",
-      "reviewedBy": "Claude Fable",
-      "notes": "Second pass: verbatim; renumbered from 005 after removal of the descriptive approval item."
+      "reviewedAt": "2026-11-13T02:00:00.000Z",
+      "reviewedBy": "Daniel Alkurdi",
+      "notes": "Re-verified as drafted on a Policai decision card (2026-11-13) after source-review batch 2026-11-13-1 refreshed the record source fingerprint; the exact quote was compared word for word with the Supreme Court of Victoria page read on 13 Nov 2026 (clauses 3.1 to 3.6)."
     }
   },
   {
