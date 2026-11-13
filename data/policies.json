@@ -5446,7 +5446,7 @@
     ],
     "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
     "content": "The NSW AI Assessment Framework (AIAF) is mandatory for NSW Government agencies’ AI projects. An updated AI Assessment Framework was launched on 1 July 2024. On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI (established September 2025) with CSIRO’s Data61, aligned with the National framework for the assurance of AI in government and international approaches including the EU AI Act. NSW also published an Australian-first guide to using AI agents in government on 20 October 2025.",
-    "aiSummary": "Current mandatory NSW framework for assessing AI systems under Circular DCS-2024-04.",
+    "aiSummary": "Current mandatory NSW framework for assessing AI systems under Circular DCS-2026-02.",
     "tags": [
       "NSW",
       "assessment framework",
@@ -5458,38 +5458,42 @@
       "risk-assurance"
     ],
     "createdAt": "2026-04-06T16:50:00Z",
-    "updatedAt": "2026-07-19T06:14:28.866Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "updatedAt": "2026-11-13T01:50:25.629Z",
+    "lastReviewedAt": "2026-11-13T01:50:25.629Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-        "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-        "title": "NSW AI Assessment Framework | Digital NSW",
-        "retrievedAt": "2026-07-19T06:12:45.941Z",
+        "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+        "retrievedAt": "2026-11-13T01:50:25.538Z",
         "contentType": "text/html",
-        "contentHash": "002847f2550a0859411daf5b20589813ba648da2438679b163f0c5d73b07c8ff",
-        "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-19T06:12:45.941Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
-          "pageContentHash": "1b3c4af8197eb0c14a99952ee29c7a5d2811814495c51e7b6d31c9d34f501214",
-          "characterCount": 11931
-        },
+        "contentHash": "e91bf00aad4e907f07302c07f7d657ca938df70a64b60cfdf68d4583cf1b3cdd",
+        "etag": "\"386420079c6d842ec75269cc562d717c\"",
+        "lastModified": "Mon, 09 Nov 2026 20:12:16 GMT",
+        "linkedDocuments": [
+          {
+            "url": "https://digital.nsw.gov.au/sites/default/files/2024-05/Digital-Assurance-Framework-2024.pdf",
+            "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2024-05/Digital-Assurance-Framework-2024.pdf",
+            "retrievedAt": "2026-11-13T01:50:25.628Z",
+            "contentType": "application/pdf",
+            "contentHash": "259b4e9dd8fb7ec3b843e40603477fcc20d7943f7e6a1e4a33db8e9ad5fa2329",
+            "etag": "\"57ac6dc9a860d3734cf9467c204b0ffe\"",
+            "lastModified": "Mon, 09 Nov 2026 21:21:35 GMT"
+          }
+        ],
+        "title": "NSW AI Assessment Framework",
         "reviewedDate": {
           "date": "2026-01-27",
           "precision": "day",
-          "reviewedAt": "2026-07-19T06:14:28.866Z",
+          "reviewedAt": "2026-11-13T01:50:25.629Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
+          "notes": "Source page text read 13 Nov 2026: \"On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI\"."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
-      "checkedBy": "Policai Developer source re-read (issue 161)",
+      "checkedAt": "2026-11-13T01:50:25.629Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Issue 161 correction 2026-10-16: replaced 'The original framework commenced 1 July 2024' with 'An updated AI Assessment Framework was launched on 1 July 2024', as the NSW release of 1 July 2024 describes the launch as an update to the framework. The 27 January 2026 date is unchanged.",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-13-1, proposal f497 30d1 d4a8 8e11). Proposed by Claude (agent).",
       "lastSourceAuditAt": "2026-07-16T10:00:09.104Z"
     },
     "dates": [
@@ -5500,26 +5504,30 @@
         "primary": true,
         "source": {
           "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-          "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
-          "title": "NSW AI Assessment Framework | Digital NSW",
-          "retrievedAt": "2026-07-19T06:12:45.941Z",
+          "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+          "retrievedAt": "2026-11-13T01:50:25.538Z",
           "contentType": "text/html",
-          "contentHash": "002847f2550a0859411daf5b20589813ba648da2438679b163f0c5d73b07c8ff",
-          "linkedDocuments": [],
-          "browserCapture": {
-            "method": "browser",
-            "capturedAt": "2026-07-19T06:12:45.941Z",
-            "capturedBy": "Daniel Alkurdi",
-            "notes": "Browser-reviewed official source evidence for the approved Policai verification batch on 19 July 2026.",
-            "pageContentHash": "1b3c4af8197eb0c14a99952ee29c7a5d2811814495c51e7b6d31c9d34f501214",
-            "characterCount": 11931
-          },
+          "contentHash": "e91bf00aad4e907f07302c07f7d657ca938df70a64b60cfdf68d4583cf1b3cdd",
+          "etag": "\"386420079c6d842ec75269cc562d717c\"",
+          "lastModified": "Mon, 09 Nov 2026 20:12:16 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://digital.nsw.gov.au/sites/default/files/2024-05/Digital-Assurance-Framework-2024.pdf",
+              "finalUrl": "https://digital.nsw.gov.au/sites/default/files/2024-05/Digital-Assurance-Framework-2024.pdf",
+              "retrievedAt": "2026-11-13T01:50:25.628Z",
+              "contentType": "application/pdf",
+              "contentHash": "259b4e9dd8fb7ec3b843e40603477fcc20d7943f7e6a1e4a33db8e9ad5fa2329",
+              "etag": "\"57ac6dc9a860d3734cf9467c204b0ffe\"",
+              "lastModified": "Mon, 09 Nov 2026 21:21:35 GMT"
+            }
+          ],
+          "title": "NSW AI Assessment Framework",
           "reviewedDate": {
             "date": "2026-01-27",
             "precision": "day",
-            "reviewedAt": "2026-07-19T06:14:28.866Z",
+            "reviewedAt": "2026-11-13T01:50:25.629Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "Verified against the NSW Government release for the modernised NSW AI Assessment Framework, published 27 January 2026."
+            "notes": "Source page text read 13 Nov 2026: \"On 27 January 2026 NSW launched a modernised AIAF developed by the NSW Office for AI\"."
           }
         }
       }
@@ -6488,7 +6496,7 @@
     "status": "active",
     "effectiveDate": "2025-11-01",
     "agencies": [
-      "Digital Territory",
+      "Department of Corporate and Digital Development",
       "Northern Territory Government"
     ],
     "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
@@ -6506,38 +6514,31 @@
       "risk-assurance"
     ],
     "createdAt": "2026-04-13T03:05:00Z",
-    "updatedAt": "2026-07-20T13:04:10.601Z",
-    "lastReviewedAt": "2026-10-16T00:00:00.000Z",
+    "updatedAt": "2026-11-13T01:50:31.045Z",
+    "lastReviewedAt": "2026-11-13T01:50:31.045Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
         "finalUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
-        "title": "Artificial Intelligence Assurance Framework",
-        "retrievedAt": "2026-07-20T13:03:58.965Z",
+        "retrievedAt": "2026-11-13T01:50:31.044Z",
         "contentType": "text/html",
-        "contentHash": "882c30e08acf01fbd22aad0500c362e861a3562a9e15ed351f11789dc4a644d4",
-        "linkedDocuments": [],
-        "browserCapture": {
-          "method": "browser",
-          "capturedAt": "2026-07-20T13:03:58.965Z",
-          "capturedBy": "Daniel Alkurdi",
-          "notes": "Controlled browser review of the current official Department of Corporate and Digital Development page after the legacy Digital Territory URL redirected and the server-side editorial retriever returned HTTP 403.",
-          "pageContentHash": "965ebf436c4110e1776c208036a69a7b81ec48d48d85697d4aa38c5bbd36eb64",
-          "characterCount": 647
-        },
+        "contentHash": "4815d228196159377db31c72d06bbb513aadcf79b8a9caacb02a5fdeae349730",
+        "title": "Artificial Intelligence Assurance Framework",
+        "publishedAt": "2026-02-25",
+        "publishedAtPrecision": "day",
         "reviewedDate": {
           "date": "2025-11-01",
           "precision": "month",
-          "reviewedAt": "2026-07-20T13:04:10.601Z",
+          "reviewedAt": "2026-11-13T01:50:31.045Z",
           "reviewedBy": "Daniel Alkurdi",
-          "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
+          "notes": "Page read 13 Nov 2026 identifies the framework as (November 2025); month precision retained."
         }
       },
-      "checkedAt": "2026-10-16T00:00:00.000Z",
-      "checkedBy": "Policai Developer source re-read (issue 161)",
+      "checkedAt": "2026-11-13T01:50:31.045Z",
+      "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Re-verified on the current Department of Corporate and Digital Development page. The canonical URL is updated, while November 2025 remains the framework date; this is a source migration, not a substantive amendment. Issue 161 correction 2026-10-16: removed the unsupported 'last updated on 10 December 2025'; the NT page names the framework as November 2025 only."
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-13-1, proposal ffb4 cc15 f59b 129b). Proposed by Claude (agent)."
     },
     "dates": [
       {
@@ -6548,25 +6549,18 @@
         "source": {
           "url": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
           "finalUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
-          "title": "Artificial Intelligence Assurance Framework",
-          "retrievedAt": "2026-07-20T13:03:58.965Z",
+          "retrievedAt": "2026-11-13T01:50:31.044Z",
           "contentType": "text/html",
-          "contentHash": "882c30e08acf01fbd22aad0500c362e861a3562a9e15ed351f11789dc4a644d4",
-          "linkedDocuments": [],
-          "browserCapture": {
-            "method": "browser",
-            "capturedAt": "2026-07-20T13:03:58.965Z",
-            "capturedBy": "Daniel Alkurdi",
-            "notes": "Controlled browser review of the current official Department of Corporate and Digital Development page after the legacy Digital Territory URL redirected and the server-side editorial retriever returned HTTP 403.",
-            "pageContentHash": "965ebf436c4110e1776c208036a69a7b81ec48d48d85697d4aa38c5bbd36eb64",
-            "characterCount": 647
-          },
+          "contentHash": "4815d228196159377db31c72d06bbb513aadcf79b8a9caacb02a5fdeae349730",
+          "title": "Artificial Intelligence Assurance Framework",
+          "publishedAt": "2026-02-25",
+          "publishedAtPrecision": "day",
           "reviewedDate": {
             "date": "2025-11-01",
             "precision": "month",
-            "reviewedAt": "2026-07-20T13:04:10.601Z",
+            "reviewedAt": "2026-11-13T01:50:31.045Z",
             "reviewedBy": "Daniel Alkurdi",
-            "notes": "The current official NT Government page identifies the Artificial Intelligence Assurance Framework as November 2025; month precision is retained."
+            "notes": "Page read 13 Nov 2026 identifies the framework as (November 2025); month precision retained."
           }
         }
       }
@@ -8771,8 +8765,8 @@
       "Land and Environment Court of New South Wales"
     ],
     "sourceUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
-    "content": "Issued by the Honourable Justice Brian J Preston, Chief Judge, on 11 February 2025, this Practice Note replaces the Court's earlier practice note that had commenced on 3 February 2025. It commences on 12 February 2025 and applies to all proceedings from that date. The substance follows Supreme Court Practice Note SC Gen 23. It identifies generative AI broadly across generic and legal-specific tools, and sets out the risks users must understand, including hallucinated citations and fabricated authorities, dependence on training data that may be inaccurate, out of date or not relevant to New South Wales, biased output, prompts being retained and reused, inadequate confidentiality and privilege safeguards, and training data obtained in breach of copyright. It prohibits entering material subject to confidentiality or non-publication orders, statutorily restricted material and material produced under subpoena into any generative AI program. Generative AI must not be used to generate the content of statements, affidavits, statutory declarations, character references or other evidentiary material, nor to alter, embellish, strengthen, dilute or rephrase a witness's written evidence, with leave available in exceptional cases for attachments and annexures. Verification of authorities must not be carried out solely by using a generative AI tool. Paragraph 24 adds a transition requirement specific to this Court: expert reports prepared between the date the practice note was issued and the date it commenced must identify which part or parts of the report relied on generative AI in preparing its content. The practice note will be periodically reviewed.",
-    "aiSummary": "Land and Environment Court of New South Wales practice note applying the SC Gen 23 framework and requiring transition-period expert reports to identify generative AI reliance, commencing 12 February 2025.",
+    "content": "Issued by the Honourable Justice Brian J Preston, Chief Judge, on 11 February 2025, this Practice Note replaces the Court's earlier practice note that had commenced on 3 February 2025. It commences on 12 February 2025 and applies to all proceedings from that date. It identifies generative AI broadly across generic and legal-specific tools, and sets out the risks users must understand, including hallucinated citations and fabricated authorities, dependence on training data that may be inaccurate, out of date or not relevant to New South Wales, biased output, prompts being retained and reused, inadequate confidentiality and privilege safeguards, and training data obtained in breach of copyright. Information subject to non-publication or suppression orders, material produced on subpoena and material subject to a statutory prohibition upon publication must not be entered into any Gen AI program unless the legal practitioner or person responsible for the conduct of the proceeding is satisfied that the information will remain within the controlled environment of the platform and not be used to train any large language model, is used only in connection with the proceeding (unless otherwise required or permitted by law), and is not used to train the Gen AI program. Generative AI must not be used to generate the content of affidavits, witness statements, character references or other evidentiary material, nor to alter, embellish, strengthen, dilute or rephrase a witness's written evidence, with leave available in exceptional cases for attachments and annexures. Verification of authorities must not be carried out solely by using a generative AI tool. Paragraph 24 adds a transition requirement specific to this Court: expert reports prepared between the date the practice note was issued and the date it commenced must identify which part or parts of the report relied on generative AI in preparing its content. The practice note will be periodically reviewed.",
+    "aiSummary": "Land and Environment Court of New South Wales practice note requiring transition-period expert reports to identify generative AI reliance, commencing 12 February 2025.",
     "tags": [
       "practice note",
       "generative AI",
@@ -8789,25 +8783,31 @@
       "transparency-disclosure"
     ],
     "createdAt": "2025-02-12T00:00:00Z",
-    "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
+    "updatedAt": "2026-11-13T01:50:26.499Z",
+    "lastReviewedAt": "2026-11-13T01:50:26.499Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
         "finalUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
-        "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
-        "publisher": "Land and Environment Court of New South Wales",
-        "retrievedAt": "2026-10-29T22:17:03.122Z",
+        "retrievedAt": "2026-11-13T01:50:26.499Z",
         "contentType": "application/pdf",
         "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+        "etag": "W/\"1d453-62dd4f5e4e780-gzip\"",
         "lastModified": "Tue, 11 Feb 2025 02:55:42 GMT",
-        "etag": "W/\"1d453-62dd4f5e4e780-gzip\""
+        "title": "Practice Note - Use of Generative Artificial Intelligence UPDATED 12 February 2025",
+        "reviewedDate": {
+          "date": "2025-02-12",
+          "precision": "day",
+          "reviewedAt": "2026-11-13T01:50:26.499Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Paragraph 1 of the practice note read 13 Nov 2026: \"It commences on 12 February 2025 and will apply to all proceedings from that date.\""
+        }
       },
-      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedAt": "2026-11-13T01:50:26.499Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the practice note PDF from the Land and Environment Court site through the collector retrieval path, fingerprinted it, and read it in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-13-1, proposal 4224 c5af 5889 5978). Proposed by Claude (agent).",
       "lastSourceAuditAt": "2026-10-29T22:17:03.122Z"
     },
     "dates": [
@@ -8819,18 +8819,18 @@
         "source": {
           "url": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
           "finalUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
-          "title": "Land and Environment Court Practice Note — Use of Generative Artificial Intelligence (Gen AI)",
-          "publisher": "Land and Environment Court of New South Wales",
-          "retrievedAt": "2026-08-25T01:54:12.993Z",
+          "retrievedAt": "2026-11-13T01:50:26.499Z",
           "contentType": "application/pdf",
           "contentHash": "d8e2da9c5b74f1d09435de7ac8c75d60ef9584a6d21b2e74de6d442131226aa8",
+          "etag": "W/\"1d453-62dd4f5e4e780-gzip\"",
           "lastModified": "Tue, 11 Feb 2025 02:55:42 GMT",
+          "title": "Practice Note - Use of Generative Artificial Intelligence UPDATED 12 February 2025",
           "reviewedDate": {
             "date": "2025-02-12",
             "precision": "day",
-            "reviewedAt": "2026-08-25T02:01:07.000Z",
-            "reviewedBy": "Policai editorial source review",
-            "notes": "Paragraph 1 states the Practice Note replaces the note that commenced on 3 February and commences on 12 February 2025."
+            "reviewedAt": "2026-11-13T01:50:26.499Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Paragraph 1 of the practice note read 13 Nov 2026: \"It commences on 12 February 2025 and will apply to all proceedings from that date.\""
           }
         }
       },
@@ -9042,7 +9042,7 @@
       "Supreme Court of Victoria"
     ],
     "sourceUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-    "content": "Dated 14 May 2026 and published in May 2026, these Guidelines outline the parameters around the use of artificial intelligence by judicial officers of the Supreme Court of Victoria. They are the bench-facing counterpart to Practice Note SC Gen 25, which governs court users, and were issued on the same date. The Guidelines state that they have been informed by the eight principles formulated by the Victorian Law Reform Commission to guide the safe use of AI in courts and tribunals, set out in its report Artificial Intelligence in Victoria's Courts and Tribunals (October 2025). They define artificial intelligence for the purposes of the Guidelines and address how judicial officers may and may not use AI tools in the course of judicial work, including in relation to preparing judgments and reasons, the confidentiality of court information, and the extent to which reliance on AI-assisted output is compatible with the judicial function. They also address the level of disclosure a judicial officer may require from parties about their own use of AI. Clause 3.7 records that the Guidelines are intended to be reviewed as the technology and the Court's experience change. The Guidelines are published by the Supreme Court of Victoria as a downloadable document alongside the Court's court-user practice note, and are a distinct instrument from Practice Note SC GEN 25.",
+    "content": "Dated 14 May 2026 and published in May 2026, these Guidelines outline the parameters around the use of artificial intelligence by judicial officers of the Supreme Court of Victoria. The Guidelines state that they have been informed by the eight principles formulated by the Victorian Law Reform Commission to guide the safe use of AI in courts and tribunals, set out in its report Artificial Intelligence in Victoria's Courts and Tribunals (October 2025). They define artificial intelligence for the purposes of the Guidelines and address how judicial officers may and may not use AI tools in the course of judicial work, including that judicial officers must not use GenAI for judicial decision-making (clause 3.1), that supportive uses are limited to tasks such as organising and locating case materials, producing summaries and chronologies, legal research and proof-reading (clauses 3.3 and 3.4), and that only AI tools approved by the Court are to be used with regard to confidentiality (clause 3.5). Clause 3.6 says judicial officers should give the staff assisting them clear directions on the appropriate use of AI and the level of disclosure the judicial officer requires. Clause 3.7 records that the Guidelines are intended to be reviewed as the technology and the Court's experience change. The Guidelines are published by the Supreme Court of Victoria as a downloadable document.",
     "aiSummary": "Supreme Court of Victoria guidelines governing judicial officers' own use of artificial intelligence, informed by the Victorian Law Reform Commission's eight principles, dated 14 May 2026.",
     "tags": [
       "guidelines",
@@ -9057,36 +9057,42 @@
       "generative-ai"
     ],
     "createdAt": "2026-05-14T00:00:00Z",
-    "updatedAt": "2026-08-25T02:01:07.000Z",
-    "lastReviewedAt": "2026-10-29T22:21:31.000Z",
+    "updatedAt": "2026-11-13T01:50:29.323Z",
+    "lastReviewedAt": "2026-11-13T01:50:29.323Z",
     "verification": {
       "status": "verified",
       "source": {
         "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
         "finalUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-        "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers",
-        "publisher": "Supreme Court of Victoria",
-        "retrievedAt": "2026-10-29T22:17:04.341Z",
+        "retrievedAt": "2026-11-13T01:50:28.069Z",
         "contentType": "text/html",
-        "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
-        "lastModified": "Thu, 29 Oct 2026 22:17:03 GMT",
-        "etag": "\"1793312223\"",
+        "contentHash": "f609f3d5331057376c92a79e17743eace5bedeafb4f892b3d360f89169b96e6b",
+        "etag": "\"1794534627\"",
+        "lastModified": "Fri, 13 Nov 2026 01:50:27 GMT",
         "linkedDocuments": [
           {
             "url": "https://www.supremecourt.vic.gov.au/sites/default/files/2026-05/Use%20of%20AI%20by%20Judicial%20Officers%20Guidelines.pdf",
             "finalUrl": "https://www.supremecourt.vic.gov.au/sites/default/files/2026-05/Use%20of%20AI%20by%20Judicial%20Officers%20Guidelines.pdf",
-            "retrievedAt": "2026-10-29T22:17:05.669Z",
+            "retrievedAt": "2026-11-13T01:50:29.323Z",
             "contentType": "application/pdf",
             "contentHash": "a66b9a0ee89a4d863d1a893cd6411ad1b2f6b839777526ebf05ab8a40ff657a3",
             "etag": "\"1e455-651ad0c3fdb5f\"",
             "lastModified": "Wed, 13 May 2026 06:25:36 GMT"
           }
-        ]
+        ],
+        "title": "Guidelines: The use of Artificial Intelligence by Judicial Officers",
+        "reviewedDate": {
+          "date": "2026-05-14",
+          "precision": "day",
+          "reviewedAt": "2026-11-13T01:50:29.323Z",
+          "reviewedBy": "Daniel Alkurdi",
+          "notes": "Guidelines text read 13 Nov 2026 ends with the date 14 May 2026."
+        }
       },
-      "checkedAt": "2026-10-29T22:21:31.000Z",
+      "checkedAt": "2026-11-13T01:50:29.323Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Retrieved the guidelines page from the Supreme Court of Victoria site through the collector retrieval path, fingerprinted it, and read the guidelines in full before creating this record. Re-confirmed in batch 2026-10-29-1 by Daniel Alkurdi on 2026-10-29 (https://claude.ai/code/project/chan_019nKBbCzGtpRmfKqX3Xisd7?thread=cmsg_019nKBbCzGtpRmfKqX3Xisd732MXt4YZwrggLjJxEWv7xC&decision=cmsg_019nKBbCzGtpRmfKqX3Xisd73Ths2z9svyeVN24VvqhsMU): the source fingerprint was unchanged at the 2026-10-29 register audit, matching the version verified on 2026-08-25.",
+      "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-13-1, proposal 36b4 4785 f253 89e1). Proposed by Claude (agent).",
       "lastSourceAuditAt": "2026-10-29T22:17:05.669Z"
     },
     "dates": [
@@ -9098,18 +9104,29 @@
         "source": {
           "url": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
           "finalUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
-          "title": "Guidelines: The Use of Artificial Intelligence by Judicial Officers",
-          "publisher": "Supreme Court of Victoria",
-          "retrievedAt": "2026-08-25T01:54:13.820Z",
+          "retrievedAt": "2026-11-13T01:50:28.069Z",
           "contentType": "text/html",
-          "contentHash": "8a5d9cedd210b1b3cb9d6e32c6b775e6deb293b6a2c469a95ecf5e98eec81845",
-          "lastModified": "Tue, 25 Aug 2026 01:52:54 GMT",
+          "contentHash": "f609f3d5331057376c92a79e17743eace5bedeafb4f892b3d360f89169b96e6b",
+          "etag": "\"1794534627\"",
+          "lastModified": "Fri, 13 Nov 2026 01:50:27 GMT",
+          "linkedDocuments": [
+            {
+              "url": "https://www.supremecourt.vic.gov.au/sites/default/files/2026-05/Use%20of%20AI%20by%20Judicial%20Officers%20Guidelines.pdf",
+              "finalUrl": "https://www.supremecourt.vic.gov.au/sites/default/files/2026-05/Use%20of%20AI%20by%20Judicial%20Officers%20Guidelines.pdf",
+              "retrievedAt": "2026-11-13T01:50:29.323Z",
+              "contentType": "application/pdf",
+              "contentHash": "a66b9a0ee89a4d863d1a893cd6411ad1b2f6b839777526ebf05ab8a40ff657a3",
+              "etag": "\"1e455-651ad0c3fdb5f\"",
+              "lastModified": "Wed, 13 May 2026 06:25:36 GMT"
+            }
+          ],
+          "title": "Guidelines: The use of Artificial Intelligence by Judicial Officers",
           "reviewedDate": {
             "date": "2026-05-14",
             "precision": "day",
-            "reviewedAt": "2026-08-25T02:01:07.000Z",
-            "reviewedBy": "Policai editorial source review",
-            "notes": "The Guidelines carry the date 14 May 2026 at the end of the text, and the Court's publication metadata records a publication date of May 2026."
+            "reviewedAt": "2026-11-13T01:50:29.323Z",
+            "reviewedBy": "Daniel Alkurdi",
+            "notes": "Guidelines text read 13 Nov 2026 ends with the date 14 May 2026."
           }
         }
       }

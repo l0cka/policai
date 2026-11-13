@@ -1,5 +1,136 @@
 [
   {
+    "id": "mcp-audit-58214847-3280-4610-8684-270e64d78597",
+    "createdAt": "2026-11-13T01:53:44.934Z",
+    "actor": "local-mcp-admin",
+    "toolName": "review_court_requirement",
+    "status": "error",
+    "errorSummary": "vic-supreme-court-ai-guidelines-judicial-officers-001: only pending court requirements can be reviewed"
+  },
+  {
+    "id": "mcp-audit-0ae7d49f-cc56-47d0-aaf7-d0b1f1808b97",
+    "createdAt": "2026-11-13T01:50:31.203Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-74b9e070-070f-4cae-972f-82559ca3a25a",
+    "createdAt": "2026-11-13T01:50:30.813Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-2062468d-db03-46dd-b9a8-1f6d7922d269",
+    "createdAt": "2026-11-13T01:50:26.786Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8a858da9-ac11-4e56-aeb8-5ab205e6c50e",
+    "createdAt": "2026-11-13T01:50:26.338Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c8eba5c7-ce08-4ada-90b2-6746d893248b",
+    "createdAt": "2026-11-13T01:40:46.777Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_review_batch",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-105356dc-cf1f-444a-aa8a-1b89807851c4",
+    "createdAt": "2026-11-13T01:38:49.331Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-c34ec598-9c71-4ea7-9f1c-841e53491ce7",
+    "createdAt": "2026-11-13T01:38:47.466Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-12150ec4-4f3f-45dc-913e-65a61ca8d7d0",
+    "createdAt": "2026-11-13T01:38:47.157Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6855c572-b8d8-4b9a-a0f0-227b640633aa",
+    "createdAt": "2026-11-13T01:38:46.416Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-8fc45d5a-089d-4493-ab5f-7b344e800f52",
+    "createdAt": "2026-11-13T01:37:45.318Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-0e67fefb-df2c-4286-ac76-b667df6fbc01",
+    "createdAt": "2026-11-13T01:37:43.327Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f432be5c-fbf6-4eff-9f0b-67c2d7ea69a7",
+    "createdAt": "2026-11-13T01:37:43.040Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-58f1016e-98a4-49a2-8bed-857b030ec024",
+    "createdAt": "2026-11-13T01:37:42.222Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-4e16005d-1df2-4125-b5af-b93d52ada2cb",
+    "createdAt": "2026-11-13T01:35:42.407Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-374ba4e1-8a77-4e00-94b0-93898132c65d",
+    "createdAt": "2026-11-13T01:35:41.570Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.supremecourt.vic.gov.au/forms-fees-and-services/forms-templates-and-guidelines/guidelines-the-use-of-artificial-intelligence-by-judicial-officers",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-ed5fa6c4-12e9-4a7c-baed-ebcf4755e413",
+    "createdAt": "2026-11-13T01:35:39.261Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://lec.nsw.gov.au/documents/practice-notes/Practice_Note_-_Use_of_Generative_Artificial_Intelligence_UPDATED.pdf",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-838dd477-b296-49d4-b566-6baa104a602b",
+    "createdAt": "2026-11-13T01:35:27.111Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/ai-governance-assurance-and-frameworks/nsw-ai-assessment-framework",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-c98c3c34-8ea8-4adb-ac8f-9f8fe2b88a01",
     "createdAt": "2026-11-09T01:15:22.266Z",
     "actor": "local-mcp-admin",
@@ -3554,140 +3685,6 @@
     "createdAt": "2026-07-20T10:05:51.925Z",
     "actor": "local-mcp-admin",
     "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c99b50a4-2d20-4f1e-a835-e60da2ff9638",
-    "createdAt": "2026-07-20T10:05:51.917Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-cbbfcadd-9782-411a-b083-9d1b11286805",
-    "createdAt": "2026-07-20T10:05:51.906Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-7406b226-1496-4b3e-8ad4-da774f2246d3",
-    "createdAt": "2026-07-20T10:05:51.897Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.aemc.gov.au/news-centre/media-releases/aemc-proposes-new-grid-standards-data-centre-connections",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ca781e85-238d-4114-bb4d-64594fd0a71a",
-    "createdAt": "2026-07-20T10:05:51.889Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-94eb90ec-dc8b-4a86-a99c-8bcb79076e82",
-    "createdAt": "2026-07-20T10:05:51.880Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/ai-consumer-safety-priorities",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f1b8f202-6fe3-4f6f-a821-71e977c4b78b",
-    "createdAt": "2026-07-20T10:05:51.871Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-d35e0fd9-a018-4f4a-9abe-7e15d6380aef",
-    "createdAt": "2026-07-20T10:05:51.862Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.pm.gov.au/media/ai-australias-interests",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-2b3c1e34-5909-46c4-a759-8a2e43306744",
-    "createdAt": "2026-07-20T10:05:51.851Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ada127ce-6ffa-4028-9cc4-017d2f4ae196",
-    "createdAt": "2026-07-20T10:05:51.840Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.industry.gov.au/publications/expectations-data-centres-and-ai-infrastructure-developers",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-66e5349f-1c13-464a-9ed3-9e6bdd79441b",
-    "createdAt": "2026-07-20T10:04:56.312Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "error",
-    "errorSummary": "Official source changed after staging and must be reviewed again before approval"
-  },
-  {
-    "id": "mcp-audit-503c439f-83fc-4b6e-b0ca-0106eb85e94b",
-    "createdAt": "2026-07-20T10:04:40.798Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "error",
-    "errorSummary": "The approving reviewer must be the named browser-capture reviewer"
-  },
-  {
-    "id": "mcp-audit-cb41ea31-836c-40a6-9406-f0aad105fdd8",
-    "createdAt": "2026-07-20T10:03:22.675Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "error",
-    "errorSummary": "Browser-captured reviews require a fresh browser capture for approval"
-  },
-  {
-    "id": "mcp-audit-29e81187-829e-48b0-b414-4a5a7b5556e6",
-    "createdAt": "2026-07-20T09:58:54.219Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-ec86ce6e-b4ff-4aca-a77f-61a18aa9a15e",
-    "createdAt": "2026-07-20T09:58:54.215Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-c377a975-e3a4-4288-bc81-a20ff828b8aa",
-    "createdAt": "2026-07-20T09:58:54.211Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-47222cb8-9484-4843-a3b1-3eea98a62217",
-    "createdAt": "2026-07-20T09:58:54.208Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-52088de2-f9d5-44da-833e-7d4fa8102ad8",
-    "createdAt": "2026-07-20T09:58:54.204Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-b2bdcdca-4718-4345-9daa-0e739218fe18",
-    "createdAt": "2026-07-20T09:58:54.200Z",
-    "actor": "local-mcp-admin",
-    "toolName": "record_manual_source_review",
     "status": "success"
   }
 ]
