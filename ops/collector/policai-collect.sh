@@ -246,7 +246,7 @@ def publish(run):
              '--body', f"Collector exit: {run['collection_exit']}. Structural validation passed; "
              'curated register unchanged. Coverage may be incomplete: see public/data/meta.json. '
              'Detections show as needs review; editorial approval is per item. '
-             'Auto-merges when the required checks pass.', cwd=WORK)
+             'Merges once the maintainer approves it and the required checks pass.', cwd=WORK)
     run['pr'] = url
     run['phase'] = 'published'
     save(run)
@@ -255,11 +255,15 @@ def publish(run):
 
 
 def close_older_prs(run):
-    """This PR carries the outbox, so every older collection PR is redundant."""
+    """This PR carries the outbox, so every older collection PR is redundant.
+
+    Matched by branch, not URL: bot-pr.yml may already have reopened this run's
+    PR under another number.
+    """
     prs = json.loads(gh('pr', 'list', '--repo', REPO, '--state', 'open', '--limit', '100',
                         '--json', 'url,headRefName', cwd=WORK))
     for pr in prs:
-        if pr['headRefName'].startswith(PREFIX) and pr['url'] != run['pr']:
+        if pr['headRefName'].startswith(PREFIX) and pr['headRefName'] != run['branch']:
             gh('pr', 'close', pr['url'], '--repo', REPO, '--comment',
                f"Superseded by {run['pr']}, which replays every finding main lacks.", cwd=WORK)
 

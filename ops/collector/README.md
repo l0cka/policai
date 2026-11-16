@@ -24,8 +24,9 @@ classifier variables (`USE_CLAUDE_CLASSIFIER`, `CLASSIFIER_BASE_URL`,
    `npm run validate:data`.
 5. Promote `next/` to the host state.
 6. Commit on a new `automation/collection-<run-id>` branch, push it and open a
-   **ready** PR. The repo's auto-merge workflow arms it, and it merges when
-   the required checks pass. Older open collection PRs are closed with a
+   **ready** PR. `bot-pr.yml` reopens it under `l0cka-bot`, the auto-merge
+   workflow arms it, and it merges once the maintainer approves it and the
+   required checks pass. Older open collection PRs are closed with a
    comment naming the new one.
 
 The budget is 3,500 seconds inside the unit's one-hour timeout.

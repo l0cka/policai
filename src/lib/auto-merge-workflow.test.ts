@@ -24,7 +24,14 @@ const AsyncFunction = Object.getPrototypeOf(async () => {})
 ) => (...args: unknown[]) => Promise<unknown>;
 const run = new AsyncFunction("github", "context", "core", script);
 
-async function arm(changedFiles: string[], { armed = false } = {}) {
+async function arm(
+	changedFiles: string[],
+	{
+		armed = false,
+		ref = "automation/collection-20261116T193000Z-abc",
+		draft = false,
+	} = {},
+) {
 	const graphql = vi.fn().mockResolvedValue({});
 	const info = vi.fn();
 	const octokit = {
@@ -37,7 +44,8 @@ async function arm(changedFiles: string[], { armed = false } = {}) {
 						labels: [],
 						auto_merge: armed ? { merge_method: "squash" } : null,
 						mergeable_state: "blocked",
-						head: { sha: "abc" },
+						draft,
+						head: { sha: "abc", ref },
 					},
 				}),
 				listFiles: vi.fn(),
@@ -91,6 +99,25 @@ describe("auto-merge workflow", () => {
 			["data/watch-state.json", "src/lib/pipeline/collect.ts"],
 			{ armed: true },
 		);
+		expect(graphql).toHaveBeenCalledTimes(1);
+		expect(graphql.mock.calls[0][0]).toContain("disablePullRequestAutoMerge");
+	});
+
+	it("arms an agent PR on any branch, since the maintainer's approval gates the merge", async () => {
+		const { graphql } = await arm(["src/lib/pipeline/collect.ts"], {
+			ref: "claude/project-thread-abc",
+		});
+		expect(graphql).toHaveBeenCalledTimes(1);
+		expect(graphql.mock.calls[0][0]).toContain("enablePullRequestAutoMerge");
+	});
+
+	it("disarms a PR converted to draft", async () => {
+		expect(workflow.on.pull_request_target.types).toContain("converted_to_draft");
+		const { graphql } = await arm(["src/app/page.tsx"], {
+			ref: "claude/project-thread-abc",
+			armed: true,
+			draft: true,
+		});
 		expect(graphql).toHaveBeenCalledTimes(1);
 		expect(graphql.mock.calls[0][0]).toContain("disablePullRequestAutoMerge");
 	});

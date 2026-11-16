@@ -866,8 +866,8 @@ Each run holds the existing concurrency lock and:
    become the host state.
 4. Commits only `data/developments.json`, `public/data/meta.json`,
    `data/watch-state.json` and `data/source-reviews.json`, pushes a unique
-   collection branch and opens a ready PR that auto-merges when the required
-   checks pass (see **Repository configuration** below). Older open collection PRs are closed. It never pushes main.
+   collection branch and opens a ready PR that merges once the maintainer
+   approves it and the required checks pass (see **Repository configuration** below). Older open collection PRs are closed. It never pushes main.
 5. Returns failed source health as a failure even when the output was
    published, so the failure alert fires.
 
@@ -886,9 +886,13 @@ version cannot be lost merely because its state write completed first.
 
 - The "Protect main" ruleset requires a PR, squash merges, linear history,
   resolved review threads and the `lint`, `test`, `build`, `Pro Bono
-  dashboard` and `Pro Bono worker` checks. It requires no approving review:
-  the `claude-pr-review` routine reviews every other PR before it merges
-  (AGENTS.md, "Pull requests and review").
+  dashboard` and `Pro Bono worker` checks. The "require-approval" ruleset
+  adds the maintainer's approving review, with no bypass (AGENTS.md, "Pull
+  requests and review").
+- The collector's token belongs to the maintainer, who cannot approve their
+  own PR, so `.github/workflows/bot-pr.yml` reopens each collection PR under
+  `l0cka-bot`. The collector matches its own PR by branch, so it never closes
+  the reopened one as older.
 - `.github/workflows/auto-merge.yml` arms squash auto-merge on a collection PR
   only while every changed file is one of the four collector outputs above and
   the PR has no `hold` label. It re-runs on every push, so a later commit that
