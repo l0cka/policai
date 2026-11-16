@@ -2,7 +2,7 @@ import path from "node:path";
 import { withDataMutationLock } from "@/lib/data-lock";
 import { readJsonFile, writeJsonFile } from "@/lib/file-store";
 import { getPolicies } from "@/lib/data-service";
-import { validateCourtRequirements } from "@/lib/validate-data";
+import { validateCourtRequirements } from "@/lib/validate/court-requirements";
 import { sourceUrlsEqual } from "@/lib/source-url";
 import type {
 	CourtRequirement,

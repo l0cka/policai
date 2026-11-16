@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest';
 import { buildAgency, buildManualDecision, buildPolicy, buildTimelineEvent } from '@/test/factories';
 import {
   countUnsubstantiatedSecondaryDates,
-  isAllowedSourceHost,
   validateCollectionMeta,
   validateDevelopments,
   validateLegislativeTimelineOverlap,
@@ -17,6 +16,7 @@ import {
   validateWatchSources,
   validateWatchState,
 } from './validate-data';
+import { isAllowedSourceHost } from '@/lib/source-url';
 import { emptyWatchState, type WatchState } from '@/lib/pipeline/collect';
 import { ROBOTS_RULES_CAP, ROBOTS_SITEMAPS_CAP, type HostRecord } from '@/lib/pipeline/host-gate';
 import type { WatchSource } from '@/lib/pipeline/sources';
