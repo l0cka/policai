@@ -1,0 +1,50 @@
+name: Signed records
+
+on:
+  pull_request_target:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: signed-records-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  signed-records:
+    name: signed-records
+    runs-on: [self-hosted, linux, argus]
+
+    steps:
+      - name: Checkout base revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          check-latest: true
+
+      - name: Install dependencies from the base lockfile
+        run: npm ci
+
+      - name: Fetch pull request head as data
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+          [[ "$HEAD_SHA" =~ ^[0-9a-f]{40}$ ]]
+          git fetch --no-tags --no-recurse-submodules origin "refs/pull/${PR_NUMBER}/head"
+          test "$(git rev-parse FETCH_HEAD)" = "$HEAD_SHA"
+
+      - name: Check signed records with base code
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: npx --no-install tsx scripts/check-signed-records.ts HEAD "$HEAD_SHA"

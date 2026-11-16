@@ -999,6 +999,40 @@ published record needs a new staged review and a fresh passkey signature.
 Replay merged history through the rule with
 `npx tsx scripts/replay-signed-record-check.ts --limit=15`.
 
+`validate:data` in `pull-request-checks.yml` runs the pull request's own copy
+of these validators, so a pull request that edits them could pass its own
+gate. The `signed-records` check (`.github/workflows/signed-records.yml`)
+closes that. It is a `pull_request_target` workflow, so its definition and
+every line it executes come from `main`: it checks out the base revision,
+installs from the base lockfile, fetches the pull request head as Git objects
+only, and runs `scripts/check-signed-records.ts HEAD <head sha>`. The script
+merges the head into the base in memory (`git merge-tree --write-tree`), reads
+the six data files from that tree with `git show`, and runs
+`validateEditorApprovals` and `validateSignedRecordChanges` with the base
+revision as the baseline. That is the same comparison `validate:data` makes
+in CI (merge commit against base). A head that does not merge cleanly, a Git
+error or invalid JSON fails the check.
+
+- The job has `contents: read`, no secrets and no persisted credentials, and
+  never checks out or runs pull request files. It has no fork condition: a
+  skipped required job reports success, so it runs for fork pull requests too.
+- A change to the validators takes effect for the check only after it merges.
+  A pull request that changes a validator and relies on the new rule for its
+  own data fails `signed-records`; land the validator change first.
+- `.github/CODEOWNERS` names `@l0cka` for the files that decide the verdict:
+  the workflow, the script, the two validators, the signature, batch,
+  reconfirm, verification and published-record rules they call, and
+  `data/editor-passkeys.json`.
+- The check protects `main` only while the "Protect main" ruleset requires
+  the `signed-records` context from the GitHub Actions integration and
+  requires code owner review. Both are repository settings, changed by the
+  owner.
+- The job runs on the same Argus runner slots as `pull-request-checks.yml`,
+  which runs pull request code. Those slots keep their workspace, home and
+  tool cache between jobs, so the check is only as trustworthy as the runner:
+  code from an earlier pull request job could alter the Git or Node the check
+  uses. A runner that starts clean for each job removes that dependency.
+
 Server-fetchable sources are fetched again at decision time, and approval
 refuses if their fingerprint moved since staging. When that re-fetch is
 refused by the host (HTTP 403, HTTP 429, or an equivalent `identity_refused`
