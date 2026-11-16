@@ -1,4 +1,4 @@
-import { isValidCalendarDate } from '@/lib/calendar-date';
+import { isValidCalendarDate, sydneyCalendarDate } from '@/lib/calendar-date';
 import { WATCH_SOURCES, type WatchSource } from './sources';
 
 /**
@@ -47,7 +47,7 @@ export interface CollectorRequestInit extends RequestInit {
 
 /** The collector's calendar day; the collection host runs in Sydney. */
 export function collectorCalendarDate(now: Date): string {
-  return now.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  return sydneyCalendarDate(now);
 }
 
 /**

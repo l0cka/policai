@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { AnalysisHero } from '@/components/analysis-hero';
 import { PolicyBrowser } from '@/components/policy-browser';
 import { UpcomingDeadlinesRail } from '@/components/upcoming-deadlines-rail';
+import { sydneyCalendarDate } from '@/lib/calendar-date';
 import { getArticles, getPolicies } from '@/lib/data-service';
 import { toRegisterPolicy } from '@/lib/policy-register';
 import {
@@ -35,7 +36,7 @@ export default async function HomePage() {
   // at 00:05 Sydney, so a countdown is at most a day behind. Deadlines get
   // their own rail; commencements stay in Coming up, so no date shows twice.
   const renderedAt = new Date();
-  const today = renderedAt.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const today = sydneyCalendarDate(renderedAt);
   const { deadlines, other: upcomingDates } = splitUpcomingDeadlines(
     selectUpcomingPolicyDates(policies, weekWindowEndingAt(renderedAt)!),
   );

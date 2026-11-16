@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { PageIntro } from '@/components/layout';
 import { EntryDate, EntryRow, RecordLink, SourceLink } from '@/components/legislative-entry';
+import { sydneyCalendarDate } from '@/lib/calendar-date';
 import { getPolicies } from '@/lib/data-service';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import {
@@ -142,7 +143,7 @@ function Section({
 
 export default async function LegislationPage() {
   const records = (await getPolicies()).filter(isLegislativeRecord);
-  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const today = sydneyCalendarDate(new Date());
   const bills = beforeParliament(records);
   const upcoming = comingUp(records, today);
   const made = recentlyMade(records, today, RECENT_DAYS);
