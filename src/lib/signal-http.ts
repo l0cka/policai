@@ -8,6 +8,8 @@ import {
 } from "@/lib/signal-source-reviews";
 
 export const SIGNAL_HTTP_REVIEWER_DEFAULT = "Daniel Alkurdi";
+export const SIGNAL_REPLY_TEXT_MAX = 2000;
+export const SIGNAL_CHAT_MESSAGE_ID_MAX = 200;
 
 export type SignalHttpAction = "dismiss";
 
@@ -128,6 +130,16 @@ export function formatSignalAttestation(
 	if (!reply) throw new Error("attestation.replyText is required");
 	if (!chatMessageId) throw new Error("attestation.chatMessageId is required");
 	if (!cardId) throw new Error("attestation.cardId is required");
+	if (reply.length > SIGNAL_REPLY_TEXT_MAX) {
+		throw new Error(
+			`attestation.replyText must be at most ${SIGNAL_REPLY_TEXT_MAX} characters`,
+		);
+	}
+	if (chatMessageId.length > SIGNAL_CHAT_MESSAGE_ID_MAX) {
+		throw new Error(
+			`attestation.chatMessageId must be at most ${SIGNAL_CHAT_MESSAGE_ID_MAX} characters`,
+		);
+	}
 	return [
 		`${oneLine(reviewer)} (Signal): ${reply}`,
 		`chatMessageId: ${chatMessageId}`,

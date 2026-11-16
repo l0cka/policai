@@ -7,7 +7,9 @@ import {
 	formatSignalAttestation,
 	previewSignalReview,
 	requireSignalHttpToken,
+	SIGNAL_CHAT_MESSAGE_ID_MAX,
 	SIGNAL_HTTP_REVIEWER_DEFAULT,
+	SIGNAL_REPLY_TEXT_MAX,
 } from "./signal-http";
 
 const URL = "https://example.gov.au/ai-policy";
@@ -80,6 +82,19 @@ describe("signal HTTP attestation", () => {
 		expect(text).toContain("cardId: source-review-1");
 		expect(text).toContain("relayed by Policai Signal");
 		expect(text).not.toMatch(/TTY|terminal|Type .+ to confirm/i);
+	});
+
+	it("accepts a reply and chat message id at their length limits", () => {
+		const reply = "r".repeat(SIGNAL_REPLY_TEXT_MAX);
+		const chatMessageId = "m".repeat(SIGNAL_CHAT_MESSAGE_ID_MAX);
+
+		const text = formatSignalAttestation(
+			{ ...ATTESTATION, replyText: reply, chatMessageId },
+			SIGNAL_HTTP_REVIEWER_DEFAULT,
+		);
+
+		expect(text).toContain(`(Signal): ${reply}\n`);
+		expect(text).toContain(`chatMessageId: ${chatMessageId}\n`);
 	});
 });
 
@@ -177,6 +192,33 @@ describe("signal HTTP apply", () => {
 		const result = await dismiss(review({ status: "approved" }), reject);
 
 		expect(result).toMatchObject({ ok: false, code: "dismiss_blocked" });
+		expect(reject).not.toHaveBeenCalled();
+	});
+
+	it.each([
+		["replyText", "r".repeat(SIGNAL_REPLY_TEXT_MAX + 1)],
+		["chatMessageId", "m".repeat(SIGNAL_CHAT_MESSAGE_ID_MAX + 1)],
+	])("refuses an attestation whose %s is over its limit", async (field, value) => {
+		const reject = vi.fn();
+		const getReview = vi.fn(async () => review());
+
+		const result = await applySignalHttpDecision(
+			{
+				reviewId: "source-review-1",
+				action: "dismiss",
+				reviewer: SIGNAL_HTTP_REVIEWER_DEFAULT,
+				attestation: { ...ATTESTATION, [field]: value },
+			},
+			{ getReview, reject, env: {} },
+		);
+
+		expect(result).toMatchObject({
+			ok: false,
+			status: 400,
+			code: "invalid_attestation",
+			error: expect.stringContaining(`attestation.${field}`),
+		});
+		expect(getReview).not.toHaveBeenCalled();
 		expect(reject).not.toHaveBeenCalled();
 	});
 
