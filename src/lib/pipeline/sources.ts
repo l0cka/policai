@@ -1724,9 +1724,6 @@ export function getAutomaticSources(): WatchSource[] {
   return WATCH_SOURCES.filter((source) => source.enabled && source.automation === 'automatic');
 }
 
-/** @deprecated Prefer getAutomaticSources() so the coverage boundary is clear. */
-export const getEnabledSources = getAutomaticSources;
-
 export function getManualSources(): WatchSource[] {
   return WATCH_SOURCES.filter((source) => source.enabled && source.automation !== 'automatic');
 }

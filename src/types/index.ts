@@ -616,45 +616,6 @@ export interface McpAuditLog {
 	errorSummary?: string;
 }
 
-// Map visualization types
-export interface JurisdictionStats {
-	jurisdiction: Jurisdiction;
-	policyCount: number;
-	activePolicies: number;
-	recentUpdates: number;
-	agencies: number;
-}
-
-// Network/Graph visualization types
-export interface PolicyNode {
-	id: string;
-	label: string;
-	type: "policy" | "agency" | "jurisdiction";
-	data: Policy | Agency | { jurisdiction: Jurisdiction };
-}
-
-export interface PolicyEdge {
-	id: string;
-	source: string;
-	target: string;
-	label?: string;
-	type: "governs" | "related_to" | "supersedes" | "amends" | "located_in";
-}
-
-// API response types
-export interface ApiResponse<T> {
-	data: T | null;
-	error: string | null;
-	success: boolean;
-}
-
-export interface PaginatedResponse<T> extends ApiResponse<T[]> {
-	total: number;
-	page: number;
-	pageSize: number;
-	hasMore: boolean;
-}
-
 // Filter types for UI
 export interface PolicyFilters {
 	jurisdiction?: Jurisdiction[];

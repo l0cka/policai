@@ -1,6 +1,6 @@
 'use client';
 
-import { type LucideIcon, SearchX, FileQuestion, Database } from 'lucide-react';
+import { type LucideIcon, SearchX, FileQuestion } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface EmptyStateProps {
@@ -43,17 +43,6 @@ export function NoResultsState({ query, className }: { query?: string; className
           ? `No items match "${query}". Try adjusting your search or filters.`
           : 'Try adjusting your filters to see results.'
       }
-      className={className}
-    />
-  );
-}
-
-export function NoDataState({ noun = 'data', className }: { noun?: string; className?: string }) {
-  return (
-    <EmptyState
-      icon={Database}
-      title={`No ${noun} yet`}
-      description={`There is no ${noun} to display at this time.`}
       className={className}
     />
   );
