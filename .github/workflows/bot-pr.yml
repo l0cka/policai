@@ -1,10 +1,10 @@
 name: Reopen as l0cka-bot
 
-# The "require-approval" ruleset needs the maintainer's approving review on
-# every PR into main, and GitHub never lets an author approve their own PR.
-# Agents, the collector and Signal open PRs as the maintainer's account
-# (`l0cka`), so this reopens each of those PRs under `l0cka-bot`, which the
-# maintainer can approve. The original is closed with a link to the new one.
+# Fallback for open-pr.yml. The "require-approval" ruleset needs the
+# maintainer's approving review on every PR into main, and GitHub never lets
+# an author approve their own PR. A PR opened as the maintainer's account
+# (`l0cka`) by mistake is closed and reopened under `l0cka-bot`, which the
+# maintainer can approve, with a link from the original to the new one.
 #
 # pull_request_target runs this file from main and never checks out PR code.
 # Without the POLICAI_BOT_TOKEN secret it does nothing.

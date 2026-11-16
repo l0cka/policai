@@ -540,7 +540,10 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
 
 ## Pull requests and review
 
-Every PR into `main` needs the maintainer's approving review (ruleset "require-approval"), and nothing bypasses it. GitHub never lets an author approve their own PR, so `.github/workflows/bot-pr.yml` closes each PR opened as `l0cka` (agent threads, the collector, Signal) and reopens it under `l0cka-bot`, with a "Moved to #N" comment on the original. After opening a PR, follow the new number from that comment: subscribe to it and do all further work there.
+Every PR into `main` is opened by `l0cka-bot`, reviewed by the maintainer (`l0cka`), and merges by itself once the maintainer approves it and CI is green (ruleset "require-approval", no bypass). Merging deploys: policai.org and a2j.policai.org through Workers Builds, the Pro Bono worker through the Argus host dispatcher. GitHub never lets an author approve their own PR, so never open a PR as the maintainer's account.
+
+- **Opening a PR.** Push the branch, then dispatch `.github/workflows/open-pr.yml` on `main` with inputs `head` (the branch), `title`, `body`, and optionally `draft` and `hold` (GitHub MCP `actions_run_trigger` with `run_workflow`, or `gh workflow run open-pr.yml -f head=... -f title=... -f body=...`). It opens the PR as `l0cka-bot`, assigns the maintainer and requests their review; dispatching it again updates the open PR's title and body. Then find the PR by its head branch and subscribe to it. Do not call `create_pull_request` or `gh pr create`.
+- The collector and Signal open their PRs with `l0cka-bot` tokens. As a fallback, `.github/workflows/bot-pr.yml` closes any PR still opened as `l0cka` and reopens it under `l0cka-bot`, with a "Moved to #N" comment on the original; follow that number.
 
 A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves, merges or pushes. A blocker it finds on a merged PR gets a "Post-merge review" issue.
 

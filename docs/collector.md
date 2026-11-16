@@ -889,10 +889,12 @@ version cannot be lost merely because its state write completed first.
   dashboard` and `Pro Bono worker` checks. The "require-approval" ruleset
   adds the maintainer's approving review, with no bypass (AGENTS.md, "Pull
   requests and review").
-- The collector's token belongs to the maintainer, who cannot approve their
-  own PR, so `.github/workflows/bot-pr.yml` reopens each collection PR under
-  `l0cka-bot`. The collector matches its own PR by branch, so it never closes
-  the reopened one as older.
+- The collector's `GH_TOKEN` (`~/.config/policai-collector/github.env`) is an
+  `l0cka-bot` token, so collection PRs are opened by the bot and the
+  maintainer can approve them. If a collection PR is opened as the
+  maintainer, `.github/workflows/bot-pr.yml` reopens it under `l0cka-bot`;
+  the collector matches its own PR by branch, so it never closes the
+  reopened one as older.
 - `.github/workflows/auto-merge.yml` arms squash auto-merge on a collection PR
   only while every changed file is one of the four collector outputs above and
   the PR has no `hold` label. It re-runs on every push, so a later commit that

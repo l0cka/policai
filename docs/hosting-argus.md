@@ -52,7 +52,8 @@ deploy hook "Daily rebuild (Sydney midnight)", whose URL is the Worker secret
 Signal reads `POLICAI_SIGNAL_TOKEN` and `POLICAI_SIGNAL_GITHUB_TOKEN` from
 Worker secrets, set with `wrangler secret put` or in the dashboard.
 
-`POLICAI_SIGNAL_GITHUB_TOKEN` is a fine-grained personal access token limited
+`POLICAI_SIGNAL_GITHUB_TOKEN` is a fine-grained personal access token of the `l0cka-bot`
+account (so the maintainer can approve the PRs Signal opens), limited
 to `l0cka/policai`, with an expiry, and with only these repository
 permissions:
 
