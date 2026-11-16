@@ -16,15 +16,19 @@ export async function readBoundedJson(
 	const reader = request.body.getReader();
 	const chunks: Uint8Array[] = [];
 	let received = 0;
-	for (;;) {
-		const { done, value } = await reader.read();
-		if (done) break;
-		received += value.byteLength;
-		if (received > maxBytes) {
-			await reader.cancel();
-			return { ok: false, reason: "too_large" };
+	try {
+		for (;;) {
+			const { done, value } = await reader.read();
+			if (done) break;
+			received += value.byteLength;
+			if (received > maxBytes) {
+				await reader.cancel();
+				return { ok: false, reason: "too_large" };
+			}
+			chunks.push(value);
 		}
-		chunks.push(value);
+	} catch {
+		return { ok: false, reason: "invalid_json" };
 	}
 
 	const bytes = new Uint8Array(received);

@@ -43,6 +43,19 @@ describe("readBoundedJson", () => {
 		});
 	});
 
+	it("reports a body stream that fails mid-read as invalid", async () => {
+		const body = new ReadableStream<Uint8Array>({
+			pull(controller) {
+				controller.error(new Error("connection reset"));
+			},
+		});
+
+		await expect(readBoundedJson(request(body))).resolves.toEqual({
+			ok: false,
+			reason: "invalid_json",
+		});
+	});
+
 	it("refuses on a declared length over the limit without reading the body", async () => {
 		let pulled = false;
 		const body = new ReadableStream<Uint8Array>(
