@@ -107,11 +107,3 @@ export function FilterControls({
     </div>
   );
 }
-
-export function FilterSidebar(props: FilterControlsProps) {
-  return (
-    <div className="hidden w-64 shrink-0 border-r border-[var(--rule-hair)] pr-8 lg:block">
-      <FilterControls {...props} className="sticky top-[6.75rem] py-5" />
-    </div>
-  );
-}

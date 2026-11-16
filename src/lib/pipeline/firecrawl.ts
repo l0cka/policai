@@ -64,11 +64,6 @@ export function firecrawlBaseUrl(): string {
   return (process.env.FIRECRAWL_URL || DEFAULT_BASE_URL).replace(/\/+$/, '');
 }
 
-/** Resets the cold-start latch. Tests only. */
-export function resetFirecrawlWarmup(): void {
-  hasCompletedACall = false;
-}
-
 export async function scrapeWithFirecrawl(
   url: string,
   options: FirecrawlOptions = {},
