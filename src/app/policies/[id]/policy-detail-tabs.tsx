@@ -33,6 +33,7 @@ import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
 import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
 import { diffPolicyText, retainedPriorBody } from '@/lib/policy-diff';
+import { summaryRepeatsDescription } from '@/lib/policy-summary';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
 import { sydneyShortDate } from '@/lib/au-date';
@@ -271,7 +272,7 @@ export function PolicyDetailTabs({
 
           {activeTab === 'overview' ? (
             <div className="py-6">
-              {policy.aiSummary ? (
+              {policy.aiSummary && !summaryRepeatsDescription(policy) ? (
                 <div className="max-w-4xl border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/35 p-4">
                   <div className="flex gap-3">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] text-[var(--background)]">
