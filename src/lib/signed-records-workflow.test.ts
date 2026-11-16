@@ -1,7 +1,7 @@
 /* @vitest-environment node */
 
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import yaml from 'js-yaml';
@@ -11,7 +11,7 @@ import { buildPolicy } from '@/test/factories';
 const repoRoot = process.cwd();
 
 type Step = { name?: string; uses?: string; run?: string; with?: Record<string, unknown>; env?: Record<string, string> };
-type Job = { if?: string; steps: Step[] };
+type Job = { if?: string; 'runs-on': unknown; steps: Step[] };
 type Workflow = {
   on: Record<string, unknown>;
   permissions: Record<string, string>;
@@ -34,6 +34,11 @@ describe('signed-records workflow', () => {
     expect(Object.keys(workflow.jobs)).toEqual(['signed-records']);
     expect(workflow.jobs['signed-records']).not.toHaveProperty('if');
     for (const step of steps) expect(step).not.toHaveProperty('if');
+  });
+
+  it('runs on a GitHub-hosted runner, never on the pool that runs pull request code', () => {
+    expect(workflow.jobs['signed-records']['runs-on']).toBe('ubuntu-latest');
+    expect(source).not.toMatch(/self-hosted|argus/i);
   });
 
   it('checks out only the base revision and keeps no credentials', () => {
@@ -182,5 +187,53 @@ describe('scripts/check-signed-records.ts', () => {
     const invalid = check(git('rev-parse', 'main~1'), broken);
     expect(invalid.stderr).toContain('Invalid JSON in data/policies.json');
     expect(invalid.status).toBe(1);
+  }, 60_000);
+
+  it('fails a data path that the pull request turns into a symlink', () => {
+    const { git, commit, check } = repository();
+    const base = commit({ 'data/editor-passkeys.json': [passkey], 'data/policies.json': [published] });
+    git('switch', '--quiet', '--create', 'change');
+    rmSync(path.join(workDir!, 'data/policies.json'));
+    symlinkSync('[]', path.join(workDir!, 'data/policies.json'));
+    const head = commit({ 'data/[]': [{ ...published, title: 'Rewritten without a signature' }] });
+    expect(JSON.parse(readFileSync(path.join(workDir!, 'data/policies.json'), 'utf8'))[0].title).toBe(
+      'Rewritten without a signature',
+    );
+
+    const result = check(base, head);
+
+    expect(result.stderr).toContain('data/policies.json is not a regular file (120000 blob)');
+    expect(result.status).toBe(1);
+  }, 60_000);
+
+  it('fails a pull request that deletes or renames a data file the base has', () => {
+    const { git, commit, check } = repository();
+    const base = commit({ 'data/editor-passkeys.json': [passkey], 'data/policies.json': [published] });
+    git('switch', '--quiet', '--create', 'rename');
+    git('mv', 'data/policies.json', 'data/policies-v2.json');
+    const renamed = commit({ 'data/policies-v2.json': [{ ...published, title: 'Rewritten without a signature' }] });
+    git('switch', '--quiet', 'main');
+    git('switch', '--quiet', '--create', 'directory');
+    git('mv', 'data', 'records');
+    symlinkSync('records', path.join(workDir!, 'data'));
+    const relinked = commit({ 'records/policies.json': [{ ...published, title: 'Rewritten without a signature' }] });
+
+    for (const head of [renamed, relinked]) {
+      const result = check(base, head);
+      expect(result.stderr).toContain('data/policies.json is missing from the pull request');
+      expect(result.status).toBe(1);
+    }
+  }, 60_000);
+
+  it('passes a pull request that adds a data file the base does not have yet', () => {
+    const { git, commit, check } = repository();
+    const base = commit({ 'data/editor-passkeys.json': [passkey], 'data/policies.json': [published] });
+    git('switch', '--quiet', '--create', 'change');
+    const head = commit({ 'data/timeline.json': [] });
+
+    const result = check(base, head);
+
+    expect(result.stderr).toBe('');
+    expect(result.status).toBe(0);
   }, 60_000);
 });

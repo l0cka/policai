@@ -1007,31 +1007,49 @@ every line it executes come from `main`: it checks out the base revision,
 installs from the base lockfile, fetches the pull request head as Git objects
 only, and runs `scripts/check-signed-records.ts HEAD <head sha>`. The script
 merges the head into the base in memory (`git merge-tree --write-tree`), reads
-the six data files from that tree with `git show`, and runs
-`validateEditorApprovals` and `validateSignedRecordChanges` with the base
-revision as the baseline. That is the same comparison `validate:data` makes
-in CI (merge commit against base). A head that does not merge cleanly, a Git
-error or invalid JSON fails the check.
+the six data files from that tree by object id (`git ls-tree`, then
+`git cat-file blob`), and runs `validateEditorApprovals` and
+`validateSignedRecordChanges` with the base revision as the baseline. That is
+the same comparison `validate:data` makes in CI (merge commit against base). A
+head that does not merge cleanly, a Git error or invalid JSON fails the check.
+
+The check must read the bytes the site build reads. The build opens each path
+on disk and follows a symlink, where Git stores a symlink as a blob holding
+the link target. So each of the six paths must be a regular file (mode
+`100644`) in the merged tree, and a path the base has must still be there. A
+symlink, an executable file, a submodule, a directory, or a deleted or renamed
+data file fails the check. A path that neither side has reads as empty.
 
 - The job has `contents: read`, no secrets and no persisted credentials, and
   never checks out or runs pull request files. It has no fork condition: a
   skipped required job reports success, so it runs for fork pull requests too.
+- The job runs on a GitHub-hosted runner (`ubuntu-latest`). The Argus pool runs every job slot as one Unix
+  user with one shared, writable home directory, and `pull-request-checks.yml`
+  runs pull request code there. A pull request job running at the same time
+  could overwrite this job's checkout, its `node_modules` or the Git
+  configuration it reads, and so decide its own verdict. A GitHub-hosted
+  runner is a new virtual machine for each job that no pull request code
+  reaches. Do not move this job to the Argus pool unless it gets a runner
+  user and home that pull request jobs cannot write.
 - A change to the validators takes effect for the check only after it merges.
   A pull request that changes a validator and relies on the new rule for its
   own data fails `signed-records`; land the validator change first.
-- `.github/CODEOWNERS` names `@l0cka` for the files that decide the verdict:
-  the workflow, the script, the two validators, the signature, batch,
-  reconfirm, verification and published-record rules they call, and
-  `data/editor-passkeys.json`.
+- `.github/CODEOWNERS` names `@l0cka` for the workflow, the script, the two
+  validators, every module those two import directly, the signature subject,
+  revision and verification rules behind them, `data/editor-passkeys.json`, and `tsconfig.json`, `package.json` and
+  `package-lock.json`, which decide what the base install and `tsx` load. It
+  does not cover every module the script loads. The rest of the import closure
+  (`file-store.ts` and its lock, overlay and bundle helpers,
+  `register-audit.ts`, `coverage-report.ts`, `source-url.ts`, `utils.ts`,
+  `src/types/index.ts`, `calendar-date.ts`, `scraper-filter.ts`, and the
+  `pipeline/` and `legislation/` modules they import) is ordinary collector and site code;
+  owning it would put most pull requests behind owner review. A change to one
+  of those files that alters the verdict would have to merge on its own first,
+  through the normal review.
 - The check protects `main` only while the "Protect main" ruleset requires
   the `signed-records` context from the GitHub Actions integration and
   requires code owner review. Both are repository settings, changed by the
   owner.
-- The job runs on the same Argus runner slots as `pull-request-checks.yml`,
-  which runs pull request code. Those slots keep their workspace, home and
-  tool cache between jobs, so the check is only as trustworthy as the runner:
-  code from an earlier pull request job could alter the Git or Node the check
-  uses. A runner that starts clean for each job removes that dependency.
 
 Server-fetchable sources are fetched again at decision time, and approval
 refuses if their fingerprint moved since staging. When that re-fetch is

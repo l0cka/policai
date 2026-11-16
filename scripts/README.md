@@ -116,7 +116,9 @@ reading the data files from Git objects and never from the working tree. The
 npx tsx scripts/check-signed-records.ts origin/main HEAD
 ```
 
-Exit code 1 on any error, a merge conflict, a Git failure or invalid JSON.
+Exit code 1 on any error, a merge conflict, a Git failure, invalid JSON, a
+data path that is not a regular file (mode `100644`) in the merged tree, or a
+data file the base has and the merged tree lacks.
 
 ## validate-data.ts
 

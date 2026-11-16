@@ -15,7 +15,7 @@ concurrency:
 jobs:
   signed-records:
     name: signed-records
-    runs-on: [self-hosted, linux, argus]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout base revision

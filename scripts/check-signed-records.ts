@@ -13,31 +13,62 @@ async function git(args: string[]): Promise<string> {
   return stdout;
 }
 
-async function showJson<T>(tree: string, file: string, fallback: T): Promise<T> {
-  let text: string;
-  try {
-    text = await git(['show', `${tree}:${file}`]);
-  } catch (error) {
-    if (/does not exist|exists on disk, but not in/.test(String((error as { stderr?: string }).stderr ?? ''))) return fallback;
-    throw error;
+const DATA_FILES = {
+  passkeys: EDITOR_PASSKEYS_PATH,
+  sourceReviews: 'data/source-reviews.json',
+  ledger: 'data/reconfirmations.json',
+  policies: 'data/policies.json',
+  timeline: 'data/timeline.json',
+  developments: 'data/developments.json',
+} as const;
+
+type DataFile = (typeof DATA_FILES)[keyof typeof DATA_FILES];
+
+async function readDataFile(tree: string, file: DataFile): Promise<unknown> {
+  const entry = (await git(['ls-tree', '-z', tree, '--', file])).split('\0')[0];
+  if (!entry) return undefined;
+  const [meta] = entry.split('\t');
+  const [mode, type, objectId] = meta.split(' ');
+  if (mode !== '100644' || type !== 'blob') {
+    throw new Error(`${file} is not a regular file (${mode} ${type}) at ${tree}`);
   }
   try {
-    return JSON.parse(text) as T;
+    return JSON.parse(await git(['cat-file', 'blob', objectId]));
   } catch (error) {
     throw new Error(`Invalid JSON in ${file} at ${tree}`, { cause: error });
   }
 }
 
-async function stateAt(tree: string): Promise<SignedRecordState> {
+async function stateAt(tree: string, mustHave: ReadonlySet<DataFile> = new Set()) {
+  const present = new Set<DataFile>();
+  const read = async <T>(file: DataFile, fallback: T): Promise<T> => {
+    const value = await readDataFile(tree, file);
+    if (value !== undefined) {
+      present.add(file);
+      return value as T;
+    }
+    if (mustHave.has(file)) {
+      throw new Error(`${file} is missing from the pull request but present in the base revision`);
+    }
+    return fallback;
+  };
   const [passkeys, sourceReviews, ledger, policies, timeline, developments] = await Promise.all([
-    showJson<EditorPasskey[]>(tree, EDITOR_PASSKEYS_PATH, []),
-    showJson<SourceReview[]>(tree, 'data/source-reviews.json', []),
-    showJson<ReconfirmLedger>(tree, 'data/reconfirmations.json', { batches: [] }),
-    showJson<Policy[]>(tree, 'data/policies.json', []),
-    showJson<TimelineEvent[]>(tree, 'data/timeline.json', []),
-    showJson<Development[]>(tree, 'data/developments.json', []),
+    read<EditorPasskey[]>(DATA_FILES.passkeys, []),
+    read<SourceReview[]>(DATA_FILES.sourceReviews, []),
+    read<ReconfirmLedger>(DATA_FILES.ledger, { batches: [] }),
+    read<Policy[]>(DATA_FILES.policies, []),
+    read<TimelineEvent[]>(DATA_FILES.timeline, []),
+    read<Development[]>(DATA_FILES.developments, []),
   ]);
-  return { passkeys, sourceReviews, reconfirmBatches: ledger.batches, policies, timeline, developments };
+  const state: SignedRecordState = {
+    passkeys,
+    sourceReviews,
+    reconfirmBatches: ledger.batches,
+    policies,
+    timeline,
+    developments,
+  };
+  return { state, present };
 }
 
 async function mergedTree(base: string, head: string): Promise<string> {
@@ -58,7 +89,8 @@ async function main() {
   }
   const base = (await git(['rev-parse', '--verify', `${baseRevision}^{commit}`])).trim();
   const head = (await git(['rev-parse', '--verify', `${headRevision}^{commit}`])).trim();
-  const [before, after] = await Promise.all([stateAt(base), stateAt(await mergedTree(base, head))]);
+  const { state: before, present } = await stateAt(base);
+  const { state: after } = await stateAt(await mergedTree(base, head), present);
 
   const errors = [
     ...(await validateEditorApprovals(after, before)).errors,

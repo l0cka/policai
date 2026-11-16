@@ -10,4 +10,9 @@
 /src/lib/verification.ts @l0cka
 /src/lib/register-reconfirm.ts @l0cka
 /src/lib/source-review-batch.ts @l0cka
+/src/lib/development-renewal.ts @l0cka
+/src/lib/source-review.ts @l0cka
+/tsconfig.json @l0cka
+/package.json @l0cka
+/package-lock.json @l0cka
 /data/editor-passkeys.json @l0cka
