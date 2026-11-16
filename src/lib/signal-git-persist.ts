@@ -1,5 +1,6 @@
 import type { SignalHttpAction } from "@/lib/signal-http";
 import type { DataOverlayChange } from "@/lib/data-overlay";
+import { GitHubError, readGitHubFile } from "@/lib/github-file";
 import { COLLECTOR_USER_AGENT } from "@/lib/pipeline/identity";
 
 export type SignalCommitTarget = "pr" | "main";
@@ -62,31 +63,10 @@ interface GhSha {
 	sha: string;
 }
 
-interface GhContents {
-	type: string;
-	sha: string;
-	encoding?: string;
-	content?: string;
-}
-
-interface GhBlobContent {
-	content: string;
-	encoding: string;
-}
-
 interface GhPull {
 	html_url: string;
 	number: number;
 	head: { sha: string };
-}
-
-class GitHubError extends Error {
-	constructor(
-		readonly status: number,
-		message: string,
-	) {
-		super(message);
-	}
 }
 
 function commitTarget(env: Env): SignalCommitTarget {
@@ -180,24 +160,12 @@ export async function openSignalSnapshot(
 	}
 
 	async function load(relative: string): Promise<string | null> {
-		const encodedPath = relative.split("/").map(encodeURIComponent).join("/");
-		let file: GhContents | GhContents[];
-		try {
-			file = await gh<GhContents | GhContents[]>(
-				`${api}/contents/${encodedPath}?ref=${baseSha}`,
-			);
-		} catch (error) {
-			if (error instanceof GitHubError && error.status === 404) return null;
-			throw error;
-		}
-		if (Array.isArray(file) || file.type !== "file") {
-			throw new Error(`${relative} is not a file on main at ${baseSha}`);
-		}
-		const encoded =
-			file.encoding === "base64" && file.content
-				? file.content
-				: (await gh<GhBlobContent>(`${api}/git/blobs/${file.sha}`)).content;
-		return Buffer.from(encoded, "base64").toString("utf8");
+		const file = await readGitHubFile(
+			(pathname) => gh(`${api}${pathname}`),
+			relative,
+			baseSha,
+		);
+		return file ? file.text : null;
 	}
 
 	async function createCommit(input: SignalCommitInput): Promise<string> {
