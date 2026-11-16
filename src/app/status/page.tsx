@@ -34,7 +34,7 @@ import { HealthSignal } from '@/components/ui/health-signal';
 import { getJurisdictionName } from '@/types';
 import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '@/lib/verification';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
-import { auDate } from '@/lib/au-date';
+import { sydneyShortDate } from '@/lib/au-date';
 
 export const revalidate = 3600;
 
@@ -72,13 +72,7 @@ const GAP_NOTE = { failing: ' (failing)', pending: ' (newly admitted, not yet ch
 const REVIEW_SOON_DAYS = 30;
 
 function sydneyDate(stamp: string | null): string {
-  if (!stamp) return 'never';
-  return auDate(new Date(stamp), {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'Australia/Sydney',
-  });
+  return stamp ? sydneyShortDate(stamp) : 'never';
 }
 
 function dueLabel(daysLeft: number | null): string {

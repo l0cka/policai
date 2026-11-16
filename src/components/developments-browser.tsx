@@ -21,7 +21,8 @@ import {
   getDevelopmentStreamName,
   type DevelopmentStream,
 } from '@/lib/development-streams';
-import { auDate } from '@/lib/au-date';
+import { auDate, sydneyShortDate } from '@/lib/au-date';
+import { sydneyCalendarDate } from '@/lib/calendar-date';
 
 interface DevelopmentsBrowserProps {
   developments: DevelopmentRow[];
@@ -29,17 +30,8 @@ interface DevelopmentsBrowserProps {
   streamById: Record<string, DevelopmentStream>;
 }
 
-function formatDate(value: string): string {
-  return auDate(new Date(value), {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'Australia/Sydney',
-  });
-}
-
 function developmentDate(development: DevelopmentRow): string {
-  if (!development.publishedAt) return formatDate(development.detectedAt);
+  if (!development.publishedAt) return sydneyShortDate(development.detectedAt);
   return formatPolicyDate(
     {
       type: 'published',
@@ -56,11 +48,8 @@ function developmentStamp(development: DevelopmentRow): number {
 
 /** YYYYMM in Australia/Sydney so month order matches monthKey grouping. */
 function sydneyMonthRank(development: DevelopmentRow): number {
-  const label = new Date(development.publishedAt || development.detectedAt).toLocaleDateString(
-    'en-CA',
-    { year: 'numeric', month: '2-digit', timeZone: 'Australia/Sydney' },
-  );
-  return Number(label.replace('-', ''));
+  const month = sydneyCalendarDate(new Date(development.publishedAt || development.detectedAt)).slice(0, 7);
+  return Number(month.replace('-', ''));
 }
 
 function monthKey(development: DevelopmentRow): string {

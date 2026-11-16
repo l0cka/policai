@@ -1,5 +1,6 @@
 import type { Jurisdiction } from '@/types';
 import { JURISDICTIONS } from '@/types';
+import { sydneyCalendarDate } from '@/lib/calendar-date';
 import type { FailureClass } from '@/lib/pipeline/failure';
 import { hostOf } from '@/lib/pipeline/host';
 import type { SourceHealthRecord } from '@/lib/pipeline/source-health';
@@ -39,7 +40,7 @@ const OBSERVED: ReadonlySet<FailureClass> = new Set<FailureClass>(['identity_ref
 
 /** The Sydney calendar day of a stamp, as YYYY-MM-DD, matching /status. */
 const sydneyDay = (stamp: string): string =>
-  new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Sydney' }).format(new Date(stamp));
+  sydneyCalendarDate(new Date(stamp));
 
 /**
  * Every enabled source whose site refuses the declared collector: the

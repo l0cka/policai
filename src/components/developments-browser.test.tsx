@@ -217,3 +217,24 @@ it('puts the title before the date and type in each row', () => {
   const date = row.querySelector('time')!;
   expect(title.compareDocumentPosition(date) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 });
+
+it('dates and groups a detection by its Sydney calendar day', () => {
+  const lateSeptember = {
+    ...development('late-september', 'Late September lead'),
+    relevanceScore: 0.65,
+    detectedAt: '2026-09-30T13:59:59.000Z',
+  };
+  const earlyOctober = {
+    ...development('early-october', 'Early October lead'),
+    relevanceScore: 0.2,
+    detectedAt: '2026-09-30T14:00:00.000Z',
+  };
+  renderBrowser([lateSeptember, earlyOctober]);
+
+  const dateOf = (title: string) => screen.getByText(title).closest('article')!.querySelector('time')!.textContent;
+  expect(dateOf('Late September lead')).toBe('30 Sep 2026');
+  expect(dateOf('Early October lead')).toBe('1 Oct 2026');
+
+  const months = screen.getAllByRole('heading', { level: 2 }).map((heading) => heading.textContent);
+  expect(months.filter((month) => /2026$/.test(month ?? ''))).toEqual(['OCTOBER 2026', 'SEPTEMBER 2026']);
+});
