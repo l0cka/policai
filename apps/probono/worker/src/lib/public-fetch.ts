@@ -108,6 +108,17 @@ export async function assertPublicDestination(
   }
 }
 
+export type ScrapeMetadata = { sourceURL?: string; url?: string };
+
+export async function assertPublicScrape(
+  metadata: ScrapeMetadata | undefined,
+  options?: Parameters<typeof assertPublicDestination>[1],
+): Promise<void> {
+  if (!metadata?.url) throw new UnsafeDestinationError('Scrape reported no final URL');
+  await assertPublicDestination(metadata.url, options);
+  if (metadata.sourceURL) await assertPublicDestination(metadata.sourceURL, options);
+}
+
 function guardedLookup(policy: Policy, resolver: typeof dnsLookup): LookupFunction {
   return (hostname, options, callback) => {
     resolver(hostname, { ...options, all: true }, (error, addresses: LookupAddress[]) => {
@@ -186,4 +197,37 @@ export async function publicFetch(
     if (hop === MAX_REDIRECTS) throw new Error(`Too many redirects at ${raw}`);
     url = assertPublicUrl(new URL(location, url), effective);
   }
+}
+
+export class ResponseTooLargeError extends Error {}
+
+export type ReadCappedOptions = {
+  overflow?: 'reject' | 'truncate';
+  stopAfter?: (chunk: Uint8Array) => boolean;
+};
+
+export async function readCapped(
+  response: Response,
+  maxBytes: number,
+  { overflow = 'reject', stopAfter }: ReadCappedOptions = {},
+): Promise<Buffer> {
+  if (!response.body) return Buffer.alloc(0);
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > maxBytes && overflow === 'reject') {
+        throw new ResponseTooLargeError(`Response exceeds ${maxBytes} bytes`);
+      }
+      chunks.push(value);
+      if (stopAfter?.(value) || (overflow === 'truncate' && size >= maxBytes)) break;
+    }
+  } finally {
+    await reader.cancel().catch(() => undefined);
+  }
+  return Buffer.concat(chunks).subarray(0, maxBytes);
 }

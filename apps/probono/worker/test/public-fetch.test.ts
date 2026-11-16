@@ -2,7 +2,14 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { lookup } from 'node:dns';
 import { once } from 'node:events';
 import { afterEach, describe, expect, it } from 'vitest';
-import { assertPublicDestination, isBlockedAddress, publicFetch } from '../src/lib/public-fetch.js';
+import {
+  assertPublicDestination,
+  assertPublicScrape,
+  isBlockedAddress,
+  publicFetch,
+  readCapped,
+} from '../src/lib/public-fetch.js';
+import { writeForever } from './support/endless-response.js';
 
 let server: Server | undefined;
 
@@ -100,5 +107,80 @@ describe('assertPublicDestination', () => {
         ],
       }),
     ).rejects.toThrow(/does not resolve to a public address/);
+  });
+});
+
+describe('readCapped', () => {
+  const get = (port: number) => publicFetch(`http://127.0.0.1:${port}/`, {}, { isBlocked });
+
+  it('returns a body of exactly the cap', async () => {
+    const port = await listen((_req, res) => res.end('a'.repeat(1024)));
+    expect((await readCapped(await get(port), 1024)).toString()).toBe('a'.repeat(1024));
+  });
+
+  it('rejects a body one byte over the cap', async () => {
+    const port = await listen((_req, res) => res.end('a'.repeat(1025)));
+    await expect(readCapped(await get(port), 1024)).rejects.toThrow(/exceeds 1024 bytes/);
+  });
+
+  it('rejects a body that never ends and closes the connection', async () => {
+    let closed: Promise<void> | undefined;
+    const port = await listen((_req, res) => {
+      closed = writeForever(res);
+    });
+    await expect(readCapped(await get(port), 256 * 1024)).rejects.toThrow(/exceeds 262144 bytes/);
+    await closed;
+  });
+
+  it('truncates at the cap and closes the connection when asked to', async () => {
+    let closed: Promise<void> | undefined;
+    const port = await listen((_req, res) => {
+      closed = writeForever(res);
+    });
+    expect(await readCapped(await get(port), 100_000, { overflow: 'truncate' })).toHaveLength(100_000);
+    await closed;
+  });
+
+  it('stops reading once the caller has what it needs', async () => {
+    let closed: Promise<void> | undefined;
+    const port = await listen((_req, res) => {
+      res.write('<h1>Headline</h1>');
+      closed = writeForever(res);
+    });
+    const body = await readCapped(await get(port), 64 * 1024 * 1024, {
+      overflow: 'truncate',
+      stopAfter: (chunk) => Buffer.from(chunk).includes('</h1>'),
+    });
+    expect(body.toString()).toContain('<h1>Headline</h1>');
+    expect(body.byteLength).toBeLessThan(1024 * 1024);
+    await closed;
+  });
+});
+
+describe('assertPublicScrape', () => {
+  it('accepts a scrape that started and landed on public addresses', async () => {
+    await expect(
+      assertPublicScrape({ sourceURL: 'https://1.1.1.1/a', url: 'https://1.0.0.1/b' }),
+    ).resolves.toBeUndefined();
+  });
+
+  it('refuses a scrape that landed on a private address', async () => {
+    await expect(
+      assertPublicScrape({ sourceURL: 'https://1.1.1.1/a', url: 'http://169.254.169.254/latest/meta-data' }),
+    ).rejects.toThrow(/non-public address/);
+  });
+
+  it('refuses a scrape whose final host resolves to a private address', async () => {
+    await expect(
+      assertPublicScrape(
+        { sourceURL: 'https://1.1.1.1/a', url: 'https://internal.example/' },
+        { resolve: async () => [{ address: '10.0.0.5', family: 4 }] },
+      ),
+    ).rejects.toThrow(/does not resolve to a public address/);
+  });
+
+  it('refuses a scrape that does not say where it landed', async () => {
+    await expect(assertPublicScrape({ sourceURL: 'https://1.1.1.1/a' })).rejects.toThrow(/no final URL/);
+    await expect(assertPublicScrape(undefined)).rejects.toThrow(/no final URL/);
   });
 });

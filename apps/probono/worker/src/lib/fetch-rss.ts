@@ -1,6 +1,6 @@
 import Parser from 'rss-parser';
 import type { RawItem } from './fetch-firecrawl.js';
-import { publicFetch, type PublicFetchInit } from './public-fetch.js';
+import { publicFetch, readCapped, type PublicFetchInit } from './public-fetch.js';
 
 /**
  * The collector identity on every retrieval path (`COLLECTOR_IDENTITY_TOKEN`
@@ -15,6 +15,7 @@ export const FEED_USER_AGENT = 'Policai/1.0 (+https://policai.org)';
 const parser = new Parser();
 const MAX_REDIRECTS = 5;
 const TIMEOUT_MS = 30_000;
+const MAX_BYTES = 8 * 1024 * 1024;
 
 type FeedEntry = { link?: string; title?: string; guid?: string; isoDate?: string; contentSnippet?: string };
 
@@ -64,10 +65,6 @@ function statusError(status: number, url: string): string {
   return `Status code ${status} at ${url}`;
 }
 
-async function consume(response: Response): Promise<void> {
-  await response.arrayBuffer().catch(() => undefined);
-}
-
 /**
  * GET a feed and return the body. Follows at most five http(s) redirects.
  * A 403 names the URL the ingest host received, so a reader can compare that
@@ -88,7 +85,7 @@ export async function readFeedXml(feedUrl: string, fetchImpl: FetchLike = public
     });
     if (response.status >= 300 && response.status < 400) {
       const location = response.headers.get('location');
-      await consume(response);
+      await response.body?.cancel().catch(() => undefined);
       if (!location || redirect === MAX_REDIRECTS) throw new Error(statusError(response.status, current));
       const next = new URL(location, current);
       if (next.protocol !== 'http:' && next.protocol !== 'https:') {
@@ -98,10 +95,10 @@ export async function readFeedXml(feedUrl: string, fetchImpl: FetchLike = public
       continue;
     }
     if (response.status !== 200) {
-      await consume(response);
+      await response.body?.cancel().catch(() => undefined);
       throw new Error(statusError(response.status, current));
     }
-    const bytes = Buffer.from(await response.arrayBuffer());
+    const bytes = await readCapped(response, MAX_BYTES);
     return bytes.toString(encodingFrom(response.headers.get('content-type')));
   }
   throw new Error(`Too many redirects at ${feedUrl}`);

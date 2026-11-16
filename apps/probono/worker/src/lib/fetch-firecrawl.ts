@@ -1,4 +1,4 @@
-import { assertPublicDestination } from './public-fetch.js';
+import { assertPublicDestination, assertPublicScrape, type ScrapeMetadata } from './public-fetch.js';
 import { fetchPageTitle, mapWithConcurrency } from './page-title.js';
 import { cleanListingTitle } from './listing-title.js';
 
@@ -170,7 +170,8 @@ export async function fetchFirecrawl(url: string, itemLinkPattern: string): Prom
     signal: AbortSignal.timeout(60_000),
   });
   if (!res.ok) throw new Error(`page fetch ${res.status} for ${url}`);
-  const body = (await res.json()) as { data?: { markdown?: string } };
+  const body = (await res.json()) as { data?: { markdown?: string; metadata?: ScrapeMetadata } };
+  await assertPublicScrape(body.data?.metadata);
   const markdown = body.data?.markdown;
   if (!markdown) throw new Error(`page fetch returned no text for ${url}`);
   return resolveSlugTitles(extractListingLinks(markdown, url, itemLinkPattern));
