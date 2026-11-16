@@ -4,6 +4,7 @@ import {
 } from "@/lib/court-requirements";
 import {
 	checkPublicApiRequest,
+	enumParam,
 	publicApiError,
 	publicApiJson,
 	publicApiOptions,
@@ -13,8 +14,6 @@ import {
 	COURT_REQUIREMENT_MODALITIES,
 	type ApiCourtRequirement,
 	JURISDICTIONS,
-	type CourtRequirementModality,
-	type Jurisdiction,
 } from "@/types";
 
 export async function GET(request: Request) {
@@ -22,29 +21,20 @@ export async function GET(request: Request) {
 	if (limited) return limited;
 
 	const { searchParams } = parseSourceUrl(request.url);
-	const jurisdiction = searchParams.get("jurisdiction") || undefined;
-	const modality = searchParams.get("modality") || undefined;
 	const search = searchParams.get("search") || undefined;
 	const policyId = searchParams.get("policyId") || undefined;
 	const actor = searchParams.get("actor") || undefined;
 	const topic = searchParams.get("topic") || undefined;
 	const limit = Number(searchParams.get("limit") || "50");
 
-	if (jurisdiction && !JURISDICTIONS.includes(jurisdiction as Jurisdiction)) {
-		return publicApiError(
-			`Invalid jurisdiction. Allowed values: ${JURISDICTIONS.join(", ")}`,
-		);
-	}
-	if (
-		modality &&
-		!COURT_REQUIREMENT_MODALITIES.includes(
-			modality as CourtRequirementModality,
-		)
-	) {
-		return publicApiError(
-			`Invalid modality. Allowed values: ${COURT_REQUIREMENT_MODALITIES.join(", ")}`,
-		);
-	}
+	const jurisdiction = enumParam(searchParams, "jurisdiction", JURISDICTIONS);
+	if (jurisdiction.error) return jurisdiction.error;
+	const modality = enumParam(
+		searchParams,
+		"modality",
+		COURT_REQUIREMENT_MODALITIES,
+	);
+	if (modality.error) return modality.error;
 	if (
 		[search, policyId, actor, topic].some(
 			(value) => value !== undefined && value.length > 200,
@@ -58,10 +48,10 @@ export async function GET(request: Request) {
 
 	const requirements = await getPublicCourtRequirements({
 		search,
-		jurisdiction: jurisdiction as Jurisdiction | undefined,
+		jurisdiction: jurisdiction.value,
 		policyId,
 		actor,
-		modality: modality as CourtRequirementModality | undefined,
+		modality: modality.value,
 		topic,
 	});
 

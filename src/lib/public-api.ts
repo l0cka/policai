@@ -27,6 +27,26 @@ export function publicApiError(error: string, status = 400) {
   return publicApiJson({ error, success: false }, { status });
 }
 
+export function enumParam<T extends string>(
+  searchParams: URLSearchParams,
+  name: string,
+  values: readonly T[],
+  shown: readonly T[] = values,
+):
+  | { value: T | undefined; error?: undefined }
+  | { value?: undefined; error: NextResponse } {
+  const raw = searchParams.get(name) || undefined;
+  const value = values.find((candidate) => candidate === raw);
+  if (raw && !value) {
+    return {
+      error: publicApiError(
+        `Invalid ${name}. Allowed values: ${shown.join(", ")}`,
+      ),
+    };
+  }
+  return { value };
+}
+
 export function publicApiText(
   body: string,
   contentType: string,
