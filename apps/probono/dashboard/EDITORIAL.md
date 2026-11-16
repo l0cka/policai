@@ -5,8 +5,23 @@ its runtime or data model. Arial handles interface/body text; Georgia handles
 editorial headings; monospace is reserved for metadata. The companion mark is
 an inline, decorative SVG with the A2J edition label and an accessible home link.
 
-`app/editorial.css` is a scoped presentation layer over existing dashboard CSS.
-The base theme tokens and font roles live in `app/globals.css`. The signal network
+`app/globals.css` is the dashboard's only stylesheet. It imports the shared
+tokens from `app/design-tokens.css` and declares each rule once: there is no
+second layer that overrides it, so a selector's block in `globals.css` is what
+the browser applies. The rules behind the editorial shell are:
+
+- Results come before context. `.radar-register .rail` keeps `order: 0`, so the
+  visual order and the keyboard order match.
+- The signal network panel is dark green in both themes, so its text and SVG
+  labels use fixed light colours and not the page foreground.
+- Every control is at least 44px, as on Policai.
+- Each view has one filled primary button. The feed's Search button is the
+  outlined quiet style.
+- The hero search shows the shared focus ring on `:focus-visible` only, so a
+  mouse click stays quiet. Its `:focus` rule sets no outline.
+- Dates outside the dateline use interface text ("20 Oct 2026"), as on Policai.
+
+The signal network
 is still source-linked and uses the same data, now behind a native keyboard
 operable disclosure. Mobile results precede secondary collection/deadline context.
 Navigation, deadline queries, stream/search/opportunity/screened-out filters,
