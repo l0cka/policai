@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { getSourceReviewById } from "@/lib/data-service";
 import { rejectStagedSource } from "@/lib/source-ingest";
+import { MAX_JSON_BODY_BYTES, readBoundedJson } from "@/lib/bounded-json-body";
 import {
 	applySignalHttpDecision,
 	bearerToken,
@@ -44,12 +45,17 @@ export async function POST(request: Request) {
 		return signalError(auth.error, auth.status, auth.code);
 	}
 
-	let body: unknown;
-	try {
-		body = await request.json();
-	} catch {
-		return signalError("Request body must be JSON", 400, "invalid_json");
+	const read = await readBoundedJson(request);
+	if (!read.ok) {
+		return read.reason === "too_large"
+			? signalError(
+					`Request body must be at most ${MAX_JSON_BODY_BYTES} bytes`,
+					413,
+					"body_too_large",
+				)
+			: signalError("Request body must be JSON", 400, "invalid_json");
 	}
+	const body = read.value;
 
 	if (!body || typeof body !== "object" || Array.isArray(body)) {
 		return signalError("Request body must be a JSON object", 400, "invalid_json");
