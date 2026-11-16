@@ -1,6 +1,7 @@
 import { getAgencies, getCommonwealthAgencies } from "@/lib/data-service";
 import {
   checkPublicApiRequest,
+  enumParam,
   publicApiError,
   publicApiJson,
   publicApiOptions,
@@ -14,17 +15,13 @@ export async function GET(request: Request) {
 
   const { searchParams } = parseSourceUrl(request.url);
   const level = searchParams.get("level") || undefined;
-  const jurisdiction = searchParams.get("jurisdiction") || undefined;
   const commonwealth = searchParams.get("commonwealth");
 
   if (level && !["federal", "state"].includes(level)) {
     return publicApiError("Invalid level. Allowed values: federal, state");
   }
-  if (jurisdiction && !JURISDICTIONS.includes(jurisdiction as never)) {
-    return publicApiError(
-      `Invalid jurisdiction. Allowed values: ${JURISDICTIONS.join(", ")}`,
-    );
-  }
+  const jurisdiction = enumParam(searchParams, "jurisdiction", JURISDICTIONS);
+  if (jurisdiction.error) return jurisdiction.error;
   if (commonwealth && !["true", "false"].includes(commonwealth)) {
     return publicApiError(
       "Invalid commonwealth value. Allowed values: true, false",
@@ -40,7 +37,10 @@ export async function GET(request: Request) {
     });
   }
 
-  const agencies = await getAgencies({ level, jurisdiction });
+  const agencies = await getAgencies({
+    level,
+    jurisdiction: jurisdiction.value,
+  });
   return publicApiJson({
     data: agencies,
     total: agencies.length,

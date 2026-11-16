@@ -1,6 +1,7 @@
 import { getDevelopments } from "@/lib/data-service";
 import {
   checkPublicApiRequest,
+  enumParam,
   publicApiError,
   publicApiJson,
   publicApiOptions,
@@ -15,23 +16,15 @@ export async function GET(request: Request) {
   if (limited) return limited;
 
   const { searchParams } = parseSourceUrl(request.url);
-  const jurisdiction = searchParams.get("jurisdiction") || undefined;
-  const status = searchParams.get("status") || undefined;
   const search = searchParams.get("search") || undefined;
   const since = searchParams.get("since") || undefined;
   const rawLimit = searchParams.get("limit");
   const limit = rawLimit ? Number(rawLimit) : 50;
 
-  if (jurisdiction && !JURISDICTIONS.includes(jurisdiction as never)) {
-    return publicApiError(
-      `Invalid jurisdiction. Allowed values: ${JURISDICTIONS.join(", ")}`,
-    );
-  }
-  if (status && !PUBLIC_DEVELOPMENT_STATUSES.includes(status as never)) {
-    return publicApiError(
-      `Invalid status. Allowed values: ${PUBLIC_DEVELOPMENT_STATUSES.join(", ")}`,
-    );
-  }
+  const jurisdiction = enumParam(searchParams, "jurisdiction", JURISDICTIONS);
+  if (jurisdiction.error) return jurisdiction.error;
+  const status = enumParam(searchParams, "status", PUBLIC_DEVELOPMENT_STATUSES);
+  if (status.error) return status.error;
   if (search && search.length > 200) {
     return publicApiError("Search must be 200 characters or fewer.");
   }
@@ -45,8 +38,8 @@ export async function GET(request: Request) {
   }
 
   const developments = await getDevelopments({
-    jurisdiction,
-    status,
+    jurisdiction: jurisdiction.value,
+    status: status.value,
     search,
     since,
   });
