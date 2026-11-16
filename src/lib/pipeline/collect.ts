@@ -21,6 +21,7 @@ import {
 } from './classify';
 import type { RelevanceScorer } from './clef-classify';
 import { trackedFrlPages } from '@/lib/legislation/frl-search';
+import { slugify } from '@/lib/slug';
 import { extractRetrievedDocument } from './content';
 import { classifyFailure, publicFailureUrl } from './failure';
 import { robotsUnverifiedHosts, type Host, type HostGate, type HostRecord } from './host-gate';
@@ -178,14 +179,6 @@ export function emptyWatchState(): WatchState {
     hosts: {},
     sourceHealth: {},
   };
-}
-
-function slugify(value: string, maxLength = 60): string {
-  return value
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-    .slice(0, maxLength);
 }
 
 /** Small stable hash so development IDs stay unique per URL. */
