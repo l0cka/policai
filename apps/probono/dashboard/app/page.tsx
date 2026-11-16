@@ -12,15 +12,9 @@ import {
 import { sourceHealthHeadline } from '../lib/health-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 import { SignalNetwork } from './signal-network';
-import { auDate } from '../lib/au-date';
+import { auDate, sydneyCalendarDate, sydneyShortDate } from '../lib/au-date';
 
 export const dynamic = 'force-dynamic';
-
-const SYDNEY_DATE = { timeZone: 'Australia/Sydney' } as const;
-
-function sydneyDateOf(ts: string | Date): string {
-  return new Date(ts).toLocaleDateString('en-CA', SYDNEY_DATE);
-}
 
 function dayLabel(date: string, today: string): string {
   const diff = daysUntil(date, today);
@@ -50,15 +44,6 @@ function streamVars(stream: string | null): React.CSSProperties | undefined {
   } as React.CSSProperties;
 }
 
-function shortDate(value: string | Date): string {
-  return auDate(new Date(value), {
-    timeZone: 'Australia/Sydney',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
 /* The same instant for <time dateTime>; null stays a plain display date. */
 function toDateTimeString(value: string | Date | null): string | undefined {
   if (!value) return undefined;
@@ -80,7 +65,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
   const sourceHeadline = sourceHealthHeadline(sources);
   const groups: Array<{ date: string; rows: typeof rows }> = [];
   for (const r of rows) {
-    const date = sydneyDateOf(r.published_at ?? r.created_at);
+    const date = sydneyCalendarDate(new Date(r.published_at ?? r.created_at));
     const last = groups.at(-1);
     if (last && last.date === date) last.rows.push(r);
     else groups.push({ date, rows: [r] });
@@ -153,7 +138,7 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
                 const href = safeHref(item.url);
                 return (
                   <article key={item.id}>
-                    <time dateTime={toDateTimeString(item.published_at ?? item.created_at)}>{shortDate(item.published_at ?? item.created_at)}</time>
+                    <time dateTime={toDateTimeString(item.published_at ?? item.created_at)}>{sydneyShortDate(item.published_at ?? item.created_at)}</time>
                     <h2>
                       {href ? <a href={href} target="_blank" rel="noopener noreferrer">{item.title} <ArrowUpRight /></a> : item.title}
                     </h2>

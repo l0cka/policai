@@ -6,7 +6,7 @@ import { getWeeklyBrief, type WeeklySignal } from '../../lib/this-week-data';
 import { isStaleSnapshot, weekWindow } from '../../lib/weekly-query';
 import { STREAMS } from '../../lib/radar-state';
 import { ArrowRight, ArrowUpRight, Flag } from '../icons';
-import { auDate } from '../../lib/au-date';
+import { sydneyCalendarDate, sydneyShortDate } from '../../lib/au-date';
 
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = pageMetadata({
@@ -15,10 +15,6 @@ export const metadata: Metadata = pageMetadata({
     'A rolling seven-day radar brief, potential opportunities and upcoming deadlines, linked to their sources.',
   path: '/this-week',
 });
-
-function shortDate(value: string | Date): string {
-  return auDate(new Date(value), { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric' });
-}
 
 function Signal({ item, opportunity = false }: { item: WeeklySignal; opportunity?: boolean }) {
   const href = safeHref(item.url);
@@ -35,16 +31,16 @@ function Signal({ item, opportunity = false }: { item: WeeklySignal; opportunity
         <h3>{href ? <a className="item-title" href={href} target="_blank" rel="noopener noreferrer">{item.title}<ArrowUpRight /></a> : <span className="item-title">{item.title}</span>}</h3>
         {item.blurb || item.excerpt ? <p className="item-blurb">{item.blurb ?? item.excerpt}</p> : null}
         {opportunity ? <p className="item-flag"><Flag />{item.opportunity_reason ?? 'Potential opportunity; check eligibility and closing dates at the source.'}</p> : null}
-        <p className="item-source-inline">{item.source_name} · {shortDate(item.published_at ?? item.created_at)}</p>
+        <p className="item-source-inline">{item.source_name} · {sydneyShortDate(item.published_at ?? item.created_at)}</p>
       </div>
-      <div className="item-source">{shortDate(item.published_at ?? item.created_at)}<br />{item.source_name}</div>
+      <div className="item-source">{sydneyShortDate(item.published_at ?? item.created_at)}<br />{item.source_name}</div>
     </article>
   );
 }
 
 export default async function ThisWeek() {
   const now = new Date();
-  const today = now.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const today = sydneyCalendarDate(now);
   const { anchor, opportunities, deadlines, developments, totalDevelopments } = await getWeeklyBrief(now);
   // The brief follows collection, not the wall clock: the window ends at the
   // most recent successful run, so a stalled collector reads as a historical
@@ -67,7 +63,7 @@ export default async function ThisWeek() {
         ) : null}
         {window ? (
           <p className="page-intro">
-            Seven-day window: {shortDate(start)}–{shortDate(end)}, ending at{' '}
+            Seven-day window: {sydneyShortDate(start)}–{sydneyShortDate(end)}, ending at{' '}
             {end.toLocaleTimeString('en-AU', { timeZone: 'Australia/Sydney', hour: '2-digit', minute: '2-digit', timeZoneName: 'short' })}. Dates use Sydney time. <Link href="/health">Check source coverage</Link>.
           </p>
         ) : (
@@ -94,7 +90,7 @@ export default async function ThisWeek() {
               const days = daysUntil(r.date, today);
               const href = safeHref(r.url);
               return <article className="dated-row" key={`${r.date}-${n}`}>
-                <time className="dated-when" dateTime={r.date}>{shortDate(`${r.date}T00:00:00Z`)}</time>
+                <time className="dated-when" dateTime={r.date}>{sydneyShortDate(`${r.date}T00:00:00Z`)}</time>
                 <div className="dated-body"><p className="dated-subject">{href ? <a href={href} target="_blank" rel="noopener noreferrer">{r.title}</a> : r.title}</p><p className="dated-kind">{r.label}</p></div>
                 <span className={`chip ${urgency(days)}`}><span className="sr-only">Closes </span>{countdown(days)}</span>
               </article>;
