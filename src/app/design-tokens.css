@@ -24,8 +24,12 @@
   /* Eyebrows, metadata labels and small-caps data. */
   --type-label: 0.6875rem;
   --type-small: 0.75rem;
+  --type-meta: 0.8125rem;
   --type-ui: 0.875rem;
+  --type-lede: 0.9375rem;
   --type-body: 1rem;
+  --tracking-label: 0.08em;
+  --tracking-caps: 0.12em;
   --tracking-eyebrow: 0.16em;
 
   /* Font roles: Georgia for titles, Arial for the interface, mono only for
@@ -49,10 +53,12 @@
   --space-8: 2rem;
   --space-10: 2.5rem;
   --space-12: 3rem;
+  --touch-target: 2.75rem;
 
   /* ------------------------------------------------------------ radii -- */
   --radius: 0.5rem;
   --radius-control: 4px;
+  --radius-surface: 6px;
   --radius-pill: 9999px;
 
   /* ------------------------------------------------------------ focus -- */
@@ -76,7 +82,6 @@
   /* Hover fill for list and table rows. */
   --row-hover: light-dark(#eeeee7, #202c23);
 
-  --navy: light-dark(#102a43, #09182a);
   --trust: light-dark(#146b5a, #65d2b4);
   /* AA-contrast caution ink (4.5:1 on paper). */
   --caution: light-dark(#8f5d12, #e7b96c);
@@ -91,7 +96,9 @@
   --status-amended-bg: light-dark(#e4eafa, #1f2d55);
   --status-repealed-bg: light-dark(#e7e9e8, #28303b);
 
-  --background-pattern: light-dark(rgba(16, 42, 67, 0.028), rgba(255, 255, 255, 0.022));
+  --selected-bg: var(--primary);
+  --selected-fg: var(--primary-foreground);
+  --selected-border: var(--primary);
 
   /* Print-style rule weights: hairline, rule, heavy. */
   --rule-hair: light-dark(rgba(16, 33, 58, 0.14), rgba(237, 242, 247, 0.13));
