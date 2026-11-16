@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { headers } from 'next/headers';
 import { getRadarPage, getRadarStats, getRadarSourceStats, getRadarOverview } from '../lib/radar-data';
 import { STREAMS, parseRadarState, type RadarSearchParams } from '../lib/radar-state';
 import { RadarControls, RadarPagination } from './radar-controls';
@@ -13,6 +14,7 @@ import { sourceHealthHeadline } from '../lib/health-data';
 import { ArrowRight, ArrowUpRight, Flag, Search } from './icons';
 import { SignalNetwork } from './signal-network';
 import { auDate } from '../lib/au-date';
+import { RATE_LIMITS, rateLimitRetryAfter } from '../lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,6 +70,19 @@ function toDateTimeString(value: string | Date | null): string | undefined {
 
 export default async function Feed({ searchParams }: { searchParams: Promise<RadarSearchParams> }) {
   const state = parseRadarState(await searchParams);
+  if (state.q && (await rateLimitRetryAfter(await headers(), RATE_LIMITS.search)) !== null) {
+    return (
+      <section className="radar-register" id="radar-feed">
+        <div className="container page">
+          <div className="empty-state" role="status">
+            <h1 className="section-title">Too many searches</h1>
+            <p>Wait a minute, then search again.</p>
+            <Link href="/" className="button-quiet">Back to the radar <ArrowRight /></Link>
+          </div>
+        </div>
+      </section>
+    );
+  }
   const { stream, q, opp, filtered } = state;
   const isResearch = Boolean(stream || q || opp || filtered || state.page > 1);
   const [{ rows, pagination }, stats, sources, deadlines, overview] = await Promise.all([
