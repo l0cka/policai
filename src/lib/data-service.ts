@@ -45,8 +45,6 @@ import {
 	type CitationState,
 } from "@/lib/articles";
 import {
-	normalizeJurisdiction,
-	normalizePolicyType,
 	type Agency,
 	type ArticleType,
 	type CollectionMeta,
@@ -360,12 +358,6 @@ const WATCH_STATE_FILE = path.join(
 	"data",
 	"watch-state.json",
 );
-const LEGACY_PENDING_CONTENT_FILE = path.join(
-	process.cwd(),
-	"public",
-	"data",
-	"pending-content.json",
-);
 const MCP_AUDIT_LOG_FILE = path.join(
 	process.cwd(),
 	"data",
@@ -512,66 +504,8 @@ export async function policyExistsBySourceUrl(
 // Source review operations
 // ---------------------------------------------------------------------------
 
-interface LegacyPendingItem {
-	id: string;
-	title: string;
-	source: string;
-	discoveredAt: string;
-	status: "pending_review" | "approved" | "rejected";
-	aiAnalysis: SourceReview["analysis"];
-}
-
-function createPolicyFromReview(item: LegacyPendingItem): PolicyDraft {
-	const now = new Date().toISOString();
-	const id = item.title
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/(^-|-$)/g, "")
-		.slice(0, 50);
-
-	return {
-		id,
-		title: item.title,
-		description: item.aiAnalysis.summary,
-		jurisdiction: normalizeJurisdiction(item.aiAnalysis.suggestedJurisdiction),
-		type: normalizePolicyType(item.aiAnalysis.suggestedType),
-		status: "active",
-		agencies: item.aiAnalysis.agencies || [],
-		sourceUrl: item.source,
-		content: item.aiAnalysis.summary,
-		aiSummary: item.aiAnalysis.summary,
-		tags: item.aiAnalysis.tags || [],
-		themes: [],
-		createdAt: now,
-		updatedAt: now,
-	};
-}
-
-function legacyPendingToSourceReview(item: LegacyPendingItem): SourceReview {
-	return {
-		id: item.id,
-		sourceUrl: item.source,
-		title: item.title,
-		entryKind: "policy",
-		status: item.status,
-		discoveredAt: item.discoveredAt,
-		createdBy: "legacy-admin-review",
-		analysis: item.aiAnalysis,
-		sourceEvidence: { url: item.source },
-		proposedRecord: createPolicyFromReview(item),
-		updatedAt: item.discoveredAt,
-	};
-}
-
 async function readSourceReviewsFromJson(): Promise<SourceReview[]> {
-	const reviews = await readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []);
-	if (reviews.length > 0) return reviews;
-
-	const legacyItems = await readJsonFile<LegacyPendingItem[]>(
-		LEGACY_PENDING_CONTENT_FILE,
-		[],
-	);
-	return legacyItems.map(legacyPendingToSourceReview);
+	return readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []);
 }
 
 export async function getSourceReviews(filters?: {
@@ -1056,7 +990,7 @@ function timelineEventAsDevelopment(event: TimelineEvent): Development {
 	};
 }
 
-async function getLegacyTimelineDevelopments(now: Date): Promise<Development[]> {
+async function timelineEventDevelopments(now: Date): Promise<Development[]> {
 	const [events, policies] = await Promise.all([
 		getTimelineEvents(undefined, { includeGenerated: false, now }),
 		getPolicies(undefined, { now }),
@@ -1090,8 +1024,8 @@ export async function getDevelopments(filters?: {
 	const now = options.now ?? new Date();
 	let developments = await readJsonFile<Development[]>(DEVELOPMENTS_FILE, []);
 	if (access === "public") {
-		const legacyTimelineDevelopments = await getLegacyTimelineDevelopments(now);
-		for (const development of legacyTimelineDevelopments) {
+		const timelineDevelopments = await timelineEventDevelopments(now);
+		for (const development of timelineDevelopments) {
 			if (
 				!developments.some(
 					(existing) =>
