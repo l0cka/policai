@@ -21,7 +21,7 @@ export function toRegisterPolicy({ content, aiSummary, ...policy }: Policy): Reg
 export type PolicySortField = 'title' | 'jurisdiction' | 'type' | 'status' | 'effectiveDate';
 export type PolicySortDirection = 'asc' | 'desc';
 export type PolicyViewMode = 'table' | 'list';
-export const REGISTER_PAGE_SIZE = 8;
+export const REGISTER_PAGE_SIZE = 25;
 
 /** Research state is owned by the browser URL, never by the result renderer. */
 export interface RegisterState {
