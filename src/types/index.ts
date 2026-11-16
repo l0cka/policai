@@ -616,17 +616,6 @@ export interface McpAuditLog {
 	errorSummary?: string;
 }
 
-// Filter types for UI
-export interface PolicyFilters {
-	jurisdiction?: Jurisdiction[];
-	type?: PolicyType[];
-	status?: PolicyStatus[];
-	search?: string;
-	dateFrom?: Date | string;
-	dateTo?: Date | string;
-	tags?: string[];
-}
-
 // Display name mappings
 export const JURISDICTION_NAMES: Record<Jurisdiction, string> = {
 	federal: "Federal",
@@ -832,7 +821,6 @@ export function isArticleType(
 
 export const ARTICLE_STATUSES = ["draft", "published", "withdrawn"] as const;
 
-export type ArticleStatus = (typeof ARTICLE_STATUSES)[number];
 
 export interface ArticleCorrection {
 	date: string;

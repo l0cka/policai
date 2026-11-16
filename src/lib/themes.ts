@@ -29,8 +29,6 @@ export const MIN_THEMES_PER_RECORD = 1;
 export const MAX_THEMES_PER_RECORD = 5;
 /** Minimum non-trashed register records for a listed theme (error below). The same floor triggers a warning when public records drop below it. */
 export const MIN_RECORDS_PER_THEME = 2;
-/** @deprecated Use {@link MIN_RECORDS_PER_THEME}. Kept as an alias for older imports. */
-export const MIN_PUBLIC_RECORDS_PER_THEME = MIN_RECORDS_PER_THEME;
 
 /** Cap for a theme id or value shown in a validation message. */
 export const MAX_THEME_MESSAGE_VALUE_CHARS = 80;

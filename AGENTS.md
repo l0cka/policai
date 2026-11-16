@@ -67,7 +67,8 @@ npm run lint           # ESLint (flat config)
 npm run test           # Vitest
 npm run validate:data  # structural validation of the data files
 npm run check:freshness # overdue-review ratchet for policies, timeline events, developments (data/freshness-budget.json)
-npm run check          # lint + typecheck + test + validate:data + build; run before handing off
+npm run check:unused   # knip: fails on unused files, exports and dependencies (knip.json)
+npm run check          # lint + typecheck + check:unused + test + validate:data + build; run before handing off
 npm run collect        # one collection pass (-- --dry-run to preview, -- --source=<id> for one source)
 npm run audit:sources  # live audit of automatic watch sources
 npm run audit:register # compare curated source fingerprints
