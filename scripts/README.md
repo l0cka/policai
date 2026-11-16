@@ -11,7 +11,17 @@ npm run collect -- --dry-run           # preview without writing
 npm run collect -- --source=apra-rss   # single source
 npm run collect -- --max-items=3       # cap new items per source
 npm run collect                        # full pass, writes data files
+npm run collect -- --help              # print the flags
 ```
+
+The flags are parsed strictly. An unknown flag (`--dryrun`), a positional
+argument, a flag with no value, an empty `--source=` or a `--max-items` that is
+not a positive integer prints the usage and exits 2 before the run starts, so a
+typo never becomes a full writing pass. `--source=track:<policyId>` targets one
+followed record and skips the catalogue sources.
+
+`POLICAI_COLLECTOR_STATE` names the host folder holding the collector's watch
+state and outbox (`collect-run.ts`); the host wrapper sets it.
 
 Classification uses keyword rules, or the local Clef model when
 `USE_CLEF_CLASSIFIER=1` (see `docs/collector.md`, Classification). Confidence is
