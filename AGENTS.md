@@ -22,19 +22,56 @@ changes under `apps/probono/` outside `dashboard/`. "Lane routing" in
 ## Shared design tokens
 
 `design/tokens.css` is the single source for values both sites share: type
-scale (`--type-*`, `--tracking-eyebrow`), font roles (`--font-sans`,
-`--font-display`, `--font-mono`), spacing (`--space-*`), radii
-(`--radius`, `--radius-control`, `--radius-pill`), focus ring
-(`--focus-ring-*`), core, status and row-hover colours, rules, shadows and
-motion. The A2J Workers build sees only `apps/probono/dashboard`, so neither
-app imports across that boundary. `node scripts/sync-design-tokens.mjs` writes
-byte-identical copies to `src/app/design-tokens.css` and
+scale (`--type-*`), label tracking (`--tracking-label`, `--tracking-caps`,
+`--tracking-eyebrow`), font roles (`--font-sans`, `--font-display`,
+`--font-mono`), spacing (`--space-*`, `--touch-target`), radii (`--radius`,
+`--radius-control`, `--radius-surface`, `--radius-pill`), focus ring
+(`--focus-ring-*`), core, status, selected-control (`--selected-*`) and
+row-hover colours, rules, shadows and motion. The A2J Workers build sees only
+`apps/probono/dashboard`, so neither app imports across that boundary.
+`node scripts/sync-design-tokens.mjs` writes byte-identical copies to
+`src/app/design-tokens.css` and
 `apps/probono/dashboard/app/design-tokens.css`; both apps import their copy
 from `globals.css`. Never edit a copy. `src/lib/design-tokens-sync.test.ts`
 (in `npm run test`, so `npm run check`) fails when a copy drifts. Keep
-app-only values (Policai's `--jd-*` and chart colours, A2J's `--s-*` stream
-colours) in each app's `globals.css`, and don't redeclare a shared token
-there.
+app-only values (Policai's `--jd-*`, A2J's `--s-*` stream colours) in each
+app's `globals.css`, and don't redeclare a shared token there. When an
+app-only token has the same value as a shared one, write it as an alias
+(`--destructive: var(--alarm)`), not a second copy of the hex pair.
+
+In Policai's stylesheets (`src/app/globals.css`,
+`src/app/coverage/coverage.css`) a font size, radius or tracking value that
+equals a token is written as the token. Three values stay literal on purpose:
+`.coverage-clear` keeps `2.75rem` because `coverage-css.test.ts` pins it, the
+coverage labels keep `0.1em` and `0.04em` tracking because no token has those
+values, and a `min-height` that sets a row height, not a hit target, does not
+use `--touch-target`. Tailwind's `rounded-md` reads `--radius-surface` through
+the `@theme` block, and `rounded-lg` reads `--radius`; the other radius
+utilities use Tailwind's defaults. `.label` and `.label-caps` (`@layer
+components`) are the mono uppercase label at `--type-label`, with
+`--tracking-label` and `--tracking-caps`. A coverage cell's keyboard focus uses
+the focus-ring width and colour with a 1px offset, so the ring stays inside
+the cell grid; the selected cell keeps its own outline.
+
+`src/lib/design-tokens-unused.test.ts` (also in `npm run test`) fails when a
+custom property declared in either app's CSS is never read. Each app is
+checked against its own files, and a shared token passes when either app
+reads it. A property counts as read when:
+
+- a rule reads it with `var()`, or another property that is itself read does;
+- a script names it, or builds it from a template (`var(--jd-${id})`);
+- it is a `@theme` variable and a Tailwind class uses it (the `card` colour
+  by `bg-card`, the `md` radius by `rounded-md`);
+- it is a `--tw-prose-*` variable and the `prose` class is rendered.
+
+Delete a property the test reports, or its `@theme` mapping; do not add it to
+the allowlist. `NOT_YET_ADOPTED` in that file lists the shared tokens no app
+reads yet (`--selected-bg`, `--selected-fg`, `--selected-border`). Remove a
+name from it in the change that first uses the token. The test does not fail
+on a stale entry, so that parallel changes can adopt a token in any order. Its
+fixtures use made-up token names on purpose: Tailwind scans test files and
+Markdown for class and variable names, so a real theme name there adds CSS to
+the build.
 
 ## Project Overview
 
