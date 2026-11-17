@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import signal
 import subprocess
@@ -34,6 +35,22 @@ REPO = 'l0cka/policai'
 PREFIX = 'automation/collection-'
 EVIDENCE_DAYS = 30
 GITHUB_CREDENTIAL = 'github.env'
+REASON_LINES = 30
+REASON_LINE_BYTES = 300
+REASON_READ_BYTES = 1 << 20
+REASON_SOURCES = re.compile(r'  ! |\[collect\] \d+ new developments, |\[collect\] Fatal:')
+SECRET_NAME = re.compile(r'TOKEN|SECRET|PASSWORD|PASSWD|KEY|CREDENTIAL|AUTH|COOKIE', re.I)
+REDACTIONS = [
+    (re.compile(r'[^\x20-\x7e\u00a0-\uffff]'), ' '),
+    (re.compile(r'`'), "'"),
+    (re.compile(r'\b([a-z][a-z0-9+.-]*://)[^/\s@]*@', re.I), r'\1'),
+    (re.compile(r'\b([a-z][a-z0-9+.-]*://[^\s?#]*)[?#]\S*', re.I), r'\1'),
+    (re.compile(r'\b(authorization|cookie)\s*[:=]\s*(?:(?:bearer|basic|token)\s+)?\S+', re.I), r'\1: [redacted]'),
+    (re.compile(r'\b(?:bearer|basic)\s+[\w.~+/=-]{8,}', re.I), '[redacted]'),
+    (re.compile(r'\b([\w.-]*(?:token|secret|password|passwd|key|credential)[\w.-]*)\s*[:=]\s*\S+', re.I),
+     r'\1=[redacted]'),
+    (re.compile(r'\b(?:gh[pousr]_|github_pat_)\w+'), '[redacted]'),
+]
 RECEIPT_FIELDS = ['run_id', 'phase', 'exit_code', 'message', 'pr', 'finished_at', 'evidence']
 DEADLINE = 0.0
 GITHUB = None
@@ -89,6 +106,29 @@ def command(args, cwd=SOURCE, limit=45, log=None, check=True, env=None):
             raise Refused(f'{args[0]} {args[1]} failed (exit {child.returncode})'
                           + (': ' + ' | '.join(detail) if detail else ''))
         return (out or '').strip() if check else child.returncode
+
+
+def collect_reason(run):
+    try:
+        with (Path(run['evidence']) / 'collect.log').open('rb') as log:
+            log.seek(max(0, log.seek(0, os.SEEK_END) - REASON_READ_BYTES))
+            text = log.read().decode(errors='replace')
+    except OSError:
+        return []
+    secrets = sorted({value for name, value in {**os.environ, **(GITHUB or {})}.items()
+                      if SECRET_NAME.search(name) and len(value) >= 8}, key=len, reverse=True)
+    lines = []
+    for line in text.splitlines():
+        if not REASON_SOURCES.match(line):
+            continue
+        for secret in secrets:
+            line = line.replace(secret, '[redacted]')
+        for pattern, replacement in REDACTIONS:
+            line = pattern.sub(replacement, line)
+        lines.append(line.rstrip().encode()[:REASON_LINE_BYTES].decode(errors='ignore'))
+    if len(lines) > REASON_LINES:
+        lines[REASON_LINES:] = [f'{len(lines) - REASON_LINES} more lines in collect.log']
+    return lines
 
 
 def github_env():
@@ -408,6 +448,9 @@ def main():
             save(run)
             prepare(run)
             rc = collect(run)
+            if rc:
+                message = 'collection health failed; ' + ('output published' if run['phase'] == 'published'
+                                                          else 'no output changes to publish')
         except subprocess.TimeoutExpired:
             rc, message = 124, 'deadline exceeded; state not promoted, nothing published'
         except (Refused, OSError, ValueError, KeyError) as exc:
@@ -416,6 +459,8 @@ def main():
             receipt = dict(finished_at=utc(), exit_code=rc, message=message)
             if run:
                 run.update(receipt)
+                if run['collection_exit']:
+                    run['collect_reason'] = collect_reason(run)
                 save(run)
                 receipt = run
             if sys.argv[1:] != ['--preflight']:
