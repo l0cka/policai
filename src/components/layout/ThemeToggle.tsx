@@ -42,7 +42,15 @@ function select(value: ThemeChoice) {
   window.dispatchEvent(new Event(THEME_EVENT));
 }
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle({
+  className,
+  label = 'Colour theme',
+  size = 'default',
+}: {
+  className?: string;
+  label?: string;
+  size?: 'default' | 'compact';
+}) {
   const choice = useSyncExternalStore(
     subscribe,
     getSnapshot,
@@ -57,7 +65,7 @@ export function ThemeToggle({ className }: { className?: string }) {
         className,
       )}
       role="radiogroup"
-      aria-label="Colour theme"
+      aria-label={label}
     >
       {OPTIONS.map(({ value, label, Icon }, index) => {
         const active = choice === value;
@@ -91,9 +99,10 @@ export function ThemeToggle({ className }: { className?: string }) {
             }}
             onClick={() => select(value)}
             className={cn(
-              'flex h-11 w-11 items-center justify-center rounded-full transition-colors duration-[var(--dur-fast)]',
+              'flex items-center justify-center rounded-full transition-colors duration-[var(--dur-fast)]',
+              size === 'compact' ? 'h-8 w-8' : 'h-11 w-11',
               active
-                ? 'bg-primary text-primary-foreground'
+                ? 'bg-[var(--selected-bg)] text-[var(--selected-fg)]'
                 : 'text-muted-foreground hover:text-foreground',
             )}
           >

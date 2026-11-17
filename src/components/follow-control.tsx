@@ -2,6 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   addFollow,
   emptyFollows,
@@ -132,16 +133,23 @@ export function FollowingList({ policies }: { policies: readonly FollowingPolicy
 
   if (matches.length === 0) {
     return (
-      <p role="status" className="mt-6 max-w-2xl text-sm leading-6 text-muted-foreground">
-        {follows.length === 0
-          ? 'Nothing followed in this browser yet. '
-          : 'No public records match the follows saved in this browser. '}
-        Open a record in the{' '}
-        <Link href="/" className="text-primary underline underline-offset-4">
-          register
-        </Link>{' '}
-        and choose Follow, or filter the register to one jurisdiction or theme and follow that.
-      </p>
+      <div className="mt-6 max-w-2xl">
+        <p role="status" className="text-sm leading-6 text-muted-foreground">
+          {follows.length === 0
+            ? 'Nothing followed in this browser yet. '
+            : 'No public records match the follows saved in this browser. '}
+          Open a record in the register and choose Follow, or filter the register to one jurisdiction or theme
+          and follow that.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-3">
+          <Button asChild className="min-h-11">
+            <Link href="/">Browse the register</Link>
+          </Button>
+          <Button asChild variant="outline" className="min-h-11">
+            <Link href="/?jurisdiction=federal">Follow a jurisdiction</Link>
+          </Button>
+        </div>
+      </div>
     );
   }
 

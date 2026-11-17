@@ -12,10 +12,11 @@ function renderAt(path: string) {
 
 describe('SectionNav', () => {
   it.each([
-    ['/', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Records'],
-    ['/timeline', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Timeline'],
-    ['/coverage', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Coverage map'],
-    ['/rule-finder', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder'], 'Rule finder'],
+    ['/', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder', 'Following'], 'Records'],
+    ['/timeline', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder', 'Following'], 'Timeline'],
+    ['/coverage', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder', 'Following'], 'Coverage map'],
+    ['/rule-finder', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder', 'Following'], 'Rule finder'],
+    ['/following', 'Register views', ['Records', 'Timeline', 'Coverage map', 'Rule finder', 'Following'], 'Following'],
     ['/this-week', 'Updates views', ['This week', 'Developments'], 'This week'],
     ['/developments', 'Updates views', ['This week', 'Developments'], 'Developments'],
     ['/methodology', 'About views', ['Methodology', 'Source status', 'Refusing sites', 'Reuse terms'], 'Methodology'],
@@ -39,7 +40,7 @@ describe('SectionNav', () => {
     for (const link of screen.getAllByRole('link')) expect(link).toHaveClass('min-h-11');
   });
 
-  it.each(['/policies/some-record', '/legislation', '/courts', '/analysis', '/analysis/some-piece', '/following'])(
+  it.each(['/policies/some-record', '/legislation', '/courts', '/analysis', '/analysis/some-piece'])(
     'renders nothing on %s',
     (path) => {
       const { container } = renderAt(path);

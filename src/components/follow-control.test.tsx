@@ -58,4 +58,15 @@ describe('FollowingFeeds', () => {
     expect(screen.getByRole('link', { name: 'Victorian guidance' })).toBeInTheDocument();
     expect(screen.queryByRole('region', { name: 'Feeds for what you follow' })).toBeNull();
   });
+
+  it('offers two ways to start when nothing is followed', () => {
+    renderWithFollows([]);
+
+    expect(screen.getByRole('status')).toHaveTextContent('Nothing followed in this browser yet.');
+    expect(screen.getByRole('link', { name: 'Browse the register' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('link', { name: 'Follow a jurisdiction' })).toHaveAttribute(
+      'href',
+      '/?jurisdiction=federal',
+    );
+  });
 });

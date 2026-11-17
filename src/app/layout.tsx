@@ -71,7 +71,7 @@ export default async function RootLayout({
         <Header {...collectionStripProps(collectionMeta)} />
         <SectionNav />
         <main id="main-content" className="flex-1">{children}</main>
-        <Footer />
+        <Footer collectedAt={collectionMeta.lastCollectedAt} />
         <BackToTop />
       </body>
     </html>

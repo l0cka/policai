@@ -20,6 +20,7 @@ export const PRIMARY_SECTIONS: readonly NavSection[] = [
       { href: '/timeline', label: 'Timeline' },
       { href: '/coverage', label: 'Coverage map' },
       { href: '/rule-finder', label: 'Rule finder' },
+      { href: '/following', label: 'Following' },
     ],
     alsoMatches: ['/policies'],
   },

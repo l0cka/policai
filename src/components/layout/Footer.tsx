@@ -1,22 +1,23 @@
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { formatCollectedAt } from '@/lib/collection-strip';
 import { A2J_URL, ABOUT_SECTION, PRIMARY_SECTIONS, type NavLink } from '@/lib/site-nav';
 
-type FooterLink = NavLink & { external?: boolean };
+type FooterLink = NavLink & { external?: boolean; file?: boolean };
 
 const [register, updates, ...sections] = PRIMARY_SECTIONS;
 
 // The footer mirrors the header's sections, with each section's views listed
 // under it, and adds the machine-readable and off-site links.
 const groups: Array<{ label: string; links: FooterLink[] }> = [
-  { label: register.label, links: [...register.views, { href: '/following', label: 'Following' }] },
-  { label: updates.label, links: [...updates.views, { href: '/feed.xml', label: 'RSS' }] },
+  { label: register.label, links: [...register.views] },
+  { label: updates.label, links: [...updates.views, { href: '/feed.xml', label: 'RSS', file: true }] },
   { label: 'Sections', links: sections.map(({ href, label }) => ({ href, label })) },
   {
     label: ABOUT_SECTION.label,
     links: [
       ...ABOUT_SECTION.views,
-      { href: '/api/policies', label: 'API' },
+      { href: '/api/policies', label: 'API', file: true },
       { href: 'https://github.com/l0cka/policai', label: 'GitHub', external: true },
       { href: 'https://github.com/l0cka/policai/issues', label: 'Feedback', external: true },
       { href: A2J_URL, label: 'Policai A2J' },
@@ -27,7 +28,7 @@ const groups: Array<{ label: string; links: FooterLink[] }> = [
 const linkClass =
   'underline-grow transition-colors duration-[var(--dur-fast)] hover:text-foreground pointer-coarse:inline-flex pointer-coarse:min-h-11 pointer-coarse:items-center';
 
-export function Footer() {
+export function Footer({ collectedAt }: { collectedAt: string | null }) {
   return (
     <footer className="border-t border-[var(--rule-heavy)]">
       {/* Bottom padding keeps the last links clear of the fixed back-to-top
@@ -43,6 +44,7 @@ export function Footer() {
             A register, not legal advice. Check the official document for
             scope, commencement and current obligations.
           </p>
+          <p className="font-mono text-[10px] tracking-[0.04em]">{formatCollectedAt(collectedAt)}</p>
           <ThemeToggle className="mt-2 self-start" />
         </div>
         <nav aria-label="Footer" className="grid grid-cols-2 gap-6 text-xs sm:grid-cols-4">
@@ -50,7 +52,7 @@ export function Footer() {
             <div key={group.label} className="flex flex-col gap-2.5 pointer-coarse:gap-0">
               <p className="page-eyebrow">{group.label}</p>
               {group.links.map((link) =>
-                link.href.startsWith('http') ? (
+                link.file || link.href.startsWith('http') ? (
                   <a
                     key={link.href}
                     href={link.href}

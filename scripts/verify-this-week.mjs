@@ -54,7 +54,7 @@ try {
     for(const theme of ['Light','Dark']) {
       await page.setViewportSize({width:1440,height:1000});
       await visit(base+'/this-week');
-      await page.getByRole('radio',{name:theme,exact:true}).filter({visible:true}).click();
+      await page.getByRole('contentinfo').getByRole('radio',{name:theme,exact:true}).click();
       for(const width of [1440,768,390,320]) {
         await page.setViewportSize({width,height:900});
         await audit(`${name}-${theme.toLowerCase()}-${width}`);
