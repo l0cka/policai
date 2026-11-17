@@ -46,7 +46,6 @@ class WorkflowTest(unittest.TestCase):
         self.git('init', '-b', 'main')
         self.git('config', 'user.name', 'Test')
         self.git('config', 'user.email', 'test@example.invalid')
-        self.git('config', 'commit.gpgsign', 'false')
         for name in ['data/policies.json', 'data/developments.json', 'data/watch-state.json',
                      'data/source-reviews.json', 'public/data/meta.json', 'package-lock.json']:
             path = self.repo / name
@@ -54,7 +53,7 @@ class WorkflowTest(unittest.TestCase):
             path.write_text('{}\n')
         (self.repo / '.gitignore').write_text('node_modules/\n')
         self.git('add', '.')
-        self.git('commit', '-m', 'fixture')
+        self.git('-c', 'commit.gpgsign=false', 'commit', '-m', 'fixture')
         self.git('remote', 'add', 'origin', str(self.remote))
         self.git('push', '-u', 'origin', 'main')
         self.base = self.git('rev-parse', 'HEAD').strip()
@@ -180,7 +179,7 @@ else:
         self.assertEqual(self.run_workflow().returncode, 0)
         (self.repo / 'README.md').write_text('moved\n')
         self.git('add', 'README.md')
-        self.git('commit', '-m', 'main moves')
+        self.git('-c', 'commit.gpgsign=false', 'commit', '-m', 'main moves')
         self.git('push', 'origin', 'main')
         moved = self.git('rev-parse', 'HEAD').strip()
         result = self.run_workflow()
