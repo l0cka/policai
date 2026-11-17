@@ -27,6 +27,18 @@ it('anchors the week on the latest passing run, not the last fully healthy one',
   render(await ThisWeekPage());
   expect(screen.queryByRole('status')).not.toBeInTheDocument();
 });
+it('names the usable run, not the newer failed one, as the source of the snapshot', async () => {
+  vi.mocked(getCollectionMeta).mockResolvedValue({
+    lastCollectedAt: '2026-09-21T19:30:00Z',
+    lastHealthyAt: null,
+    lastUsableAt: '2026-09-14T19:30:00Z',
+    collector: { health: 'failed' },
+  } as Awaited<ReturnType<typeof getCollectionMeta>>);
+  render(await ThisWeekPage());
+  expect(screen.getByText(/^Last collected 22 Sep 2026/)).toBeInTheDocument();
+  expect(screen.getByRole('status')).toHaveTextContent('The latest usable collection is from 15 Sep 2026. This is a historical snapshot, not current weekly coverage.');
+  expect(screen.getByRole('status')).not.toHaveTextContent('The latest collection is from');
+});
 it.each([
   ['2026-09-20T14:00:00Z', false],
   ['2026-09-20T13:59:00Z', true],
@@ -34,7 +46,7 @@ it.each([
   vi.mocked(getCollectionMeta).mockResolvedValue({ lastCollectedAt: collectedAt, lastHealthyAt: null, lastUsableAt: collectedAt } as Awaited<ReturnType<typeof getCollectionMeta>>);
   render(await ThisWeekPage());
   expect(screen.queryByRole('status')?.textContent ?? null).toEqual(
-    warned ? expect.stringContaining('The latest collection is from 20 Sep 2026.') : null,
+    warned ? expect.stringContaining('The latest usable collection is from 20 Sep 2026.') : null,
   );
 });
 it('distinguishes missing collection evidence from a verified quiet week', async () => {

@@ -253,7 +253,7 @@ export default async function ThisWeekPage() {
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
           {lastHealthy ? <span>Last fully healthy {lastHealthy}</span> : null}
         </p>
-        {stale && window ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">The latest collection is from {dateLabel(window.end)}. This is a historical snapshot, not current weekly coverage. <Link href="/status" className="underline">Check source status</Link>.</p> : null}
+        {stale && window ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">The latest {meta.lastUsableAt ? 'usable collection' : 'collection'} is from {dateLabel(window.end)}. This is a historical snapshot, not current weekly coverage. <Link href="/status" className="underline">Check source status</Link>.</p> : null}
       </div>
 
       <section id="verified" className="mt-6 scroll-mt-20 sm:mt-8">

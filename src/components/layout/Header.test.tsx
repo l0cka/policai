@@ -165,7 +165,19 @@ describe('source status link', () => {
     vi.setSystemTime(hoursAfterCollection(120));
     const link = statusLink(renderStrip(metaFixture()));
     expect(link?.textContent).toBe('Last collected 17 Oct 2026');
-    expect(link?.getAttribute('aria-label')).toContain('57/59 due sources reached');
+    expect(link?.getAttribute('aria-label')).toMatch(
+      /^Source status: last collected 17 oct 2026\. 57\/59 due sources reached\.$/,
+    );
+  });
+
+  it('caps the phone label width, so the longest label wraps instead of widening the header', () => {
+    const failed = metaFixture({
+      collector: { ...metaFixture().collector, health: 'failed', dueSourceCount: 34, successfulSourceCount: 0 },
+    });
+    const label = statusLink(renderStrip(failed))?.querySelector('span:not([aria-hidden])');
+    expect(label?.textContent).toBe('34 of 34 sources unreachable');
+    expect(label?.className).toContain('max-sm:max-w-[7.5rem]');
+    expect(Math.max(...(label?.textContent ?? '').split(' ').map((word) => word.length))).toBeLessThanOrEqual(11);
   });
 
   it('warns about an old healthy run, visibly on phones', () => {

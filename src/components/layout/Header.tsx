@@ -71,12 +71,13 @@ function SourceStatusLink({
     : `${successfulSourceCount}/${dueSourceCount} due sources reached`;
   const collected = formatCollectedAt(collectedAt);
   const label = collectionStatusLabel(status, stale);
+  const spoken = stale ? [label, reach] : [label, reach, collected];
   return (
     <Link
       href="/status"
       onClick={onNavigate}
       title={`${collected}. ${reach}.`}
-      aria-label={`Source status: ${label.toLowerCase()}. ${reach}. ${collected.toLowerCase()}.`}
+      aria-label={`Source status: ${spoken.join('. ').toLowerCase()}.`}
       className={cn(
         'inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-opacity hover:opacity-75',
         calm ? 'text-[var(--trust)]' : 'text-[var(--caution)]',

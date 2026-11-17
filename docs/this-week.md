@@ -10,7 +10,10 @@ no collection, editorial approval, email delivery or schema change is performed.
 elapsed days ending at `collectionAnchor(meta)`, which is
 `lastUsableAt ?? lastCollectedAt`: the latest run that was not `failed`. The page shows that
 exact historical window and warns when the anchor is more than 36 hours old
-(`COLLECTION_STALE_MS`, shared with the header status). Without a
+(`COLLECTION_STALE_MS`, shared with the header status). The warning names
+the anchor: "The latest usable collection is from <date>" when `lastUsableAt`
+is set, so it stays true beside a newer "Last collected" stamp from a failed
+run, and "The latest collection is from <date>" before any usable run. Without a
 usable anchor it reports coverage unavailable, not a quiet week. Detection date
 is not presented as the date of a substantive policy change.
 
