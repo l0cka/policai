@@ -1,3 +1,4 @@
+import { sydneyCalendarDate } from './au-date';
 import { getPool } from './db';
 import { withCleanTitles } from './display-title';
 import { buildDeadlineView, type DeadlineCard, type DeadlineItem, type DeadlineView } from './deadline-model';
@@ -56,7 +57,7 @@ export const OPEN_OPPORTUNITY_SQL = `
    )))`;
 
 export function sydneyToday(): string {
-  return new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  return sydneyCalendarDate(new Date());
 }
 
 export function daysUntil(date: string, today: string): number {
