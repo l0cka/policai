@@ -1,34 +1,5 @@
-/**
- * Re-check curated register sources and compare their content fingerprints.
- *
- * Usage:
- *   npm run audit:register
- *   npm run audit:register -- --source=<policy-id>
- *   npm run audit:register -- --write-evidence
- *   npm run audit:register -- --strict --json
- *
- * Each source is retrieved with a generous per-attempt timeout and exactly one
- * retry for transient failures (timeouts, DNS/socket errors, HTTP 408/429/5xx)
- * with a short backoff. Client errors such as HTTP 403 bot walls are NOT
- * retried. Honesty rule: a retried-then-failed source still reports
- * `retrieval_failed`; no failures are silently swallowed.
- *
- * Retrieval settings (defaults in parentheses):
- *   AUDIT_REGISTER_TIMEOUT_MS       per-attempt timeout in ms (45000)
- *   AUDIT_REGISTER_ATTEMPTS         attempts per source (2 = one retry)
- *   AUDIT_REGISTER_RETRY_DELAY_MS   backoff before the retry in ms (1000)
- *
- * Trade-off: the raised timeout roughly doubles the worst-case wall clock per
- * slow source (2 x 45s) in exchange for confirming sources that merely answer
- * slowly; the 2026-09-24 sweep showed most retrieval failures were 20s
- * timeouts against slow government hosts, not content changes.
- *
- * `--write-evidence` records missing fingerprints as stale baselines and marks
- * changed or confirmed-missing sources stale. It never turns an unverified or
- * stale record back into verified.
- */
-
 import path from 'node:path';
+import { cliRun, parseCli } from '../src/lib/cli-args';
 import { withDataMutationLock } from '../src/lib/data-lock';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
@@ -44,26 +15,18 @@ const POLICIES_FILE = path.join(
   'policies.json',
 );
 
+const FLAGS = {
+  source: { type: 'string', value: '<policy-id>', help: 'audit one register record' },
+  'write-evidence': { type: 'boolean', help: 'record fingerprints and mark changed records stale' },
+  strict: { type: 'boolean', help: 'also fail when a source cannot be retrieved' },
+  json: { type: 'boolean', help: 'print the report as JSON' },
+} as const;
+
 interface Options {
   json: boolean;
   strict: boolean;
   writeEvidence: boolean;
   sourceId?: string;
-}
-
-function parseArgs(args: string[]): Options {
-  const options: Options = {
-    json: false,
-    strict: false,
-    writeEvidence: false,
-  };
-  for (const arg of args) {
-    if (arg === '--json') options.json = true;
-    else if (arg === '--strict') options.strict = true;
-    else if (arg === '--write-evidence') options.writeEvidence = true;
-    else if (arg.startsWith('--source=')) options.sourceId = arg.slice(9);
-  }
-  return options;
 }
 
 async function runAudit(options: Options) {
@@ -141,7 +104,13 @@ async function runAudit(options: Options) {
 }
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
+  const { values } = cliRun(parseCli('npm run audit:register --', FLAGS, process.argv.slice(2)));
+  const options: Options = {
+    json: values.json,
+    strict: values.strict,
+    writeEvidence: values['write-evidence'],
+    sourceId: values.source,
+  };
   if (options.writeEvidence) {
     await withDataMutationLock(() => runAudit(options));
   } else {

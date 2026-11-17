@@ -2,6 +2,32 @@
 
 Local CLIs for the Policai data workflow. They are plain `tsx` entrypoints — no dev server required.
 
+## Flags
+
+`src/lib/cli-args.ts` parses the flags of `audit-sources.ts`,
+`audit-register.ts`, `check-freshness.ts`, `discover-sources.ts`,
+`report-watch-coverage.ts`, `reconfirm-register.ts` and
+`source-review-batch.ts`. Each script declares one flag table; the parser and
+the `--help` text both come from it, so the usage cannot drift from what the
+script accepts. `src/lib/cli-scripts.test.ts` runs every one of them with
+`--help`, with an unknown flag and with all of its documented flags.
+
+- `--help` prints the usage and exits 0. On a script with subcommands,
+  `--help` alone prints every subcommand and `<subcommand> --help` prints one.
+- An unknown flag, a positional argument, a flag with no value or an empty one
+  (`--source=`), a value flag given twice, a missing required flag, or an
+  unknown subcommand prints the reason and the usage on stderr and exits 2
+  before the script reads data, takes the data lock or opens a connection. A
+  typo such as `--write-evidnce` or `--dryrun` therefore never runs the
+  default action.
+- `--flag=value` and `--flag value` are both accepted.
+- A subcommand accepts only its own flags: `approve --dry-run` is an error,
+  not an approval.
+
+`collect.ts` has its own strict parser (see below); unlike the shared one it
+accepts a repeated flag and uses the last value. The other scripts are not on
+the shared parser.
+
 ## collect.ts
 
 Runs one collection pass over the watch sources and persists the results (developments feed, watch state, staged reviews, freshness metadata). The host wrapper `ops/collector/policai-collect.sh` runs it daily and fails the run if `data/policies.json` changed. The write step lives in `collect-run.ts`; `src/lib/pipeline/collect-run.test.ts` runs it against a temporary data directory and asserts the register stays byte-identical. Review candidates merge by stable id, because a retried run can carry newer evidence for a pending review. Reviews and developments are written before the watch state, so a failed write is recreated with the same ids on the next run.
@@ -43,13 +69,20 @@ Performs a read-only live retrieval audit of every enabled official source and r
 ```bash
 npm run audit:sources
 npm run audit:sources -- --source=dta-media
+npm run audit:sources -- --include-manual
 npm run audit:sources -- --json
+npm run audit:sources -- --help
 ```
 
 By default this audits the automatic catalogue. Add `--include-manual` for a
 diagnostic attempt against every source. The command rejects HTTP 200 bot
 challenges and exits non-zero when fewer than 80% of selected sources are
 usable or a critical source fails.
+
+The audit retrieves as the collector does: under the declared Policai
+identity, unless the source carries a time-boxed identity exception that is
+still live. A result for a source with such an exception reports its state in
+`identityException` and `identityNote`.
 
 ## e24-report.ts
 
@@ -84,6 +117,7 @@ npm run audit:register
 npm run audit:register -- --source=<policy-id>
 npm run audit:register -- --write-evidence
 npm run audit:register -- --strict --json
+npm run audit:register -- --help
 ```
 
 Writing evidence stores missing hashes as stale baselines and marks changed
@@ -136,6 +170,83 @@ Unevidenced dates are listed in the output so the new value is never guessed.
 The ratchet keeps historical records valid while any growth in unevidenced
 secondary dates fails validation.
 
+## check-freshness.ts
+
+Freshness ratchet for public records: register policies, timeline events and
+developments. A public record is overdue when its last editorial verification
+is older than `EDITORIAL_REVIEW_INTERVAL_DAYS`. Overdue records stay published
+and are labelled "Review due". The check exits 1 when the overdue count of any
+kind exceeds that kind's budget in `data/freshness-budget.json`, and 2 when
+that file or `--now` is invalid.
+
+```bash
+npm run check:freshness
+npm run check:freshness -- --now=2027-01-20   # rehearse a future date
+npm run check:freshness -- --json
+npm run check:freshness -- --help
+```
+
+Each budget is a ratchet: lower it whenever the backlog shrinks. Raising it
+needs a reason in the pull request that changes the file; the check prints the
+current counts so the new value is not guessed.
+
+Only editor-verified developments are counted. An unverified detection shows
+"Needs review", not "Review due", and the feed's timeline projections age with
+their timeline event.
+
+## reconfirm-register.ts
+
+Re-confirms editorially verified records whose official source is unchanged
+since an editor last verified them, with one editor approval per batch.
+Register policies, timeline events and developments each have their own
+batches. The procedure is in `docs/collector.md`, "Re-confirming due records
+on Argus".
+
+```bash
+npm run reconfirm:register -- propose [--kind=policy|timeline|development] \
+    [--due-within=30] [--batch-size=10] [--exclude=<id>,<id>] [--dry-run]
+npm run reconfirm:register -- approve --batch=<id>
+npm run reconfirm:register -- --help
+```
+
+`propose` audits every record of the kind (default `policy`) due within the
+window. It needs network access to the official sources, so run it on Argus.
+It writes the audit evidence to that kind's data file, keeping every other
+field of each record, and appends batches of unchanged records to
+`data/reconfirmations.json`. Changed or unreadable sources are listed for a
+full review instead. `--exclude` leaves out records another piece of work is
+already re-verifying. `--dry-run` audits and prints the batches and writes
+nothing.
+
+Two groups of records are never batched. The policy named by
+`relatedPolicyId` in `data/dta-ai-policy-framework.json` is re-verified
+together with the framework artifact, because the artifact must not predate
+its policy's verification. A dismissed development is not public, so it has
+nothing to renew.
+
+`approve` needs no network beyond the approvals mailbox. It reads the kind
+from the batch and renews its records only if every fingerprint still matches
+and every audit is at most seven days old. Once an editor passkey is
+registered it takes the editor's passkey signature over the batch from the
+mailbox; `propose` prints the page where the editor signs. Before then it
+takes `--attestation=<card url> [--approved-at=<ISO>] [--approved-by=<name>]`.
+
+## source-review-batch.ts
+
+Approves several staged source reviews on one editor passkey signature.
+
+```bash
+npm run source-review:batch -- propose --ids=<id,id,...> [--batch-size=10]
+npm run source-review:batch -- approve --batch=<id>
+npm run source-review:batch -- --help
+```
+
+`propose` pins each review to its current proposal (every one must have no
+blockers), writes the batches to `data/source-review-batches.json` and prints
+each batch's approve link with what the editor must see. `approve` reads the
+editor's signature from the approvals mailbox and publishes every review in
+the batch; rerunning it resumes a partial run.
+
 ## canonicalize-source-urls.ts
 
 Idempotently migrates legacy or manually edited source-bearing URLs to the
@@ -153,7 +264,8 @@ maintenance and migration command.
 
 ## Smaller CLIs
 
-Each script's header comment lists its flags.
+`discover-sources.ts` and `report-watch-coverage.ts` take `--help` (see
+Flags). For the other scripts here, the header comment lists the flags.
 
 - `bundle-data.mjs` writes `data/` and `public/data/` into
   `.open-next/assets/_bundled/files.json` for the Cloudflare Workers build.
@@ -164,9 +276,15 @@ Each script's header comment lists its flags.
   sources that failed three runs in a row as proposals to move them to manual.
   It moves nothing.
 - `discover-sources.ts` (`npm run discover:sources -- --body=<id>`) proposes
-  watch sources for one body in `data/bodies.json`. It writes nothing.
+  watch sources for one body in `data/bodies.json`, from its robots.txt
+  sitemaps, `/sitemap.xml` and the feeds its home page links. Every request
+  goes through the host gate under the declared identity and the
+  official-host allow-list. It writes nothing: admit a proposal through a
+  reviewed PR that adds it to `src/lib/pipeline/sources.ts`. Add `--json` for
+  JSON.
 - `report-watch-coverage.ts` (`npm run report:watch-coverage`) reports which
-  bodies the collector watches, by jurisdiction and tier, with every gap.
+  bodies the collector watches, by jurisdiction and tier, with every gap and
+  decided block. Add `--json` for JSON.
 - `survey-site-reuse.ts` (`npm run survey:site-reuse -- --out=<file>`) finds
   each host's copyright or licence statements as evidence for
   `data/site-reuse.json`. It never writes that file.

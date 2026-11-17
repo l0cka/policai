@@ -1,33 +1,25 @@
-/**
- * Approve several staged source reviews on one editor passkey signature.
- *
- * Usage:
- *   npm run source-review:batch -- propose --ids=<id,id,...> [--batch-size=10]
- *   npm run source-review:batch -- approve --batch=<id>
- *
- * `propose` pins each review to its current proposal (every one must have no
- * blockers), writes the batches to data/source-review-batches.json and prints
- * each batch's approve link with what the editor must see. `approve` reads
- * the editor's signature from the approvals mailbox and publishes every
- * review in the batch; rerunning it resumes a partial run.
- */
-
 import path from 'node:path';
+import { cliRun, parseCliCommand, type CliValues } from '../src/lib/cli-args';
 import { readJsonFile } from '../src/lib/file-store';
-import type { SourceReviewBatchLedger } from '../src/lib/source-review-batch';
+import { SOURCE_REVIEW_BATCH_SIZE, type SourceReviewBatchLedger } from '../src/lib/source-review-batch';
 import {
   handleProposeSourceReviewBatch,
   handleRecordDecision,
 } from '../src/mcp/tool-handlers';
 
-function flag(args: string[], name: string): string | undefined {
-  const prefix = `--${name}=`;
-  return args.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
-}
+const COMMANDS = {
+  propose: {
+    ids: { type: 'string', value: '<id,id,...>', required: true, help: 'the staged reviews to batch' },
+    'batch-size': { type: 'string', value: '<n>', help: `reviews per batch; the default is ${SOURCE_REVIEW_BATCH_SIZE}` },
+  },
+  approve: {
+    batch: { type: 'string', value: '<id>', required: true, help: 'the batch the editor signed' },
+  },
+} as const;
 
-async function propose(args: string[]) {
-  const ids = (flag(args, 'ids') ?? '').split(',').map((id) => id.trim()).filter(Boolean);
-  const size = flag(args, 'batch-size');
+async function propose(options: CliValues<typeof COMMANDS.propose>) {
+  const ids = options.ids.split(',').map((id) => id.trim()).filter(Boolean);
+  const size = options['batch-size'];
   const batches = await handleProposeSourceReviewBatch({
     ids,
     batchSize: size ? Number(size) : undefined,
@@ -44,9 +36,7 @@ async function propose(args: string[]) {
   }
 }
 
-async function approve(args: string[]) {
-  const batchId = flag(args, 'batch');
-  if (!batchId) throw new Error('--batch=<id> is required');
+async function approve({ batch: batchId }: CliValues<typeof COMMANDS.approve>) {
   const ledger = await readJsonFile<SourceReviewBatchLedger>(
     path.join(process.cwd(), 'data', 'source-review-batches.json'),
     { batches: [] },
@@ -60,11 +50,9 @@ async function approve(args: string[]) {
 }
 
 async function main() {
-  const [command, ...args] = process.argv.slice(2);
-  if (command === 'propose') return propose(args);
-  if (command === 'approve') return approve(args);
-  console.error('Usage: source-review-batch propose --ids=<id,...> | approve --batch=<id>');
-  process.exitCode = 2;
+  const cli = cliRun(parseCliCommand('npm run source-review:batch --', COMMANDS, process.argv.slice(2)));
+  if (cli.command === 'propose') return propose(cli.values);
+  return approve(cli.values);
 }
 
 main().catch((error) => {

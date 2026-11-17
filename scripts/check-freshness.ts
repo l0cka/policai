@@ -1,23 +1,5 @@
-/**
- * Freshness ratchet for public records: register policies, timeline events
- * and developments.
- *
- * A public record is overdue when its last editorial verification is older
- * than EDITORIAL_REVIEW_INTERVAL_DAYS. Overdue records stay published and are
- * labelled "Review due". This check fails when the overdue count of any kind
- * exceeds that kind's budget in data/freshness-budget.json.
- *
- * Each budget is a ratchet: lower it whenever the backlog shrinks. Raising it
- * needs a reason in the pull request that changes the file; the check prints
- * the current counts so the new value is not guessed.
- *
- * Usage:
- *   npm run check:freshness
- *   npm run check:freshness -- --now=2027-01-20   # rehearse a future date
- *   npm run check:freshness -- --json
- */
-
 import path from 'path';
+import { cliRun, parseCli } from '../src/lib/cli-args';
 import { readJsonFile } from '../src/lib/file-store';
 import {
   getDevelopments,
@@ -34,7 +16,6 @@ import { EDITORIAL_REVIEW_INTERVAL_DAYS } from '../src/lib/verification';
 const BUDGET_FILE = path.join(process.cwd(), 'data', 'freshness-budget.json');
 const UPCOMING_DAYS = 30;
 
-/** Each kind of public record that ages, with its budget key in the file. */
 const KINDS = [
   {
     kind: 'policies',
@@ -52,8 +33,6 @@ const KINDS = [
     kind: 'developments',
     label: 'editor-verified developments',
     budgetKey: 'maxOverdueDevelopments',
-    // Unverified detections show "Needs review", not "Review due", and the
-    // feed's timeline projections age with their timeline event.
     load: async (now: Date) =>
       (await getDevelopments(undefined, { now })).filter(
         (development) =>
@@ -71,13 +50,14 @@ const KINDS = [
 type BudgetKey = (typeof KINDS)[number]['budgetKey'];
 type FreshnessBudget = Record<BudgetKey, number> & { note?: string };
 
-function argument(name: string): string | undefined {
-  const prefix = `--${name}=`;
-  return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
-}
+const FLAGS = {
+  now: { type: 'string', value: '<date>', help: 'check as at this date instead of today' },
+  json: { type: 'boolean', help: 'print the report as JSON' },
+} as const;
 
 async function main() {
-  const nowArg = argument('now');
+  const { values } = cliRun(parseCli('npm run check:freshness --', FLAGS, process.argv.slice(2)));
+  const nowArg = values.now;
   const now = nowArg ? new Date(nowArg) : new Date();
   if (Number.isNaN(now.getTime())) {
     console.error(`Invalid --now value: ${nowArg}`);
@@ -111,7 +91,7 @@ async function main() {
   );
   const passed = reports.every((report) => report.passed);
 
-  if (process.argv.includes('--json')) {
+  if (values.json) {
     console.log(
       JSON.stringify(
         {
