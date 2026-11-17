@@ -62,6 +62,35 @@ run's receipt and the last journal lines. A run whose coverage health is
 `failed` still publishes its structurally valid output and still exits
 nonzero, so the alert fires.
 
+When the collector itself exits nonzero, the receipt says why, so the alert
+does not send the reader to `collect.log` on the host:
+
+- `message` is `collection health failed; output published`, or
+  `collection health failed; no output changes to publish` when the run
+  changed no output file.
+- `collect_reason` is a list of lines copied from the run's `collect.log`:
+  the collector's summary line (counts and health), each `  ! ` source error
+  and a `[collect] Fatal:` line. No other line is copied. The alert prints
+  the list under `collect_reason:`.
+
+The list is bounded: the first 30 matching lines from the last 1 MiB of the
+log, each cut to 300 bytes, plus one line that counts the lines left out.
+Each line is redacted before it is stored:
+
+- a URL loses its `user:password@` part, its query string and its fragment;
+- `Authorization` and `Cookie` values, `Bearer` and `Basic` credentials,
+  GitHub tokens and the value after any name containing `token`, `secret`,
+  `password`, `key` or `credential` become `[redacted]`;
+- the value of every environment variable whose name contains `TOKEN`,
+  `SECRET`, `PASSWORD`, `KEY`, `CREDENTIAL`, `AUTH` or `COOKIE`, and the
+  run's GitHub token, become `[redacted]` (values of 8 characters or more);
+- control characters become spaces and backticks become apostrophes, so a
+  line cannot close the issue's code block.
+
+Redaction can remove a harmless word, for example the value after
+`keyword:`. The full lines stay in `collect.log` in the evidence folder,
+which never leaves the host.
+
 Receipts:
 
 - `~/.local/state/argus-jobs/policai-collect.json` is the latest attempt.

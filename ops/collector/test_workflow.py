@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 SCRIPT = Path(__file__).with_name('policai-collect.sh')
+ALERT = Path(__file__).with_name('policai-collect-alert.sh')
 
 # The fake collector writes one development and stages host state the way
 # scripts/collect-run.ts does: under $POLICAI_COLLECTOR_STATE/next/.
@@ -19,6 +20,17 @@ state = pathlib.Path(os.environ['POLICAI_COLLECTOR_STATE'])
 (state / 'next' / 'outbox.json').write_text('{"developments":[{"id":"d1"}],"sourceReviews":[]}')
 (state / 'next' / 'watch-state.json').write_text('{"seen":{"u":{}}}')
 pathlib.Path('data/developments.json').write_text('[{"id":"d1"}]\\n')
+'''
+
+UNHEALTHY = COLLECTOR + '''
+print('[collect] Analysis mode: keyword rules (detections require review)')
+print('[collect] 1 new developments, 0 review candidates, 0 stage updates, 2 source errors; '
+      'health failed (3/9 due sources successful)')
+print('  + [federal] A development (0.6, heuristic) https://example.gov.au/a')
+print('  ! dta-news: HTTP 403 from https://user:hunter2pass@example.gov.au/news?session=abc123#top')
+print('  ! nsw-digital: timed out; Authorization: Bearer abcdef123456 api_key=zyx987 github_pat_fixture `@l0cka`')
+print('[collect] Source coverage is below the accepted threshold — treating run as failed.')
+sys.exit(1)
 '''
 
 
@@ -34,6 +46,7 @@ class WorkflowTest(unittest.TestCase):
         self.git('init', '-b', 'main')
         self.git('config', 'user.name', 'Test')
         self.git('config', 'user.email', 'test@example.invalid')
+        self.git('config', 'commit.gpgsign', 'false')
         for name in ['data/policies.json', 'data/developments.json', 'data/watch-state.json',
                      'data/source-reviews.json', 'public/data/meta.json', 'package-lock.json']:
             path = self.repo / name
@@ -181,6 +194,76 @@ else:
         self.assertEqual(self.receipt()['collection_exit'], 1)
         self.assertEqual(len(self.prs()), 1)
         self.assertTrue((self.state / 'outbox.json').exists())
+
+    def test_unhealthy_published_run_records_why_in_its_receipt(self):
+        self.set_collector(UNHEALTHY)
+        result = self.run_workflow()
+        self.assertEqual(result.returncode, 1)
+        receipt = self.receipt()
+        self.assertEqual(receipt['phase'], 'published')
+        self.assertEqual(receipt['message'], 'collection health failed; output published')
+        self.assertIn(receipt['message'], result.stderr)
+        self.assertEqual(receipt['collect_reason'], [
+            '[collect] 1 new developments, 0 review candidates, 0 stage updates, 2 source errors; '
+            'health failed (3/9 due sources successful)',
+            '  ! dta-news: HTTP 403 from https://example.gov.au/news',
+            "  ! nsw-digital: timed out; Authorization: [redacted] api_key=[redacted] [redacted] '@l0cka'",
+        ])
+        self.assertEqual(json.loads((Path(receipt['evidence']) / 'run.json').read_text())['collect_reason'],
+                         receipt['collect_reason'])
+
+    def test_a_healthy_run_records_no_reason(self):
+        self.assertEqual(self.run_workflow().returncode, 0)
+        self.assertEqual(self.receipt()['message'], '')
+        self.assertNotIn('collect_reason', self.receipt())
+
+    def test_unhealthy_run_without_changes_says_nothing_was_published(self):
+        self.set_collector("print('  ! dta-news: HTTP 503')\nsys.exit(1)\n")
+        self.assertEqual(self.run_workflow().returncode, 1)
+        receipt = self.receipt()
+        self.assertEqual(receipt['phase'], 'no-changes')
+        self.assertEqual(receipt['message'], 'collection health failed; no output changes to publish')
+        self.assertEqual(receipt['collect_reason'], ['  ! dta-news: HTTP 503'])
+
+    def test_the_stored_reason_is_bounded_in_lines_and_bytes(self):
+        self.set_collector(COLLECTOR + "for n in range(100): print(f'  ! source-{n}: ' + 'é' * 2000)\nsys.exit(1)\n")
+        self.assertEqual(self.run_workflow().returncode, 1)
+        reason = self.receipt()['collect_reason']
+        self.assertEqual(len(reason), 31)
+        self.assertTrue(reason[0].startswith('  ! source-0: '))
+        self.assertTrue(reason[29].startswith('  ! source-29: '))
+        self.assertEqual(reason[30], '70 more lines in collect.log')
+        self.assertTrue(all(len(line.encode()) <= 300 for line in reason))
+
+    def test_the_reason_never_carries_a_secret_environment_value(self):
+        self.set_collector(COLLECTOR + "print('  ! leaked ' + os.environ['FIXTURE_API_KEY'] + ' end')\nsys.exit(1)\n")
+        self.env['FIXTURE_API_KEY'] = 'fixture-value-0123456789'
+        self.assertEqual(self.run_workflow().returncode, 1)
+        self.assertEqual(self.receipt()['collect_reason'], ['  ! leaked [redacted] end'])
+
+    def test_the_alert_prints_the_message_and_the_reason(self):
+        self.set_collector(UNHEALTHY)
+        self.assertEqual(self.run_workflow().returncode, 1)
+        (self.bin / 'gh').write_text('''#!/usr/bin/env python3
+import json, os, pathlib, sys
+a = sys.argv[1:]
+if a[:2] == ['issue', 'list']:
+    sys.exit(0)
+if a[:2] == ['issue', 'create']:
+    (pathlib.Path(os.environ['HOME']) / 'issue.json').write_text(json.dumps(a))
+''')
+        (self.bin / 'journalctl').write_text('#!/bin/sh\necho "journal fixture line"\n')
+        (self.bin / 'journalctl').chmod(0o755)
+        result = subprocess.run(['bash', str(ALERT)], env=self.env, capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        issue = json.loads((self.home / 'issue.json').read_text())
+        body = issue[issue.index('--body') + 1]
+        receipt = self.receipt()
+        for expected in ('phase: published', 'exit_code: 1', 'message: collection health failed; output published',
+                         'collect_reason:', *receipt['collect_reason'], 'journal fixture line'):
+            self.assertIn(expected, body)
+        for secret in ('hunter2pass', 'abc123', 'abcdef123456', 'zyx987', 'github_pat_fixture', '`'):
+            self.assertNotIn(secret, body.replace('```', ''))
 
     def test_register_mutation_never_published(self):
         self.set_collector(COLLECTOR + 'pathlib.Path("data/policies.json").write_text("mutation")\n')
