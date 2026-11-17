@@ -13,6 +13,7 @@ function renderHeader(path = '/') {
       collectionHealth="healthy"
       successfulSourceCount={10}
       dueSourceCount={10}
+      renderedAt="2026-09-21T03:00:00Z"
     />,
   );
 }
