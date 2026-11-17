@@ -18,6 +18,7 @@ import {
   type Jurisdiction,
 } from "@/types";
 
+import { sydneyCalendarDate } from "@/lib/calendar-date";
 import { COMMITTEE_REPORT_DUE } from "@/lib/legislation/overview";
 
 export const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
@@ -174,7 +175,7 @@ export function selectUpcomingPolicyDates(
   window: WeekWindow,
 ): UpcomingPolicyDate[] {
   const upcoming: UpcomingPolicyDate[] = [];
-  const today = new Date(window.end).toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const today = sydneyCalendarDate(new Date(window.end));
   const seen = new Set<string>();
   for (const policy of policies) {
     // Public reads return only once-verified records; 'stale' means a

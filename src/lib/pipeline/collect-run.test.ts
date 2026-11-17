@@ -1,7 +1,8 @@
 /* @vitest-environment node */
 
+import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -726,4 +727,69 @@ describe('withoutInvalidChanges', () => {
       dropped: ['kept: not ok', 'new: not ok'],
     });
   });
+});
+
+describe('collect CLI flags', () => {
+  const repoRoot = process.cwd();
+  const UNKNOWN_SOURCE = '--source=no-such-source';
+  let workDir: string;
+
+  beforeEach(() => {
+    workDir = mkdtempSync(path.join(tmpdir(), 'policai-collect-flags-'));
+  });
+
+  afterEach(() => {
+    rmSync(workDir, { recursive: true, force: true });
+  });
+
+  const collect = (args: string[]) => {
+    const env = { ...process.env };
+    delete env.USE_CLEF_CLASSIFIER;
+    delete env.POLICAI_COLLECTOR_STATE;
+    return spawnSync(
+      path.join(repoRoot, 'node_modules', '.bin', 'tsx'),
+      [
+        '--tsconfig',
+        path.join(repoRoot, 'tsconfig.json'),
+        path.join(repoRoot, 'scripts', 'collect.ts'),
+        ...args,
+      ],
+      { cwd: workDir, encoding: 'utf8', env, timeout: 30_000 },
+    );
+  };
+
+  it.each([
+    ['a mistyped flag', ['--dryrun', UNKNOWN_SOURCE], "Unknown option '--dryrun'"],
+    ['a positional argument', [UNKNOWN_SOURCE, 'apra-rss'], 'apra-rss'],
+    ['a flag with no value', [UNKNOWN_SOURCE, '--max-items'], '--max-items'],
+    ['an empty source id', ['--source=', UNKNOWN_SOURCE], '--source needs a source id'],
+    ['a non-numeric item cap', [UNKNOWN_SOURCE, '--max-items=abc'], '--max-items must be a positive integer'],
+    ['a zero item cap', [UNKNOWN_SOURCE, '--max-items=0'], '--max-items must be a positive integer'],
+  ])('rejects %s with exit 2 before the run starts', (_name, args, message) => {
+    const result = collect(args);
+
+    expect(result.status).toBe(2);
+    expect(result.stderr).toContain(message);
+    expect(result.stderr).toContain('Usage: npm run collect --');
+    expect(result.stdout).toBe('');
+    expect(result.stderr).not.toContain('Unknown source id');
+    expect(readdirSync(workDir)).toEqual([]);
+  }, 40_000);
+
+  it('prints the usage and exits 0 for --help', () => {
+    const result = collect(['--help', UNKNOWN_SOURCE]);
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Usage: npm run collect --');
+    expect(result.stdout).toContain('--max-items=<n>');
+    expect(result.stderr).toBe('');
+  }, 40_000);
+
+  it('still accepts --dry-run, --source=<id> and --max-items=<n>', () => {
+    const result = collect(['--dry-run', UNKNOWN_SOURCE, '--max-items=3']);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('Unknown source id: no-such-source');
+    expect(result.stderr).not.toContain('Usage:');
+  }, 40_000);
 });

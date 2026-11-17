@@ -33,9 +33,10 @@ import { CourtRequirementsList } from "@/components/court-requirements-list";
 import { StatusPill } from "@/components/policy-indicators";
 import { policyPriorBodies } from '../../../../data/policy-prior-bodies';
 import { diffPolicyText, retainedPriorBody } from '@/lib/policy-diff';
+import { summaryRepeatsDescription } from '@/lib/policy-summary';
 import { splitSummaryBlocks } from '@/lib/summary-blocks';
 import { cn } from '@/lib/utils';
-import { auDate } from '@/lib/au-date';
+import { sydneyShortDate } from '@/lib/au-date';
 
 type TabId = 'overview' | 'requirements' | 'content';
 
@@ -44,15 +45,6 @@ const tabs: Array<{ id: TabId; label: string }> = [
   { id: 'requirements', label: 'Key requirements' },
   { id: 'content', label: 'Full text' },
 ];
-
-function humanDate(value: string): string {
-  return auDate(new Date(value), {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric',
-    timeZone: 'Australia/Sydney',
-  });
-}
 
 function getRequirements(policy: Policy): string[] {
   const contentRequirements = (policy.content ?? '')
@@ -280,7 +272,7 @@ export function PolicyDetailTabs({
 
           {activeTab === 'overview' ? (
             <div className="py-6">
-              {policy.aiSummary ? (
+              {policy.aiSummary && !summaryRepeatsDescription(policy) ? (
                 <div className="max-w-4xl border border-[var(--trust)]/35 bg-[var(--status-active-bg)]/35 p-4">
                   <div className="flex gap-3">
                     <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--trust)] text-[var(--background)]">
@@ -407,8 +399,8 @@ export function PolicyDetailTabs({
                   </dd>
                 </div>
               ) : null}
-              {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="tabular">{humanDate(policy.verification.checkedAt)}</dd></div> : null}
-              {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="tabular">{humanDate(policy.verification.source.retrievedAt)}</dd></div> : null}
+              {policy.verification.checkedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Checked</dt><dd className="tabular">{sydneyShortDate(policy.verification.checkedAt)}</dd></div> : null}
+              {policy.verification.source.retrievedAt ? <div className="grid grid-cols-[6.5rem_1fr] gap-3"><dt className="text-muted-foreground">Retrieved</dt><dd className="tabular">{sydneyShortDate(policy.verification.source.retrievedAt)}</dd></div> : null}
             </dl>
             <p className="mt-4 text-xs leading-5 text-muted-foreground">
               Always check the official source before relying on this record.

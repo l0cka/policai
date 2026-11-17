@@ -62,6 +62,7 @@ import {
 	revisionHash,
 	timelineRevisionHash,
 } from "@/lib/policy-revision";
+import { slugify } from "@/lib/slug";
 import {
 	dateEvidenceMatches,
 	mergeReports,
@@ -888,14 +889,6 @@ export async function analyseSourceUrl(
 		parseSourceUrl(canonicalUrl).hostname,
 	);
 	return analyseExtractedSource(retrieved, canonicalUrl, document);
-}
-
-function slugify(value: string, maxLength = 60): string {
-	return value
-		.toLowerCase()
-		.replace(/[^a-z0-9]+/g, "-")
-		.replace(/(^-|-$)/g, "")
-		.slice(0, maxLength);
 }
 
 export function buildProposedRecord(

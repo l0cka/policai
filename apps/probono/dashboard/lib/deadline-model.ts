@@ -8,6 +8,8 @@
  * independent, so keep both copies in step.
  */
 
+import { sydneyCalendarDate } from './au-date';
+
 export type DeadlineKind = 'action' | 'milestone';
 export type Precision = 'day' | 'month' | 'year';
 
@@ -135,7 +137,7 @@ export function checkedOn(verifiedAt: string | null | undefined): string | null 
   if (!verifiedAt) return null;
   const t = new Date(verifiedAt);
   if (Number.isNaN(t.getTime())) return null;
-  return t.toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  return sydneyCalendarDate(t);
 }
 
 /* ---------- merging duplicates across items ---------- */

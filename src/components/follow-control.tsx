@@ -13,6 +13,7 @@ import {
   type Follow,
   type FollowablePolicy,
 } from '@/lib/follows';
+import { feedForFollow } from '@/lib/feeds';
 import { getThemeLabel } from '@/lib/themes';
 import { getJurisdictionName, getPolicyTypeName, type Jurisdiction, type PolicyType } from '@/types';
 
@@ -68,6 +69,49 @@ const subscribeNoop = () => () => {};
 
 function useClientReady(): boolean {
   return useSyncExternalStore(subscribeNoop, () => true, () => false);
+}
+
+export function FollowingFeeds() {
+  const ready = useClientReady();
+  const follows = useSyncExternalStore(subscribeFollows, readFollows, emptyFollows);
+  const feeds = follows.flatMap((follow) => feedForFollow(follow) ?? []);
+  if (!ready || feeds.length === 0) return null;
+
+  return (
+    <section aria-labelledby="follow-feeds" className="mt-6 max-w-2xl">
+      <h2 id="follow-feeds" className="section-title">
+        Feeds for what you follow
+      </h2>
+      <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+        Subscribe in a feed reader to hear about changes without opening this page. A jurisdiction feed
+        lists new developments, including machine detections marked Needs review. A theme feed lists new
+        and updated register records.
+      </p>
+      <ul className="mt-3 divide-y divide-border border-y border-border">
+        {feeds.map((feed) => (
+          <li key={feed.atom} className="flex flex-wrap items-center justify-between gap-x-4 py-1 text-sm">
+            <span className="min-w-0 break-words">{feed.label}</span>
+            <span className="flex gap-x-4">
+              <a
+                href={feed.atom}
+                aria-label={`${feed.label}, Atom feed`}
+                className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+              >
+                Atom
+              </a>
+              <a
+                href={feed.json}
+                aria-label={`${feed.label}, JSON feed`}
+                className="inline-flex min-h-11 items-center text-primary underline underline-offset-4"
+              >
+                JSON
+              </a>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 }
 
 export function FollowingList({ policies }: { policies: readonly FollowingPolicy[] }) {

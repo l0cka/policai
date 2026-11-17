@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it } from 'vitest';
 beforeEach(() => window.history.replaceState({}, '', '/'));
 import { PolicyBrowser } from './policy-browser';
 import { UpcomingDeadlinesRail } from './upcoming-deadlines-rail';
+import { REGISTER_PAGE_SIZE } from '@/lib/policy-register';
 import type { Policy } from '@/types';
 
 const policies: Policy[] = ['federal', 'nsw'].map((jurisdiction, index) => ({
@@ -37,10 +38,10 @@ const props = {
   policies,
 };
 
-const paginatedPolicies = Array.from({ length: 24 }, (_, index) => ({
+const paginatedPolicies = Array.from({ length: REGISTER_PAGE_SIZE * 3 }, (_, index) => ({
   ...policies[index % 2],
   id: `page-record-${index}`,
-  title: `Policy ${String(index).padStart(2, '0')}`,
+  title: `Policy ${String(index).padStart(3, '0')}`,
 }));
 
 describe('Editorial register', () => {
@@ -109,6 +110,32 @@ describe('Editorial register', () => {
       target: { value: 'effectiveDate:asc' },
     });
     expect(screen.getByText('Page 1 of 3')).toBeInTheDocument();
+  });
+
+  it('shows 25 records on a page and the rest on the following pages', () => {
+    render(<PolicyBrowser {...props} policies={paginatedPolicies.slice(0, 30)} />);
+    fireEvent.click(screen.getAllByRole('button', { name: 'Table' })[0]);
+    const recordLinks = () => within(screen.getByRole('table')).getAllByRole('link', { name: /^View / });
+    expect(recordLinks()).toHaveLength(25);
+    expect(screen.getByText('Page 1 of 2')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }));
+    expect(recordLinks()).toHaveLength(5);
+  });
+
+  it('offers jurisdiction shortcuts above the results that filter the register', () => {
+    render(<PolicyBrowser {...props} />);
+    const register = screen.getByRole('region', { name: 'Policy register' });
+    const shortcuts = within(register).getByRole('group', { name: 'Browse by jurisdiction' });
+    expect(
+      shortcuts.compareDocumentPosition(within(register).getByRole('status')) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    const federal = within(shortcuts).getByRole('button', { name: /Federal/ });
+    expect(federal).toHaveAttribute('aria-pressed', 'false');
+    fireEvent.click(federal);
+    expect(federal).toHaveAttribute('aria-pressed', 'true');
+    expect(new URLSearchParams(window.location.search).get('jurisdiction')).toBe('federal');
+    expect(within(register).getByRole('status')).toHaveTextContent('1 policy in the register');
   });
 
   it('nests each record title under the register heading', () => {

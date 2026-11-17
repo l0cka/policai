@@ -1,3 +1,4 @@
+import { sydneyCalendarDate } from './au-date';
 import raw from './first-contact-services.json';
 import { findFirstContact, parseQuery, validateServices, type Result, type Service } from './first-contact';
 
@@ -7,7 +8,7 @@ let checked = false;
 
 function assertValid() {
   if (checked) return;
-  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Australia/Sydney' }).format(new Date());
+  const today = sydneyCalendarDate(new Date());
   const problems = validateServices(SERVICES, today);
   if (problems.length) throw new Error(`first-contact-services.json is invalid: ${problems.join('; ')}`);
   checked = true;

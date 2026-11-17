@@ -3,6 +3,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { approvalSubject, type EditorApproval, type EditorPasskey } from '@/lib/editor-approval'
 import { softwarePasskey } from '@/test/software-passkey'
+import { MAX_JSON_BODY_BYTES } from '@/lib/bounded-json-body'
 
 const { registry } = vi.hoisted(() => ({ registry: [] as EditorPasskey[] }))
 
@@ -98,6 +99,18 @@ describe('POST /api/approvals', () => {
     const { response } = editor.approve('publish:anything')
 
     expect((await post({ subject: 'publish:anything', response })).status).toBe(400)
+  })
+
+  it('refuses a body over the size limit with 413 and stores nothing', async () => {
+    const editor = softwarePasskey()
+    registry.push(editor.passkey)
+    const { subject, response } = editor.approve(SUBJECT)
+
+    const result = await post({ subject, response, padding: 'p'.repeat(MAX_JSON_BODY_BYTES) })
+
+    expect(result.status).toBe(413)
+    await expect(result.json()).resolves.toMatchObject({ success: false, code: 'body_too_large' })
+    expect(github.fetchImpl).not.toHaveBeenCalled()
   })
 
   it('stores a repeated signature once', async () => {
