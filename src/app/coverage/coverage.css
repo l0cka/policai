@@ -16,7 +16,7 @@
   max-width: 34rem;
   margin-top: var(--space-3);
   color: var(--muted-foreground);
-  font-size: 1rem;
+  font-size: var(--type-body);
   line-height: 1.6;
 }
 
@@ -43,7 +43,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-control);
   padding: 0 var(--space-3);
-  font-size: 0.875rem;
+  font-size: var(--type-ui);
   color: var(--muted-foreground);
   background: transparent;
   transition: background-color var(--dur-fast), color var(--dur-fast);
@@ -59,7 +59,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  font-size: 0.75rem;
+  font-size: var(--type-small);
   color: var(--muted-foreground);
 }
 
@@ -94,7 +94,7 @@
 .coverage-table th[scope='col'] {
   padding: 0 2px var(--space-2);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -141,7 +141,7 @@
   min-height: 40px;
   text-align: left;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: var(--type-body);
   line-height: 1.25;
   overflow-wrap: anywhere;
   border-radius: var(--radius-control);
@@ -151,7 +151,7 @@
   padding: 3px 2px;
   text-align: center;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--type-ui);
   font-variant-numeric: tabular-nums;
 }
 
@@ -185,7 +185,11 @@
   cursor: pointer;
 }
 
-.coverage-table button:focus-visible,
+.coverage-table button:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: 1px;
+}
+
 .coverage-table button[aria-expanded='true'] {
   outline: 2px solid var(--primary);
   outline-offset: 1px;
@@ -216,7 +220,7 @@
 .coverage-drill {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--paper-raised);
+  background: var(--card);
   padding: var(--space-4) var(--space-5);
 }
 
@@ -237,7 +241,7 @@
 
 .coverage-drill-count {
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: var(--type-ui);
   color: var(--muted-foreground);
 }
 
@@ -247,7 +251,7 @@
   align-items: center;
   min-height: 2.75rem;
   min-width: 2.75rem;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   color: var(--primary);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -256,7 +260,7 @@
 .coverage-group h3 {
   margin-top: var(--space-4);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted-foreground);
@@ -269,7 +273,7 @@
   gap: var(--space-4);
   border-bottom: 1px solid var(--rule-hair);
   padding: var(--space-2) 0;
-  font-size: 0.9375rem;
+  font-size: var(--type-lede);
   text-align: left;
 }
 
@@ -296,7 +300,7 @@
 
 .coverage-record-type {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--muted-foreground);
@@ -305,7 +309,7 @@
 .coverage-footnote {
   max-width: 34rem;
   margin-top: var(--space-5);
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.6;
   color: var(--muted-foreground);
 }
@@ -316,7 +320,7 @@
 
 .coverage-empty ul {
   margin-top: var(--space-3);
-  font-size: 0.9375rem;
+  font-size: var(--type-lede);
   color: var(--muted-foreground);
 }
 
@@ -344,7 +348,7 @@
 
   .coverage-table thead th[scope='col'] {
     padding: var(--space-2) 0;
-    font-size: 10px;
+    font-size: var(--type-floor);
     letter-spacing: 0.04em;
   }
 
@@ -378,7 +382,7 @@
     grid-column: 7 / 10;
     align-self: center;
     padding: 0;
-    font-size: 0.8125rem;
+    font-size: var(--type-meta);
   }
 
   .coverage-total-unit {
@@ -388,7 +392,7 @@
   .coverage-cell {
     grid-row: 2;
     padding: 0;
-    font-size: 13px;
+    font-size: var(--type-meta);
   }
 
   .coverage-cell.is-empty {
