@@ -36,19 +36,29 @@
    */
 
   /*
-   * Stream accents, drawn from the Policai chart ramp. They let a reader place
-   * a row by colour before reading the label, the way jurisdiction colour works
-   * on the register.
+   * Stream accents. News, law reform and funding reuse the shared status
+   * colours; tech justice has its own violet. They let a reader place a row by
+   * colour before reading the label, the way jurisdiction colour works on the
+   * register.
    */
-  --s-news: light-dark(#146b5a, #65d2b4);
-  --s-news-bg: light-dark(#deeee7, #18362f);
-  --s-law_reform: light-dark(#2f4fd8, #91aaff);
-  --s-law_reform-bg: light-dark(#e4eafa, #1f2d55);
+  --s-news: var(--status-active);
+  --s-news-bg: var(--status-active-bg);
+  --s-law_reform: var(--status-amended);
+  --s-law_reform-bg: var(--status-amended-bg);
   --s-funding: var(--status-proposed);
-  --s-funding-bg: light-dark(#f6e8c8, #3a2f1c);
+  --s-funding-bg: var(--status-proposed-bg);
   --s-tech_justice: light-dark(#6d28d9, #b89aff);
   --s-tech_justice-bg: light-dark(#ece3fb, #2a1f45);
 
+  --panel-bg: #152c23;
+  --panel-ink: #eef3f0;
+  --panel-muted: #b9c8d6;
+  --panel-faint: #8193a6;
+  --panel-signal: #65d2b4;
+  --panel-opportunity: #e7b96c;
+  --panel-collection: #91aaff;
+  --panel-collection-fill: #5272e8;
+  --panel-rule: color-mix(in srgb, var(--panel-muted) 18%, transparent);
 }
 
 /* The toggle wins over the system preference by pinning `color-scheme`. */
@@ -310,9 +320,9 @@ time,
   flex-shrink: 0;
   font-family: var(--font-mono);
   min-height: 44px;
-  font-size: 11px;
+  font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
   color: var(--primary);
   transition: opacity var(--dur-fast);
 }
@@ -619,10 +629,10 @@ main {
 .recent-signals time,
 .recent-source {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
 }
 
 .observatory-eyebrow {
@@ -707,10 +717,10 @@ main {
   justify-content: center;
   gap: var(--space-4);
   border: 1px solid transparent;
-  border-radius: 2px;
+  border-radius: var(--radius-control);
   padding-inline: var(--space-5);
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: var(--type-meta);
   font-weight: 600;
   cursor: pointer;
   transition: background-color var(--dur-fast), border-color var(--dur-fast), color var(--dur-fast);
@@ -776,7 +786,7 @@ main {
 
 .observatory-stats dt {
   font-family: var(--font-mono);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--muted-foreground);
   font-size: var(--type-label);
@@ -799,23 +809,23 @@ main {
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--space-2) var(--space-6);
-  color: #8fa0b1;
+  color: var(--panel-muted);
 }
 
 .signal-network-head > :first-child {
-  color: #dbe6f0;
+  color: var(--panel-ink);
 }
 
 .signal-network-head b {
   margin-inline: var(--space-2);
-  color: #71849a;
+  color: var(--panel-faint);
   font-weight: 400;
 }
 
 .signal-network-range {
   grid-column: 3;
   grid-row: 1;
-  color: #dbe6f0;
+  color: var(--panel-ink);
   white-space: nowrap;
 }
 
@@ -840,27 +850,27 @@ main {
   width: 0.52rem;
   height: 0.52rem;
   border-radius: var(--radius-pill);
-  background: #65d2b4;
+  background: var(--panel-signal);
 }
 
 .network-key.source {
-  border: 1.5px solid #65d2b4;
+  border: 1.5px solid var(--panel-signal);
   background: transparent;
 }
 
 .network-key.opportunity {
-  border: 2px solid #e7b96c;
+  border: 2px solid var(--panel-opportunity);
   background: transparent;
 }
 
 .network-key.aggregate {
-  border: 1.5px dashed #8193a6;
+  border: 1.5px dashed var(--panel-faint);
   background: transparent;
 }
 
 .network-key.collection {
-  border: 1.5px solid #91aaff;
-  background: rgba(82, 114, 232, 0.35);
+  border: 1.5px solid var(--panel-collection);
+  background: color-mix(in srgb, var(--panel-collection-fill) 35%, transparent);
 }
 
 .signal-network-scroll {
@@ -868,7 +878,7 @@ main {
   margin-top: 0.35rem;
   overflow-x: auto;
   overscroll-behavior-inline: contain;
-  scrollbar-color: rgba(145, 170, 255, 0.36) transparent;
+  scrollbar-color: color-mix(in srgb, var(--panel-collection) 36%, transparent) transparent;
 }
 
 .signal-network-scroll:focus-visible {
@@ -889,83 +899,83 @@ main {
  */
 .network-ribbons path {
   fill: none;
-  stroke: rgba(185, 204, 222, 0.3);
+  stroke: color-mix(in srgb, var(--panel-muted) 30%, transparent);
   stroke-linecap: round;
 }
 
 .network-ribbons .is-aggregate {
-  stroke: rgba(185, 204, 222, 0.19);
+  stroke: color-mix(in srgb, var(--panel-muted) 19%, transparent);
 }
 
 .network-ribbons .is-collection {
-  stroke: rgba(145, 170, 255, 0.34);
+  stroke: color-mix(in srgb, var(--panel-collection) 34%, transparent);
 }
 
 .network-band circle {
-  fill: #65d2b4;
+  fill: var(--panel-signal);
   fill-opacity: 0.82;
 }
 
 .network-band-label {
-  fill: #8193a6;
+  fill: var(--panel-muted);
   font-family: var(--font-mono);
   font-size: var(--type-floor);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
 .network-balance line {
-  stroke: rgba(101, 210, 180, 0.32);
+  stroke: color-mix(in srgb, var(--panel-signal) 32%, transparent);
 }
 
 .network-balance-num {
-  fill: #65d2b4;
+  fill: var(--panel-signal);
   font-family: var(--font-mono);
   font-size: 15px;
 }
 
 .network-balance-eq {
-  fill: #6f8399;
+  fill: var(--panel-faint);
   font-family: var(--font-mono);
   font-size: 12px;
 }
 
 .network-sources circle {
-  fill: #081d31;
-  stroke: #65d2b4;
+  fill: var(--panel-bg);
+  stroke: var(--panel-signal);
   stroke-width: 2;
 }
 
 /* The residual node is an aggregate of many sources, not a peer of the five.
    The dash says so before the label has to. */
 .network-sources circle.is-aggregate {
-  stroke: #8193a6;
+  stroke: var(--panel-faint);
   stroke-dasharray: 4 3;
 }
 
 .network-sources text,
 .network-collections text {
-  fill: #dbe6f0;
+  fill: var(--panel-ink);
   font-family: var(--font-sans);
   font-size: 12px;
 }
 
 .network-count {
-  fill: #8193a6;
+  fill: var(--panel-muted);
   font-family: var(--font-mono);
   font-size: var(--type-floor);
 }
 
 .network-signals circle {
-  fill: #65d2b4;
-  stroke: #081d31;
+  fill: var(--panel-signal);
+  stroke: var(--panel-bg);
   stroke-width: 2;
   transition: r var(--dur-fast), fill var(--dur-fast), stroke var(--dur-fast);
 }
 
 .network-signals circle.is-opportunity {
-  fill: #081d31;
-  stroke: #e7b96c;
+  fill: var(--panel-bg);
+  stroke: var(--panel-opportunity);
   stroke-width: 2.5;
 }
 
@@ -976,8 +986,8 @@ main {
 
 .network-signals a:hover circle:not(.network-hit-area),
 .network-signals a:focus-visible circle:not(.network-hit-area) {
-  fill: #f4f8fc;
-  stroke: #91aaff;
+  fill: var(--panel-ink);
+  stroke: var(--panel-collection);
   r: 9px;
 }
 
@@ -991,14 +1001,14 @@ main {
 .network-sources a:focus-visible circle,
 .network-collections a:hover circle,
 .network-collections a:focus-visible circle {
-  stroke: #f4f8fc;
+  stroke: var(--panel-ink);
   stroke-width: 3;
 }
 
 .network-collections circle {
-  fill: #5272e8;
+  fill: var(--panel-collection-fill);
   fill-opacity: 0.55;
-  stroke: #91aaff;
+  stroke: var(--panel-collection);
   stroke-width: 2;
 }
 
@@ -1006,7 +1016,7 @@ main {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: var(--space-1);
-  border-top: 1px solid rgba(185, 204, 222, 0.18);
+  border-top: 1px solid var(--panel-rule);
 }
 
 /* dt-then-dd markup; column-reverse keeps the count visually above. */
@@ -1018,7 +1028,7 @@ main {
 }
 
 .signal-network-summary > div + div {
-  border-left: 1px solid rgba(185, 204, 222, 0.18);
+  border-left: 1px solid var(--panel-rule);
   padding-left: 0.8rem;
 }
 
@@ -1026,14 +1036,14 @@ main {
   font-family: var(--font-mono);
   font-size: 1.15rem;
   line-height: 1;
-  color: #eef3f0;
+  color: var(--panel-ink);
 }
 
 .signal-network-summary dt {
   font-family: var(--font-mono);
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
-  color: #b9c8d6;
+  color: var(--panel-muted);
   font-size: var(--type-label);
 }
 
@@ -1041,7 +1051,7 @@ main {
   display: grid;
   min-height: 22rem;
   place-items: center;
-  color: #9fb0c2;
+  color: var(--panel-muted);
   font-size: var(--type-ui);
 }
 
@@ -1096,7 +1106,7 @@ main {
 
 .recent-signals h2 {
   margin-top: 0.85rem;
-  font-size: 0.95rem;
+  font-size: var(--type-lede);
   line-height: 1.45;
 }
 
@@ -1113,14 +1123,14 @@ main {
   width: 0.8rem;
   height: 0.8rem;
   vertical-align: -0.05em;
-  color: #75889a;
+  color: var(--muted-foreground);
 }
 
 .recent-signals article > p {
   display: -webkit-box;
   overflow: hidden;
   margin-top: 0.65rem;
-  color: #8fa0b1;
+  color: var(--muted-foreground);
   font-size: var(--type-small);
   line-height: 1.6;
   -webkit-box-orient: vertical;
@@ -1190,7 +1200,7 @@ main {
 
 @media (min-width: 1024px) {
   .observatory-visual {
-    border-left: 1px solid rgba(185, 204, 222, 0.18);
+    border-left: 1px solid var(--panel-rule);
     padding-left: clamp(1rem, 2vw, 2rem);
   }
 }
@@ -1228,7 +1238,7 @@ main {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
   color: var(--muted-foreground);
 }
 
@@ -1299,7 +1309,7 @@ main {
 .rail-card {
   margin-top: var(--space-3);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius-surface);
   background: color-mix(in srgb, var(--card) 50%, transparent);
   padding: var(--space-4);
 }
@@ -1309,9 +1319,9 @@ main {
   padding-top: var(--space-3);
   border-top: 1px solid var(--border);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
   line-height: 1.5;
   color: var(--muted-foreground);
 }
@@ -1342,9 +1352,9 @@ main {
   align-items: center;
   gap: var(--space-2);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
 }
 
 .signal-dot {
@@ -1406,7 +1416,7 @@ main {
 
 .meter-value {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
   text-align: right;
   color: var(--muted-foreground);
@@ -1430,7 +1440,7 @@ main {
   padding-inline: var(--space-3);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   color: var(--muted-foreground);
   transition: color var(--dur-fast), background-color var(--dur-fast),
     border-color var(--dur-fast);
@@ -1477,7 +1487,7 @@ main {
   height: 2.75rem;
   width: 100%;
   border: 1px solid var(--input);
-  border-radius: 6px;
+  border-radius: var(--radius-surface);
   background: var(--background);
   color: inherit;
   font: inherit;
@@ -1515,7 +1525,7 @@ main {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
 }
 
 .day-count {
@@ -1560,14 +1570,14 @@ main {
 .badge {
   display: inline-flex;
   align-items: center;
-  border-radius: 6px;
+  border-radius: var(--radius-surface);
   padding: var(--space-1) var(--space-2);
   background: var(--badge-bg, var(--muted));
   color: var(--badge-fg, var(--muted-foreground));
   font-family: var(--font-mono);
   font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
   white-space: nowrap;
 }
 
@@ -1682,7 +1692,7 @@ main {
 .section-intro {
   margin-top: 0.65rem;
   max-width: 68ch;
-  font-size: 0.9375rem;
+  font-size: var(--type-lede);
   line-height: 1.7;
   color: var(--muted-foreground);
 }
@@ -1704,7 +1714,7 @@ main {
   overflow-x: auto;
   scrollbar-gutter: stable;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius-surface);
   background: var(--card);
   padding: var(--space-5);
 }
@@ -1869,14 +1879,14 @@ main {
   flex-wrap: wrap;
   gap: 0.5rem 1.75rem;
   margin-top: 0.9rem;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   color: var(--muted-foreground);
 }
 
 .diagram-hint {
   display: none;
   flex-basis: 100%;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   color: var(--muted-foreground);
 }
 
@@ -1964,7 +1974,7 @@ main {
 .sector-lede {
   margin-top: var(--space-2);
   max-width: 62ch;
-  font-size: 0.9375rem;
+  font-size: var(--type-lede);
   line-height: 1.6;
   color: var(--muted-foreground);
 }
@@ -2213,7 +2223,7 @@ main {
   min-height: 24px;
   padding: 0.15rem 0.45rem;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius-control);
   background: var(--card);
   font-family: var(--font-mono);
   font-size: var(--type-small);
@@ -2268,7 +2278,7 @@ main {
 }
 
 .sector-key-atsils {
-  background: light-dark(#6d28d9, #b89aff);
+  background: var(--s-tech_justice);
 }
 
 .sector-key-fvpls {
@@ -2343,7 +2353,7 @@ main {
   gap: 0.35rem;
   padding: 0.25rem 0.75rem;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--foreground);
   font: inherit;
@@ -2373,7 +2383,7 @@ main {
   gap: 0.4rem;
   padding: 0.25rem 0.65rem;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius-control);
   background: transparent;
   color: var(--foreground);
   font: inherit;
@@ -2414,7 +2424,7 @@ main {
 .sector-org-step {
   display: inline-flex;
   border: 1px solid var(--border);
-  border-radius: 3px;
+  border-radius: var(--radius-control);
   overflow: hidden;
 }
 
@@ -2514,13 +2524,13 @@ main {
 
   .diagram-mobile-step h2 {
     margin: 0.12rem 0 0;
-    font-size: 0.9375rem;
+    font-size: var(--type-lede);
     font-weight: 600;
   }
 
   .diagram-mobile-step p {
     margin: 0.45rem 0 0;
-    font-size: 0.8125rem;
+    font-size: var(--type-meta);
     line-height: 1.6;
     color: var(--muted-foreground);
   }
@@ -2552,7 +2562,7 @@ main {
   }
 
   .diagram-mobile-groups strong {
-    font-size: 0.8125rem;
+    font-size: var(--type-meta);
   }
 
   .diagram-mobile-groups small {
@@ -2587,7 +2597,7 @@ main {
   }
 
   .diagram-mobile-profession dt {
-    font-size: 0.8125rem;
+    font-size: var(--type-meta);
     font-weight: 600;
   }
 
@@ -2611,7 +2621,7 @@ main {
 .section-note {
   margin: 0.6rem 0 0.35rem;
   max-width: 58ch;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.55;
   color: var(--muted-foreground);
 }
@@ -2681,10 +2691,10 @@ tbody th[scope='row'] {
 
 .ctrl-label {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
   color: var(--muted-foreground);
 }
 
@@ -2707,7 +2717,7 @@ tbody th[scope='row'] {
   height: 2.75rem;
   width: 100%;
   border: 1px solid var(--input);
-  border-radius: 6px;
+  border-radius: var(--radius-surface);
   background: var(--background);
   color: inherit;
   font: inherit;
@@ -2726,10 +2736,10 @@ tbody th[scope='row'] {
   margin-left: auto;
   padding-bottom: 0.8rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted-foreground);
 }
 
@@ -2779,7 +2789,7 @@ tbody th[scope='row'] {
 .sector-org-name {
   min-width: 0;
   overflow-wrap: anywhere;
-  font-size: 0.9375rem;
+  font-size: var(--type-lede);
   font-weight: 600;
   line-height: 1.35;
 }
@@ -2844,16 +2854,16 @@ tbody th[scope='row'] {
 .sector-abbr {
   margin-left: 0.45rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 400;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted-foreground);
   overflow-wrap: anywhere;
 }
 
 .radar-dot {
   margin-left: 0.4rem;
-  font-size: 0.7rem;
+  font-size: var(--type-label);
   vertical-align: 0.12em;
   color: var(--trust);
 }
@@ -2866,9 +2876,9 @@ tbody th[scope='row'] {
 
 .sector-funded span {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
 }
 
 @media (max-width: 720px) {
@@ -2916,9 +2926,9 @@ tbody th[scope='row'] {
 .sector-note summary {
   padding-block: 0.875rem;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--tracking-label);
   cursor: pointer;
 }
 
@@ -2929,7 +2939,7 @@ tbody th[scope='row'] {
 .sector-note p {
   margin-bottom: var(--space-4);
   max-width: 82ch;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.7;
   white-space: pre-wrap;
   color: var(--muted-foreground);
@@ -2970,7 +2980,7 @@ tbody th[scope='row'] {
 .week-strip-count {
   min-height: 1lh;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--type-small);
   font-variant-numeric: tabular-nums;
 }
 
@@ -3016,7 +3026,7 @@ tbody th[scope='row'] {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
 }
 
 .timeline-entry {
@@ -3070,7 +3080,7 @@ tbody th[scope='row'] {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted-foreground);
 }
 
@@ -3108,7 +3118,7 @@ tbody th[scope='row'] {
 .timeline-subject {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.9375rem;
+  font-size: var(--type-lede);
   /* Plex Mono ships discrete weights; 550 would snap unpredictably. */
   font-weight: 600;
   line-height: 1.4;
@@ -3139,7 +3149,7 @@ tbody th[scope='row'] {
   margin: 0.3rem 0 0;
   font-family: var(--font-mono);
   font-size: var(--type-label);
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
@@ -3148,12 +3158,12 @@ tbody th[scope='row'] {
   display: inline-flex;
   align-items: center;
   justify-self: end;
-  border-radius: 6px;
+  border-radius: var(--radius-surface);
   padding: 0.15rem 0.45rem;
   font-family: var(--font-mono);
   font-size: var(--type-label);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
   white-space: nowrap;
 }
 
@@ -3181,7 +3191,7 @@ tbody th[scope='row'] {
 .dated-note {
   margin: 0.6rem 0 0.35rem;
   max-width: 58ch;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.55;
   color: var(--muted-foreground);
 }
@@ -3239,7 +3249,7 @@ tbody th[scope='row'] {
   font-family: var(--font-mono);
   font-size: var(--type-label);
   font-weight: 500;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--muted-foreground);
   font-variant-numeric: tabular-nums;
@@ -3258,7 +3268,7 @@ tbody th[scope='row'] {
   margin: var(--space-1) 0 0;
   font-family: var(--font-mono);
   font-size: var(--type-label);
-  letter-spacing: 0.09em;
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
   color: var(--muted-foreground);
 }
@@ -3269,7 +3279,7 @@ tbody th[scope='row'] {
   margin: 0.35rem 0 0;
   padding: 0;
   list-style: none;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.4;
   color: var(--muted-foreground);
 }
@@ -3289,7 +3299,7 @@ tbody th[scope='row'] {
 
 .deadline-also {
   margin: 0.35rem 0 0;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.4;
   color: var(--muted-foreground);
 }
@@ -3321,15 +3331,15 @@ tbody th[scope='row'] {
 
 .rail-deadline time {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted-foreground);
 }
 
 .rail-deadline-label {
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
   line-height: 1.45;
 }
 
@@ -3352,7 +3362,7 @@ tbody th[scope='row'] {
   font-size: var(--type-floor);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-label);
 }
 
 .rail-deadline-count.due-soon {
@@ -3394,7 +3404,7 @@ tbody th[scope='row'] {
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.8125rem;
+  font-size: var(--type-meta);
 }
 
 .table-wrap th,
@@ -3411,7 +3421,7 @@ thead th {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--tracking-caps);
   color: var(--muted-foreground);
   white-space: nowrap;
 }
@@ -3467,7 +3477,7 @@ tbody th[scope='row'] {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-label);
   color: var(--muted-foreground);
   white-space: nowrap;
 }
@@ -3498,7 +3508,7 @@ tbody th[scope='row'] {
   font-size: var(--type-label);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--tracking-label);
   white-space: nowrap;
 }
 
@@ -3588,7 +3598,7 @@ tbody th[scope='row'] {
 
 .footer-current {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--type-label);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
@@ -3743,7 +3753,7 @@ tbody th[scope='row'] {
   .signal-network {
     min-height: 24rem;
     padding: var(--space-5) 0 0;
-    border-top: 1px solid rgba(185, 204, 222, 0.18);
+    border-top: 1px solid var(--panel-rule);
   }
 
   .signal-network-head {
@@ -3763,7 +3773,7 @@ tbody th[scope='row'] {
   .signal-network-hint {
     display: block;
     grid-row: 4;
-    color: #91aaff;
+    color: var(--panel-collection);
     font-size: var(--type-floor);
     letter-spacing: 0.04em;
     text-transform: none;
@@ -3896,7 +3906,7 @@ tbody th[scope='row'] {
     color: var(--muted-foreground);
     font-family: var(--font-mono);
     font-size: var(--type-label);
-    letter-spacing: 0.06em;
+    letter-spacing: var(--tracking-label);
   }
 
   .health-table .cell-method::before,
@@ -3992,15 +4002,15 @@ tbody th[scope='row'] {
 .signal-disclosure > summary span {
   margin-left: var(--space-3);
   color: var(--muted-foreground);
-  font: .6875rem var(--font-mono);
+  font: var(--type-label) var(--font-mono);
 }
 
 .signal-disclosure .observatory-visual {
   margin-top: var(--space-4);
   padding: var(--space-6);
   border: 1px solid var(--border);
-  background: #152c23;
-  color: #eef3f0;
+  background: var(--panel-bg);
+  color: var(--panel-ink);
 }
 
 .recent-signals-head,
@@ -4206,7 +4216,7 @@ tbody th[scope='row'] {
   }
 
   .observatory-intro {
-    font-size: .95rem;
+    font-size: var(--type-lede);
   }
 
   .observatory-stats > div:nth-child(odd) {
@@ -4235,7 +4245,7 @@ tbody th[scope='row'] {
   border-left: 1px solid var(--border);
   color: var(--primary);
   font: 500 .75rem var(--font-mono);
-  letter-spacing: .06em;
+  letter-spacing: var(--tracking-label);
   vertical-align: middle;
 }
 
@@ -4267,11 +4277,6 @@ tbody th[scope='row'] {
   .site-header .mobile-menu-toggle {
     color: var(--foreground);
   }
-}
-
-.signal-network .network-band-label,
-.signal-network .network-count {
-  fill: #b9c8d6;
 }
 
 .not-found-links {
