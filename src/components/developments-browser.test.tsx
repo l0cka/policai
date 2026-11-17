@@ -43,7 +43,7 @@ it('filters the feed by stream', () => {
   expect(
     screen.getByRole('option', { name: 'Consultations and inquiries' }),
   ).toBeInTheDocument();
-  expect(screen.getByText(/Showing 1 of 2/)).toBeInTheDocument();
+  expect(screen.getByText('1 of 2 developments')).toBeInTheDocument();
 });
 
 it('surfaces the Atom feed and JSON API for machine readers', () => {

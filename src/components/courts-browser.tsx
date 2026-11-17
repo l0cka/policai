@@ -7,9 +7,6 @@ import {
 	ExternalLink,
 	ChevronDown,
 	ChevronRight,
-	Search,
-	SlidersHorizontal,
-	X,
 } from "lucide-react";
 import {
 	JURISDICTION_NAMES,
@@ -29,6 +26,7 @@ import type { RelatedInstrument } from "@/lib/related-policies";
 import { StatusPill, SourceState } from "@/components/policy-indicators";
 import { MetricStrip, PageIntro } from "@/components/layout";
 import { NoResultsState } from "@/components/ui/empty-state";
+import { FilterBar, FilterSearch, FilterSelect } from "@/components/filter-bar";
 
 /** Group practice notes by jurisdiction, ordered with federal first. */
 const JURISDICTION_ORDER: Jurisdiction[] = [
@@ -298,67 +296,37 @@ export function CourtsBrowser({
 			]} />
 
 			<div className="pt-7">
-				<section aria-label="Find court guidance" className="border-y border-border bg-muted/30 px-3 py-3 sm:px-4">
-					<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-[minmax(16rem,1fr)_13rem_13rem_11rem]">
-						<label className="relative">
-							<span className="sr-only">Search court guidance</span>
-							<Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-							<input
-								type="search"
-								value={search}
-								onChange={(event) => updateCourtUrl({ q: event.target.value })}
-								placeholder="Search court, instrument or topic"
-								className="h-11 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary"
-							/>
-						</label>
-						<label className="relative">
-							<span className="sr-only">Filter by jurisdiction</span>
-							<SlidersHorizontal className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-							<select
-								value={jurisdiction}
-								onChange={(event) => updateCourtUrl({ jurisdiction: event.target.value })}
-								className="h-11 w-full appearance-none rounded-md border border-input bg-background pl-10 pr-3 text-sm"
-							>
-								<option value="all">All jurisdictions</option>
-								{JURISDICTION_ORDER.map((item) => (
-									<option key={item} value={item}>{JURISDICTION_NAMES[item]}</option>
-								))}
-							</select>
-						</label>
-						<label>
-							<span className="sr-only">Filter by audience</span>
-							<select
-								value={audience}
-								onChange={(event) => updateCourtUrl({ audience: event.target.value })}
-								className="h-11 w-full appearance-none rounded-md border border-input bg-background px-3 text-sm"
-							>
-								<option value="all">All audiences</option>
-								<option value="judicial">Judicial officers</option>
-								<option value="self-represented">Self-represented people</option>
-								<option value="profession">Legal professionals</option>
-							</select>
-						</label>
-						<label>
-							<span className="sr-only">Sort guidance</span>
-							<select
-								value={sortMode}
-								onChange={(event) => updateCourtUrl({ sort: event.target.value })}
-								className="h-11 w-full appearance-none rounded-md border border-input bg-background px-3 text-sm"
-							>
-								<option value="jurisdiction">By jurisdiction</option>
-								<option value="newest">Newest first</option>
-							</select>
-						</label>
-					</div>
-					<div className="mt-2 flex min-h-8 items-center justify-between gap-3 text-xs text-muted-foreground" aria-live="polite">
-						<span>{filteredNotes.length} of {practiceNotes.length} instruments</span>
-						{hasActiveFilters ? (
-							<button type="button" onClick={clearFilters} className="inline-flex min-h-11 items-center gap-1 text-primary hover:underline">
-								<X className="h-3.5 w-3.5" /> Clear filters
-							</button>
-						) : null}
-					</div>
-				</section>
+				<FilterBar
+					label="Find court guidance"
+					shown={filteredNotes.length}
+					total={practiceNotes.length}
+					noun="instruments"
+					active={hasActiveFilters}
+					onClear={clearFilters}
+				>
+					<FilterSearch
+						label="Search court guidance"
+						placeholder="Search court, instrument or topic"
+						value={search}
+						onChange={(q) => updateCourtUrl({ q })}
+					/>
+					<FilterSelect label="Filter by jurisdiction" value={jurisdiction} onChange={(value) => updateCourtUrl({ jurisdiction: value })}>
+						<option value="all">All jurisdictions</option>
+						{JURISDICTION_ORDER.map((item) => (
+							<option key={item} value={item}>{JURISDICTION_NAMES[item]}</option>
+						))}
+					</FilterSelect>
+					<FilterSelect label="Filter by audience" value={audience} onChange={(value) => updateCourtUrl({ audience: value })}>
+						<option value="all">All audiences</option>
+						<option value="judicial">Judicial officers</option>
+						<option value="self-represented">Self-represented people</option>
+						<option value="profession">Legal professionals</option>
+					</FilterSelect>
+					<FilterSelect label="Sort guidance" value={sortMode} onChange={(sort) => updateCourtUrl({ sort })}>
+						<option value="jurisdiction">By jurisdiction</option>
+						<option value="newest">Newest first</option>
+					</FilterSelect>
+				</FilterBar>
 
 			{filteredNotes.length === 0 && !coverageGap ? (
 				<NoResultsState query={search.trim() || undefined} className="border-b border-border" />
@@ -372,8 +340,8 @@ export function CourtsBrowser({
 								className="h-1.5 w-1.5 shrink-0 rounded-full"
 								style={{ background: sectionJurisdiction ? jurisdictionAccent(sectionJurisdiction) : "var(--primary)" }}
 							/>
-							{section.title}
-							<span className="text-muted-foreground">({section.notes.length})</span>
+							{section.title}{" "}
+							<span className="tabular text-muted-foreground">{section.notes.length}</span>
 						</h2>
 
 						<div className="border-t-2 border-[var(--rule-heavy)]">
