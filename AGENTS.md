@@ -553,9 +553,19 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
   `collectionStripProps` and `formatCollectedAt` in
   `src/lib/collection-strip.ts` (a plain module, so the server layout may call
   them), pinned to `Australia/Sydney`. It never shows `lastHealthyAt`, which
-  would date the strip to the last fully healthy run. Below `sm` a
-  degraded run still shows a `degraded` marker beside the collected date.
-  `formatCollectedAt` falls back when the stamp is missing or unparseable.
+  would date the strip to the last fully healthy run. Its label comes from
+  `collectionStatusLabel` and never prints the health value: "Sources
+  reached", "N of M sources unreachable", or, first in priority, "Last
+  collected <date>" once `isCollectionStale` finds the stamp more than 36
+  hours old (`COLLECTION_STALE_MS`, which `/this-week` shares). The date is
+  absolute; no relative age is rendered. The server renders the verdict for
+  `renderedAt`, the time the layout was built, and `Header` re-reads it
+  against the reader's clock after hydration and when the tab becomes
+  visible, so a prerendered page cannot keep a fresh label through a stalled
+  collector. Below `sm` only "Sources reached" is hidden; every other label
+  stays visible and may wrap to two lines.
+  `formatCollectedAt` falls back when the stamp is missing or unparseable,
+  and such a stamp is never stale.
 - A server module (one without `'use client'`) imports only components from a
   `'use client'` module. Any other value it imports, such as a string or a
   function, becomes a client reference in the RSC payload, which the browser

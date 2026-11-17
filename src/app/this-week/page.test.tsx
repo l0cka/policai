@@ -20,12 +20,22 @@ it('does not present a past date as upcoming when collection has stalled', async
   render(await ThisWeekPage());
   expect(screen.queryByText('Already passed')).not.toBeInTheDocument();
   expect(screen.getByText('Still coming')).toBeInTheDocument();
-  expect(screen.getByText(/Collection is more than seven days old/)).toBeInTheDocument();
+  expect(screen.getByRole('status')).toHaveTextContent('The latest collection is from 1 Aug 2026. This is a historical snapshot, not current weekly coverage.');
 });
 it('anchors the week on the latest passing run, not the last fully healthy one', async () => {
   vi.mocked(getCollectionMeta).mockResolvedValue({ lastCollectedAt: '2026-09-21T19:30:00Z', lastHealthyAt: '2026-08-01T00:00:00Z', lastUsableAt: '2026-09-21T19:30:00Z' } as Awaited<ReturnType<typeof getCollectionMeta>>);
   render(await ThisWeekPage());
-  expect(screen.queryByText(/Collection is more than seven days old/)).not.toBeInTheDocument();
+  expect(screen.queryByRole('status')).not.toBeInTheDocument();
+});
+it.each([
+  ['2026-09-20T14:00:00Z', false],
+  ['2026-09-20T13:59:00Z', true],
+])('warns once the latest collection (%s) is more than 36 hours old', async (collectedAt, warned) => {
+  vi.mocked(getCollectionMeta).mockResolvedValue({ lastCollectedAt: collectedAt, lastHealthyAt: null, lastUsableAt: collectedAt } as Awaited<ReturnType<typeof getCollectionMeta>>);
+  render(await ThisWeekPage());
+  expect(screen.queryByRole('status')?.textContent ?? null).toEqual(
+    warned ? expect.stringContaining('The latest collection is from 20 Sep 2026.') : null,
+  );
 });
 it('distinguishes missing collection evidence from a verified quiet week', async () => {
   vi.mocked(getCollectionMeta).mockResolvedValue({ lastCollectedAt: null, lastHealthyAt: null } as Awaited<ReturnType<typeof getCollectionMeta>>);

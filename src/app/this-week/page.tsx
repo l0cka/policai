@@ -19,8 +19,8 @@ import {
   selectWeeklyDevelopments,
   weekWindowEndingAt,
   weeklyEvidenceLabel,
-  WEEK_MS,
 } from '@/lib/this-week';
+import { COLLECTION_STALE_MS } from '@/lib/collection-strip';
 import {
   getJurisdictionName,
   getPolicyStatusName,
@@ -219,7 +219,7 @@ export default async function ThisWeekPage() {
     ? stagesBetween(policies.filter(isLegislativeRecord), sydneyDay(window.start), sydneyDay(window.end))
     : [];
   const upcoming = selectUpcomingPolicyDates(policies, weekWindowEndingAt(now)!);
-  const stale = window && now.getTime() - window.end > WEEK_MS;
+  const stale = window && now.getTime() - window.end > COLLECTION_STALE_MS;
   const dateLabel = (stamp: number) => auDate(new Date(stamp), { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Australia/Sydney' });
 
   const lastCollected = formatTimestamp(meta.lastCollectedAt);
@@ -253,7 +253,7 @@ export default async function ThisWeekPage() {
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
           {lastHealthy ? <span>Last fully healthy {lastHealthy}</span> : null}
         </p>
-        {stale ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">Collection is more than seven days old. This is a historical snapshot, not current weekly coverage. <Link href="/status" className="underline">Check source status</Link>.</p> : null}
+        {stale && window ? <p role="status" className="mt-4 border-l-2 border-[var(--caution)] pl-3 text-sm">The latest collection is from {dateLabel(window.end)}. This is a historical snapshot, not current weekly coverage. <Link href="/status" className="underline">Check source status</Link>.</p> : null}
       </div>
 
       <section id="verified" className="mt-6 scroll-mt-20 sm:mt-8">
