@@ -50,6 +50,12 @@
   --s-tech_justice: light-dark(#6d28d9, #b89aff);
   --s-tech_justice-bg: light-dark(#ece3fb, #2a1f45);
 
+  --cat-legal_aid: var(--trust);
+  --cat-clc: var(--caution);
+  --cat-wls: light-dark(#be185d, #f5a0c8);
+  --cat-atsils: var(--s-tech_justice);
+  --cat-fvpls: light-dark(#c2410c, #fb923c);
+
   --panel-bg: #152c23;
   --panel-ink: #eef3f0;
   --panel-muted: #b9c8d6;
@@ -573,8 +579,8 @@ time,
 }
 
 .theme-toggle button[aria-checked='true'] {
-  background: color-mix(in srgb, var(--primary) 22%, transparent);
-  color: var(--primary);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
 }
 
 .theme-toggle svg {
@@ -715,31 +721,42 @@ main {
   color: var(--muted-foreground);
 }
 
-.hero-search input:not([type='hidden']) {
-  width: 100%;
-  height: 3rem;
+.sector-search input,
+.radar-search input,
+.hero-search input {
+  min-height: var(--touch-target);
   border: 1px solid var(--input);
-  border-radius: 0;
+  border-radius: var(--radius-control);
   background: var(--card);
-  padding-inline: 2.9rem 1rem;
   color: var(--foreground);
   font: inherit;
   font-size: var(--type-ui);
-  transition: border-color var(--dur-fast), background-color var(--dur-fast);
+  transition: border-color var(--dur-fast);
 }
 
+.sector-search input::placeholder,
+.radar-search input::placeholder,
 .hero-search input::placeholder {
   color: var(--muted-foreground);
 }
 
+.sector-search input:focus,
+.radar-search input:focus,
 .hero-search input:focus {
-  background: var(--card);
   border-color: var(--primary);
 }
 
+.sector-search input:focus-visible,
+.radar-search input:focus-visible,
 .hero-search input:focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
+}
+
+.hero-search input:not([type='hidden']) {
+  width: 100%;
+  height: 3rem;
+  padding-inline: 2.9rem 1rem;
 }
 
 .observatory-actions {
@@ -1506,48 +1523,6 @@ main {
   width: 0.8125rem;
 }
 
-.search {
-  position: relative;
-  flex: 1 1 14rem;
-  min-width: 12rem;
-  margin-left: auto;
-}
-
-.search svg {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 1rem;
-  width: 1rem;
-  color: var(--muted-foreground);
-  pointer-events: none;
-}
-
-.search input {
-  height: 2.75rem;
-  width: 100%;
-  border: 1px solid var(--input);
-  border-radius: var(--radius-surface);
-  background: var(--background);
-  color: inherit;
-  font: inherit;
-  font-size: var(--type-ui);
-  padding: 0 0.75rem 0 2.25rem;
-  box-shadow: var(--shadow-raise);
-  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
-}
-
-.search input::placeholder,
-.sector-search input::placeholder {
-  color: var(--muted-foreground);
-}
-
-.search input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
-}
-
 /* ------------------------------------------------------------------ feed -- */
 
 .day-group {
@@ -2192,11 +2167,8 @@ main {
 }
 
 .sector-view-tabs button[aria-selected='true'] {
-  background: var(--status-amended-bg);
-  color: var(--primary);
-  box-shadow:
-    inset 0 0 0 1px var(--primary),
-    inset 0 -2px 0 var(--primary);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
 }
 
 .sector-system-panel {
@@ -2305,25 +2277,28 @@ main {
   background: var(--muted-foreground);
 }
 
-.sector-key-all,
-.sector-key-legal_aid {
+.sector-key-all {
   background: var(--trust);
 }
 
+.sector-key-legal_aid {
+  background: var(--cat-legal_aid);
+}
+
 .sector-key-clc {
-  background: var(--caution);
+  background: var(--cat-clc);
 }
 
 .sector-key-wls {
-  background: light-dark(#be185d, #f5a0c8);
+  background: var(--cat-wls);
 }
 
 .sector-key-atsils {
-  background: var(--s-tech_justice);
+  background: var(--cat-atsils);
 }
 
 .sector-key-fvpls {
-  background: light-dark(#c2410c, #fb923c);
+  background: var(--cat-fvpls);
 }
 
 .sector-evidence a,
@@ -2437,9 +2412,13 @@ main {
 }
 
 .sector-relationship-chips button[aria-pressed='true'] {
-  border-color: var(--primary);
-  background: var(--status-amended-bg);
-  color: var(--primary);
+  border-color: var(--selected-border);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+}
+
+.sector-relationship-chips button[aria-pressed='true'] span {
+  color: inherit;
 }
 
 .sector-relationship-chips button span {
@@ -2755,22 +2734,8 @@ tbody th[scope='row'] {
 }
 
 .sector-search input {
-  height: 2.75rem;
   width: 100%;
-  border: 1px solid var(--input);
-  border-radius: var(--radius-surface);
-  background: var(--background);
-  color: inherit;
-  font: inherit;
-  font-size: var(--type-ui);
   padding: 0 0.7rem 0 2.2rem;
-  box-shadow: var(--shadow-raise);
-  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
-}
-
-.sector-search input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .sector-count {
@@ -3870,12 +3835,6 @@ tbody th[scope='row'] {
     flex-direction: column;
   }
 
-  .search {
-    order: -1;
-    flex-basis: 100%;
-    margin-left: 0;
-  }
-
   tbody th[scope='row'] {
     white-space: normal;
   }
@@ -4131,16 +4090,6 @@ tbody th[scope='row'] {
   flex: 1;
   min-height: 48px;
   padding: var(--space-3);
-  border: 1px solid var(--input);
-  border-radius: var(--radius-control);
-  background: var(--card);
-  color: var(--foreground);
-  font: inherit;
-}
-
-.radar-search input:focus-visible {
-  outline: var(--focus-ring-width) solid var(--focus-ring-color);
-  outline-offset: var(--focus-ring-offset);
 }
 
 .radar-search-row button {

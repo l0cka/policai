@@ -7,7 +7,7 @@ type App = { stylesheets: string[]; sources: string[] };
 const ROOT = path.resolve(__dirname, '../..');
 const SKIPPED_DIRECTORIES = new Set(['node_modules', '.next', '.open-next', '.wrangler', 'test', 'public']);
 
-const NOT_YET_ADOPTED = ['--selected-bg', '--selected-border', '--selected-fg'];
+const NOT_YET_ADOPTED: string[] = [];
 
 const COLOUR_UTILITIES =
   'bg|text|border(?:-[trblxyse])?|ring(?:-offset)?|outline|fill|stroke|from|via|to|divide|decoration|accent|caret|shadow|placeholder';

@@ -61,6 +61,34 @@ apps share no code, so each value is repeated here; change both sites together.
 - **Titles.** "Page · Policai A2J", the separator Policai uses.
 - **404.** One column, 42rem wide, with Policai's spacing.
 
+## Controls
+
+- **Search inputs.** The hero, feed and sector directory inputs share one rule
+  for border, `--radius-control`, background and a `--touch-target` minimum
+  height. Each input's own rule sets only its size and padding. Focus changes
+  the border colour, and keyboard focus adds the shared outline. No input
+  draws a `box-shadow` ring.
+- **Selected state.** The selected sector tab, the pressed relationship chip
+  and the checked theme option use `--selected-bg`, `--selected-fg` and
+  `--selected-border`, the fill Policai uses. Status colours are for statuses.
+  The provider category chips keep a tinted fill, because a solid fill would
+  hide the Legal Aid dot.
+- **Theme toggle keys.** Arrow keys move to the next or previous option and
+  wrap. Home and End move to the first and last option. Selection follows
+  focus.
+- **Sector category colours.** The five `--cat-*` tokens in `globals.css` are
+  the only source. The legend dots use them in CSS. `categoryMatch()` in
+  `app/sector-map-view.tsx` resolves them through a probe element each time
+  the map style loads, so the markers follow the theme. The probe sets
+  `transition: none`: under `prefers-reduced-motion` every element has a
+  0.01ms transition, and a reused probe would otherwise return the previous
+  colour. Community Legal Centres use `--caution`, which meets AA on the
+  light page.
+- **Missing map images.** The OpenFreeMap styles name icons their sprite does
+  not hold. `setMissingStyleImageResolver` gives each a transparent 1px image,
+  so MapLibre logs no warning. A `styleimagemissing` listener cannot do this:
+  MapLibre 6 warns right after it fires the event.
+
 ## Theme init
 
 `app/theme-init.ts` is a plain module that holds the theme storage key and the

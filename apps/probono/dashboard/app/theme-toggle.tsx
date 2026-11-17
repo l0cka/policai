@@ -14,6 +14,15 @@ const OPTIONS: Array<{ value: ThemeChoice; label: string; Icon: typeof Sun }> = 
   { value: 'dark', label: 'Dark', Icon: Moon },
 ];
 
+const KEY_TARGETS: Record<string, (index: number) => number> = {
+  ArrowLeft: (index) => index - 1,
+  ArrowUp: (index) => index - 1,
+  ArrowRight: (index) => index + 1,
+  ArrowDown: (index) => index + 1,
+  Home: () => 0,
+  End: () => OPTIONS.length - 1,
+};
+
 /**
  * The `<html>` element is the single source of truth: the init script sets it
  * before hydration and `select` updates it. Reading from the DOM rather than
@@ -72,16 +81,15 @@ export default function ThemeToggle({
           tabIndex={choice === value ? 0 : -1}
           onClick={() => select(value)}
           onKeyDown={(event) => {
-            if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+            const target = KEY_TARGETS[event.key];
+            if (!target) return;
             event.preventDefault();
-            const direction = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
             const currentIndex = OPTIONS.findIndex((option) => option.value === value);
-            const next = OPTIONS[(currentIndex + direction + OPTIONS.length) % OPTIONS.length];
-            select(next.value);
-            const radios = event.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>(
-              '[role="radio"]',
-            );
-            radios?.[(currentIndex + direction + OPTIONS.length) % OPTIONS.length]?.focus();
+            const nextIndex = (target(currentIndex) + OPTIONS.length) % OPTIONS.length;
+            select(OPTIONS[nextIndex].value);
+            event.currentTarget.parentElement
+              ?.querySelectorAll<HTMLButtonElement>('[role="radio"]')
+              [nextIndex]?.focus();
           }}
         >
           <Icon />
