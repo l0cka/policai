@@ -14,6 +14,13 @@ including auto-merges, which start no GitHub workflow. It runs
 The build settings live on the Worker in the Cloudflare dashboard, not in
 this repository.
 
+The `build` job in `.github/workflows/pull-request-checks.yml` runs the same
+`npm run build:cloudflare`, and the `Pro Bono dashboard` job runs it in
+`apps/probono/dashboard`, so a pull request that breaks the OpenNext build
+fails its checks before it can merge and deploy. The command runs
+`next build` itself, so the jobs do not also run `npm run build`. It needs
+no Cloudflare credentials: only the deploy step talks to Cloudflare.
+
 Workers have no project filesystem, so `scripts/bundle-data.mjs` writes
 `data/` and `public/data/` to a static asset the Worker reads through its
 `ASSETS` binding. Every commit to
