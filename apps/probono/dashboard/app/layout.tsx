@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Nav from './nav';
-import ThemeToggle, { themeInitScript } from './theme-toggle';
+import { themeInitScript } from './theme-init';
+import ThemeToggle from './theme-toggle';
 import CompanionMark from './companion-mark';
 import FirstContactWebMcp from './first-contact-webmcp';
 import { getPool } from '../lib/db';

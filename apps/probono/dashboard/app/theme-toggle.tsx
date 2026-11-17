@@ -2,19 +2,11 @@
 
 import { useSyncExternalStore } from 'react';
 import { Monitor, Moon, Sun } from './icons';
+import { THEME_STORAGE_KEY } from './theme-init';
 
 export type ThemeChoice = 'light' | 'dark' | 'system';
 
-export const THEME_STORAGE_KEY = 'probono-radar-theme';
-
 const THEME_EVENT = 'probono-radar:theme';
-
-/**
- * Runs before first paint so a stored choice is applied without a flash of the
- * system theme. Kept as a string because it is injected via
- * `dangerouslySetInnerHTML` in the root layout.
- */
-export const themeInitScript = `(function(){try{var t=localStorage.getItem('${THEME_STORAGE_KEY}');if(t==='light'||t==='dark'){document.documentElement.dataset.theme=t}}catch(e){}})();`;
 
 const OPTIONS: Array<{ value: ThemeChoice; label: string; Icon: typeof Sun }> = [
   { value: 'light', label: 'Light', Icon: Sun },
