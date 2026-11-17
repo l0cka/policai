@@ -117,8 +117,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build application
-        run: npm run build
+      - name: Build application for Cloudflare Workers
+        run: npm run build:cloudflare
 
   probono-dashboard:
     name: Pro Bono dashboard
@@ -153,9 +153,9 @@ jobs:
       - name: Test dashboard
         if: ${{ env.AFFECTED == 'true' }}
         run: npm test
-      - name: Build dashboard
+      - name: Build dashboard for Cloudflare Workers
         if: ${{ env.AFFECTED == 'true' }}
-        run: npm run build
+        run: npm run build:cloudflare
 
   probono-worker:
     name: Pro Bono worker
