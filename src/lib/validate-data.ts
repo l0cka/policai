@@ -33,6 +33,7 @@ import {
   type ArticleSource,
 } from '@/lib/articles';
 import { registerChartErrors } from '@/lib/article-figures';
+import { summaryRepeatsDescription } from '@/lib/policy-summary';
 import {
   validateArticleImages,
   type ArticleImageFiles,
@@ -605,6 +606,7 @@ export function validatePolicies(
   const ids = new Set<string>();
   const sourceUrls = new Map<string, string>();
   let unverifiedCount = 0;
+  const repeatedSummaryIds: string[] = [];
 
   policies.forEach((candidate, index) => {
     if (!isRecord(candidate)) {
@@ -758,6 +760,8 @@ export function validatePolicies(
       errors.push(`${label}: missing verified content`);
     if (!isNonEmptyString(policy.aiSummary))
       errors.push(`${label}: missing AI summary`);
+    if (policy.status !== 'trashed' && summaryRepeatsDescription(policy))
+      repeatedSummaryIds.push(label);
     if (!isTimestampString(policy.createdAt))
       errors.push(`${label}: invalid createdAt "${policy.createdAt}"`);
     if (!isTimestampString(policy.updatedAt))
@@ -824,6 +828,12 @@ export function validatePolicies(
       );
     }
   });
+
+  if (repeatedSummaryIds.length > 0) {
+    warnings.push(
+      `policies: ${repeatedSummaryIds.length} records repeat the description as the AI summary, so the record page hides "What this means"; write a distinct plain-language line: ${repeatedSummaryIds.join(', ')}`,
+    );
+  }
 
   if (unverifiedCount > 0) {
     warnings.push(

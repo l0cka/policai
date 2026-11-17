@@ -49,6 +49,34 @@ describe('validatePolicies', () => {
     expect(report.errors).toEqual([]);
   });
 
+  it('warns, without an error, when the AI summary only repeats the description', () => {
+    const repeated = (id: string, overrides: Partial<Policy> = {}) =>
+      buildPolicy({
+        id,
+        description: 'Guidance on AI use.',
+        aiSummary: ' guidance  on AI USE. ',
+        ...overrides,
+      });
+    const policies = [
+      repeated('repeat-a'),
+      buildPolicy({ id: 'distinct' }),
+      repeated('repeat-b'),
+      repeated('repeat-trashed', { status: 'trashed' }),
+    ];
+    const report = validatePolicies(policies);
+    expect(report.errors).toEqual(
+      validatePolicies(policies.map((policy) => ({ ...policy, aiSummary: 'A distinct line.' }))).errors,
+    );
+    expect(report.warnings).toContain(
+      'policies: 2 records repeat the description as the AI summary, so the record page hides "What this means"; write a distinct plain-language line: repeat-a, repeat-b',
+    );
+  });
+
+  it('does not warn when every AI summary differs from its description', () => {
+    const report = validatePolicies([buildPolicy()]);
+    expect(report.warnings.filter((warning) => warning.includes('AI summary'))).toEqual([]);
+  });
+
   it('rejects a record without updatedAt, trashed or not, since it dates register charts', () => {
     const active: Partial<Policy> = buildPolicy({ id: 'no-updated-at' });
     delete active.updatedAt;
