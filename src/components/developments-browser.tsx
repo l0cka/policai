@@ -8,8 +8,6 @@ import {
   ArrowUpRight,
   CheckCircle2,
   CircleAlert,
-  Filter,
-  Search,
 } from 'lucide-react';
 import { jurisdictionRailStyle } from '@/lib/jurisdiction-accent';
 import { formatPolicyDate } from '@/lib/format-policy-date';
@@ -23,6 +21,7 @@ import {
 } from '@/lib/development-streams';
 import { auDate, sydneyShortDate } from '@/lib/au-date';
 import { sydneyCalendarDate } from '@/lib/calendar-date';
+import { FilterBar, FilterSearch, FilterSelect } from '@/components/filter-bar';
 
 interface DevelopmentsBrowserProps {
   developments: DevelopmentRow[];
@@ -286,42 +285,30 @@ export function DevelopmentsBrowser({
       </p>
 
       <div className="mt-3 min-w-0">
-          <div className="mb-2 flex flex-col gap-2 sm:mb-3 sm:flex-row">
-            <label className="relative flex-1">
-              <span className="sr-only">Search developments</span>
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search developments" className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm focus:border-primary sm:h-11" />
-            </label>
-            <label className="relative sm:w-52">
-              <span className="sr-only">Filter by jurisdiction</span>
-              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select value={jurisdiction} onChange={(event) => setJurisdiction(event.target.value)} className="h-10 w-full appearance-none rounded-md border border-input bg-background pl-10 pr-3 text-sm sm:h-11">
-                <option value="all">All jurisdictions</option>
-                {Object.entries(JURISDICTION_NAMES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-              </select>
-            </label>
-            <label className="relative sm:w-52">
-              <span className="sr-only">Filter by stream</span>
-              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select value={stream} onChange={(event) => setStream(event.target.value as 'all' | DevelopmentStream)} className="h-10 w-full appearance-none rounded-md border border-input bg-background pl-10 pr-3 text-sm sm:h-11">
-                <option value="all">All streams</option>
-                {DEVELOPMENT_STREAMS.map((value) => <option key={value} value={value}>{getDevelopmentStreamName(value)}</option>)}
-              </select>
-            </label>
+          <FilterBar
+            label="Find developments"
+            shown={filteredItems.length}
+            total={activeItems.length}
+            noun="developments"
+            active={filtersActive}
+            onClear={clearFilters}
+          >
+            <FilterSearch label="Search developments" placeholder="Search developments" value={search} onChange={setSearch} />
+            <FilterSelect label="Filter by jurisdiction" value={jurisdiction} onChange={setJurisdiction}>
+              <option value="all">All jurisdictions</option>
+              {Object.entries(JURISDICTION_NAMES).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+            </FilterSelect>
+            <FilterSelect label="Filter by stream" value={stream} onChange={(value) => setStream(value as 'all' | DevelopmentStream)}>
+              <option value="all">All streams</option>
+              {DEVELOPMENT_STREAMS.map((value) => <option key={value} value={value}>{getDevelopmentStreamName(value)}</option>)}
+            </FilterSelect>
+          </FilterBar>
+          <div className="mt-3">
+            <DevelopmentFeed
+              items={filteredItems}
+              onReset={filtersActive ? clearFilters : undefined}
+            />
           </div>
-          {filtersActive && filteredItems.length > 0 ? (
-            <p className="mb-2 font-mono text-[11px] uppercase text-muted-foreground" aria-live="polite">
-              Showing {filteredItems.length} of {activeItems.length}
-              {' · '}
-              <button type="button" onClick={clearFilters} className="text-primary underline underline-offset-2 hover:no-underline">
-                Clear filters
-              </button>
-            </p>
-          ) : null}
-          <DevelopmentFeed
-            items={filteredItems}
-            onReset={filtersActive ? clearFilters : undefined}
-          />
       </div>
     </div>
   );
