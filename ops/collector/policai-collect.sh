@@ -34,6 +34,7 @@ REPO = 'l0cka/policai'
 PREFIX = 'automation/collection-'
 EVIDENCE_DAYS = 30
 GITHUB_CREDENTIAL = 'github.env'
+RECEIPT_FIELDS = ['run_id', 'phase', 'exit_code', 'message', 'pr', 'finished_at', 'evidence']
 DEADLINE = 0.0
 GITHUB = None
 
@@ -291,11 +292,89 @@ def check_environment():
     GITHUB = github_env()
 
 
+def lock_state():
+    try:
+        inode = str((STATE / 'policai-collect.lock').stat().st_ino)
+    except FileNotFoundError:
+        return 'free'
+    except OSError:
+        return 'unknown'
+    try:
+        locks = Path('/proc/locks').read_text().splitlines()
+    except OSError:
+        return 'unknown'
+    held = any('FLOCK' in fields and any(field.count(':') == 2 and field.rsplit(':', 1)[1] == inode
+                                         for field in fields)
+               for fields in map(str.split, locks))
+    return 'held' if held else 'free'
+
+
+def read_state(path, shape):
+    try:
+        return shape(json.loads(path.read_text()))
+    except FileNotFoundError:
+        return None
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        return 'unreadable'
+
+
+def watch_state_age():
+    try:
+        modified = (COLLECTOR_STATE / 'watch-state.json').stat().st_mtime
+    except FileNotFoundError:
+        return None
+    except OSError:
+        return 'unreadable'
+    return dict(modified_at=datetime.datetime.fromtimestamp(modified, datetime.timezone.utc).isoformat(),
+                age_seconds=max(0, int(time.time() - modified)))
+
+
+def status_report():
+    return dict(
+        lock=lock_state(),
+        receipt=read_state(STATE / 'policai-collect.json',
+                           lambda receipt: {field: receipt.get(field) for field in RECEIPT_FIELDS}),
+        watch_state=watch_state_age(),
+        outbox=read_state(COLLECTOR_STATE / 'outbox.json',
+                          lambda outbox: dict(developments=len(outbox['developments']),
+                                              source_reviews=len(outbox['sourceReviews']))))
+
+
+def status_text(report):
+    lock, receipt, watch, outbox = (report[key] for key in ('lock', 'receipt', 'watch_state', 'outbox'))
+    lines = ['Lock: ' + {'held': 'held (a run is in progress; the receipt below is the attempt before it)',
+                         'free': 'free (no run in progress)',
+                         'unknown': 'unknown (the lock file or /proc/locks is unreadable)'}[lock]]
+    if isinstance(receipt, dict):
+        lines.append(f"Last receipt: exit {receipt['exit_code']}, phase {receipt['phase'] or 'none'}, "
+                     f"finished {receipt['finished_at']}")
+        lines.extend(f'  {label}: {receipt[field]}'
+                     for label, field in (('Run', 'run_id'), ('Message', 'message'), ('PR', 'pr'),
+                                          ('Evidence', 'evidence')) if receipt[field])
+    else:
+        lines.append(f"Last receipt: {receipt or 'none'}")
+    if isinstance(watch, dict):
+        age = watch['age_seconds']
+        lines.append(f"Watch state: modified {watch['modified_at']} ({age // 3600}h {age % 3600 // 60}m ago)")
+    else:
+        lines.append(f"Watch state: {watch or 'none'}")
+    if isinstance(outbox, dict):
+        lines.append(f"Outbox: {outbox['developments']} developments, {outbox['source_reviews']} source reviews "
+                     'main lacked at the last promoted run')
+    else:
+        lines.append(f"Outbox: {outbox or 'none'}")
+    return '\n'.join(lines)
+
+
 def main():
     global DEADLINE
+    if sys.argv[1:] in (['status'], ['status', '--json']):
+        report = status_report()
+        print(json.dumps(report, indent=2) if '--json' in sys.argv else status_text(report))
+        return 0
     os.umask(0o077)
     if sys.argv[1:] not in ([], ['--preflight']):
-        print('Usage: policai-collect.sh [--preflight]', file=sys.stderr)
+        print('Usage: policai-collect.sh [--preflight | status [--json]]', file=sys.stderr)
         return 2
     budget = min(3500, max(1, int(os.environ.get('POLICAI_COLLECT_MAX_SECONDS', '3500'))))
     DEADLINE = time.monotonic() + budget

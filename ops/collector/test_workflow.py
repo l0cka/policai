@@ -1,9 +1,11 @@
 """Integration tests: real temporary Git repositories; only npm/GitHub are fakes."""
 import fcntl
+import hashlib
 import json
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -116,6 +118,15 @@ else:
     def prs(self):
         store = self.home / 'prs.json'
         return json.loads(store.read_text()) if store.exists() else []
+
+    def status(self):
+        result = self.run_workflow('status', '--json')
+        self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
+        return json.loads(result.stdout)
+
+    def tree(self):
+        return {str(path.relative_to(self.home)): hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else None
+                for path in sorted(self.home.rglob('*')) if '.git' not in path.parts}
 
     def test_success_opens_a_ready_pr_and_promotes_host_state(self):
         result = self.run_workflow()
@@ -309,6 +320,93 @@ else:
         self.set_collector(COLLECTOR + 'assert os.environ["USE_CLEF_CLASSIFIER"] == "1"\n')
         result = self.run_workflow()
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_status_before_any_run_reports_nothing_and_creates_nothing(self):
+        before = self.tree()
+        self.assertEqual(self.status(), dict(lock='free', receipt=None, watch_state=None, outbox=None))
+        self.assertEqual(self.tree(), before)
+        self.assertFalse((self.home / '.local/state').exists())
+
+    def test_status_reports_the_last_run_and_writes_nothing(self):
+        self.assertEqual(self.run_workflow().returncode, 0)
+        before = self.tree()
+        status = self.status()
+        receipt = self.receipt()
+        self.assertEqual(status['lock'], 'free')
+        self.assertEqual(status['receipt'], dict(run_id=receipt['run_id'], phase='published', exit_code=0, message='',
+                                                 pr=receipt['pr'], finished_at=receipt['finished_at'],
+                                                 evidence=receipt['evidence']))
+        self.assertEqual(status['outbox'], dict(developments=1, source_reviews=0))
+        self.assertEqual(status['watch_state']['modified_at'][-6:], '+00:00')
+        self.assertLess(status['watch_state']['age_seconds'], 60)
+        text = self.run_workflow('status')
+        self.assertEqual(text.returncode, 0, text.stderr)
+        for expected in ('Lock: free', receipt['run_id'], receipt['pr'], receipt['evidence'],
+                         '1 developments, 0 source reviews'):
+            self.assertIn(expected, text.stdout)
+        self.assertEqual(self.tree(), before)
+
+    def test_status_of_a_failed_run_exits_zero_and_carries_its_message(self):
+        self.set_collector(COLLECTOR, validate_exit=3)
+        self.assertEqual(self.run_workflow().returncode, 1)
+        status = self.status()
+        self.assertEqual(status['receipt']['exit_code'], 1)
+        self.assertIn('data validation failed', status['receipt']['message'])
+        self.assertIsNone(status['outbox'])
+
+    def test_status_reads_a_receipt_from_a_run_refused_before_it_started(self):
+        (self.home / 'credentials/github.env').unlink()
+        self.assertEqual(self.run_workflow().returncode, 1)
+        receipt = self.status()['receipt']
+        self.assertEqual((receipt['run_id'], receipt['phase'], receipt['evidence'], receipt['exit_code']),
+                         (None, None, None, 1))
+        self.assertIn('github.env', receipt['message'])
+        self.assertIn('github.env', self.run_workflow('status').stdout)
+
+    def test_status_neither_blocks_on_nor_takes_a_held_lock(self):
+        state = self.home / '.local/state/argus-jobs'
+        state.mkdir(parents=True)
+        with (state / 'policai-collect.lock').open('w') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            before = self.tree()
+            status = self.status()
+            text = self.run_workflow('status')
+            self.assertEqual(self.tree(), before)
+        self.assertEqual(text.returncode, 0, text.stderr)
+        if Path('/proc/locks').is_file():
+            self.assertEqual(status['lock'], 'held')
+            self.assertIn('Lock: held', text.stdout)
+            self.assertEqual(self.status()['lock'], 'free')
+        self.assertEqual(self.run_workflow().returncode, 0)
+
+    def test_status_needs_no_credential_and_reaches_neither_git_nor_npm(self):
+        (self.home / 'credentials/github.env').unlink()
+        self.env['USE_CLAUDE_CLASSIFIER'] = '1'
+        self.env['PATH'] = str(self.bin)
+        for name in ('git', 'gh', 'npm'):
+            (self.bin / name).write_text('#!/bin/sh\necho "$0" >> "$HOME/called.log"\nexit 1\n')
+            (self.bin / name).chmod(0o755)
+        result = subprocess.run([sys.executable, str(SCRIPT), 'status'], env=self.env, capture_output=True, text=True,
+                                timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse((self.home / 'called.log').exists())
+
+    def test_status_reports_an_unreadable_file_and_still_answers_the_rest(self):
+        self.assertEqual(self.run_workflow().returncode, 0)
+        (self.home / '.local/state/argus-jobs/policai-collect.json').write_text('{')
+        (self.state / 'outbox.json').write_text('[]')
+        status = self.status()
+        self.assertEqual((status['receipt'], status['outbox']), ('unreadable', 'unreadable'))
+        self.assertLess(status['watch_state']['age_seconds'], 60)
+        self.assertIn('Outbox: unreadable', self.run_workflow('status').stdout)
+
+    def test_unknown_arguments_print_usage_and_touch_nothing(self):
+        for args in (('status', '--verbose'), ('--json',), ('status', '--json', 'extra')):
+            with self.subTest(args=args):
+                result = self.run_workflow(*args)
+                self.assertEqual(result.returncode, 2)
+                self.assertIn('status [--json]', result.stderr)
+        self.assertFalse((self.home / '.local/state').exists())
 
 
 if __name__ == '__main__':
