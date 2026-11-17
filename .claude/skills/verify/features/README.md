@@ -15,7 +15,7 @@ The maintained source for verifying what a Policai reader sees. Read this index,
 - One state: `$V snap <port> '<path>' <name> [--phone] [--dark] [--no-js]`.
 - A journey with clicks: an existing `scripts/verify-*.mjs` through `$V script`, or a short Playwright script using `getByRole` and the accessible names in these files.
 - Many states are URL parameters. Prefer the URL entry point plus the click entry point when both exist.
-- The main nav (`navigation "Primary"`: `link "Register"`, `"Updates"`, `"Legislation"`, `"Courts"`, `"Analysis"`, then `"About"` and `"A2J"` on the right) collapses behind `button "Open menu"` below 1024px. Sections and their views are defined once in `src/lib/site-nav.ts`. The collector status is `link "Source status: …"` in the header bar; the theme radios (`radiogroup "Colour theme"`) are in the footer.
+- The main nav (`navigation "Primary"`: `link "Register"`, `"Updates"`, `"Legislation"`, `"Courts"`, `"Analysis"`, then `"About"` and `"A2J"` on the right) collapses behind `button "Open menu"` below 1024px. Sections and their views are defined once in `src/lib/site-nav.ts`. The collector status is `link "Source status: …"` in the header bar; the theme radios are in the footer (`radiogroup "Colour theme"`), in the header from 1024px (`"Colour theme, header"`) and in the open menu below it (`"Colour theme, menu"`). The open menu lists each section's other views under it.
 
 ## Proof and skip reporting
 

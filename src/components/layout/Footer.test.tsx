@@ -3,12 +3,13 @@ import { expect, it } from 'vitest';
 import { Footer } from './Footer';
 
 it('lists every page under its section, with the utilities moved out of the header', () => {
-  render(<Footer />);
+  render(<Footer collectedAt="2026-10-16T19:35:00.990Z" />);
   const footer = screen.getByRole('navigation', { name: 'Footer' });
   for (const [name, href] of [
     ['Records', '/'],
     ['Timeline', '/timeline'],
     ['Coverage map', '/coverage'],
+    ['Rule finder', '/rule-finder'],
     ['Following', '/following'],
     ['This week', '/this-week'],
     ['Developments', '/developments'],
@@ -26,4 +27,14 @@ it('lists every page under its section, with the utilities moved out of the head
     expect(within(footer).getByRole('link', { name })).toHaveAttribute('href', href);
   }
   expect(screen.getByRole('radiogroup', { name: 'Colour theme' })).toBeInTheDocument();
+});
+
+it('says when the data was last collected, in Sydney time', () => {
+  render(<Footer collectedAt="2026-10-16T19:35:00.990Z" />);
+  expect(screen.getByRole('contentinfo')).toHaveTextContent(/COLLECTED 17 OCT 2026,? 06:35 /);
+});
+
+it('falls back when nothing has been collected', () => {
+  render(<Footer collectedAt={null} />);
+  expect(screen.getByRole('contentinfo')).toHaveTextContent('SOURCE STATUS IN METHODOLOGY');
 });

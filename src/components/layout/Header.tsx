@@ -1,18 +1,19 @@
 'use client';
 
-import { useState, useRef, useEffect, useSyncExternalStore, type FocusEvent } from 'react';
+import { Fragment, useState, useRef, useEffect, useSyncExternalStore, type FocusEvent } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import {
   collectionStatusLabel,
   formatCollectedAt,
   isCollectionStale,
   type CollectionStrip,
 } from '@/lib/collection-strip';
-import { A2J_URL, ABOUT_SECTION, PRIMARY_SECTIONS, isSectionActive } from '@/lib/site-nav';
+import { A2J_URL, ABOUT_SECTION, PRIMARY_SECTIONS, isSectionActive, type NavSection } from '@/lib/site-nav';
 
 /** Nav label whose underline wipes in from the left, and stays for the current section. */
 function NavLink({
@@ -136,6 +137,39 @@ export function Header(status: CollectionStrip) {
       active ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted hover:text-foreground',
     );
 
+  const mobileSection = (section: NavSection) => {
+    const views = section.views.filter((view) => view.href !== section.href);
+    const onView = views.some((view) => view.href === pathname);
+    const current = isSectionActive(section, pathname) && !onView;
+    return (
+      <Fragment key={section.href}>
+        <Link
+          href={section.href}
+          onClick={closeMobile}
+          aria-current={current ? 'page' : undefined}
+          className={mobileLinkClass(current)}
+        >
+          {section.label}
+        </Link>
+        {views.length > 0 && (
+          <div className="ml-3 flex flex-col gap-1 border-l border-border pl-2">
+            {views.map((view) => (
+              <Link
+                key={view.href}
+                href={view.href}
+                onClick={closeMobile}
+                aria-current={view.href === pathname ? 'page' : undefined}
+                className={cn(mobileLinkClass(view.href === pathname), 'font-normal')}
+              >
+                {view.label}
+              </Link>
+            ))}
+          </div>
+        )}
+      </Fragment>
+    );
+  };
+
   return (
     <header data-site-header className="sticky top-0 z-50 w-full border-b border-border bg-background text-foreground">
       <div className="container mx-auto flex h-14 items-center gap-8 px-4 sm:h-16 sm:px-6 lg:px-8">
@@ -159,25 +193,26 @@ export function Header(status: CollectionStrip) {
         </nav>
 
         <div className="ml-auto flex h-full items-center gap-5">
-          <SourceStatusLink status={status} stale={stale} className="max-sm:min-h-11 max-sm:min-w-11 max-sm:justify-center" />
+          <SourceStatusLink status={status} stale={stale} className="min-h-11 max-sm:min-w-11 max-sm:justify-center" />
           <div className="hidden h-full items-center gap-5 lg:flex">
             <NavLink href={ABOUT_SECTION.href} label={ABOUT_SECTION.label} active={aboutActive} />
             {/* Sibling property, not a register route: no active state, and the
                 arrow signals leaving this app. */}
             <a
               href={A2J_URL}
-              className="group flex items-center gap-1 px-1 text-sm font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:text-foreground"
+              className="group flex min-h-11 items-center gap-1 px-1 text-sm font-medium text-muted-foreground transition-colors duration-[var(--dur-fast)] hover:text-foreground"
             >
               A2J
               <ArrowUpRight className="h-3.5 w-3.5 opacity-55 transition duration-[var(--dur-base)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" />
             </a>
+            <ThemeToggle label="Colour theme, header" size="compact" />
           </div>
           <button
             type="button"
             className="-mr-2 flex h-11 w-11 items-center justify-center rounded-full text-foreground transition-colors hover:bg-muted lg:hidden"
             aria-expanded={mobileOpen}
             ref={mobileButtonRef}
-            aria-controls="mobile-navigation"
+            aria-controls={mobileOpen ? 'mobile-navigation' : undefined}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             onClick={() => setMobileOpen((open) => !open)}
           >
@@ -192,26 +227,9 @@ export function Header(status: CollectionStrip) {
             className="dropdown-in absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-3.5rem)] overflow-y-auto border-b border-border bg-popover shadow-[var(--shadow-lift)] lg:hidden"
           >
             <nav aria-label="Mobile" className="flex flex-col gap-1 p-2">
-              {PRIMARY_SECTIONS.map((section) => (
-                <Link
-                  key={section.href}
-                  href={section.href}
-                  onClick={closeMobile}
-                  aria-current={isSectionActive(section, pathname) ? 'page' : undefined}
-                  className={mobileLinkClass(isSectionActive(section, pathname))}
-                >
-                  {section.label}
-                </Link>
-              ))}
+              {PRIMARY_SECTIONS.map(mobileSection)}
               <div className="my-2 border-t border-border" />
-              <Link
-                href={ABOUT_SECTION.href}
-                onClick={closeMobile}
-                aria-current={aboutActive ? 'page' : undefined}
-                className={mobileLinkClass(aboutActive)}
-              >
-                {ABOUT_SECTION.label}
-              </Link>
+              {mobileSection(ABOUT_SECTION)}
               <a
                 href={A2J_URL}
                 onClick={closeMobile}
@@ -226,6 +244,7 @@ export function Header(status: CollectionStrip) {
                 <span className="font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
                   {formatCollectedAt(collectedAt)}
                 </span>
+                <ThemeToggle label="Colour theme, menu" className="mt-2 self-start" />
               </div>
             </nav>
           </div>

@@ -51,6 +51,7 @@ describe('Editorial identity and navigation', () => {
     ['/policies/some-record', 'Register'],
     ['/timeline', 'Register'],
     ['/coverage', 'Register'],
+    ['/following', 'Register'],
     ['/this-week', 'Updates'],
     ['/developments', 'Updates'],
     ['/legislation', 'Legislation'],
@@ -88,6 +89,77 @@ describe('Editorial identity and navigation', () => {
     fireEvent.keyDown(document, { key: 'Escape' });
     expect(screen.queryByRole('navigation', { name: 'Mobile' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Open menu' })).toHaveFocus();
+  });
+
+  it('lists each section\'s other views under it in the mobile menu', () => {
+    renderHeader('/timeline');
+    fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const mobile = screen.getByRole('navigation', { name: 'Mobile' });
+    expect(within(mobile).getAllByRole('link').map((link) => link.getAttribute('href')).slice(0, 14)).toEqual([
+      '/',
+      '/timeline',
+      '/coverage',
+      '/rule-finder',
+      '/following',
+      '/this-week',
+      '/developments',
+      '/legislation',
+      '/courts',
+      '/analysis',
+      '/methodology',
+      '/status',
+      '/status/refusals',
+      '/status/reuse',
+    ]);
+    expect(
+      within(mobile)
+        .getAllByRole('link')
+        .filter((link) => link.getAttribute('aria-current') === 'page')
+        .map((link) => link.textContent),
+    ).toEqual(['Timeline']);
+  });
+
+  it('marks the section itself in the mobile menu on a page that is not one of its views', () => {
+    renderHeader('/policies/some-record');
+    fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const mobile = screen.getByRole('navigation', { name: 'Mobile' });
+    expect(
+      within(mobile)
+        .getAllByRole('link')
+        .filter((link) => link.getAttribute('aria-current') === 'page')
+        .map((link) => link.textContent),
+    ).toEqual(['Register']);
+  });
+
+  it('offers the colour theme in the header and in the open mobile menu, each under its own name', () => {
+    renderHeader();
+    expect(screen.getByRole('radiogroup', { name: 'Colour theme, header' })).toBeInTheDocument();
+    expect(screen.queryByRole('radiogroup', { name: 'Colour theme, menu' })).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
+    const menu = screen.getByRole('radiogroup', { name: 'Colour theme, menu' });
+    fireEvent.click(within(menu).getByRole('radio', { name: 'Dark' }));
+    expect(
+      within(screen.getByRole('radiogroup', { name: 'Colour theme, header' })).getByRole('radio', { name: 'Dark' }),
+    ).toHaveAttribute('aria-checked', 'true');
+    expect(screen.getByRole('navigation', { name: 'Mobile' })).toBeInTheDocument();
+    fireEvent.click(within(menu).getByRole('radio', { name: 'System' }));
+  });
+
+  it('points the menu button at the menu only while the menu exists', () => {
+    renderHeader();
+    const toggle = screen.getByRole('button', { name: 'Open menu' });
+    expect(toggle).not.toHaveAttribute('aria-controls');
+    fireEvent.click(toggle);
+    const controlled = screen.getByRole('button', { name: 'Close menu' }).getAttribute('aria-controls');
+    expect(document.getElementById(controlled ?? '')).toContainElement(
+      screen.getByRole('navigation', { name: 'Mobile' }),
+    );
+  });
+
+  it('gives the status and A2J links in the header bar a 44px target at every width', () => {
+    renderHeader();
+    expect(screen.getByRole('link', { name: /^Source status:/ })).toHaveClass('min-h-11');
+    expect(screen.getByRole('link', { name: 'A2J' })).toHaveClass('min-h-11');
   });
 
   it('keeps the mobile menu open when focus returns to its toggle', () => {

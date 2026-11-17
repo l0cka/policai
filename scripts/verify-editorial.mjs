@@ -69,7 +69,7 @@ async function audit(name) {
   accessibility.push({ name, ...result });
 }
 async function theme(name) {
-  await page.getByRole('radio', { name, exact: true }).click();
+  await page.getByRole('contentinfo').getByRole('radio', { name, exact: true }).click();
 }
 async function openFilter(name) {
   const details = page
@@ -311,12 +311,13 @@ try {
   );
 
   await page.setViewportSize({ width: 1440, height: 1000 });
-  const system = page.getByRole('radio', { name: 'System', exact: true });
+  const system = page.getByRole('contentinfo').getByRole('radio', { name: 'System', exact: true });
   await system.click();
   await system.focus();
   await page.keyboard.press('ArrowRight');
   assert.equal(
     await page
+      .getByRole('contentinfo')
       .getByRole('radio', { name: 'Dark', exact: true })
       .getAttribute('aria-checked'),
     'true',

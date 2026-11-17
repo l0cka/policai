@@ -20,7 +20,7 @@ export default function NotFound() {
       <h1 className="page-title mt-2">This page could not be found.</h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground">
         The address may be mistyped, or the page may have been retired. The map,
-        framework, agency and blog pages were removed; their records remain in
+        framework and blog pages were removed; their records remain in
         the register.
       </p>
       <ul className="mt-8 max-w-2xl border-t border-border">
