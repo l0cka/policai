@@ -15,12 +15,10 @@ const DESTINATIONS: Array<[string, string, string]> = [
 
 export default function NotFound() {
   return (
-    <div className="container page">
-      <header className="page-head">
-        <p className="page-eyebrow">Error 404</p>
-        <h1 className="page-title">This page could not be found.</h1>
-        <p className="page-intro">The address may be mistyped, or the page may have moved.</p>
-      </header>
+    <div className="container not-found">
+      <p className="page-eyebrow">Error 404</p>
+      <h1 className="page-title">This page could not be found.</h1>
+      <p className="not-found-intro">The address may be mistyped, or the page may have moved.</p>
       <ul className="not-found-links">
         {DESTINATIONS.map(([href, label, note]) => (
           <li key={href}>

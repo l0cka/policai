@@ -66,6 +66,14 @@ export function ArrowUpRight(props: IconProps) {
   );
 }
 
+export function ArrowUp(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 19V5M6 11l6-6 6 6" />
+    </svg>
+  );
+}
+
 export function ArrowRight(props: IconProps) {
   return (
     <svg {...base} {...props}>

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Nav from './nav';
 import { themeInitScript } from './theme-init';
 import ThemeToggle from './theme-toggle';
+import BackToTop from './back-to-top';
 import CompanionMark from './companion-mark';
 import FirstContactWebMcp from './first-contact-webmcp';
 import { getPool } from '../lib/db';
@@ -27,19 +28,12 @@ export const metadata: Metadata = {
   // pi-lens-ignore: unchecked-throwing-call
   metadataBase: new URL(SITE_URL),
   ...pageMetadata({ description: SITE_DESCRIPTION, path: '/' }),
-  // Same separator as the Policai register: "Page - Policai A2J".
-  title: { default: SITE_TITLE, template: `%s - ${SITE_NAME}` },
+  title: { default: SITE_TITLE, template: `%s · ${SITE_NAME}` },
   // './' resolves against metadataBase *and* the current path, so every page
   // gets its own canonical rather than all four claiming the home page.
   alternates: { canonical: './' },
 };
 
-/**
- * The dateline reports when the collector last ran, in the manner of a
- * masthead's edition line, and the header dot reports whether the sources are
- * reporting. A database that is down should dim both, not take the page with
- * it: the dateline goes blank and the dot reads "Unknown".
- */
 async function collectionStatus(): Promise<{ at: string | null; counts: SourceHealthCounts | null }> {
   try {
     const db = getPool();
@@ -65,14 +59,14 @@ function formatDataDate(value: string | null): string {
     .toUpperCase()}`;
 }
 
-const FOOTER_GROUPS: Array<{ label: string; links: Array<[string, string]> }> = [
+const FOOTER_GROUPS: Array<{ label: string; links: Array<[href: string, label: string, external?: 'external']> }> = [
   { label: 'Radar', links: [['/', 'Feed'], ['/this-week', 'This week'], ['/deadlines', 'Deadlines']] },
   { label: 'Reference', links: [['/sector', 'Sector'], ['/health', 'Source health']] },
   {
     label: 'About',
     links: [
       ['https://policai.org/methodology', 'Methodology'],
-      ['https://github.com/l0cka/probono-radar', 'GitHub'],
+      ['https://github.com/l0cka/probono-radar', 'GitHub', 'external'],
       ['https://policai.org', 'Policai'],
     ],
   },
@@ -81,7 +75,7 @@ const FOOTER_GROUPS: Array<{ label: string; links: Array<[string, string]> }> = 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const { at: dataCurrentAt, counts } = await collectionStatus();
   const dataCurrent = formatDataDate(dataCurrentAt);
-  const status = headerStatus(counts);
+  const status = headerStatus(counts, dataCurrentAt, new Date());
 
   return (
     <html
@@ -115,11 +109,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               className="header-status"
               data-state={status.state}
               title={`${status.detail}. ${dataCurrent}`}
-              aria-label={`Source health: ${status.detail.toLowerCase()}. ${dataCurrent.toLowerCase()}`}
+              aria-label={`Source health: ${[status.label, status.detail, dataCurrent].join('. ').toLowerCase()}.`}
             >
               <i aria-hidden="true" />
               <span>{status.label}</span>
             </Link>
+            <ThemeToggle label="Colour theme, header" className="header-theme" />
           </div>
         </header>
 
@@ -139,9 +134,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               {FOOTER_GROUPS.map((group) => (
                 <div key={group.label}>
                   <p className="page-eyebrow">{group.label}</p>
-                  {group.links.map(([href, label]) =>
+                  {group.links.map(([href, label, external]) =>
                     href.startsWith('http') ? (
-                      <a key={href} href={href} target="_blank" rel="noopener noreferrer" className="underline-grow">
+                      <a
+                        key={href}
+                        href={href}
+                        {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        className="underline-grow"
+                      >
                         {label}
                       </a>
                     ) : (
@@ -155,6 +155,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </nav>
           </div>
         </footer>
+        <BackToTop />
       </body>
     </html>
   );

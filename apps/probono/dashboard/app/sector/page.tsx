@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { pageMetadata } from '../../lib/site-meta';
+import { sydneyShortDate } from '../../lib/au-date';
 import { databaseConfigured, getPool } from '../../lib/db';
 import locations from '../../lib/sector-locations.json';
 import SectorDirectory from '../sector-directory';
@@ -38,7 +39,7 @@ export default async function SectorPage() {
   return (
     <div className="container page">
       <header className="sector-head reveal">
-        <p className="page-eyebrow">Sector reference · compiled {COMPILED}</p>
+        <p className="page-eyebrow">Sector reference · compiled {sydneyShortDate(COMPILED)}</p>
         <h1 className="page-title">The legal assistance sector</h1>
         <p className="sector-lede">
           Who funds, coordinates, delivers and studies legal help in Australia, and how money and
@@ -138,7 +139,7 @@ export default async function SectorPage() {
       <section aria-label="Method" className="sector-method">
         <h2 className="section-heading">Method</h2>
         <p className="section-intro">
-          Compiled {COMPILED} from published member and service directories: National Legal Aid,
+          Compiled {sydneyShortDate(COMPILED)} from published member and service directories: National Legal Aid,
           CLCs Australia and its state and territory associations, WLSA, NATSILS, FNAAFV, the Law
           Council&rsquo;s constituent-body register and the Australian Pro Bono Centre&rsquo;s scheme
           directory. Names, roles and URLs come from each organisation&rsquo;s own site or its
@@ -150,7 +151,7 @@ export default async function SectorPage() {
           domain than the one recorded here and are not matched.
         </p>
         <p className="section-intro">
-          Primary-office locations on the map were compiled {locations.checked} from each
+          Primary-office locations on the map were compiled {sydneyShortDate(locations.checked)} from each
           organisation&rsquo;s own website or its peak body&rsquo;s directory (the source page is
           linked on each record) and geocoded with OpenStreetMap Nominatim. The map is not a
           representation of every branch, outreach site, national or online service, cross-border

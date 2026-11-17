@@ -16,11 +16,11 @@ try {
  async function visit(route) {assert.equal((await page.goto(base+route,{waitUntil:'networkidle'})).status(),200);}
  async function audit(name) {await page.addScriptTag({content:axe});const r=await page.evaluate(async()=>await window.axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}}));out.axe.push({name,violations:r.violations,incomplete:r.incomplete});await page.screenshot({path:dir+'/'+name+'.png',animations:'disabled'});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),name+' horizontal overflow');}
  for(const theme of ['light','dark']) {
-  await visit('/');await page.getByRole('radio',{name:theme==='light'?'Light':'Dark',exact:true}).filter({visible:true}).click();
+  await visit('/');await page.locator('footer').getByRole('radio',{name:theme==='light'?'Light':'Dark',exact:true}).click();
   for(const [route,name] of [['/','feed'],['/deadlines','deadlines'],['/health','sources'],['/sector','sector']]) {await visit(route);await audit(name+'-'+theme+'-desktop');}
  }
  out.checks.push('Four routes: desktop light/dark screenshots, overflow and axe');
- await visit('/');await page.getByRole('radio',{name:'Light',exact:true}).filter({visible:true}).click();
+ await visit('/');await page.locator('footer').getByRole('radio',{name:'Light',exact:true}).click();
  assert.equal(await page.locator('#radar-feed article').count(),4);
  for(const [label,title] of [['News','Community legal support expands'],['Law reform','Consultation on access to justice'],['Funding','Legal assistance funding round'],['Tech & justice','Digital justice service update']]) {
   await page.locator('.filters').getByRole('link',{name:label,exact:true}).click();await page.waitForLoadState('networkidle');await page.waitForFunction(()=>document.querySelectorAll('#radar-feed article').length===1);assert.equal(await page.locator('#radar-feed article').count(),1);await page.waitForFunction(title=>document.querySelector('#radar-feed article')?.textContent?.includes(title),title);assert((await page.locator('#radar-feed article').innerText()).includes(title));
@@ -45,7 +45,7 @@ try {
   for(const [route,name] of [['/','feed'],['/deadlines','deadlines'],['/health','sources'],['/sector','sector']]) {await visit(route);await audit(name+'-'+theme+'-mobile');}
  }
  out.checks.push('Mobile four routes, both themes, menu and Escape focus restoration');
- await page.getByRole('button',{name:'Open menu'}).click();await page.locator('#mobile-navigation').getByRole('link',{name:'Deadlines',exact:true}).click();await page.waitForURL('**/deadlines');assert.equal(await page.locator('#mobile-navigation').count(),0);
+ await page.getByRole('button',{name:'Open menu'}).click();await page.locator('#mobile-navigation').getByRole('link',{name:'Deadlines',exact:true}).click();await page.waitForURL('**/deadlines');assert(await page.locator('#mobile-navigation').isHidden());
  const system=page.locator('footer').getByRole('radio',{name:'System',exact:true});await system.focus();await system.press('ArrowRight');assert.equal(await page.locator('footer').getByRole('radio',{name:'Dark',exact:true}).getAttribute('aria-checked'),'true');await page.reload();assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
  await page.locator('footer').getByRole('radio',{name:'System',exact:true}).click();await page.emulateMedia({colorScheme:'dark'});assert.equal(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor),'rgb(21, 27, 24)');await page.emulateMedia({colorScheme:'light'});await page.waitForFunction(()=>getComputedStyle(document.body).backgroundColor==='rgb(248, 247, 243)');assert.equal(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor),'rgb(248, 247, 243)');
  out.checks.push('Mobile navigation closure; theme arrow keyboard, persistence, system colour scheme');

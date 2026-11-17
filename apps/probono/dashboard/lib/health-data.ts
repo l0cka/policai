@@ -3,9 +3,11 @@
  * All figures come from one SQL definition (SOURCE_HEALTH_SQL), so a page and
  * the JSON endpoint cannot drift apart, and unit tests can assert on the rows
  * without a database. The pool is passed in by each caller (the db module is
- * a runtime dependency, not an import), which also keeps this module
- * import-free for the Node strip-types test runner.
+ * a runtime dependency, not an import), so the Node strip-types test runner
+ * loads this module without a database driver.
  */
+
+import { sydneyShortDate } from './au-date';
 
 /**
  * Days after which a source with no successful run counts as overdue.
@@ -185,24 +187,32 @@ export function sourceHealthHeadline(counts: SourceHealthCounts): SourceHealthHe
 
 export type HeaderStatus = {
   state: 'ok' | 'warn' | 'unknown';
-  /** The word beside the dot. */
   label: string;
-  /** What the status stands for, for the title and accessible name. */
   detail: string;
 };
 
-/**
- * The masthead dot. It reuses the landing-page headline's thresholds, and a
- * collector that cannot be read (database down) is "unknown", never "Live".
- */
-export function headerStatus(counts: SourceHealthCounts | null): HeaderStatus {
+const COLLECTION_STALE_MS = 36 * 60 * 60 * 1000;
+
+export function headerStatus(
+  counts: SourceHealthCounts | null,
+  lastCollectedAt: string | null,
+  now: Date,
+): HeaderStatus {
   if (!counts) {
-    return { state: 'unknown', label: 'Unknown', detail: 'Collection status is unavailable' };
+    return { state: 'unknown', label: 'Status unavailable', detail: 'Collection status is unavailable' };
   }
   const headline = sourceHealthHeadline(counts);
-  return headline.tone === 'ok'
-    ? { state: 'ok', label: 'Live', detail: headline.label }
-    : { state: 'warn', label: 'Degraded', detail: headline.label };
+  if (lastCollectedAt && now.getTime() - new Date(lastCollectedAt).getTime() > COLLECTION_STALE_MS) {
+    return { state: 'warn', label: `Last collected ${sydneyShortDate(lastCollectedAt)}`, detail: headline.label };
+  }
+  if (headline.tone === 'ok') return { state: 'ok', label: 'Sources reached', detail: headline.label };
+  const { total, ok } = counts;
+  if (total === 0) return { state: 'warn', label: headline.label, detail: headline.note };
+  return {
+    state: 'warn',
+    label: `${total - ok} of ${total} ${total === 1 ? 'source' : 'sources'} not reached`,
+    detail: headline.label,
+  };
 }
 
 /**
