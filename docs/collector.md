@@ -1417,6 +1417,19 @@ or redirect aliases.
 Staging, approval and publication each enforce identity ownership; this does not
 relax the policy replacement path.
 
+Approval's checks for each `entryKind` are in `src/lib/source-ingest/approve.ts`.
+`approveByEntryKind` picks `approveTimelineReview` or `approvePolicyReview` after
+the shared source checks in `approveStagedSource`. Three rules there are easy
+to miss:
+
+- A new timeline event may share its related policy's canonical URL, under the
+  same limits as a replacement: not that policy's redirect aliases, not other
+  records, and not drafts.
+- A re-verified timeline event keeps the source identities it already holds.
+  It cannot adopt a new redirect destination that another tracked record owns.
+- A legislative policy record is not checked against timeline events, because,
+  as at staging, it replaces the timeline events that cite its page.
+
 Staging refreshes an unresolved review of the target in place, preserving its
 collector sequence and linked development. Publication updates the event in place,
 publishes the refreshed review, and promotes its development. Older unresolved
