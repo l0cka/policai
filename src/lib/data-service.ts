@@ -6,8 +6,8 @@
  * Local tools publish by committing, while the deployed site only reads them.
  */
 
-import path from "path";
 import { publicAutomaticCollectionMeta } from "@/lib/collection-coverage";
+import { dataFile } from "@/lib/data-files";
 import { readJsonFile, writeJsonFile } from "@/lib/file-store";
 import { WATCH_SOURCES } from "@/lib/pipeline/sources";
 import type { SourceHealthRecord } from "@/lib/pipeline/source-health";
@@ -306,65 +306,6 @@ function toPublicAgencies(
 }
 
 // ---------------------------------------------------------------------------
-// File paths
-// ---------------------------------------------------------------------------
-
-const POLICIES_FILE = path.join(
-	process.cwd(),
-	"data",
-	"policies.json",
-);
-const AGENCIES_FILE = path.join(
-	process.cwd(),
-	"data",
-	"agencies.json",
-);
-const BODIES_FILE = path.join(process.cwd(), "data", "bodies.json");
-const SITE_REUSE_FILE = path.join(process.cwd(), "data", "site-reuse.json");
-const RULE_SCOPE_FILE = path.join(process.cwd(), "data", "rule-scope.json");
-const COMMONWEALTH_AGENCIES_FILE = path.join(
-	process.cwd(),
-	"data",
-	"commonwealth-agencies.json",
-);
-const TIMELINE_FILE = path.join(
-	process.cwd(),
-	"data",
-	"timeline.json",
-);
-const DEVELOPMENTS_FILE = path.join(
-	process.cwd(),
-	"data",
-	"developments.json",
-);
-const POLICY_FRAMEWORK_FILE = path.join(
-	process.cwd(),
-	"data",
-	"dta-ai-policy-framework.json",
-);
-const META_FILE = path.join(process.cwd(), "public", "data", "meta.json");
-const SOURCE_REVIEWS_FILE = path.join(
-	process.cwd(),
-	"data",
-	"source-reviews.json",
-);
-const SOURCE_MONITORING_FILE = path.join(
-	process.cwd(),
-	"data",
-	"source-monitoring.json",
-);
-const WATCH_STATE_FILE = path.join(
-	process.cwd(),
-	"data",
-	"watch-state.json",
-);
-const MCP_AUDIT_LOG_FILE = path.join(
-	process.cwd(),
-	"data",
-	"mcp-audit-log.json",
-);
-
-// ---------------------------------------------------------------------------
 // Policy operations
 // ---------------------------------------------------------------------------
 
@@ -390,7 +331,7 @@ export class DuplicatePolicyError extends Error {
 async function readPoliciesForAccess(options: DataServiceOptions): Promise<Policy[]> {
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
-	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
+	const policies = await readJsonFile<Policy[]>(dataFile("policies"), []);
 	return access === "public" ? publicProjection(policies, now) : policies;
 }
 
@@ -450,7 +391,7 @@ export async function getPolicyBySourceUrl(
 
 export async function createPolicy(policy: Policy): Promise<Policy> {
 	const normalized = canonicalizePolicyRecord(policy);
-	const policies = await readJsonFile<Policy[]>(POLICIES_FILE, []);
+	const policies = await readJsonFile<Policy[]>(dataFile("policies"), []);
 	if (
 		policies.some(
 			(existingPolicy) =>
@@ -461,7 +402,7 @@ export async function createPolicy(policy: Policy): Promise<Policy> {
 		throw new DuplicatePolicyError(normalized.id);
 	}
 	policies.unshift(normalized);
-	await writeJsonFile(POLICIES_FILE, policies);
+	await writeJsonFile(dataFile("policies"), policies);
 	return normalized;
 }
 
@@ -469,7 +410,7 @@ export async function updatePolicy(
 	id: string,
 	updates: Partial<PolicyWithTrash>,
 ): Promise<Policy | null> {
-	const policies = await readJsonFile<PolicyWithTrash[]>(POLICIES_FILE, []);
+	const policies = await readJsonFile<PolicyWithTrash[]>(dataFile("policies"), []);
 	const idx = policies.findIndex((p) => p.id === id);
 	if (idx === -1) return null;
 
@@ -489,7 +430,7 @@ export async function updatePolicy(
 		...updates,
 		updatedAt: updates.updatedAt ?? now,
 	});
-	await writeJsonFile(POLICIES_FILE, policies);
+	await writeJsonFile(dataFile("policies"), policies);
 	return policies[idx];
 }
 
@@ -505,7 +446,7 @@ export async function policyExistsBySourceUrl(
 // ---------------------------------------------------------------------------
 
 async function readSourceReviewsFromJson(): Promise<SourceReview[]> {
-	return readJsonFile<SourceReview[]>(SOURCE_REVIEWS_FILE, []);
+	return readJsonFile<SourceReview[]>(dataFile("sourceReviews"), []);
 }
 
 export async function getSourceReviews(filters?: {
@@ -564,7 +505,7 @@ export async function createSourceReview(
 		throw new DuplicatePolicyError(normalized.sourceUrl);
 	}
 	reviews.unshift(normalized);
-	await writeJsonFile(SOURCE_REVIEWS_FILE, reviews);
+	await writeJsonFile(dataFile("sourceReviews"), reviews);
 	return normalized;
 }
 
@@ -581,7 +522,7 @@ export async function updateSourceReview(
 		...reviews[idx],
 		...nextUpdates,
 	});
-	await writeJsonFile(SOURCE_REVIEWS_FILE, reviews);
+	await writeJsonFile(dataFile("sourceReviews"), reviews);
 	return reviews[idx];
 }
 
@@ -652,7 +593,7 @@ export async function getAgencies(
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
 
-	let agencies = await readJsonFile<Agency[]>(AGENCIES_FILE, []);
+	let agencies = await readJsonFile<Agency[]>(dataFile("agencies"), []);
 	if (filters?.level) {
 		agencies = agencies.filter((a) => a.level === filters.level);
 	}
@@ -676,7 +617,7 @@ export async function getCommonwealthAgencies(
 ): Promise<Agency[]> {
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
-	const agencies = await readJsonFile<Agency[]>(COMMONWEALTH_AGENCIES_FILE, []);
+	const agencies = await readJsonFile<Agency[]>(dataFile("commonwealthAgencies"), []);
 	if (access === "admin") return agencies;
 	const publicPolicyIds = agencies.some((agency) => agency.policies?.length)
 		? new Set(
@@ -693,7 +634,7 @@ export async function getCommonwealthAgencies(
 // ---------------------------------------------------------------------------
 
 async function getManualTimelineEvents(): Promise<TimelineEvent[]> {
-	return readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+	return readJsonFile<TimelineEvent[]>(dataFile("timeline"), []);
 }
 
 function generatedTimelineEvent(
@@ -800,7 +741,7 @@ export async function createTimelineEvent(
 		throw new DuplicatePolicyError(normalized.sourceUrl);
 	}
 
-	const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+	const events = await readJsonFile<TimelineEvent[]>(dataFile("timeline"), []);
 	if (
 		events.some(
 			(existing) =>
@@ -812,7 +753,7 @@ export async function createTimelineEvent(
 		throw new DuplicatePolicyError(normalized.id);
 	}
 	events.push(normalized);
-	await writeJsonFile(TIMELINE_FILE, events);
+	await writeJsonFile(dataFile("timeline"), events);
 	return normalized;
 }
 
@@ -820,11 +761,11 @@ export async function updateTimelineEvent(
 	id: string,
 	event: TimelineEvent,
 ): Promise<TimelineEvent | null> {
-	const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+	const events = await readJsonFile<TimelineEvent[]>(dataFile("timeline"), []);
 	const index = events.findIndex((existing) => existing.id === id);
 	if (index === -1) return null;
 	events[index] = canonicalizeTimelineRecord(event);
-	await writeJsonFile(TIMELINE_FILE, events);
+	await writeJsonFile(dataFile("timeline"), events);
 	return events[index];
 }
 
@@ -835,12 +776,12 @@ export async function updateTimelineEvent(
 export async function retireTimelineEventsCiting(
 	sourceUrl: string,
 ): Promise<string[]> {
-	const events = await readJsonFile<TimelineEvent[]>(TIMELINE_FILE, []);
+	const events = await readJsonFile<TimelineEvent[]>(dataFile("timeline"), []);
 	const kept = events.filter(
 		(event) => !sourceUrlsEqual(event.sourceUrl, sourceUrl),
 	);
 	if (kept.length === events.length) return [];
-	await writeJsonFile(TIMELINE_FILE, kept);
+	await writeJsonFile(dataFile("timeline"), kept);
 	return events
 		.filter((event) => sourceUrlsEqual(event.sourceUrl, sourceUrl))
 		.map((event) => event.id);
@@ -1022,7 +963,7 @@ export async function getDevelopments(filters?: {
 }, options: DataServiceOptions = {}): Promise<Development[]> {
 	const access = options.access ?? "public";
 	const now = options.now ?? new Date();
-	let developments = await readJsonFile<Development[]>(DEVELOPMENTS_FILE, []);
+	let developments = await readJsonFile<Development[]>(dataFile("developments"), []);
 	if (access === "public") {
 		const timelineDevelopments = await timelineEventDevelopments(now);
 		for (const development of timelineDevelopments) {
@@ -1042,7 +983,7 @@ export async function getDevelopments(filters?: {
 		// side-effect write failed. Derive the safe public projection from both
 		// files so an editorial rejection can never remain visible.
 		const sourceReviews = await readJsonFile<SourceReview[]>(
-			SOURCE_REVIEWS_FILE,
+			dataFile("sourceReviews"),
 			[],
 		);
 		developments = reconcileLinkedDevelopments(sourceReviews, developments);
@@ -1150,7 +1091,7 @@ export async function updateDevelopment(
 	updates: Partial<Development>,
 ): Promise<Development | null> {
 	const developments = await readJsonFile<Development[]>(
-		DEVELOPMENTS_FILE,
+		dataFile("developments"),
 		[],
 	);
 	const index = developments.findIndex(
@@ -1161,7 +1102,7 @@ export async function updateDevelopment(
 		...developments[index],
 		...updates,
 	});
-	await writeJsonFile(DEVELOPMENTS_FILE, developments);
+	await writeJsonFile(dataFile("developments"), developments);
 	return developments[index];
 }
 
@@ -1170,7 +1111,7 @@ export async function upsertDevelopment(
 ): Promise<Development> {
 	const normalized = canonicalizeDevelopmentRecord(development);
 	const developments = await readJsonFile<Development[]>(
-		DEVELOPMENTS_FILE,
+		dataFile("developments"),
 		[],
 	);
 	const index = developments.findIndex(
@@ -1181,7 +1122,7 @@ export async function upsertDevelopment(
 	} else {
 		developments[index] = normalized;
 	}
-	await writeJsonFile(DEVELOPMENTS_FILE, developments);
+	await writeJsonFile(dataFile("developments"), developments);
 	return normalized;
 }
 
@@ -1189,7 +1130,7 @@ export async function getPolicyFrameworkArtifact(
 	options: DataServiceOptions = {},
 ): Promise<Record<string, unknown> | null> {
 	const artifact = await readJsonFile<Record<string, unknown>>(
-		POLICY_FRAMEWORK_FILE,
+		dataFile("policyFramework"),
 		{},
 	);
 	if (options.access === "admin") return artifact;
@@ -1255,8 +1196,7 @@ export type ArticleView<T extends PublicArticle = PublicArticle> = T & {
 
 function articlesDir(): string {
 	return (
-		process.env.POLICAI_ARTICLES_DIR ??
-		path.join(process.cwd(), "data", "articles")
+		process.env.POLICAI_ARTICLES_DIR ?? dataFile("articles")
 	);
 }
 
@@ -1346,12 +1286,12 @@ const EMPTY_META: CollectionMeta = {
 };
 
 export async function getCollectionMeta(): Promise<CollectionMeta> {
-	const meta = await readJsonFile<CollectionMeta>(META_FILE, EMPTY_META);
+	const meta = await readJsonFile<CollectionMeta>(dataFile("meta"), EMPTY_META);
 	return publicAutomaticCollectionMeta(meta, WATCH_SOURCES);
 }
 
 export async function getSourceMonitoring(): Promise<SourceMonitoringState> {
-	return readJsonFile<SourceMonitoringState>(SOURCE_MONITORING_FILE, {
+	return readJsonFile<SourceMonitoringState>(dataFile("sourceMonitoring"), {
 		manualReviews: [],
 	});
 }
@@ -1363,22 +1303,22 @@ export async function getSourceMonitoring(): Promise<SourceMonitoringState> {
 export async function getSourceCheckTimes(): Promise<Record<string, string>> {
 	const state = await readJsonFile<{
 		lastCheckedBySource?: Record<string, string>;
-	}>(WATCH_STATE_FILE, {});
+	}>(dataFile("watchState"), {});
 	return state.lastCheckedBySource ?? {};
 }
 
 /** The publishing-body catalogue that watch coverage counts against. */
 export async function getBodies(): Promise<Body[]> {
-	return parseBodies(await readJsonFile<unknown>(BODIES_FILE, []));
+	return parseBodies(await readJsonFile<unknown>(dataFile("bodies"), []));
 }
 
 export async function getSiteReuse(): Promise<SiteReuse[]> {
-	return parseSiteReuse(await readJsonFile<unknown>(SITE_REUSE_FILE, []));
+	return parseSiteReuse(await readJsonFile<unknown>(dataFile("siteReuse"), []));
 }
 
 /** Legal force and audience per register record, for the rule finder. */
 export async function getRuleScopes(): Promise<RuleScope[]> {
-	return parseRuleScopes(await readJsonFile<unknown>(RULE_SCOPE_FILE, []));
+	return parseRuleScopes(await readJsonFile<unknown>(dataFile("ruleScope"), []));
 }
 
 /** Per-source reach ledger; like check times, the only part of watch-state served. */
@@ -1387,7 +1327,7 @@ export async function getSourceHealth(): Promise<
 > {
 	const state = await readJsonFile<{
 		sourceHealth?: Record<string, SourceHealthRecord>;
-	}>(WATCH_STATE_FILE, {});
+	}>(dataFile("watchState"), {});
 	return state.sourceHealth ?? {};
 }
 
@@ -1434,7 +1374,7 @@ export async function upsertManualSourceReview(
 		(existing) => existing.sourceId !== normalizedReview.sourceId,
 	);
 	const updated = { manualReviews: [merged, ...remaining] };
-	await writeJsonFile(SOURCE_MONITORING_FILE, updated);
+	await writeJsonFile(dataFile("sourceMonitoring"), updated);
 	return updated;
 }
 
@@ -1448,7 +1388,7 @@ export async function markCollectionReviewed(
 			? meta.lastReviewedAt
 			: reviewedAt;
 	const updated = { ...meta, lastReviewedAt };
-	await writeJsonFile(META_FILE, updated);
+	await writeJsonFile(dataFile("meta"), updated);
 	return updated;
 }
 
@@ -1457,7 +1397,7 @@ export async function markCollectionReviewed(
 // ---------------------------------------------------------------------------
 
 export async function logMcpAuditEvent(log: McpAuditLog): Promise<void> {
-	const logs = await readJsonFile<McpAuditLog[]>(MCP_AUDIT_LOG_FILE, []);
+	const logs = await readJsonFile<McpAuditLog[]>(dataFile("mcpAuditLog"), []);
 	logs.unshift(log);
-	await writeJsonFile(MCP_AUDIT_LOG_FILE, logs.slice(0, 500));
+	await writeJsonFile(dataFile("mcpAuditLog"), logs.slice(0, 500));
 }
