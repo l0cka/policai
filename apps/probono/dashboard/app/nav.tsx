@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FocusEvent } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight } from './icons';
+import ThemeToggle from './theme-toggle';
 
 const LINKS: Array<[string, string]> = [
   ['/', 'Feed'],
@@ -85,16 +86,17 @@ export default function Nav() {
         </svg>
       </button>
 
-      {open ? (
-        <div id="mobile-navigation" className="mobile-nav-panel" onBlur={closeOnFocusLeave}>
-          <nav className="mobile-nav-links" aria-label="Mobile">
-            <NavLinks path={path} onNavigate={() => setOpen(false)} />
-            <a href="https://policai.org" className="property-link" onClick={() => setOpen(false)}>
-              Policai <ArrowUpRight />
-            </a>
-          </nav>
+      <div id="mobile-navigation" className="mobile-nav-panel" hidden={!open} onBlur={closeOnFocusLeave}>
+        <nav className="mobile-nav-links" aria-label="Mobile">
+          <NavLinks path={path} onNavigate={() => setOpen(false)} />
+          <a href="https://policai.org" className="property-link" onClick={() => setOpen(false)}>
+            Policai <ArrowUpRight />
+          </a>
+        </nav>
+        <div className="mobile-nav-theme">
+          <ThemeToggle label="Colour theme, menu" />
         </div>
-      ) : null}
+      </div>
     </>
   );
 }

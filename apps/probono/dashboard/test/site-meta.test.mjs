@@ -6,7 +6,7 @@ describe('per-page share metadata', () => {
   it('gives a page its own share title, url and card', () => {
     const meta = pageMetadata({ title: 'Deadlines', description: 'Closing dates.', path: '/deadlines' });
     assert.equal(meta.title, 'Deadlines');
-    assert.equal(meta.openGraph.title, 'Deadlines - Policai A2J');
+    assert.equal(meta.openGraph.title, 'Deadlines · Policai A2J');
     assert.equal(meta.openGraph.url, 'https://a2j.policai.org/deadlines');
     assert.equal(meta.openGraph.images[0].url, 'https://a2j.policai.org/opengraph-image');
     assert.equal(meta.twitter.card, 'summary_large_image');

@@ -50,19 +50,25 @@ function select(value: ThemeChoice) {
   window.dispatchEvent(new Event(THEME_EVENT));
 }
 
-export default function ThemeToggle() {
+export default function ThemeToggle({
+  label = 'Colour theme',
+  className,
+}: {
+  label?: string;
+  className?: string;
+}) {
   const choice = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
-    <div className="theme-toggle" role="radiogroup" aria-label="Colour theme">
-      {OPTIONS.map(({ value, label, Icon }) => (
+    <div className={className ? `theme-toggle ${className}` : 'theme-toggle'} role="radiogroup" aria-label={label}>
+      {OPTIONS.map(({ value, label: option, Icon }) => (
         <button
           key={value}
           type="button"
           role="radio"
           aria-checked={choice === value}
-          aria-label={label}
-          title={label}
+          aria-label={option}
+          title={option}
           tabIndex={choice === value ? 0 : -1}
           onClick={() => select(value)}
           onKeyDown={(event) => {

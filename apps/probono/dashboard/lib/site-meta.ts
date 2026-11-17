@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const SITE_URL = 'https://a2j.policai.org';
 export const SITE_NAME = 'Policai A2J';
-export const SITE_TITLE = `${SITE_NAME} - Australian access to justice monitor`;
+export const SITE_TITLE = `${SITE_NAME} · Australian access to justice monitor`;
 export const SITE_DESCRIPTION =
   'A monitor of Australian pro bono, access-to-justice and legal assistance news, law reform, funding and deadlines, each item linked to its source.';
 
@@ -25,7 +25,7 @@ export function pageMetadata(input: {
   /** Path beginning with `/`. */
   path: string;
 }): Metadata {
-  const shareTitle = input.title ? `${input.title} - ${SITE_NAME}` : SITE_TITLE;
+  const shareTitle = input.title ? `${input.title} · ${SITE_NAME}` : SITE_TITLE;
   const url = input.path === '/' ? SITE_URL : `${SITE_URL}${input.path}`;
   return {
     ...(input.title ? { title: input.title } : {}),

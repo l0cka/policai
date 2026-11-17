@@ -196,7 +196,11 @@ export default async function Feed({ searchParams }: { searchParams: Promise<Rad
             <section className="day-group" key={g.date} aria-label={dayLabel(g.date, today)}>
               <h3 className="day-heading">
                 {dayLabel(g.date, today)}
-                <span className="day-count">{g.rows.length}</span>
+                <span className="day-count">
+                  <span className="sr-only">, </span>
+                  {g.rows.length}
+                  <span className="sr-only">{g.rows.length === 1 ? ' signal' : ' signals'}</span>
+                </span>
               </h3>
               {g.rows.map((i) => {
                 const href = safeHref(i.url);

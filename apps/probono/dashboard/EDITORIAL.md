@@ -28,6 +28,39 @@ Navigation, deadline queries, stream/search/opportunity/screened-out filters,
 source provenance, dates, sector research and theme storage are unchanged. Escape
 now returns focus from the mobile menu to its trigger.
 
+## Shell
+
+The header, navigation, footer and 404 page follow Policai's shell. The two
+apps share no code, so each value is repeated here; change both sites together.
+
+- **Status link.** `headerStatus()` in `lib/health-data.ts` returns the words
+  beside the header dot: "Sources reached" when every active source returned
+  on its last run, "N of M sources not reached" when some failed, are overdue
+  or have never run, "No active sources", and "Status unavailable" when the
+  database cannot be read. When the last successful run is more than 36 hours
+  old, "Last collected <date>" (Sydney date) replaces the others. The layout
+  renders per request, so the server decides staleness. The dot is `--trust`
+  when healthy and `--caution` otherwise, in `--type-floor` mono. The link's
+  accessible name starts with the visible words. Below 640px a healthy label
+  is hidden and any other label wraps within 7.5rem; below 360px only the dot
+  shows.
+- **Breakpoints.** The primary nav and the bar height change together at
+  1024px. Below it the menu button opens a full-width sheet under the bar.
+  The sheet stays mounted and carries `hidden` while closed, so the button's
+  `aria-controls` always names an element.
+- **Theme toggle.** Three copies, each a 44px radiogroup with its own name:
+  "Colour theme" in the footer, "Colour theme, menu" in the mobile sheet and
+  "Colour theme, header" in the header from 1280px, the first width where it
+  fits beside the nav and the longest status label.
+- **Links to Policai.** `policai.org` links open in the same tab, as Policai's
+  link to A2J does; the header link carries the arrow. Only GitHub opens a
+  new tab.
+- **Footer.** `--rule-heavy` top rule, a one-to-two grid from 1024px, and 6rem
+  of bottom padding so the fixed "Scroll to top" button
+  (`app/back-to-top.tsx`, shown after 300px of scroll) never covers a link.
+- **Titles.** "Page · Policai A2J", the separator Policai uses.
+- **404.** One column, 42rem wide, with Policai's spacing.
+
 ## Theme init
 
 `app/theme-init.ts` is a plain module that holds the theme storage key and the
