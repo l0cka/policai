@@ -1444,6 +1444,330 @@ async function readDocumentSource(
   };
 }
 
+interface CandidateRun {
+  source: WatchSource;
+  state: WatchState;
+  nowIso: string;
+  log: (message: string) => void;
+  ladder: ReturnType<typeof retrievalLadder>;
+  noteSkipped: (skipped: readonly SkippedLinked[] | undefined) => void;
+  trackedChangeTarget: (candidate: Candidate) => TrackedChangeTarget | undefined;
+  sourceRetrieval: RetrievedSource | null;
+  directDocument: Awaited<ReturnType<typeof extractRetrievedDocument>> | null;
+  modelScoresById: Map<string, number> | null;
+  developments: Development[];
+  reviewCandidates: SourceReview[];
+  knownHeadlineKeys: Set<string>;
+  knownPublishedUrls: Set<string>;
+  existingReviewsById: Map<string, SourceReview>;
+  existingDevelopmentsById: Map<string, Development>;
+  minScoreForDevelopment: number;
+  minScoreForReview: number;
+  candidateCount: number;
+  newCandidateCount: number;
+  candidateFailureCount: number;
+  failure: ReturnType<typeof rowFailure> | null;
+}
+
+async function processCandidate(
+  candidate: Candidate,
+  run: CandidateRun,
+): Promise<void> {
+  const {
+    source,
+    state,
+    nowIso,
+    log,
+    ladder,
+    noteSkipped,
+    trackedChangeTarget,
+    sourceRetrieval,
+    directDocument,
+    modelScoresById,
+    developments,
+    reviewCandidates,
+    knownHeadlineKeys,
+    knownPublishedUrls,
+    existingReviewsById,
+    existingDevelopmentsById,
+    minScoreForDevelopment,
+    minScoreForReview,
+  } = run;
+  const headlineKey = candidateHeadlineKey(candidate, nowIso);
+  if (headlineKey && knownHeadlineKeys.has(headlineKey)) {
+    markCandidateComplete(state, candidate, 'dismissed', nowIso);
+    return;
+  }
+  const attempted = markCandidateAttempt(state, candidate, nowIso);
+
+  let pageRetrieval: RetrievedSource;
+  let document: Awaited<ReturnType<typeof extractRetrievedDocument>>;
+  const changeTarget = trackedChangeTarget(candidate);
+  const existingPolicy =
+    changeTarget?.kind === 'policy' ? changeTarget.record : undefined;
+  const existingTimelineEvent =
+    changeTarget?.kind === 'timeline_event'
+      ? changeTarget.record
+      : undefined;
+  try {
+    pageRetrieval =
+      source.kind === 'document' &&
+      sourceUrlsEqual(candidate.url, source.url)
+        ? sourceRetrieval ?? (await ladder.index()).retrieval
+        : await ladder.page(candidate.url);
+    noteSkipped(pageRetrieval.skippedLinked);
+    const expectedVersion = parseChangeFingerprint(
+      candidate.changeFingerprint,
+    );
+    if (source.kind === 'document' && expectedVersion) {
+      const actualHash = pageRetrieval.evidence.contentHash;
+      if (
+        !matchesRetrievedContent(pageRetrieval, expectedVersion.contentHash)
+      ) {
+        const transition = actualHash
+          ? transitionForDocumentHash(
+              state,
+              source.id,
+              actualHash,
+            )
+          : null;
+        if (
+          existingPolicy &&
+          actualHash &&
+          transition?.isNew
+        ) {
+          supersedeOlderDocumentCandidates(
+            state,
+            source.id,
+            transition.changeCount,
+            nowIso,
+          );
+          const staged = buildChangedDocumentReview(
+            existingPolicy,
+            source,
+            pageRetrieval.evidence,
+            actualHash,
+            transition.changeCount,
+            nowIso,
+            changeDetectionReason(existingPolicy, pageRetrieval),
+          );
+          markPending(state, staged.candidate, source, nowIso);
+          upsertDevelopmentResult(
+            developments,
+            staged.development,
+          );
+          upsertReviewResult(reviewCandidates, staged.review);
+          run.candidateCount++;
+          run.newCandidateCount++;
+        }
+        throw new SourceFetchError(
+          'Document content changed before the pending version could be processed',
+          { retryable: true },
+        );
+      }
+    }
+    document =
+      source.kind === 'document' &&
+      sourceUrlsEqual(candidate.url, source.url) &&
+      directDocument
+        ? directDocument
+        : await extractRetrievedDocument(
+            pageRetrieval,
+            candidate.url,
+            candidate.title,
+          );
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : String(error);
+    const key = candidateStateKey(candidate);
+    if (state.seen[key]?.status === 'dismissed') {
+      log(
+        `[collect] ${source.id}: superseded ${candidate.url} (${message})`,
+      );
+      return;
+    }
+    if (error instanceof DecidedBlockError) {
+      noteSkipped([{ url: candidate.url, because: 'decided_block', decidedBy: error.decidedBy }]);
+      markCandidateFailed(state, candidate, nowIso, message);
+      log(`[collect] ${source.id}: skipped ${candidate.url} (${message})`);
+      return;
+    }
+    if (isDeferredByGate(error)) {
+      state.seen[key] = {
+        ...attempted,
+        attempts: (attempted.attempts ?? 1) - 1,
+        lastError: message,
+      };
+      log(`[collect] ${source.id}: deferred ${candidate.url} (${message})`);
+      return;
+    }
+    run.candidateFailureCount++;
+    run.failure ??= rowFailure(error, candidate.url);
+    const terminal =
+      (error instanceof SourceFetchError && !error.retryable) ||
+      (attempted.attempts ?? 0) >= MAX_CANDIDATE_ATTEMPTS;
+    if (terminal) {
+      markCandidateFailed(state, candidate, nowIso, message);
+      log(`[collect] ${source.id}: failed ${candidate.url} (${message})`);
+    } else {
+      state.seen[key] = {
+        ...state.seen[key],
+        status: 'pending',
+        lastError: message,
+        candidate,
+      };
+      log(`[collect] ${source.id}: pending ${candidate.url} (${message})`);
+    }
+    return;
+  }
+
+  // A register search row names and dates the instrument or bill; its
+  // page's first heading is the site banner.
+  const fromRegister = isRegisterSearch(source.kind);
+  const enrichedCandidate: Candidate = {
+    ...candidate,
+    title:
+      existingPolicy?.title ||
+      existingTimelineEvent?.title ||
+      (fromRegister ? candidate.title : document.title) ||
+      candidate.title,
+    text: document.text.slice(0, 600) || candidate.text,
+    dateHint: fromRegister
+      ? candidate.dateHint
+      : (document.publishedAt ?? candidate.dateHint),
+    dateHintPrecision: fromRegister
+      ? candidate.dateHintPrecision
+      : (document.publishedAtPrecision ?? candidate.dateHintPrecision),
+  };
+  state.seen[candidateStateKey(candidate)].candidate = enrichedCandidate;
+  if (source.kind === 'document' && changeTarget) {
+    const contentHash = pageRetrieval.evidence.contentHash;
+    const parsedFingerprint = parseChangeFingerprint(
+      candidate.changeFingerprint,
+    );
+    if (!contentHash || !parsedFingerprint) {
+      throw new Error(
+        'Changed document did not retain a valid fingerprint',
+      );
+    }
+    const previous = state.sourceSnapshots[source.id];
+    state.sourceSnapshots[source.id] = {
+      contentHash,
+      firstCheckedAt: previous?.firstCheckedAt ?? nowIso,
+      lastCheckedAt: nowIso,
+      lastChangedAt: nowIso,
+      changeCount: parsedFingerprint.changeCount,
+    };
+    state.lastCheckedBySource[source.id] = nowIso;
+  }
+
+  const classification: Classification = changeTarget
+    ? changeDetectionClassification(
+        changeTarget,
+        changeDetectionReason(changeTarget.record, pageRetrieval),
+      )
+    : isRegisterSearch(source.kind)
+      ? modelScoresById?.has(candidateStateKey(candidate))
+        ? classificationFromScore(
+            modelScoresById.get(candidateStateKey(candidate)),
+            enrichedCandidate,
+          )
+        : classifyBySearchMatch(candidate)
+      : source.bodyRelevance
+        ? classifyByBodyMentions(
+            enrichedCandidate,
+            document.text,
+            source.bodyRelevance.minAiMentions,
+          )
+        : modelScoresById
+          ? classificationFromScore(
+              modelScoresById.get(candidateStateKey(candidate)),
+              enrichedCandidate,
+            )
+          : await classifyCandidate(enrichedCandidate, document.text);
+  if (
+    !classification.isRelevant ||
+    classification.relevanceScore < minScoreForDevelopment
+  ) {
+    markCandidateComplete(state, enrichedCandidate, 'dismissed', nowIso);
+    return;
+  }
+
+  let development = buildDevelopment(
+    enrichedCandidate,
+    source,
+    classification,
+    pageRetrieval.evidence,
+    nowIso,
+  );
+  const priorReview = existingReviewsById.get(
+    `source-review-${development.id}`,
+  );
+  development = retainFirstDiscovery(
+    development,
+    existingDevelopmentsById.get(development.id) ??
+      priorReview?.linkedDevelopment,
+  );
+  upsertDevelopmentResult(developments, development);
+  knownPublishedUrls.add(sourceUrlIdentity(development.url));
+  if (headlineKey) knownHeadlineKeys.add(headlineKey);
+  markCandidateComplete(state, enrichedCandidate, 'processed', nowIso);
+
+  if (qualifiesForReview(classification, minScoreForReview)) {
+    const parsedFingerprint = parseChangeFingerprint(
+      enrichedCandidate.changeFingerprint,
+    );
+    let review = existingTimelineEvent && parsedFingerprint
+      ? {
+          ...buildChangedTimelineDocumentReview(
+            existingTimelineEvent,
+            source,
+            pageRetrieval.evidence,
+            parsedFingerprint.contentHash,
+            parsedFingerprint.changeCount,
+            nowIso,
+            changeDetectionReason(existingTimelineEvent, pageRetrieval),
+          ).review,
+          sourceEvidence: sourceEvidence(
+            pageRetrieval.evidence,
+            enrichedCandidate,
+          ),
+          linkedDevelopment: development,
+        }
+      : buildReviewCandidate(
+          development,
+          enrichedCandidate,
+          source,
+          classification,
+          pageRetrieval.evidence,
+          nowIso,
+          existingPolicy,
+        );
+    const existingReview = existingReviewsById.get(review.id);
+    if (
+      existingReview &&
+      existingReview.sourceVersionSequence ===
+        review.sourceVersionSequence &&
+      matchesRetrievedContent(
+        pageRetrieval,
+        existingReview.sourceEvidence.contentHash,
+      )
+    ) {
+      review = {
+        ...review,
+        discoveredAt: existingReview.discoveredAt,
+        linkedDevelopment: review.linkedDevelopment
+          ? retainFirstDiscovery(
+              review.linkedDevelopment,
+              existingReview.linkedDevelopment,
+            )
+          : review.linkedDevelopment,
+      };
+    }
+    upsertReviewResult(reviewCandidates, review);
+  }
+}
+
 /**
  * Run one collection pass over the watch sources.
  *
@@ -1772,286 +2096,37 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
       }
     }
 
-    let candidateFailureCount = 0;
+    const run: CandidateRun = {
+      source,
+      state,
+      nowIso,
+      log,
+      ladder,
+      noteSkipped,
+      trackedChangeTarget,
+      sourceRetrieval,
+      directDocument,
+      modelScoresById,
+      developments,
+      reviewCandidates,
+      knownHeadlineKeys,
+      knownPublishedUrls,
+      existingReviewsById,
+      existingDevelopmentsById,
+      minScoreForDevelopment,
+      minScoreForReview,
+      candidateCount,
+      newCandidateCount,
+      candidateFailureCount: 0,
+      failure,
+    };
     for (const candidate of candidates) {
-      const headlineKey = candidateHeadlineKey(candidate, nowIso);
-      if (headlineKey && knownHeadlineKeys.has(headlineKey)) {
-        markCandidateComplete(state, candidate, 'dismissed', nowIso);
-        continue;
-      }
-      const attempted = markCandidateAttempt(state, candidate, nowIso);
-
-      let pageRetrieval: RetrievedSource;
-      let document: Awaited<ReturnType<typeof extractRetrievedDocument>>;
-      const changeTarget = trackedChangeTarget(candidate);
-      const existingPolicy =
-        changeTarget?.kind === 'policy' ? changeTarget.record : undefined;
-      const existingTimelineEvent =
-        changeTarget?.kind === 'timeline_event'
-          ? changeTarget.record
-          : undefined;
-      try {
-        pageRetrieval =
-          source.kind === 'document' &&
-          sourceUrlsEqual(candidate.url, source.url)
-            ? sourceRetrieval ?? (await ladder.index()).retrieval
-            : await ladder.page(candidate.url);
-        noteSkipped(pageRetrieval.skippedLinked);
-        const expectedVersion = parseChangeFingerprint(
-          candidate.changeFingerprint,
-        );
-        if (source.kind === 'document' && expectedVersion) {
-          const actualHash = pageRetrieval.evidence.contentHash;
-          if (
-            !matchesRetrievedContent(pageRetrieval, expectedVersion.contentHash)
-          ) {
-            const transition = actualHash
-              ? transitionForDocumentHash(
-                  state,
-                  source.id,
-                  actualHash,
-                )
-              : null;
-            if (
-              existingPolicy &&
-              actualHash &&
-              transition?.isNew
-            ) {
-              supersedeOlderDocumentCandidates(
-                state,
-                source.id,
-                transition.changeCount,
-                nowIso,
-              );
-              const staged = buildChangedDocumentReview(
-                existingPolicy,
-                source,
-                pageRetrieval.evidence,
-                actualHash,
-                transition.changeCount,
-                nowIso,
-                changeDetectionReason(existingPolicy, pageRetrieval),
-              );
-              markPending(state, staged.candidate, source, nowIso);
-              upsertDevelopmentResult(
-                developments,
-                staged.development,
-              );
-              upsertReviewResult(reviewCandidates, staged.review);
-              candidateCount++;
-              newCandidateCount++;
-            }
-            throw new SourceFetchError(
-              'Document content changed before the pending version could be processed',
-              { retryable: true },
-            );
-          }
-        }
-        document =
-          source.kind === 'document' &&
-          sourceUrlsEqual(candidate.url, source.url) &&
-          directDocument
-            ? directDocument
-            : await extractRetrievedDocument(
-                pageRetrieval,
-                candidate.url,
-                candidate.title,
-              );
-      } catch (error) {
-        const message =
-          error instanceof Error ? error.message : String(error);
-        const key = candidateStateKey(candidate);
-        if (state.seen[key]?.status === 'dismissed') {
-          log(
-            `[collect] ${source.id}: superseded ${candidate.url} (${message})`,
-          );
-          continue;
-        }
-        if (error instanceof DecidedBlockError) {
-          noteSkipped([{ url: candidate.url, because: 'decided_block', decidedBy: error.decidedBy }]);
-          markCandidateFailed(state, candidate, nowIso, message);
-          log(`[collect] ${source.id}: skipped ${candidate.url} (${message})`);
-          continue;
-        }
-        if (isDeferredByGate(error)) {
-          state.seen[key] = {
-            ...attempted,
-            attempts: (attempted.attempts ?? 1) - 1,
-            lastError: message,
-          };
-          log(`[collect] ${source.id}: deferred ${candidate.url} (${message})`);
-          continue;
-        }
-        candidateFailureCount++;
-        failure ??= rowFailure(error, candidate.url);
-        const terminal =
-          (error instanceof SourceFetchError && !error.retryable) ||
-          (attempted.attempts ?? 0) >= MAX_CANDIDATE_ATTEMPTS;
-        if (terminal) {
-          markCandidateFailed(state, candidate, nowIso, message);
-          log(`[collect] ${source.id}: failed ${candidate.url} (${message})`);
-        } else {
-          state.seen[key] = {
-            ...state.seen[key],
-            status: 'pending',
-            lastError: message,
-            candidate,
-          };
-          log(`[collect] ${source.id}: pending ${candidate.url} (${message})`);
-        }
-        continue;
-      }
-
-      // A register search row names and dates the instrument or bill; its
-      // page's first heading is the site banner.
-      const fromRegister = isRegisterSearch(source.kind);
-      const enrichedCandidate: Candidate = {
-        ...candidate,
-        title:
-          existingPolicy?.title ||
-          existingTimelineEvent?.title ||
-          (fromRegister ? candidate.title : document.title) ||
-          candidate.title,
-        text: document.text.slice(0, 600) || candidate.text,
-        dateHint: fromRegister
-          ? candidate.dateHint
-          : (document.publishedAt ?? candidate.dateHint),
-        dateHintPrecision: fromRegister
-          ? candidate.dateHintPrecision
-          : (document.publishedAtPrecision ?? candidate.dateHintPrecision),
-      };
-      state.seen[candidateStateKey(candidate)].candidate = enrichedCandidate;
-      if (source.kind === 'document' && changeTarget) {
-        const contentHash = pageRetrieval.evidence.contentHash;
-        const parsedFingerprint = parseChangeFingerprint(
-          candidate.changeFingerprint,
-        );
-        if (!contentHash || !parsedFingerprint) {
-          throw new Error(
-            'Changed document did not retain a valid fingerprint',
-          );
-        }
-        const previous = state.sourceSnapshots[source.id];
-        state.sourceSnapshots[source.id] = {
-          contentHash,
-          firstCheckedAt: previous?.firstCheckedAt ?? nowIso,
-          lastCheckedAt: nowIso,
-          lastChangedAt: nowIso,
-          changeCount: parsedFingerprint.changeCount,
-        };
-        state.lastCheckedBySource[source.id] = nowIso;
-      }
-
-      const classification: Classification = changeTarget
-        ? changeDetectionClassification(
-            changeTarget,
-            changeDetectionReason(changeTarget.record, pageRetrieval),
-          )
-        : isRegisterSearch(source.kind)
-          ? modelScoresById?.has(candidateStateKey(candidate))
-            ? classificationFromScore(
-                modelScoresById.get(candidateStateKey(candidate)),
-                enrichedCandidate,
-              )
-            : classifyBySearchMatch(candidate)
-          : source.bodyRelevance
-            ? classifyByBodyMentions(
-                enrichedCandidate,
-                document.text,
-                source.bodyRelevance.minAiMentions,
-              )
-            : modelScoresById
-              ? classificationFromScore(
-                  modelScoresById.get(candidateStateKey(candidate)),
-                  enrichedCandidate,
-                )
-              : await classifyCandidate(enrichedCandidate, document.text);
-      if (
-        !classification.isRelevant ||
-        classification.relevanceScore < minScoreForDevelopment
-      ) {
-        markCandidateComplete(state, enrichedCandidate, 'dismissed', nowIso);
-        continue;
-      }
-
-      let development = buildDevelopment(
-        enrichedCandidate,
-        source,
-        classification,
-        pageRetrieval.evidence,
-        nowIso,
-      );
-      const priorReview = existingReviewsById.get(
-        `source-review-${development.id}`,
-      );
-      development = retainFirstDiscovery(
-        development,
-        existingDevelopmentsById.get(development.id) ??
-          priorReview?.linkedDevelopment,
-      );
-      upsertDevelopmentResult(developments, development);
-      knownPublishedUrls.add(sourceUrlIdentity(development.url));
-      if (headlineKey) knownHeadlineKeys.add(headlineKey);
-      markCandidateComplete(state, enrichedCandidate, 'processed', nowIso);
-
-      if (qualifiesForReview(classification, minScoreForReview)) {
-        const parsedFingerprint = parseChangeFingerprint(
-          enrichedCandidate.changeFingerprint,
-        );
-        let review = existingTimelineEvent && parsedFingerprint
-          ? {
-              ...buildChangedTimelineDocumentReview(
-                existingTimelineEvent,
-                source,
-                pageRetrieval.evidence,
-                parsedFingerprint.contentHash,
-                parsedFingerprint.changeCount,
-                nowIso,
-                changeDetectionReason(existingTimelineEvent, pageRetrieval),
-              ).review,
-              sourceEvidence: sourceEvidence(
-                pageRetrieval.evidence,
-                enrichedCandidate,
-              ),
-              linkedDevelopment: development,
-            }
-          : buildReviewCandidate(
-              development,
-              enrichedCandidate,
-              source,
-              classification,
-              pageRetrieval.evidence,
-              nowIso,
-              existingPolicy,
-            );
-        const existingReview = existingReviewsById.get(review.id);
-        if (
-          existingReview &&
-          existingReview.sourceVersionSequence ===
-            review.sourceVersionSequence &&
-          matchesRetrievedContent(
-            pageRetrieval,
-            existingReview.sourceEvidence.contentHash,
-          )
-        ) {
-          review = {
-            ...review,
-            discoveredAt: existingReview.discoveredAt,
-            linkedDevelopment: review.linkedDevelopment
-              ? retainFirstDiscovery(
-                  review.linkedDevelopment,
-                  existingReview.linkedDevelopment,
-                )
-              : review.linkedDevelopment,
-          };
-        }
-        upsertReviewResult(reviewCandidates, review);
-      }
+      await processCandidate(candidate, run);
     }
 
-    if (candidateFailureCount > 0) {
-      const message = `${source.id}: ${candidateFailureCount} candidate retrieval failure${
-        candidateFailureCount === 1 ? '' : 's'
+    if (run.candidateFailureCount > 0) {
+      const message = `${source.id}: ${run.candidateFailureCount} candidate retrieval failure${
+        run.candidateFailureCount === 1 ? '' : 's'
       }`;
       sourceErrors.push(message);
       errors.push(message);
@@ -2063,13 +2138,13 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
         nowIso,
         startedAt,
         itemCount,
-        candidateCount,
-        newCandidateCount,
+        run.candidateCount,
+        run.newCandidateCount,
         sourceErrors.length > 0 ? sourceErrors.join('; ') : undefined,
         due,
       ),
       ...(identityState === 'none' ? {} : { identityException: identityState }),
-      ...(failure ?? {}),
+      ...(run.failure ?? {}),
       ...(skippedLinked.size > 0 ? { skippedLinked: [...skippedLinked.values()] } : {}),
     });
   }
