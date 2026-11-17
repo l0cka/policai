@@ -28,6 +28,16 @@ Navigation, deadline queries, stream/search/opportunity/screened-out filters,
 source provenance, dates, sector research and theme storage are unchanged. Escape
 now returns focus from the mobile menu to its trigger.
 
+## Theme init
+
+`app/theme-init.ts` is a plain module that holds the theme storage key and the
+static init script. The root layout renders the script in `<head>`, so a stored
+light or dark choice applies before first paint. `app/theme-toggle.tsx` reads
+the key from it. A server module imports only components from a `'use client'`
+module: any other value becomes a client reference, and one inside `<head>` can
+fail hydration with React #418. `test/client-boundary.test.mjs` (in
+`npm run test`) enforces this for `app/`, `lib/` and `middleware.ts`.
+
 ## Checks
 
 The root and dashboard remain independent packages. From repository root:
