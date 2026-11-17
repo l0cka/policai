@@ -105,6 +105,68 @@ Replace the token before it expires with a hidden prompt:
   dry-run push of it to `automation/collection-preflight` (so the remote must
   accept the credential), lists one PR, and checks that the lockfile and CA
   exist. It collects and publishes nothing.
+- `~/.local/bin/policai-collect.sh status` answers "did the last run work and
+  what is pending". Add `--json` for the same answer as one JSON object.
+
+## Status
+
+`status` only reads. It takes no lock, creates no file, needs no credential,
+runs neither Git, `gh` nor npm, and contacts nothing, so it is safe during a
+run. It exits 0 whenever it could answer, whatever the last run's result. It
+prints:
+
+- **Lock:** `held` while a run is in progress, otherwise `free`. It reads
+  `/proc/locks` for the lock file's inode instead of trying the lock, because
+  a trial lock could make a run that starts at that moment exit 75. It reads
+  `unknown` when the lock file or `/proc/locks` cannot be read.
+- **Last receipt:** the exit code, phase, finish time, run id, message, PR and
+  evidence folder of the latest finished attempt. A run in progress has no
+  receipt yet, so while the lock is held this is the attempt before it. A run
+  refused before it started (for example a missing credential) has no run id,
+  phase or evidence folder.
+- **Watch state:** when the host `watch-state.json` was last promoted, which
+  is the last run that passed validation.
+- **Outbox:** how many developments and source reviews main lacked at that
+  run. A PR merged since then is not subtracted until the next run.
+
+A section reads `none` when its file does not exist and `unreadable` when it
+cannot be read or parsed; the other sections still answer. In `--json` these
+are `null` and `"unreadable"`, under the keys `lock`, `receipt`,
+`watch_state` (`modified_at`, `age_seconds`) and `outbox` (`developments`,
+`source_reviews`).
+
+`status` does not ask systemd or GitHub anything, so it works inside and
+outside the unit. For the next scheduled run, or to see a stopped timer:
+
+```sh
+systemctl --user list-timers --all policai-collect.timer
+```
+
+## Pause and resume
+
+Pause scheduled collection by stopping the timer, and resume by starting it:
+
+```sh
+systemctl --user stop policai-collect.timer
+systemctl --user start policai-collect.timer
+```
+
+- Stopping the timer does not interrupt a run in progress; that run finishes
+  and publishes as usual.
+- The timer has `Persistent=true`. If a scheduled time passed while the timer
+  was stopped, starting it triggers one catch-up run straight away, after the
+  timer's random delay of up to five minutes. Resume when a run is wanted,
+  not only before the next 19:30 UTC.
+- An enabled timer starts again when the user manager next starts, for
+  example after a reboot. To pause
+  across a reboot use `systemctl --user disable --now policai-collect.timer`,
+  and `enable --now` to resume, with the same catch-up run.
+- A stopped timer does not block a manual run of the wrapper, and `status`
+  does not show it; use `list-timers` above.
+- Nothing is lost while paused. The next run collects what the sources still
+  list and replays the outbox.
+
+Both commands change a host service, so they are the maintainer's step.
 
 ## Verify and install
 
