@@ -94,6 +94,23 @@ entry point that wakes the idle Firecrawl stack (`3002` is the raw API and stays
 down until something connects to `3003`). On a macOS development machine, skip the
 container and run the worker scripts directly with `tsx`.
 
+The worker bounds what it reads from a source and checks where a scrape ended
+(`worker/src/lib/public-fetch.ts`):
+
+- `readCapped` streams a response and closes the connection at the limit. A
+  feed over 8 MB is an ingest error for that source. A page over 1 MB counts as
+  no page, because a deadline checked against half a page would read as not
+  found. A redirect or error response is closed without reading its body.
+- The headline lookup (`page-title.ts`) keeps what it has read instead of
+  failing. It stops at 256 KB or when the first `<h1>` closes, because sites
+  that shorten `og:title` and `<title>` usually keep the whole headline there.
+- `assertPublicScrape` runs on every Firecrawl response before its content is
+  used. Firecrawl reports the requested URL as `metadata.sourceURL` and the URL
+  it landed on as `metadata.url`. A scrape with no `metadata.url`, or one whose
+  URLs are not public addresses, is discarded. This stops the worker from using
+  a page that redirected to a private address. It does not stop Firecrawl from
+  requesting that address; Firecrawl's own network rules decide that.
+
 Ingest and enrichment use `probono-ingest.timer` and `probono-enrich.timer`;
 backups remain a separate operational responsibility. Preserve masks on both
 `probono-digest.service` and `probono-digest.timer`; no tracked unit file exists

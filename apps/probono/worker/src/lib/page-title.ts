@@ -18,7 +18,13 @@
  * the document head, not a rendered page, and it should cost nothing.
  */
 
-import { assertPublicDestination, publicFetch } from './public-fetch.js';
+import {
+  assertPublicDestination,
+  assertPublicScrape,
+  publicFetch,
+  readCapped,
+  type ScrapeMetadata,
+} from './public-fetch.js';
 
 const UA =
   'Mozilla/5.0 (compatible; ProBonoRadar/1.0; +https://a2j.policai.org) title-resolver';
@@ -295,33 +301,16 @@ export function extractPageTitle(
   return null;
 }
 
-/** Read at most MAX_BYTES of the response, then stop pulling. */
-async function readCapped(res: Response): Promise<string> {
-  if (!res.body) return '';
-  const reader = res.body.getReader();
+async function readHead(res: Response): Promise<string> {
   const decoder = new TextDecoder('utf-8', { fatal: false });
   let html = '';
-  let size = 0;
-  try {
-    for (;;) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      size += value.byteLength;
-      html += decoder.decode(value, { stream: true });
-      /*
-       * Read on past </head> until the first <h1> closes. Sites that truncate
-       * og:title and <title> for sharing usually still carry the whole
-       * headline in the <h1>, and stopping at the head threw that away.
-       */
-      if (size >= MAX_BYTES || /<\/h1>/i.test(html)) break;
-    }
-  } finally {
-    try {
-      await reader.cancel();
-    } catch {
-      // The read already ended; cancellation is best-effort cleanup.
-    }
-  }
+  await readCapped(res, MAX_BYTES, {
+    overflow: 'truncate',
+    stopAfter: (chunk) => {
+      html += decoder.decode(chunk, { stream: true });
+      return /<\/h1>/i.test(html);
+    },
+  });
   return html;
 }
 
@@ -336,7 +325,7 @@ async function fetchPageTitleDirect(url: string): Promise<string | null> {
     if (!res.ok) return null;
     const type = res.headers.get('content-type') ?? '';
     if (type && !/text\/html|application\/xhtml/i.test(type)) return null;
-    return extractPageTitle(await readCapped(res), url, res.url || url);
+    return extractPageTitle(await readHead(res), url, res.url || url);
   } catch {
     // Unreachable, slow, or hostile page: the slug title stands.
     return null;
@@ -365,9 +354,8 @@ export async function fetchPageTitleViaFirecrawl(url: string): Promise<string | 
       signal: AbortSignal.timeout(FIRECRAWL_TIMEOUT_MS),
     });
     if (!res.ok) return null;
-    const body = (await res.json()) as {
-      data?: { rawHtml?: string; metadata?: { sourceURL?: string } };
-    };
+    const body = (await res.json()) as { data?: { rawHtml?: string; metadata?: ScrapeMetadata } };
+    await assertPublicScrape(body.data?.metadata);
     const html = body.data?.rawHtml;
     if (!html) return null;
     return extractPageTitle(html, url, body.data?.metadata?.sourceURL || url);

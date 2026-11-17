@@ -1,5 +1,11 @@
 import { decodeEntities } from './page-title.js';
-import { assertPublicDestination, publicFetch } from './public-fetch.js';
+import {
+  assertPublicDestination,
+  assertPublicScrape,
+  publicFetch,
+  readCapped,
+  type ScrapeMetadata,
+} from './public-fetch.js';
 
 /*
  * The source page as plain text, for the deadline verifier. Firecrawl first
@@ -68,7 +74,8 @@ export async function fetchViaFirecrawl(
       signal: AbortSignal.timeout(timeoutMs),
     });
     if (!res.ok) return null;
-    const body = (await res.json()) as { data?: { markdown?: string } };
+    const body = (await res.json()) as { data?: { markdown?: string; metadata?: ScrapeMetadata } };
+    await assertPublicScrape(body.data?.metadata);
     const md = body.data?.markdown;
     const text = md ? (keepLinks ? dropImages(md) : compactMarkdown(md)) : null;
     return isUsablePage(text) ? text : null;
@@ -86,8 +93,7 @@ export async function fetchDirect(url: string, timeoutMs = 20_000): Promise<stri
     if (!res.ok) return null;
     const type = res.headers.get('content-type') ?? '';
     if (type && !/text\/html|application\/xhtml|text\/plain/i.test(type)) return null;
-    const buf = await res.arrayBuffer();
-    const html = new TextDecoder('utf-8', { fatal: false }).decode(buf.slice(0, MAX_BYTES));
+    const html = (await readCapped(res, MAX_BYTES)).toString('utf8');
     const text = htmlToText(html);
     return isUsablePage(text) ? text : null;
   } catch {

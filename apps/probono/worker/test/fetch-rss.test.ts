@@ -3,6 +3,7 @@ import { once } from 'node:events';
 import { afterEach, describe, expect, it } from 'vitest';
 import { FEED_USER_AGENT, fetchRss as fetchRssGuarded } from '../src/lib/fetch-rss.js';
 import { publicFetch, type PublicFetchInit } from '../src/lib/public-fetch.js';
+import { writeForever } from './support/endless-response.js';
 
 // The test server is on loopback, which the default guard refuses.
 const loopbackFetch = (url: string, init: PublicFetchInit) => publicFetch(url, init, { isBlocked: () => false });
@@ -83,6 +84,37 @@ describe('fetchRss', () => {
     });
 
     await expect(fetchRss(`${base}/rss.xml`)).rejects.toThrow(/Refusing redirect/);
+  });
+});
+
+describe('fetchRss size cap', () => {
+  it('refuses a feed that never ends and closes the connection', async () => {
+    let closed: Promise<void> | undefined;
+    const base = await listen((_req, res) => {
+      res.setHeader('content-type', 'application/rss+xml');
+      res.write(RSS);
+      closed = writeForever(res);
+    });
+
+    await expect(fetchRss(`${base}/rss.xml`)).rejects.toThrow(/exceeds 8388608 bytes/);
+    await closed;
+  });
+
+  it('closes a redirect without reading its body', async () => {
+    let closed: Promise<void> | undefined;
+    const base = await listen((req, res) => {
+      if (req.url === '/rss.xml') {
+        res.setHeader('content-type', 'application/rss+xml');
+        res.end(RSS);
+        return;
+      }
+      res.statusCode = 302;
+      res.setHeader('location', '/rss.xml');
+      closed = writeForever(res);
+    });
+
+    expect(await fetchRss(`${base}/go`)).toHaveLength(1);
+    await closed;
   });
 });
 

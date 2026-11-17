@@ -14,7 +14,8 @@ verifier re-reads the source page and checks every stored date.
    date that passed since the last check. Soonest upcoming first, batch of 25.
    The rules are `selectItemsToVerify` in `worker/src/lib/deadline-verify.ts`.
 2. `worker/src/verify-deadlines.ts` fetches each source page itself
-   (Firecrawl at `FIRECRAWL_URL`, then a plain GET; bot-wall pages count as
+   (Firecrawl at `FIRECRAWL_URL`, then a plain GET; bot-wall pages, a plain
+   GET over 1 MB and a scrape that ended on a non-public address count as
    unreadable and the item is skipped), and checks each stored date against
    the page text with `worker/src/lib/deadline-check.ts` (no model; see
    Checker below). It only reads the database and prints one proposal per
