@@ -70,6 +70,32 @@ The public dashboard runs on the Cloudflare Worker `a2j`, reading an hourly
 Neon copy of this database (see [docs/hosting-argus.md](../../docs/hosting-argus.md)).
 Everything below, the database included, stays on Argus.
 
+### Request budgets
+
+The dashboard limits each client, by `cf-connecting-ip`, per minute.
+Cloudflare sets that header and overwrites any client copy, so
+`X-Forwarded-For` and `X-Real-IP` are ignored.
+
+| Bucket | Covers | Limit |
+| --- | --- | --- |
+| `publicApi` | `GET /api/status`, `GET /api/first-contact` (one shared budget) | 60 |
+| `mcp` | `POST /mcp` | 60 |
+| `search` | `/?q=...`, the radar full-text search | 30 |
+
+`RATE_LIMITS` in `dashboard/lib/rate-limit.ts` owns the numbers. Each bucket
+counts through a `ratelimits` binding in `dashboard/wrangler.jsonc`, so every
+isolate in a Cloudflare location shares one count, and
+`dashboard/test/rate-limit.test.mjs` fails when the two disagree.
+`namespace_id` is any integer unique in the Cloudflare account; the root
+Worker uses 1001 to 1004. Without the binding (`next dev`, tests, the Docker
+image) the limiter counts in memory, within one process.
+
+Over budget, the routes answer 429 with `Retry-After` before any lookup or
+query. A page cannot set its own status, so the search answers 200 with a
+"Too many searches" notice and runs no page query. The layout's source-health
+query and the other pages are not limited; a 429 for pages would need the
+check in `middleware.ts` or a zone rate limiting rule.
+
 The cutover completed on 2026-09-23. The active child release is
 `/var/lib/probono-radar/app/apps/probono`. The guarded host dispatcher runs
 scheduled jobs from that tree. The former checkout at

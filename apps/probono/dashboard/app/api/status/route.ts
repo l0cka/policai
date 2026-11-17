@@ -7,6 +7,7 @@ import {
   summarizeSourceHealth,
   type SourceHealthRow,
 } from '../../../lib/health-data';
+import { RATE_LIMITS, checkRateLimit } from '../../../lib/rate-limit';
 import { statusPayload, statusUnavailable } from '../../../lib/status-payload';
 
 export const dynamic = 'force-dynamic';
@@ -19,7 +20,9 @@ export const dynamic = 'force-dynamic';
  * cannot report different figures. GET is the only method; there are no
  * writes behind this endpoint.
  */
-export async function GET() {
+export async function GET(request: Request) {
+  const limited = await checkRateLimit(request, RATE_LIMITS.publicApi);
+  if (limited) return limited;
   try {
     const { rows } = await getPool().query<SourceHealthRow>(SOURCE_HEALTH_SQL);
     const summary = summarizeSourceHealth(rows);

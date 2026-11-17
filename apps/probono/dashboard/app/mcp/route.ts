@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { TOOL_DEFINITION, TOOL_NAME } from '../../lib/first-contact';
 import { lookup } from '../../lib/first-contact-data';
+import { RATE_LIMITS, checkRateLimit } from '../../lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
@@ -42,6 +43,8 @@ async function readCapped(request: Request): Promise<string | null> {
 }
 
 export async function POST(request: Request) {
+  const limited = await checkRateLimit(request, RATE_LIMITS.mcp);
+  if (limited) return limited;
   let body: Rpc;
   try {
     if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY) return fail(null, -32600, 'Request too large');

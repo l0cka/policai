@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server';
 import { lookup } from '../../../lib/first-contact-data';
+import { RATE_LIMITS, checkRateLimit } from '../../../lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
+  const limited = await checkRateLimit(request, RATE_LIMITS.publicApi);
+  if (limited) return limited;
   const p = new URL(request.url).searchParams;
   const circumstances: Record<string, unknown> = {};
   for (const key of ['aboriginal_torres_strait_islander', 'family_violence', 'under_18']) {
