@@ -148,6 +148,22 @@ AUDIT_REGISTER_RETRY_DELAY_MS=1000   # backoff before the retry in ms
 npm run audit:register
 ```
 
+## check-signed-records.ts
+
+Runs only the passkey gate (`validateEditorApprovals` and
+`validateSignedRecordChanges`) on a head revision merged into a base revision,
+reading the data files from Git objects and never from the working tree. The
+`signed-records` workflow runs it from `main`'s code against each pull request
+(docs/collector.md, "Reviewing detections into the register").
+
+```bash
+npx tsx scripts/check-signed-records.ts origin/main HEAD
+```
+
+Exit code 1 on any error, a merge conflict, a Git failure, invalid JSON, a
+data path that is not a regular file (mode `100644`) in the merged tree, or a
+data file the base has and the merged tree lacks.
+
 ## validate-data.ts
 
 Structural validation for the repo data files (enums, ISO dates, unique ids, https government source hosts, cross-references). Runs in `npm run check`, PR CI, and the collector workflow.
