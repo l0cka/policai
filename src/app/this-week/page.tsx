@@ -73,7 +73,7 @@ function EvidenceLabel({ development }: { development: Development }) {
   return (
     <span
       className={cn(
-        'inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]',
+        'inline-flex rounded-md px-2 py-1 label',
         direct
           ? 'bg-[var(--status-active-bg)] text-[var(--trust)]'
           : 'bg-[var(--status-proposed-bg)] text-[var(--caution)]',
@@ -153,7 +153,7 @@ function UpcomingRow({ item }: { item: UpcomingDate }) {
       style={jurisdictionRailStyle(item.jurisdiction)}
       className="ink-rail grid gap-1.5 border-b border-border py-3 pl-3 transition-colors duration-[var(--dur-fast)] hover:bg-[var(--row-hover)] sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-2 sm:py-4"
     >
-      <div className="font-mono text-[11px] font-medium uppercase text-muted-foreground">
+      <div className="font-mono text-[length:var(--type-label)] font-medium uppercase text-muted-foreground">
         <CalendarClock className="mb-1 h-3.5 w-3.5" />
         <time dateTime={precisionDateTime(item.date, item.precision)}>
           {formatPolicyDate(
@@ -249,7 +249,7 @@ export default async function ThisWeekPage() {
             {upcomingCount} coming up
           </a>
         </nav>
-        <p className="mt-2 flex flex-wrap gap-x-4 font-mono text-[11px] uppercase text-muted-foreground">
+        <p className="mt-2 flex flex-wrap gap-x-4 font-mono text-[length:var(--type-label)] uppercase text-muted-foreground">
           {lastCollected ? <span>Last collected {lastCollected}</span> : null}
           {lastHealthy ? <span>Last fully healthy {lastHealthy}</span> : null}
         </p>
@@ -257,7 +257,7 @@ export default async function ThisWeekPage() {
       </div>
 
       <section id="verified" className="mt-6 scroll-mt-20 sm:mt-8">
-        <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+        <h2 className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
           Verified developments{' '}
           <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {verifiedCount}
@@ -290,7 +290,7 @@ export default async function ThisWeekPage() {
             </div>
             {recentBefore.length > 0 ? (
               <div className="mt-6">
-                <h3 className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                <h3 className="label-caps font-medium text-muted-foreground">
                   Most recent verified, before this window
                 </h3>
                 {recentBefore.map((development) => (
@@ -314,7 +314,7 @@ export default async function ThisWeekPage() {
       </section>
 
       <section id="legislation" className="mt-8 scroll-mt-20 sm:mt-10">
-        <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+        <h2 className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
           In Parliament and on the register{' '}
           <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {stages.length}
@@ -343,7 +343,7 @@ export default async function ThisWeekPage() {
       </section>
 
       <section id="coming-up" className="mt-8 scroll-mt-20 sm:mt-10">
-        <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+        <h2 className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
           Coming up{' '}
           <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">
             {upcomingCount}

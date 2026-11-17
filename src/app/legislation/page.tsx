@@ -126,7 +126,7 @@ function Section({
     <section id={id} aria-labelledby={`${id}-heading`} className="mt-8 scroll-mt-20 sm:mt-10">
       <h2
         id={`${id}-heading`}
-        className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]"
+        className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium"
       >
         {title}{' '}
         <span className="ml-0.5 font-mono text-muted-foreground normal-case tracking-normal">{count}</span>

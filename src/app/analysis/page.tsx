@@ -57,7 +57,7 @@ export default async function AnalysisPage() {
                 article.image && 'sm:grid-cols-[8rem_minmax(0,1fr)_10rem] lg:grid-cols-[8rem_minmax(0,40rem)_10rem]',
               )}
             >
-              <p className="font-mono text-[length:var(--type-label)] uppercase tracking-[0.08em] text-muted-foreground tabular">
+              <p className="label text-muted-foreground tabular">
                 <ArticleDate date={article.publishedAt} />
               </p>
               <div className="min-w-0">

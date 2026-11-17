@@ -336,6 +336,38 @@ rather than resolving `data/policies.json` by hand.
 npx tsx scripts/apply-themes-2026-10-17.ts
 ```
 
+`codemod-label-tokens.mjs` rewrites the hand-written mono label recipe in
+`src/**/*.tsx` class strings to the `.label` and `.label-caps` classes from
+`src/app/globals.css`. It works on one string literal at a time, so a recipe
+split across several strings is not rewritten.
+
+| Class string contains | Becomes | Rendered change |
+| --- | --- | --- |
+| `font-mono`, an 11px size, `uppercase` and 0.08em tracking | `label` | none |
+| the same with 0.12em tracking | `label-caps` | none |
+| the same with 0.1em tracking | `label-caps` | tracking 1.1px to 1.32px |
+| the same with 0.14em tracking | `label-caps` | tracking 1.54px to 1.32px |
+| any other raw 11px size | the size as `var(--type-label)` | none at a 16px root |
+
+An 11px size is the raw pixel utility or the `--type-label` utility. Every
+other class in the string is kept. 0.1em maps to `label-caps` because five of
+its six uses were table headers, which A2J sets at 0.12em. Labels at 10px, and
+`text-xs` labels with `tracking-wider`, are not label recipes and stay as
+written. `--type-label` is 0.6875rem, so a rewritten label follows the
+reader's root font size where the pixel value did not.
+
+`--check` writes nothing and exits 1 when a class string would change. Both
+modes exit 1 when a raw 11px size is left outside a class string.
+`--manifest=<file>` writes every edit (file, line, category, before, after) as
+JSON. A second run changes nothing. The script builds the class names it
+searches for from parts, because Tailwind scans `scripts/` and would otherwise
+emit the utilities the codemod removes.
+
+```bash
+node scripts/codemod-label-tokens.mjs
+node scripts/codemod-label-tokens.mjs --check
+```
+
 ## Related Docs
 
 - [`../docs/collector.md`](../docs/collector.md)

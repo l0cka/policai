@@ -61,7 +61,7 @@ const STATE_LABEL: Record<SourceFreshnessState, string> = {
 };
 
 const HEADER_CELL =
-  'py-2.5 pr-3 text-left font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground';
+  'py-2.5 pr-3 text-left label-caps font-medium text-muted-foreground';
 // Secondary columns drop out on narrow screens so the state stays visible.
 const WIDE_ONLY = 'hidden sm:table-cell';
 

@@ -90,7 +90,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: policyJsonLd(policy) }}
       />
-      <nav aria-label="Breadcrumb" className="mb-6 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+      <nav aria-label="Breadcrumb" className="mb-6 label text-muted-foreground">
         <Link href="/" className="hover:text-primary">Register</Link>
         <span className="mx-2">/</span>
         <span>{policy.jurisdiction}</span>

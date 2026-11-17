@@ -112,7 +112,7 @@ function DevelopmentFeed({
     <div>
       {Array.from(grouped.entries()).map(([month, developments]) => (
         <section key={month} className="mb-3 sm:mb-4">
-          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">{month}</h2>
+          <h2 className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">{month}</h2>
           <div>
             {developments.map((development) => {
               const verified = development.verification.status === 'verified';
@@ -132,7 +132,7 @@ function DevelopmentFeed({
                     {development.summary ? <p className="mt-1 line-clamp-2 text-xs leading-5 text-muted-foreground">{development.summary}</p> : null}
                     <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
                       <time className="text-xs font-medium text-muted-foreground tabular">{developmentDate(development)}</time>
-                      <span className={cn('inline-flex rounded-md px-2 py-0.5 font-mono text-[11px] uppercase tracking-[0.08em]', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
+                      <span className={cn('inline-flex rounded-md px-2 py-0.5 label', label === 'Consultation' || !verified ? 'bg-[var(--status-proposed-bg)] text-[var(--status-proposed)]' : 'bg-[var(--status-active-bg)] text-[var(--trust)]')}>
                         {label}
                       </span>
                       <span className={cn('inline-flex items-center gap-1 text-xs lg:hidden', verified ? 'text-[var(--trust)]' : 'text-[var(--caution)]')}>
