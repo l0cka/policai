@@ -978,6 +978,25 @@ passkey on policai.org. Approval then publishes.
    the same hash resumes a publication that failed part-way.
 8. Run `npm run validate:data`, commit, and push (or open a PR).
 
+The mailbox (`src/lib/approval-mailbox.ts`) holds only signed approvals, so
+its integrity comes from the signatures, not from who wrote the branch.
+GitHub refuses a request without a `User-Agent` and Workers `fetch` sends
+none, so every request carries the collector identity. The mailbox and the
+decisions on `main` are read through `src/lib/github-file.ts`, the reader
+Signal also uses: the contents API, then the blob API for a file over 1 MB.
+
+Each append drops the approvals that `main` has already consumed, so the
+file stays small. An approval is consumed when `data/source-reviews.json` on
+`main` holds a `published` review whose decision carries an approval for
+that subject, or `data/reconfirmations.json` holds a decided batch for it. A
+batch approval is consumed only when every proposal in the batch is
+published under it. Anything else stays: an approval nobody has recorded, a
+decision that is not yet published, a batch that is part-way through, and an
+approval for a proposal that was later replaced. If the decisions on `main`
+cannot be read, nothing is dropped and the approval is still stored. A
+decision keeps its own copy of the signature, so `validate:data` never needs
+the mailbox entry again.
+
 `validate:data` is the last gate. Once a passkey is registered, every
 decision made after its registration, and every decision new on a pull
 request, must carry the key owner's signature over exactly what it approved,
