@@ -69,17 +69,15 @@ function isoDate(value: Date | string): string {
 
 export function developmentFeedItem(development: Development): FeedItem {
 	const detected = isoDate(development.detectedAt);
+	const entryUrl = `${SITE_URL}/developments#${development.id}`;
 	return {
-		id: development.url,
+		id: entryUrl,
 		url: development.url,
 		title: development.title,
 		summary: development.summary || undefined,
 		published: detected,
 		updated: detected,
-		related: {
-			url: `${SITE_URL}/developments#${development.id}`,
-			title: 'On Policai',
-		},
+		related: { url: entryUrl, title: 'On Policai' },
 		categories: [
 			getJurisdictionName(development.jurisdiction),
 			development.verification.status === 'verified'
@@ -114,7 +112,12 @@ export function registerFeed(developments: readonly Development[]): FeedDocument
 			'Newly detected Australian AI policy, regulation and court guidance. Subscribe from /developments or /this-week; JSON at /api/developments.',
 		homeUrl: `${SITE_URL}/developments`,
 		atomUrl: `${SITE_URL}/feed.xml`,
-		items: developments.slice(0, FEED_ITEM_LIMIT).map(developmentFeedItem),
+		items: developments
+			.slice(0, FEED_ITEM_LIMIT)
+			.map((development) => ({
+				...developmentFeedItem(development),
+				id: development.url,
+			})),
 	};
 }
 

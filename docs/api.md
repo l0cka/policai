@@ -184,6 +184,16 @@ the Policai entry as its related link; a machine detection carries the category
 theme feed an item links the Policai record and names the official source as
 its related link. JSON Feed puts the related link in `external_url`.
 
+An item's id is its Policai URL in every scoped feed, Atom and JSON:
+`https://policai.org/developments#<development id>` in a jurisdiction feed and
+`https://policai.org/policies/<policy id>` in a theme feed. The collector can
+detect one official page more than once, so the official URL is not unique
+within a feed, and JSON Feed 1.1 requires unique ids. `/feed.xml` keeps the
+official page URL as its entry id, so existing subscribers are not notified
+again; two detections of one page share an id there. A theme feed orders by
+`updatedAt`, so a bulk re-confirmation that stamps many records can bring them
+back to the top of the feed.
+
 `src/lib/feeds.ts` builds every feed, `/feed.xml` included, from one item shape
 and renders it as Atom or JSON. The routes read only `getDevelopments()` and
 `getPolicies()`, the public projections, so dismissed developments and

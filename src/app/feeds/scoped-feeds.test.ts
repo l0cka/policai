@@ -65,6 +65,16 @@ const DEVELOPMENTS = [
 	} as Partial<Development>),
 	development('victorian-lead', { jurisdiction: 'vic' }),
 	development('hidden-dismissed', { status: 'dismissed' }),
+	development('redetected-first', {
+		jurisdiction: 'qld',
+		url: 'https://example.gov.au/news/redetected',
+		detectedAt: '2026-10-09T01:00:00.000Z',
+	}),
+	development('redetected-second', {
+		jurisdiction: 'qld',
+		url: 'https://example.gov.au/news/redetected',
+		detectedAt: '2026-10-08T01:00:00.000Z',
+	}),
 ];
 
 const WITHHOLDING_REVIEW = {
@@ -110,6 +120,8 @@ function parseAtom(body: string): Document {
 	const document = new DOMParser().parseFromString(body, 'application/xml');
 	expect(document.querySelector('parsererror')).toBeNull();
 	expect(document.documentElement.namespaceURI).toBe('http://www.w3.org/2005/Atom');
+	const ids = texts(document, 'entry > id');
+	expect(new Set(ids).size).toBe(ids.length);
 	return document;
 }
 
@@ -143,6 +155,7 @@ function expectValidJsonFeed(feed: JsonFeed, feedUrl: string) {
 	expect(feed.title).not.toBe('');
 	expect(feed.feed_url).toBe(feedUrl);
 	expect(feed.home_page_url).toMatch(/^https:\/\/policai\.org\//);
+	expect(new Set(feed.items.map((item) => item.id)).size).toBe(feed.items.length);
 	for (const item of feed.items) {
 		expect(item.id).not.toBe('');
 		expect(item.content_text).not.toBe('');
@@ -212,6 +225,23 @@ describe('jurisdiction feeds', () => {
 			expect(body).not.toContain('hidden-dismissed');
 			expect(body).not.toContain('victorian-lead');
 		}
+	});
+
+	it('gives two detections of one official page distinct ids, the Policai entry URLs', async () => {
+		const expected = [
+			'https://policai.org/developments#redetected-first',
+			'https://policai.org/developments#redetected-second',
+		];
+		const official = ['https://example.gov.au/news/redetected', 'https://example.gov.au/news/redetected'];
+
+		const atom = parseAtom(await (await jurisdictionAtom('qld')).text());
+		expect(texts(atom, 'entry > id')).toEqual(expected);
+		expect(links(atom, 'entry > link[rel="alternate"]')).toEqual(official);
+
+		const feed = (await (await jurisdictionJson('qld')).json()) as JsonFeed;
+		expectValidJsonFeed(feed, 'https://policai.org/feeds/jurisdiction/qld/feed.json');
+		expect(feed.items.map((item) => item.id)).toEqual(expected);
+		expect(feed.items.map((item) => item.url)).toEqual(official);
 	});
 
 	it('stays a valid, empty feed for a jurisdiction with no developments', async () => {
