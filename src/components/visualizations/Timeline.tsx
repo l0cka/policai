@@ -69,7 +69,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
     <div>
       {years.map((year) => (
         <section key={year} className="mb-4">
-          <h2 className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+          <h2 className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
             {year}
           </h2>
           <div>
@@ -89,7 +89,7 @@ export function Timeline({ events, selectedJurisdiction, onEventClick }: Timelin
                     )}
                   </time>
                   <div>
-                    <span className={cn('inline-flex rounded-md px-2 py-1 font-mono text-[11px] uppercase tracking-[0.08em]', config.tone)}>
+                    <span className={cn('inline-flex rounded-md px-2 py-1 label', config.tone)}>
                       {config.label}
                     </span>
                   </div>

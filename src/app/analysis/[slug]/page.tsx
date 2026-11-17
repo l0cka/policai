@@ -180,7 +180,7 @@ export default async function ArticlePage({ params }: Params) {
 
       {article.corrections.length > 0 ? (
         <section className="mt-10" aria-labelledby="corrections">
-          <h2 id="corrections" className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+          <h2 id="corrections" className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
             Corrections and updates
           </h2>
           <ol className="mt-3 space-y-3 text-sm">
@@ -197,7 +197,7 @@ export default async function ArticlePage({ params }: Params) {
       ) : null}
 
       <section className="mt-10" aria-labelledby="cited-records">
-        <h2 id="cited-records" className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+        <h2 id="cited-records" className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
           Cited register records
         </h2>
         <div className="mt-3">
@@ -207,7 +207,7 @@ export default async function ArticlePage({ params }: Params) {
 
       {article.sources.length > 0 ? (
         <section className="mt-8" aria-labelledby="official-sources">
-          <h2 id="official-sources" className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+          <h2 id="official-sources" className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
             Official sources
           </h2>
           <ul className="mt-3 space-y-2 text-sm">

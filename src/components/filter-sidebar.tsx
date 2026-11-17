@@ -33,7 +33,7 @@ export function FilterControls({
   return (
     <div className={cn('space-y-6', className)}>
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[11px] font-medium uppercase tracking-[0.14em]">
+        <span className="label-caps font-medium">
           Filters
         </span>
         {hasActiveFilters ? (
@@ -94,7 +94,7 @@ export function FilterControls({
                       />
                     </span>
                     <span className="flex-1 leading-5">{option.label}</span>
-                    <span className="mt-0.5 font-mono text-[11px] font-medium tabular-nums text-muted-foreground/75">
+                    <span className="mt-0.5 font-mono text-[length:var(--type-label)] font-medium tabular-nums text-muted-foreground/75">
                       {option.count}
                     </span>
                   </label>

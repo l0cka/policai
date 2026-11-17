@@ -77,7 +77,7 @@ function WhatChanged({ before, after }: { before: string; after: string }) {
               key={`removed-${index}`}
               className="min-w-0 bg-[var(--status-repealed-bg)] px-3 py-2 text-sm leading-6 text-[var(--status-repealed)]"
             >
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em]">Removed</span>
+              <span className="label">Removed</span>
               <del className="mt-1 block whitespace-pre-wrap break-words">{line.length > 0 ? line : ' '}</del>
             </li>
           ))}
@@ -86,7 +86,7 @@ function WhatChanged({ before, after }: { before: string; after: string }) {
               key={`added-${index}`}
               className="min-w-0 bg-[var(--status-active-bg)] px-3 py-2 text-sm leading-6 text-[var(--status-active)]"
             >
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em]">Added</span>
+              <span className="label">Added</span>
               <span className="mt-1 block whitespace-pre-wrap break-words">{line.length > 0 ? line : ' '}</span>
             </li>
           ))}
@@ -179,7 +179,7 @@ export function PolicyDetailTabs({
 
       <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_20rem] xl:gap-[var(--space-10)]">
         <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-3 font-mono text-[11px] uppercase tracking-[0.12em]">
+          <div className="flex flex-wrap items-center gap-3 label-caps">
             <span
               className="inline-flex items-center gap-1.5"
               style={{ color: jurisdictionAccent(policy.jurisdiction) }}
@@ -281,7 +281,7 @@ export function PolicyDetailTabs({
                     <div>
                       <h2 className="section-title">What this means</h2>
                       <p className="mt-1 text-sm leading-6 text-muted-foreground">{policy.aiSummary}</p>
-                      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.1em] text-muted-foreground">Machine-assisted editorial summary</p>
+                      <p className="mt-2 label-caps text-muted-foreground">Machine-assisted editorial summary</p>
                     </div>
                   </div>
                 </div>

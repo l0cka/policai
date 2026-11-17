@@ -10,7 +10,7 @@ export function EntryDate({ entry }: { entry: DatedEntry }) {
   return (
     <time
       dateTime={precisionDateTime(entry.date, entry.precision)}
-      className="font-mono text-[11px] font-medium uppercase text-muted-foreground tabular"
+      className="font-mono text-[length:var(--type-label)] font-medium uppercase text-muted-foreground tabular"
     >
       {formatPolicyDate({ type: 'published', date: entry.date, precision: entry.precision }, { short: true })}
     </time>

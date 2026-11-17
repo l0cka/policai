@@ -7,14 +7,14 @@ function RelatedItem({ item }: { item: RelatedInstrument }) {
   return (
     <li className="py-4">
       {item.relation ? (
-        <p className="font-mono text-[11px] font-medium uppercase tracking-[0.08em] text-[var(--status-repealed)]">
+        <p className="label font-medium text-[var(--status-repealed)]">
           {item.relation}
         </p>
       ) : null}
       <Link href={`/policies/${item.id}`} className="font-display text-base leading-snug hover:text-primary">
         {item.title}
       </Link>
-      <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+      <p className="mt-1 label text-muted-foreground">
         {getJurisdictionName(item.jurisdiction)} · {getPolicyTypeName(item.type)}
       </p>
       {item.sharedThemes.length > 0 ? (

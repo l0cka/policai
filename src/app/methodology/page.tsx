@@ -327,7 +327,7 @@ export default async function MethodologyPage() {
         </section>
       </div>
         <nav aria-label="On this page" className="hidden self-start border-l border-border pl-6 text-sm lg:sticky lg:top-20 lg:block">
-          <p className="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground">On this page</p>
+          <p className="label-caps font-medium text-muted-foreground">On this page</p>
           <ul className="mt-3">
             <li><a href="#trust-levels" className="block py-1 text-muted-foreground hover:text-primary">Trust levels</a></li>
             <li><a href="#source-and-date-rules" className="block py-1 text-muted-foreground hover:text-primary">Source and date rules</a></li>

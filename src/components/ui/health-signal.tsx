@@ -26,7 +26,7 @@ export function HealthSignal({
   return (
     <p
       className={cn(
-        'flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.14em]',
+        'flex items-center gap-2 label-caps font-medium',
         className,
       )}
       style={{ color: signal.color }}

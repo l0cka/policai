@@ -34,7 +34,7 @@ export function CitedInAnalysis({ articles }: { articles: CitingArticle[] }) {
               >
                 {article.title}
               </Link>
-              <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="mt-1 label text-muted-foreground">
                 <ArticleDate label="Published" date={article.publishedAt} />
               </p>
             </li>

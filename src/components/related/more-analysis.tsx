@@ -14,7 +14,7 @@ export function MoreAnalysis({ articles }: { articles: MoreAnalysisItem[] }) {
   if (articles.length === 0) return null;
   return (
     <section aria-labelledby="more-analysis" className="mt-10">
-      <h2 id="more-analysis" className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+      <h2 id="more-analysis" className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium">
         More analysis
       </h2>
       <ul>
@@ -27,7 +27,7 @@ export function MoreAnalysis({ articles }: { articles: MoreAnalysisItem[] }) {
             >
               {article.title}
             </Link>
-            <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+            <p className="mt-1 label text-muted-foreground">
               <ArticleDate label="Published" date={article.publishedAt} />
               {article.sharedCites > 0
                 ? ` · Shares ${article.sharedCites === 1 ? 'a cited record' : `${article.sharedCites} cited records`}`

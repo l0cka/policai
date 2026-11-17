@@ -23,7 +23,7 @@ export function CourtRequirementsList({ title, requirements }: {
         {requirements.map((requirement) => (
           <article key={requirement.id} className="py-3">
             <p className="text-sm text-foreground">
-              <span className="mr-2 inline-flex rounded border border-primary/25 bg-primary/10 px-1.5 py-0.5 font-mono text-[11px] font-medium uppercase tracking-wide text-primary">
+              <span className="mr-2 inline-flex rounded border border-primary/25 bg-primary/10 px-1.5 py-0.5 font-mono text-[length:var(--type-label)] font-medium uppercase tracking-wide text-primary">
                 {MODALITY_LABELS[requirement.modality]}
               </span>
               {requirement.action}

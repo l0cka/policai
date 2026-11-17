@@ -175,7 +175,7 @@ export function PolicyTable({
                         type="button"
                         onClick={() => onSort(field)}
                         className={cn(
-                          'group inline-flex items-center gap-1 whitespace-nowrap font-mono text-[11px] font-medium uppercase tracking-[0.1em] transition-colors duration-[var(--dur-fast)]',
+                          'group inline-flex items-center gap-1 whitespace-nowrap label-caps font-medium transition-colors duration-[var(--dur-fast)]',
                           isSorted
                             ? 'text-foreground'
                             : 'text-muted-foreground hover:text-foreground',
@@ -195,7 +195,7 @@ export function PolicyTable({
                     </th>
                   );
                 })}
-                <th className="w-[15%] whitespace-nowrap py-2.5 text-left font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-muted-foreground">
+                <th className="w-[15%] whitespace-nowrap py-2.5 text-left label-caps font-medium text-muted-foreground">
                   Source
                 </th>
                 <th className="w-6">
@@ -232,7 +232,7 @@ export function PolicyTable({
                     <td className="py-3 pr-3 align-top">
                       <StatusPill status={policy.status} dates={policy.dates} />
                     </td>
-                    <td className="py-3 pr-3 align-top font-mono text-[11px] font-medium uppercase leading-4 text-muted-foreground">
+                    <td className="py-3 pr-3 align-top font-mono text-[length:var(--type-label)] font-medium uppercase leading-4 text-muted-foreground">
                       {formatPolicyDate(primaryDate, { short: true })}
                       <span className="block">
                         {getPolicyDateTypeName(primaryDate.type)}
@@ -260,7 +260,7 @@ export function PolicyTable({
 
       {totalPages > 1 ? (
         <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-          <span className="font-mono text-[11px] text-muted-foreground">
+          <span className="font-mono text-[length:var(--type-label)] text-muted-foreground">
             Page {safePage} of {totalPages}
           </span>
           <div className="flex gap-2">

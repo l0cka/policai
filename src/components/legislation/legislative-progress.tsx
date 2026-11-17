@@ -29,7 +29,7 @@ export function LegislativeProgress({
                   {step.label}
                   <span className="sr-only">, done</span>
                 </p>
-                <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+                <p className="label text-muted-foreground">
                   <time dateTime={step.date}>
                     {formatPolicyDate({ type: 'published', date: step.date, precision: step.precision })}
                   </time>

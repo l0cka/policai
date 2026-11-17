@@ -382,7 +382,7 @@ export function CourtsBrowser({
 													</div>
 													<div className="mt-2 flex items-center gap-3 sm:mt-0 sm:shrink-0 sm:gap-4">
 														<StatusPill status={note.status} dates={note.dates} />
-														<span className="font-mono text-[11px] text-muted-foreground sm:text-xs">
+														<span className="font-mono text-[length:var(--type-label)] text-muted-foreground sm:text-xs">
 															{getPolicyDateTypeName(primaryDate.type)}{" "}
 															{formatPolicyDate(primaryDate)}
 														</span>
@@ -455,7 +455,7 @@ export function CourtsBrowser({
 																	>
 																		{item.title}
 																	</Link>
-																	<p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground">
+																	<p className="label text-muted-foreground">
 																		{getJurisdictionName(item.jurisdiction)} · {getPolicyTypeName(item.type)}
 																	</p>
 																</li>
@@ -521,7 +521,7 @@ export function CourtsBrowser({
 															.map((tag) => (
 																<span
 																	key={tag}
-																	className="font-mono text-[11px] uppercase tracking-wider px-2 py-0.5 bg-muted rounded text-muted-foreground"
+																	className="font-mono text-[length:var(--type-label)] uppercase tracking-wider px-2 py-0.5 bg-muted rounded text-muted-foreground"
 																>
 																	{tag}
 																</span>

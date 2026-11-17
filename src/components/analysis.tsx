@@ -26,7 +26,7 @@ export function ArticleDate({ date, label }: { date: string; label?: string }) {
 
 export function ArticleTypeLabel({ type }: { type: ArticleType }) {
   return (
-    <p className="font-mono text-[length:var(--type-label)] uppercase tracking-[0.08em] text-muted-foreground">
+    <p className="label text-muted-foreground">
       {ARTICLE_TYPE_NAMES[type]}
     </p>
   );
@@ -34,7 +34,7 @@ export function ArticleTypeLabel({ type }: { type: ArticleType }) {
 
 export function AnalysisTierLabel({ type }: { type: ArticleType }) {
   return (
-    <p className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.08em]">
+    <p className="flex flex-wrap items-center gap-2 label">
       <span className="rounded-md border border-primary/25 bg-[var(--status-amended-bg)] px-2 py-1 font-medium text-[var(--status-amended)]">
         {ARTICLE_TIER_LABEL}
       </span>
@@ -47,7 +47,7 @@ export function ArticleBreadcrumb({ type }: { type: ArticleType }) {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="mb-4 flex gap-1.5 font-mono text-[11px] uppercase tracking-[0.08em] text-muted-foreground"
+      className="mb-4 flex gap-1.5 label text-muted-foreground"
     >
       <Link href="/analysis" className="hover:text-primary">
         {ARTICLE_TIER_LABEL}

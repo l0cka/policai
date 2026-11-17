@@ -10,7 +10,7 @@ export function CourtsAnalysis({ articles }: { articles: CourtAnalysisLink[] }) 
     <section aria-labelledby="court-analysis" className="mt-12 max-w-[44rem]">
       <h2
         id="court-analysis"
-        className="border-b border-[var(--rule-heavy)] py-2 font-mono text-[11px] font-medium uppercase tracking-[0.12em]"
+        className="border-b border-[var(--rule-heavy)] py-2 label-caps font-medium"
       >
         Court-focused analysis
       </h2>
