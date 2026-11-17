@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { FollowingList, type FollowingPolicy } from '@/components/follow-control';
+import { FollowingFeeds, FollowingList, type FollowingPolicy } from '@/components/follow-control';
 import { PageIntro } from '@/components/layout';
 import { getPolicies } from '@/lib/data-service';
 import { pageAlternates, pageSocialMeta } from '@/lib/site-seo';
@@ -40,6 +40,7 @@ export default async function FollowingPage() {
         eyebrow="Register · following"
         description="Records followed on this browser only. A different browser, or a new profile, starts empty. There is no account and nothing is emailed."
       />
+      <FollowingFeeds />
       <FollowingList policies={rows} />
     </div>
   );

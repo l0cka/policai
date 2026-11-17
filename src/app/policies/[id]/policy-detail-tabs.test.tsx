@@ -60,6 +60,40 @@ describe('PolicyDetailTabs', () => {
   });
 });
 
+describe('PolicyDetailTabs "What this means" box', () => {
+  it('shows a summary that differs from the description', () => {
+    render(<PolicyDetailTabs policy={{ ...policy, aiSummary: 'Filers must say when AI was used.' }} />);
+    expect(screen.getByRole('heading', { name: 'What this means' })).toBeInTheDocument();
+    expect(screen.getByText('Filers must say when AI was used.')).toBeInTheDocument();
+  });
+
+  it('hides a summary that only repeats the description', () => {
+    render(<PolicyDetailTabs policy={{ ...policy, aiSummary: '  a  DESCRIPTION\n' }} />);
+    expect(screen.queryByRole('heading', { name: 'What this means' })).toBeNull();
+    expect(screen.queryByText('Machine-assisted editorial summary')).toBeNull();
+    expect(screen.getAllByText('A description')).toHaveLength(1);
+  });
+});
+
+describe('PolicyDetailTabs verification dates', () => {
+  it('shows the checked and retrieved stamps as Sydney calendar days', () => {
+    render(
+      <PolicyDetailTabs
+        policy={{
+          ...policy,
+          verification: {
+            status: 'verified',
+            source: { url: 'https://example.gov.au/policy', retrievedAt: '2026-09-30T13:59:59Z' },
+            checkedAt: '2026-09-30T14:00:00Z',
+          },
+        }}
+      />,
+    );
+    expect(screen.getByText('Checked').nextElementSibling).toHaveTextContent(/^1 Oct 2026$/);
+    expect(screen.getByText('Retrieved').nextElementSibling).toHaveTextContent(/^30 Sep 2026$/);
+  });
+});
+
 describe('PolicyDetailTabs site reuse terms', () => {
   it('links the source site’s licence to the copyright page it came from', () => {
     const [sourceReuse] = parseSiteReuse([

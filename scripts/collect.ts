@@ -1,19 +1,4 @@
-/**
- * Collector CLI — runs one collection pass over the watch sources and
- * persists the results to the repo's data files. In production the host
- * wrapper ops/collector/policai-collect.sh runs it; run it locally with
- * --dry-run to preview.
- *
- * Usage:
- *   npx tsx scripts/collect.ts [--dry-run] [--source=<id>] [--max-items=<n>]
- *
- * Classification is deterministic keyword analysis with capped confidence.
- * USE_CLEF_CLASSIFIER=1 asks the local clef-flash model instead when the GPU
- * and model are available. Detections always require editorial review.
- * POLICAI_COLLECTOR_STATE names the host folder holding the collector's watch
- * state and outbox (see scripts/collect-run.ts).
- */
-
+import { parseArgs } from 'node:util';
 import { withDataMutationLock } from '../src/lib/data-lock';
 import {
   createBrowserFetch,
@@ -38,15 +23,54 @@ interface CliOptions {
   maxItems?: number;
 }
 
-function parseArgs(argv: string[]): CliOptions {
-  const options: CliOptions = { dryRun: false };
-  for (const arg of argv) {
-    if (arg === '--dry-run') options.dryRun = true;
-    else if (arg.startsWith('--source=')) options.sourceId = arg.slice(9);
-    else if (arg.startsWith('--max-items='))
-      options.maxItems = Number(arg.slice(12));
+type CliCommand =
+  | { kind: 'run'; options: CliOptions }
+  | { kind: 'help' }
+  | { kind: 'invalid'; message: string };
+
+const USAGE = `Usage: npm run collect -- [--dry-run] [--source=<id>] [--max-items=<n>] [--help]
+
+  --dry-run        preview the run and write nothing
+  --source=<id>    collect one source, or one followed record with track:<policyId>
+  --max-items=<n>  cap new items per source; a positive integer
+  --help           print this text and exit`;
+
+function parseCommand(argv: string[]): CliCommand {
+  let values;
+  try {
+    ({ values } = parseArgs({
+      args: argv,
+      strict: true,
+      allowPositionals: false,
+      options: {
+        'dry-run': { type: 'boolean' },
+        source: { type: 'string', multiple: true },
+        'max-items': { type: 'string', multiple: true },
+        help: { type: 'boolean' },
+      },
+    }));
+  } catch (error) {
+    return { kind: 'invalid', message: (error as Error).message };
   }
-  return options;
+  if (values.help) return { kind: 'help' };
+
+  const sources = values.source ?? [];
+  if (sources.includes('')) {
+    return { kind: 'invalid', message: '--source needs a source id' };
+  }
+  const caps = values['max-items'] ?? [];
+  if (!caps.every((cap) => /^[1-9]\d*$/.test(cap))) {
+    return { kind: 'invalid', message: '--max-items must be a positive integer' };
+  }
+  const cap = caps.at(-1);
+  return {
+    kind: 'run',
+    options: {
+      dryRun: values['dry-run'] ?? false,
+      sourceId: sources.at(-1),
+      maxItems: cap === undefined ? undefined : Number(cap),
+    },
+  };
 }
 
 async function createOptionalBrowserFetch(): Promise<BrowserFetch | null> {
@@ -76,7 +100,17 @@ async function createOptionalClefScorer(): Promise<RelevanceScorer | undefined> 
 }
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
+  const command = parseCommand(process.argv.slice(2));
+  if (command.kind === 'help') {
+    console.log(USAGE);
+    return;
+  }
+  if (command.kind === 'invalid') {
+    console.error(`[collect] ${command.message}\n\n${USAGE}`);
+    process.exitCode = 2;
+    return;
+  }
+  const { options } = command;
 
   const scoreRelevance = await createOptionalClefScorer();
 

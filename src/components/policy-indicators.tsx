@@ -1,10 +1,11 @@
 import { CheckCircle2 } from 'lucide-react';
 import { getJurisdictionName, getPolicyStatusName, type Policy } from '@/types';
+import { sydneyCalendarDate } from '@/lib/calendar-date';
 import { jurisdictionAccent } from '@/lib/jurisdiction-accent';
 import { cn } from '@/lib/utils';
 
 export function StatusPill({ status, dates = [] }: { status: Policy['status']; dates?: Policy['dates'] }) {
-  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Australia/Sydney' });
+  const today = sydneyCalendarDate(new Date());
   const commencementDates = dates.filter(({ type }) => type === 'effective' || type === 'commenced');
   // All known commencement dates must be future. Do not infer a day from a
   // month/year date, or mistake publication/the legacy alias for commencement.

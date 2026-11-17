@@ -7,6 +7,11 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import type { PolicyDraft, SourceReview } from "@/types";
 import { fakeGitHub } from "@/test/fake-github";
+import { MAX_JSON_BODY_BYTES } from "@/lib/bounded-json-body";
+import {
+	SIGNAL_CHAT_MESSAGE_ID_MAX,
+	SIGNAL_REPLY_TEXT_MAX,
+} from "@/lib/signal-http";
 
 const SOURCE_URL = "https://www.example.gov.au/ai-policy";
 const HASH = "a".repeat(64);
@@ -264,6 +269,38 @@ describe("POST /api/signal/reviews", () => {
 		expect(status).toBe(409);
 		expect(json).toMatchObject({ success: false, code: "main_moved" });
 		expect(github.refs.get("heads/main")).toBe(github.baseSha);
+		await expectDiskUntouched();
+	});
+
+	it("refuses a body over the size limit with 413 before reading main", async () => {
+		const fetchImpl = vi.fn();
+		vi.stubGlobal("fetch", fetchImpl);
+		const oversized = decision("dismiss");
+		oversized.attestation.replyText = "r".repeat(MAX_JSON_BODY_BYTES);
+
+		const { status, json } = await post(oversized);
+
+		expect(status).toBe(413);
+		expect(json).toMatchObject({ success: false, code: "body_too_large" });
+		expect(fetchImpl).not.toHaveBeenCalled();
+		await expectDiskUntouched();
+	});
+
+	it.each([
+		["replyText", "r".repeat(SIGNAL_REPLY_TEXT_MAX + 1)],
+		["chatMessageId", "m".repeat(SIGNAL_CHAT_MESSAGE_ID_MAX + 1)],
+	] as const)("refuses an over-long %s and commits nothing", async (field, value) => {
+		const github = fakeGitHub({ files: mainFiles(review()) });
+		vi.stubGlobal("fetch", github.fetchImpl);
+		const overlong = decision("dismiss");
+		overlong.attestation[field] = value;
+
+		const { status, json } = await post(overlong);
+
+		expect(status).toBe(400);
+		expect(json).toMatchObject({ success: false, code: "invalid_attestation" });
+		expect(json.error).toContain(`attestation.${field}`);
+		expect(github.requests.filter((r) => r.method !== "GET")).toEqual([]);
 		await expectDiskUntouched();
 	});
 

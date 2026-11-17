@@ -1,31 +1,5 @@
-/**
- * Re-confirm editorially verified records whose official source is unchanged
- * since an editor last verified them, one editor approval per batch. Register
- * policies, timeline events and developments each have their own batches.
- *
- * Usage:
- *   npm run reconfirm:register -- propose [--kind=policy|timeline|development]
- *       [--due-within=30] [--batch-size=10] [--exclude=<id>,<id>] [--dry-run]
- *   npm run reconfirm:register -- approve --batch=<id>
- *
- * Once an editor passkey is registered, `approve` takes the editor's passkey
- * signature over the batch from the approvals mailbox; `propose` prints the
- * page where the editor signs. Before then it takes
- * --attestation=<card url> [--approved-at=<ISO>] [--approved-by="Daniel Alkurdi"].
- *
- * `propose` audits every record of the kind (default policy) due within the
- * window (it needs network access to the official sources, so run it on
- * Argus), writes the audit evidence to that kind's data file, and appends
- * batches of unchanged records to data/reconfirmations.json. Changed or
- * unreadable sources are listed for a full review instead. --exclude leaves
- * out records another piece of work is already re-verifying.
- *
- * `approve` needs no network beyond the approvals mailbox. It reads the kind
- * from the batch and renews its records only if every fingerprint still
- * matches and every audit is at most seven days old.
- */
-
 import path from 'node:path';
+import { cliRun, parseCliCommand, type CliValues } from '../src/lib/cli-args';
 import { withDataMutationLock } from '../src/lib/data-lock';
 import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import type { ReviewableRecord } from '../src/lib/coverage-report';
@@ -50,7 +24,6 @@ const DATA_DIR = path.join(process.cwd(), 'data');
 const LEDGER_FILE = path.join(DATA_DIR, 'reconfirmations.json');
 const FRAMEWORK_FILE = path.join(DATA_DIR, 'dta-ai-policy-framework.json');
 
-/** A record as stored in its data file; written back with every field kept. */
 type StoredRecord = ReviewableRecord & { sourceUrl?: string; url?: string; status?: string };
 
 const STORES: Record<
@@ -58,15 +31,12 @@ const STORES: Record<
   {
     file: string;
     sourceUrl: (record: StoredRecord) => string;
-    /** Records that are never batched. */
     excludeIds: (records: StoredRecord[]) => Promise<Set<string>>;
   }
 > = {
   policy: {
     file: path.join(DATA_DIR, 'policies.json'),
     sourceUrl: (record) => record.sourceUrl!,
-    // The DTA framework artifact must not predate its policy's verification,
-    // so that record is re-verified together with the artifact, never in a batch.
     excludeIds: async () => {
       const framework = await readJsonFile<{ relatedPolicyId?: string } | null>(FRAMEWORK_FILE, null);
       return new Set(framework?.relatedPolicyId ? [framework.relatedPolicyId] : []);
@@ -80,16 +50,34 @@ const STORES: Record<
   development: {
     file: path.join(DATA_DIR, 'developments.json'),
     sourceUrl: (record) => record.url!,
-    // A dismissed development is not public, so it has nothing to renew.
     excludeIds: async (records) =>
       new Set(records.filter((record) => record.status === 'dismissed').map((record) => record.id)),
   },
 };
 
-function flag(args: string[], name: string): string | undefined {
-  const prefix = `--${name}=`;
-  return args.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
-}
+const COMMANDS = {
+  propose: {
+    kind: { type: 'string', value: '<kind>', help: `${RECONFIRM_KINDS.join(', ')}; the default is policy` },
+    'due-within': {
+      type: 'string',
+      value: '<days>',
+      help: `records due within this many days; the default is ${RECONFIRM_DUE_WITHIN_DAYS}`,
+    },
+    'batch-size': { type: 'string', value: '<n>', help: `records per batch; the default is ${RECONFIRM_BATCH_SIZE}` },
+    exclude: { type: 'string', value: '<id,id,...>', help: 'records to leave out' },
+    'dry-run': { type: 'boolean', help: 'audit and print the batches; write nothing' },
+  },
+  approve: {
+    batch: { type: 'string', value: '<id>', required: true, help: 'the batch to approve' },
+    attestation: {
+      type: 'string',
+      value: '<card url>',
+      help: 'the approval card; needed until an editor passkey is registered',
+    },
+    'approved-at': { type: 'string', value: '<ISO time>', help: 'with --attestation; the default is now' },
+    'approved-by': { type: 'string', value: '<name>', help: 'with --attestation; the default is Daniel Alkurdi' },
+  },
+} as const;
 
 function positiveInteger(value: string | undefined, fallback: number, name: string) {
   if (value === undefined) return fallback;
@@ -98,8 +86,7 @@ function positiveInteger(value: string | undefined, fallback: number, name: stri
   return parsed;
 }
 
-function kindFlag(args: string[]): ReconfirmKind {
-  const value = flag(args, 'kind') ?? 'policy';
+function reconfirmKind(value = 'policy'): ReconfirmKind {
   if (!(RECONFIRM_KINDS as readonly string[]).includes(value))
     throw new Error(`--kind must be one of ${RECONFIRM_KINDS.join(', ')}`);
   return value as ReconfirmKind;
@@ -109,18 +96,18 @@ async function readLedger(): Promise<ReconfirmLedger> {
   return readJsonFile<ReconfirmLedger>(LEDGER_FILE, { batches: [] });
 }
 
-async function propose(args: string[]) {
+async function propose(options: CliValues<typeof COMMANDS.propose>) {
   const now = new Date();
-  const dryRun = args.includes('--dry-run');
-  const kind = kindFlag(args);
-  const dueWithinDays = positiveInteger(flag(args, 'due-within'), RECONFIRM_DUE_WITHIN_DAYS, 'due-within');
-  const batchSize = positiveInteger(flag(args, 'batch-size'), RECONFIRM_BATCH_SIZE, 'batch-size');
+  const dryRun = options['dry-run'];
+  const kind = reconfirmKind(options.kind);
+  const dueWithinDays = positiveInteger(options['due-within'], RECONFIRM_DUE_WITHIN_DAYS, 'due-within');
+  const batchSize = positiveInteger(options['batch-size'], RECONFIRM_BATCH_SIZE, 'batch-size');
   const store = STORES[kind];
 
   const records = await readJsonFile<StoredRecord[]>(store.file, []);
   const ledger = await readLedger();
   const excludeIds = await store.excludeIds(records);
-  for (const id of flag(args, 'exclude')?.split(',') ?? []) if (id.trim()) excludeIds.add(id.trim());
+  for (const id of options.exclude?.split(',') ?? []) if (id.trim()) excludeIds.add(id.trim());
 
   const { candidates, records: audited, batches, fullReview } = await proposeReconfirmation(records, ledger, {
     kind,
@@ -152,9 +139,8 @@ async function propose(args: string[]) {
   console.log(`\nWrote audit evidence and ${batches.length} batch(es).`);
 }
 
-async function approve(args: string[]) {
-  const batchId = flag(args, 'batch');
-  if (!batchId) throw new Error('approve needs --batch');
+async function approve(options: CliValues<typeof COMMANDS.approve>) {
+  const batchId = options.batch;
   const ledger = await readLedger();
   const batch = ledger.batches.find((candidate) => candidate.id === batchId);
   if (!batch) throw new ReconfirmError([`unknown batch ${batchId}`]);
@@ -166,11 +152,11 @@ async function approve(args: string[]) {
   if (passkeys.length > 0) {
     decision = await reconfirmPasskeyDecision(batch, passkeys);
   } else {
-    const attestationUrl = flag(args, 'attestation');
+    const attestationUrl = options.attestation;
     if (!attestationUrl) throw new Error('approve needs --attestation until an editor passkey is registered');
     decision = {
-      approvedBy: flag(args, 'approved-by') ?? 'Daniel Alkurdi',
-      approvedAt: flag(args, 'approved-at') ?? new Date().toISOString(),
+      approvedBy: options['approved-by'] ?? 'Daniel Alkurdi',
+      approvedAt: options['approved-at'] ?? new Date().toISOString(),
       attestationUrl,
     };
   }
@@ -186,10 +172,9 @@ async function approve(args: string[]) {
 }
 
 async function main() {
-  const [command, ...args] = process.argv.slice(2);
-  if (command === 'propose') await withDataMutationLock(() => propose(args));
-  else if (command === 'approve') await withDataMutationLock(() => approve(args));
-  else throw new Error('usage: reconfirm-register propose|approve [options]');
+  const cli = cliRun(parseCliCommand('npm run reconfirm:register --', COMMANDS, process.argv.slice(2)));
+  if (cli.command === 'propose') await withDataMutationLock(() => propose(cli.values));
+  else await withDataMutationLock(() => approve(cli.values));
 }
 
 main().catch((error) => {

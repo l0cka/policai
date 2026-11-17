@@ -1,13 +1,4 @@
-/**
- * Read-only health audit for the official source catalogue.
- *
- * Usage:
- *   npm run audit:sources
- *   npm run audit:sources -- --include-manual
- *   npm run audit:sources -- --source=dta-media
- *   npm run audit:sources -- --json
- */
-
+import { cliRun, parseCli } from '../src/lib/cli-args';
 import {
   extractFromHtml,
   extractFromRss,
@@ -30,11 +21,11 @@ import {
   type WatchSource,
 } from '../src/lib/pipeline/sources';
 
-interface AuditOptions {
-  sourceId?: string;
-  json: boolean;
-  includeManual: boolean;
-}
+const FLAGS = {
+  source: { type: 'string', value: '<id>', help: 'audit one source from the catalogue' },
+  'include-manual': { type: 'boolean', help: 'also attempt the manually tracked sources' },
+  json: { type: 'boolean', help: 'print the report as JSON' },
+} as const;
 
 interface SourceAuditResult {
   sourceId: string;
@@ -51,19 +42,8 @@ interface SourceAuditResult {
   contentType?: string;
   contentHash?: string;
   error?: string;
-  /** Present when the source carries a time-boxed identity exception (E24). */
   identityException?: Exclude<IdentityExceptionState, 'none'>;
   identityNote?: string;
-}
-
-function parseArgs(argv: string[]): AuditOptions {
-  const options: AuditOptions = { json: false, includeManual: false };
-  for (const arg of argv) {
-    if (arg === '--json') options.json = true;
-    else if (arg === '--include-manual') options.includeManual = true;
-    else if (arg.startsWith('--source=')) options.sourceId = arg.slice(9);
-  }
-  return options;
 }
 
 async function mapWithConcurrency<T, R>(
@@ -108,8 +88,6 @@ async function auditSource(
   now: Date,
 ): Promise<SourceAuditResult> {
   const startedAt = Date.now();
-  // Mirror the collector: the declared Policai identity unless the source's
-  // time-boxed exception is still live.
   const { state, note } = resolveSourceIdentity(source, now);
   const identityFields =
     state === 'none' || note === null
@@ -215,7 +193,8 @@ async function auditSource(
 }
 
 async function main() {
-  const options = parseArgs(process.argv.slice(2));
+  const { values } = cliRun(parseCli('npm run audit:sources --', FLAGS, process.argv.slice(2)));
+  const options = { sourceId: values.source, json: values.json, includeManual: values['include-manual'] };
   let sources = options.includeManual
     ? [...getAutomaticSources(), ...getManualSources()]
     : getAutomaticSources();

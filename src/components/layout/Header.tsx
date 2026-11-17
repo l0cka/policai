@@ -1,14 +1,18 @@
 'use client';
 
-import { useState, useRef, useEffect, type FocusEvent } from 'react';
+import { useState, useRef, useEffect, useSyncExternalStore, type FocusEvent } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { PolicaiLogo } from '@/components/layout/PolicaiLogo';
-import { formatCollectedAt } from '@/lib/collection-strip';
+import {
+  collectionStatusLabel,
+  formatCollectedAt,
+  isCollectionStale,
+  type CollectionStrip,
+} from '@/lib/collection-strip';
 import { A2J_URL, ABOUT_SECTION, PRIMARY_SECTIONS, isSectionActive } from '@/lib/site-nav';
-import type { CollectionHealthStatus } from '@/types';
 
 /** Nav label whose underline wipes in from the left, and stays for the current section. */
 function NavLink({
@@ -41,65 +45,67 @@ function NavLink({
   );
 }
 
-/** The collector's last run, as a dot that links to Source status. */
+function subscribeToReturn(onChange: () => void) {
+  document.addEventListener('visibilitychange', onChange);
+  return () => document.removeEventListener('visibilitychange', onChange);
+}
+
 function SourceStatusLink({
-  collectedAt,
-  collectionHealth,
-  successfulSourceCount,
-  dueSourceCount,
+  status,
+  stale,
   onNavigate,
   labelled = false,
   className,
 }: {
-  collectedAt: string | null;
-  collectionHealth: CollectionHealthStatus;
-  successfulSourceCount: number;
-  dueSourceCount: number;
+  status: CollectionStrip;
+  stale: boolean;
   onNavigate?: () => void;
-  /** Show the label at every width; the header bar hides it on phones when healthy. */
   labelled?: boolean;
   className?: string;
 }) {
+  const { collectedAt, collectionHealth, successfulSourceCount, dueSourceCount } = status;
   const healthy = collectionHealth === 'healthy';
+  const calm = healthy && !stale;
   const reach = healthy
     ? `All ${dueSourceCount} due sources reached`
     : `${successfulSourceCount}/${dueSourceCount} due sources reached`;
   const collected = formatCollectedAt(collectedAt);
+  const label = collectionStatusLabel(status, stale);
+  const spoken = stale ? [label, reach] : [label, reach, collected];
   return (
     <Link
       href="/status"
       onClick={onNavigate}
       title={`${collected}. ${reach}.`}
-      aria-label={`Source status: ${healthy ? 'sources reached' : collectionHealth}. ${reach}. ${collected.toLowerCase()}.`}
+      aria-label={`Source status: ${spoken.join('. ').toLowerCase()}.`}
       className={cn(
         'inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-opacity hover:opacity-75',
-        healthy ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
+        calm ? 'text-[var(--trust)]' : 'text-[var(--caution)]',
         className,
       )}
     >
       <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-current" />
-      <span className={healthy && !labelled ? 'max-sm:sr-only' : undefined}>
-        {healthy ? 'Sources reached' : collectionHealth}
+      <span
+        className={cn(
+          !labelled && (calm ? 'max-sm:sr-only' : 'max-sm:max-w-[7.5rem] max-sm:leading-tight'),
+        )}
+      >
+        {label}
       </span>
     </Link>
   );
 }
 
-export function Header({
-  collectedAt,
-  collectionHealth,
-  successfulSourceCount,
-  dueSourceCount,
-}: {
-  collectedAt: string | null;
-  collectionHealth: CollectionHealthStatus;
-  successfulSourceCount: number;
-  dueSourceCount: number;
-}) {
+export function Header(status: CollectionStrip) {
+  const { collectedAt, renderedAt } = status;
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
-  const status = { collectedAt, collectionHealth, successfulSourceCount, dueSourceCount };
+  const stale = useSyncExternalStore(
+    subscribeToReturn,
+    () => isCollectionStale(collectedAt, Date.now()),
+    () => isCollectionStale(collectedAt, Date.parse(renderedAt)),
+  );
 
   useEffect(() => {
     if (!mobileOpen) return;
@@ -153,7 +159,7 @@ export function Header({
         </nav>
 
         <div className="ml-auto flex h-full items-center gap-5">
-          <SourceStatusLink {...status} className="max-sm:min-h-11 max-sm:min-w-11 max-sm:justify-center" />
+          <SourceStatusLink status={status} stale={stale} className="max-sm:min-h-11 max-sm:min-w-11 max-sm:justify-center" />
           <div className="hidden h-full items-center gap-5 lg:flex">
             <NavLink href={ABOUT_SECTION.href} label={ABOUT_SECTION.label} active={aboutActive} />
             {/* Sibling property, not a register route: no active state, and the
@@ -216,7 +222,7 @@ export function Header({
               </a>
               <div className="my-2 border-t border-border" />
               <div className="flex flex-col gap-1 px-3 pb-2">
-                <SourceStatusLink {...status} onNavigate={closeMobile} labelled className="min-h-11" />
+                <SourceStatusLink status={status} stale={stale} onNavigate={closeMobile} labelled className="min-h-11" />
                 <span className="font-mono text-[10px] tracking-[0.04em] text-muted-foreground">
                   {formatCollectedAt(collectedAt)}
                 </span>

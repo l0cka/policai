@@ -6,3 +6,12 @@
 export function auDate(date: Date, options: Intl.DateTimeFormatOptions): string {
   return new Intl.DateTimeFormat('en-AU', options).format(date).replace(/\bSept\b/, 'Sep');
 }
+
+export function sydneyShortDate(stamp: string): string {
+  return auDate(new Date(stamp), {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    timeZone: 'Australia/Sydney',
+  });
+}

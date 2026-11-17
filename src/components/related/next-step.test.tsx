@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import type { RuleScope } from '@/lib/rule-finder/scope';
 import { KeepTrack } from './keep-track';
@@ -58,5 +58,24 @@ describe('KeepTrack', () => {
     expect(screen.getByRole('button', { name: 'Follow Victoria' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Following' })).toHaveAttribute('href', '/following');
     expect(screen.getByRole('link', { name: 'New developments by RSS' })).toHaveAttribute('href', '/feed.xml');
+  });
+
+  it('links the matching feed beside each jurisdiction and theme follow, and none for the record itself', () => {
+    render(
+      <KeepTrack
+        follows={[
+          { follow: { kind: 'policy', id: 'p' }, label: 'this record' },
+          { follow: { kind: 'jurisdiction', id: 'vic' }, label: 'Victoria' },
+          { follow: { kind: 'theme', id: 'privacy-data' }, label: 'Privacy and data' },
+        ]}
+        feed={{ href: '/feed.xml', label: 'New developments by RSS' }}
+      />,
+    );
+    const feeds = within(screen.getByRole('list', { name: 'Feeds' })).getAllByRole('link');
+    expect(feeds.map((link) => [link.textContent, link.getAttribute('href')])).toEqual([
+      ['New developments by RSS', '/feed.xml'],
+      ['Victoria developments feed', '/feeds/jurisdiction/vic/feed.xml'],
+      ['Privacy and data records feed', '/feeds/theme/privacy-data/feed.xml'],
+    ]);
   });
 });

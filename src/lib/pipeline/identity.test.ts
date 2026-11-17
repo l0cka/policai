@@ -5,6 +5,7 @@ import {
   browserUserAgent,
   COLLECTOR_IDENTITY_TOKEN,
   COLLECTOR_USER_AGENT,
+  collectorCalendarDate,
   collectorIdentityFor,
   firecrawlRequestHeaders,
   identityExceptionState,
@@ -130,5 +131,16 @@ describe('resolveSourceIdentity (collector and audit:sources)', () => {
       state: 'expired',
       note: 'identity exception expired on 2026-10-21',
     });
+  });
+});
+
+describe('collectorCalendarDate', () => {
+  it.each([
+    ['2026-09-30T13:59:59Z', '2026-09-30'],
+    ['2026-09-30T14:00:00Z', '2026-10-01'],
+    ['2026-01-01T12:59:59Z', '2026-01-01'],
+    ['2026-01-01T13:00:00Z', '2026-01-02'],
+  ])('gives the Sydney calendar day of %s as %s', (instant, day) => {
+    expect(collectorCalendarDate(new Date(instant))).toBe(day);
   });
 });

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Filter, ArrowRight, Calendar } from 'lucide-react';
+import { ArrowRight, Calendar } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -26,6 +26,7 @@ import type { RegisterPolicy } from '@/lib/policy-register';
 type ClientTimelineEvent = StatusOnly<TimelineEvent>;
 import { MetricStrip, PageIntro } from '@/components/layout';
 import { cn } from '@/lib/utils';
+import { FilterBar, FilterSelect } from '@/components/filter-bar';
 
 export function TimelineBrowser({
   timelineData,
@@ -92,38 +93,29 @@ export function TimelineBrowser({
       ]} />
 
       <div className="mt-3 min-w-0">
-          <div className="mb-3 flex flex-col gap-2 sm:flex-row">
-            <label className="relative sm:w-60">
-              <span className="sr-only">Filter by jurisdiction</span>
-              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select
-                value={jurisdictionFilter}
-                onChange={(event) => setJurisdictionFilter(event.target.value)}
-                className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm"
-              >
-                <option value="all">All jurisdictions</option>
-                {Object.entries(JURISDICTION_NAMES).map(([value, label]) => (
-                  <option key={value} value={value}>{label}</option>
-                ))}
-              </select>
-            </label>
-            <label className="relative sm:w-60">
-              <span className="sr-only">Filter by event type</span>
-              <Filter className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
-              <select
-                value={typeFilter}
-                onChange={(event) => setTypeFilter(event.target.value)}
-                className="h-11 w-full appearance-none border border-input bg-background pl-10 pr-3 text-sm"
-              >
-                <option value="all">All event types</option>
-                {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
-                  <option key={type} value={type}>{EVENT_TYPE_CONFIG[type].label}</option>
-                ))}
-              </select>
-            </label>
-          </div>
+          <FilterBar
+            label="Filter timeline events"
+            shown={filteredEvents.length}
+            total={timelineData.length}
+            noun="events"
+            active={hasActiveFilters}
+            onClear={clearFilters}
+          >
+            <FilterSelect label="Filter by jurisdiction" value={jurisdictionFilter} onChange={setJurisdictionFilter}>
+              <option value="all">All jurisdictions</option>
+              {Object.entries(JURISDICTION_NAMES).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </FilterSelect>
+            <FilterSelect label="Filter by event type" value={typeFilter} onChange={setTypeFilter}>
+              <option value="all">All event types</option>
+              {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
+                <option key={type} value={type}>{EVENT_TYPE_CONFIG[type].label}</option>
+              ))}
+            </FilterSelect>
+          </FilterBar>
 
-          <ul aria-label="Event types" className="mb-3 flex flex-wrap gap-x-5 gap-y-1.5">
+          <ul aria-label="Event types" className="my-3 flex flex-wrap gap-x-5 gap-y-1.5">
             {POLICY_LIFECYCLE_TIMELINE_EVENT_TYPES.map((type) => (
               <li key={type} className="flex items-center gap-2 text-xs text-muted-foreground">
                 <span aria-hidden="true" className={cn('inline-flex h-2 w-2 shrink-0 rounded-full', EVENT_TYPE_CONFIG[type].dot)} />
@@ -131,23 +123,6 @@ export function TimelineBrowser({
               </li>
             ))}
           </ul>
-
-          {/* The count repeats the metric strip until a filter narrows it, but
-              stays in the live region so filtering is announced. */}
-          <div className={cn('mb-3 flex items-center justify-between', !hasActiveFilters && 'sr-only')}>
-            <p className="font-mono text-[11px] text-muted-foreground" aria-live="polite">
-              {filteredEvents.length} of {timelineData.length} events
-            </p>
-            {hasActiveFilters ? (
-              <button
-                type="button"
-                onClick={clearFilters}
-                className="inline-flex min-h-11 items-center gap-1 text-xs text-primary hover:underline"
-              >
-                Clear filters
-              </button>
-            ) : null}
-          </div>
 
           <Timeline
             events={filteredEvents}

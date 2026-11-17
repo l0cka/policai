@@ -422,7 +422,13 @@ status is not backdated to its original publication date.
 - `description` is a concise factual description suitable for the register.
 - `content` records verified key details, not a wholesale copy of the source.
 - `aiSummary` is clearly labelled as machine-assisted analysis even after a
-  reviewer checks it.
+  reviewer checks it. It should say what the instrument means in plain
+  language, not repeat `description`. When the two match after trimming,
+  collapsing whitespace and ignoring case (`summaryRepeatsDescription` in
+  `src/lib/policy-summary.ts`), the record page hides the "What this means"
+  box, because the same sentence already sits under the title, and
+  `validate:data` lists the non-trashed records in one warning. The warning
+  never fails the run.
 - Material obligations, scope, commencement, status, and supersession claims
   should be traceable to the official source.
 

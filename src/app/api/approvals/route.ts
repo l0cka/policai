@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { checkRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { appendToApprovalMailbox } from "@/lib/approval-mailbox";
+import { MAX_JSON_BODY_BYTES, readBoundedJson } from "@/lib/bounded-json-body";
 import {
 	parseApprovalSubject,
 	readEditorPasskeys,
@@ -26,14 +27,14 @@ export async function POST(request: Request) {
 	const limited = await checkRateLimit(request, RATE_LIMITS.approvals);
 	if (limited) return limited;
 
-	let body: Record<string, unknown>;
-	try {
-		const parsed: unknown = await request.json();
-		if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error();
-		body = parsed as Record<string, unknown>;
-	} catch {
+	const read = await readBoundedJson(request);
+	if (!read.ok && read.reason === "too_large") {
+		return approvalJson({ success: false, code: "body_too_large", error: `Request body must be at most ${MAX_JSON_BODY_BYTES} bytes` }, 413);
+	}
+	if (!read.ok || !read.value || typeof read.value !== "object" || Array.isArray(read.value)) {
 		return approvalJson({ success: false, code: "invalid_json", error: "Request body must be a JSON object" }, 400);
 	}
+	const body = read.value as Record<string, unknown>;
 
 	const subject = field(body, "subject");
 	const response =

@@ -212,6 +212,20 @@ export function PolicyBrowser({
       ?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const jurisdictionShortcuts = (className: string) =>
+    filterGroups[0].options.map((option) => (
+      <button
+        key={option.value}
+        type="button"
+        aria-pressed={jurisdictions.includes(option.value)}
+        onClick={() => toggleFilter(option.value, jurisdictions, setJurisdictions)}
+        className={className}
+      >
+        <span>{option.label}</span>
+        <span className="tabular-nums">{option.count}</span>
+      </button>
+    ));
+
   return (
     <div className="editorial-register container mx-auto px-4 py-7 sm:px-6 lg:px-8">
       {analysisHero}
@@ -252,6 +266,13 @@ export function PolicyBrowser({
               </kbd>
             </div>
           </form>
+          <div
+            role="group"
+            aria-label="Browse by jurisdiction"
+            className="no-scrollbar -mx-4 mt-3 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 md:mx-0 md:flex-wrap md:overflow-visible md:px-0 xl:hidden"
+          >
+            {jurisdictionShortcuts('inline-flex min-h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded border border-input px-3 text-xs text-muted-foreground hover:bg-muted aria-pressed:border-primary/30 aria-pressed:bg-accent aria-pressed:font-semibold aria-pressed:text-primary')}
+          </div>
           <div
             role="group"
             aria-label="Register filters"
@@ -400,24 +421,13 @@ export function PolicyBrowser({
           aria-label="Register overview"
           className="space-y-7 border-t border-border pt-6 xl:border-l xl:border-t-0 xl:pl-7 xl:pt-0"
         >
-          <section>
+          <section className="hidden xl:block">
             <h2 className="section-title">Browse by jurisdiction</h2>
             <div className="mt-3 grid grid-cols-2 gap-x-5 xl:grid-cols-1">
-              {filterGroups[0].options.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  aria-pressed={jurisdictions.includes(option.value)}
-                  onClick={() => toggleFilter(option.value, jurisdictions, setJurisdictions)}
-                  className="flex min-h-11 items-center justify-between gap-3 text-left text-xs text-muted-foreground hover:text-primary aria-pressed:font-semibold aria-pressed:text-primary"
-                >
-                  <span>{option.label}</span>
-                  <span className="tabular-nums">{option.count}</span>
-                </button>
-              ))}
+              {jurisdictionShortcuts('flex min-h-11 items-center justify-between gap-3 text-left text-xs text-muted-foreground hover:text-primary aria-pressed:font-semibold aria-pressed:text-primary')}
             </div>
           </section>
-          <section className="border-t border-border pt-6">
+          <section className="xl:border-t xl:border-border xl:pt-6">
             <h2 className="section-title">Browse by theme</h2>
             <ul className="mt-3">
               {DISCOVERY_THEMES.map((theme) => {

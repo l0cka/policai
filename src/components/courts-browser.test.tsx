@@ -125,6 +125,19 @@ describe('CourtsBrowser', () => {
     expect(screen.getByRole('searchbox')).toHaveValue('all');
     expect(new URLSearchParams(window.location.search).get('q')).toBe('all');
   });
+  it('names each section heading with its count as separate words', () => {
+    render(<CourtsBrowser policies={[...policies, { ...policies[0], id: 'second-vic' }]} />);
+    expect(screen.getByRole('heading', { level: 2, name: 'Victoria 2' })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: 'South Australia 1' })).toBeInTheDocument();
+  });
+  it('clears the search and both filters from one control, keeping the sort', () => {
+    window.history.replaceState({}, '', '/courts?q=judicial&jurisdiction=vic&audience=judicial&sort=newest');
+    render(<CourtsBrowser policies={policies} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Clear filters' }));
+    expect(window.location.search).toBe('?sort=newest');
+    expect(screen.getByText('2 of 2 instruments')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Clear filters' })).not.toBeInTheDocument();
+  });
   it('counts the same judicial audience it filters from published actors', () => {
     const untagged = { ...policies[0], tags: ['courts'] };
     render(<CourtsBrowser policies={[untagged]} requirements={requirements} />);

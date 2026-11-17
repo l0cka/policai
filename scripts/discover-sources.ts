@@ -1,31 +1,20 @@
-/**
- * Proposes watch sources for one publishing body in data/bodies.json, from
- * its robots.txt sitemaps, /sitemap.xml and the feeds its home page links.
- * Every request goes through the host gate under the declared identity and
- * the official-host allow-list. Writes nothing: admit a proposal through a
- * reviewed PR that adds it to src/lib/pipeline/sources.ts.
- *
- * Usage:
- *   npm run discover:sources -- --body=ato
- *   npm run discover:sources -- --body=ato --json
- */
-
+import { cliRun, parseCli } from '../src/lib/cli-args';
 import { getBodies } from '../src/lib/data-service';
 import { retrieveSource } from '../src/lib/pipeline/fetch';
 import { createHostGate, robotsFetcher } from '../src/lib/pipeline/host-gate';
 import { refusedHosts, WATCH_SOURCES } from '../src/lib/pipeline/sources';
 import { discoverForBody } from '../src/lib/watch-coverage/discover';
 
-function argument(name: string): string | undefined {
-  const prefix = `--${name}=`;
-  return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
-}
+const FLAGS = {
+  body: { type: 'string', value: '<id>', required: true, help: 'a body id from data/bodies.json' },
+  json: { type: 'boolean', help: 'print the proposals as JSON' },
+} as const;
 
 async function main() {
-  const bodyId = argument('body');
-  const body = (await getBodies()).find((entry) => entry.id === bodyId);
+  const { values } = cliRun(parseCli('npm run discover:sources --', FLAGS, process.argv.slice(2)));
+  const body = (await getBodies()).find((entry) => entry.id === values.body);
   if (!body) {
-    console.error(`Usage: npm run discover:sources -- --body=<id from data/bodies.json> (got ${bodyId ?? 'none'})`);
+    console.error(`Unknown body id: ${values.body} (ids are in data/bodies.json)`);
     process.exit(2);
   }
 
@@ -42,7 +31,7 @@ async function main() {
   });
   const watched = new Map(WATCH_SOURCES.map((source) => [source.url, source.id]));
 
-  if (process.argv.includes('--json')) {
+  if (values.json) {
     console.log(
       JSON.stringify(
         {

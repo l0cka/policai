@@ -1,12 +1,4 @@
-/**
- * Watch coverage: which publishing bodies in data/bodies.json the collector
- * watches, by jurisdiction and tier, with every gap and decided block.
- *
- * Usage:
- *   npm run report:watch-coverage
- *   npm run report:watch-coverage -- --json
- */
-
+import { cliRun, parseCli } from '../src/lib/cli-args';
 import {
   getBodies,
   getCollectionMeta,
@@ -18,7 +10,12 @@ import { WATCH_SOURCES } from '../src/lib/pipeline/sources';
 import { watchCoverage } from '../src/lib/watch-coverage/report';
 import { getJurisdictionName } from '../src/types';
 
+const FLAGS = {
+  json: { type: 'boolean', help: 'print the report as JSON' },
+} as const;
+
 async function main() {
+  const { values } = cliRun(parseCli('npm run report:watch-coverage --', FLAGS, process.argv.slice(2)));
   const [bodies, sourceHealth, checkTimes, monitoring, meta] = await Promise.all([
     getBodies(),
     getSourceHealth(),
@@ -35,7 +32,7 @@ async function main() {
     sourceResults: meta.collector.sourceResults,
     now: new Date(),
   });
-  if (process.argv.includes('--json')) {
+  if (values.json) {
     console.log(JSON.stringify(report, null, 2));
     return;
   }
