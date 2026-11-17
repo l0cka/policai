@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["scripts/*.{ts,mjs}", "open-next.config.ts"],
+  "project": ["src/**/*.{ts,tsx,mjs}", "scripts/**/*.{ts,mjs}", "data/*.ts"],
+  "ignoreDependencies": ["pdfjs-dist", "@tailwindcss/typography", "tailwindcss", "tw-animate-css", "axe-core"],
+  "ignoreExportsUsedInFile": true
+}

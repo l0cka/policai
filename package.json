@@ -13,7 +13,7 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "check": "npm run lint && npm run typecheck && npm run test && npm run validate:data && npm run build",
+    "check": "npm run lint && npm run typecheck && npm run check:unused && npm run test && npm run validate:data && npm run build",
     "collect": "tsx scripts/collect.ts",
     "collector:proposals": "tsx scripts/collector-proposals.ts",
     "canonicalize:urls": "tsx scripts/canonicalize-source-urls.ts",
@@ -35,7 +35,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "passkey:add": "tsx scripts/add-editor-passkey.ts"
+    "passkey:add": "tsx scripts/add-editor-passkey.ts",
+    "check:unused": "knip --no-progress"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.2",
@@ -77,6 +78,7 @@
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.6",
     "jsdom": "^29.0.1",
+    "knip": "^6.45.1",
     "playwright-core": "^1.61.1",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.2.2",

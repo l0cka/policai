@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest';
 import {
   MAX_THEME_MESSAGE_VALUE_CHARS,
   MAX_THEMES_PER_RECORD,
-  MIN_PUBLIC_RECORDS_PER_THEME,
   MIN_RECORDS_PER_THEME,
   MIN_THEMES_PER_RECORD,
   THEMES,
@@ -22,7 +21,6 @@ describe('THEMES', () => {
   it('states the record and coverage rules', () => {
     expect([MIN_THEMES_PER_RECORD, MAX_THEMES_PER_RECORD]).toEqual([1, 5]);
     expect(MIN_RECORDS_PER_THEME).toBe(2);
-    expect(MIN_PUBLIC_RECORDS_PER_THEME).toBe(MIN_RECORDS_PER_THEME);
   });
 });
 
