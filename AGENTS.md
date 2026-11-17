@@ -66,8 +66,8 @@ reads it. A property counts as read when:
 
 Delete a property the test reports, or its `@theme` mapping; do not add it to
 the allowlist. `NOT_YET_ADOPTED` in that file lists the shared tokens no app
-reads yet (`--selected-bg`, `--selected-fg`, `--selected-border`). Remove a
-name from it in the change that first uses the token. The test does not fail
+reads yet; it is empty now. Add a name with a new shared token no app reads
+yet, and remove it in the change that first uses the token. The test does not fail
 on a stale entry, so that parallel changes can adopt a token in any order. Its
 fixtures use made-up token names on purpose: Tailwind scans test files and
 Markdown for class and variable names, so a real theme name there adds CSS to
