@@ -1,0 +1,92 @@
+name: Open PR as l0cka-bot
+
+# Every PR into main is opened by `l0cka-bot` and approved by the maintainer
+# (ruleset "require-approval"). Agents push their branch, then dispatch this
+# workflow instead of opening the PR themselves, which would make the
+# maintainer its author and unable to approve it. Running it again for the
+# same branch updates the open PR's title and body.
+on:
+  workflow_dispatch:
+    inputs:
+      head:
+        description: Branch to merge into main (must already be pushed)
+        required: true
+        type: string
+      title:
+        description: PR title
+        required: true
+        type: string
+      body:
+        description: PR description (Markdown)
+        required: true
+        type: string
+      draft:
+        description: Open as a draft
+        type: boolean
+        default: false
+      hold:
+        description: Add the hold label so it cannot merge even after approval
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: open-pr-${{ inputs.head }}
+
+jobs:
+  open:
+    name: open PR
+    runs-on: [self-hosted, linux, argus]
+
+    steps:
+      - name: Open or update the PR
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          HEAD: ${{ inputs.head }}
+          TITLE: ${{ inputs.title }}
+          BODY: ${{ inputs.body }}
+          DRAFT: ${{ inputs.draft }}
+          HOLD: ${{ inputs.hold }}
+        with:
+          github-token: ${{ secrets.POLICAI_BOT_TOKEN }}
+          script: |
+            const { HEAD: head, TITLE: title, BODY: body } = process.env;
+            if (!head || head === 'main') throw new Error('head must be a branch other than main');
+            await github.rest.repos.getBranch({ ...context.repo, branch: head });
+
+            const [existing] = await github.paginate(github.rest.pulls.list, {
+              ...context.repo,
+              state: 'open',
+              head: `${context.repo.owner}:${head}`,
+              base: 'main',
+              per_page: 100,
+            });
+            let pr;
+            if (existing) {
+              ({ data: pr } = await github.rest.pulls.update({
+                ...context.repo,
+                pull_number: existing.number,
+                title,
+                body,
+              }));
+              core.info(`Updated #${pr.number}.`);
+            } else {
+              ({ data: pr } = await github.rest.pulls.create({
+                ...context.repo,
+                head,
+                base: 'main',
+                title,
+                body,
+                draft: process.env.DRAFT === 'true',
+                maintainer_can_modify: true,
+              }));
+              core.info(`Opened #${pr.number}.`);
+            }
+
+            if (process.env.HOLD === 'true') {
+              await github.rest.issues.addLabels({ ...context.repo, issue_number: pr.number, labels: ['hold'] });
+            }
+            await github.rest.issues.addAssignees({ ...context.repo, issue_number: pr.number, assignees: ['l0cka'] });
+            await github.rest.pulls.requestReviewers({ ...context.repo, pull_number: pr.number, reviewers: ['l0cka'] });
+            await core.summary.addRaw(`${pr.html_url}\n`).write();

@@ -6,7 +6,7 @@ are documented in [collector.md](./collector.md). Installation, host state,
 evidence and failures are in the [wrapper runbook](../ops/collector/README.md).
 
 Each run starts from a freshly fetched main and opens a ready collection PR
-that auto-merges once the required checks pass. Merging deploys. The
+that merges once the maintainer approves it and the required checks pass. Merging deploys. The
 collector keeps its own memory on Argus: its watch state, and an outbox of
 findings main does not carry yet. So an unmerged, closed or stale PR loses
 nothing, because the next run's PR replays it. Older open collection PRs are

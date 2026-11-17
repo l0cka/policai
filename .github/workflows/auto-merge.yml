@@ -1,11 +1,12 @@
 name: Auto-merge
 
-# Arms GitHub auto-merge (squash) on the collector's daily collection PRs
-# (`automation/collection-*` branches), which the PR review routine skips.
-# GitHub then merges once the "Protect main" ruleset passes. Every other PR
-# waits for its review and is merged by hand. A `hold` label disarms it, and so
-# does any changed file outside the collector's four output files. Every push
-# re-runs the file check, so a commit added after arming cannot ride it in.
+# Arms GitHub auto-merge (squash) on PRs opened by `l0cka-bot` (bot-pr.yml
+# reopens the maintainer account's PRs under it). The "require-approval"
+# ruleset holds each one until the maintainer approves it and the "Protect
+# main" checks pass, so arming never lands a PR on its own. A `hold` label or
+# draft state keeps it disarmed. Collection PRs (`automation/collection-*`)
+# must also change only the collector's four output files; every push re-runs
+# that check, so a commit added after arming cannot ride it in.
 # Merging to main deploys policai.org.
 #
 # pull_request_target runs this file from main, so a PR cannot rewrite its own
@@ -14,7 +15,7 @@ on:
   pull_request_target:
     branches:
       - main
-    types: [opened, reopened, synchronize, ready_for_review, labeled, unlabeled]
+    types: [opened, reopened, synchronize, ready_for_review, converted_to_draft, labeled, unlabeled]
 
 permissions:
   contents: write
@@ -26,7 +27,7 @@ concurrency:
 jobs:
   arm:
     name: arm auto-merge
-    if: ${{ github.event.pull_request.user.login == 'l0cka' && startsWith(github.event.pull_request.head.ref, 'automation/collection-') && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository }}
+    if: ${{ github.event.pull_request.user.login == 'l0cka-bot' && github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: [self-hosted, linux, argus]
 
     steps:
@@ -41,44 +42,43 @@ jobs:
               ...context.repo,
               pull_number: context.payload.pull_request.number,
             });
-            // The collector commits only these files (docs/collector.md).
-            // A branch named like a collection PR that changes anything else
-            // is not armed, and is disarmed if it was.
-            const ALLOWED_FILES = new Set([
-              'data/developments.json',
-              'data/source-reviews.json',
-              'data/watch-state.json',
-              'public/data/meta.json',
-            ]);
-            const files = await github.paginate(github.rest.pulls.listFiles, {
-              ...context.repo,
-              pull_number: pr.number,
-              per_page: 100,
-            });
-            const unexpected = files
-              .flatMap((file) => [file.filename, file.previous_filename])
-              .filter((name) => name && !ALLOWED_FILES.has(name));
-            if (unexpected.length > 0) {
+            const disarm = async (reason) => {
               if (pr.auto_merge) {
                 await github.graphql(
                   'mutation($id: ID!) { disablePullRequestAutoMerge(input: { pullRequestId: $id }) { clientMutationId } }',
                   { id: pr.node_id },
                 );
               }
-              return core.info(
-                'Not armed: PR changes files outside the collector allow-list: ' +
-                  unexpected.slice(0, 10).join(', '),
-              );
+              return core.info(`Not armed: ${reason}`);
+            };
+            if (pr.draft) return disarm('draft.');
+            // The collector commits only these files (docs/collector.md).
+            // A branch named like a collection PR that changes anything else
+            // is not armed, and is disarmed if it was.
+            if (pr.head.ref.startsWith('automation/collection-')) {
+              const ALLOWED_FILES = new Set([
+                'data/developments.json',
+                'data/source-reviews.json',
+                'data/watch-state.json',
+                'public/data/meta.json',
+              ]);
+              const files = await github.paginate(github.rest.pulls.listFiles, {
+                ...context.repo,
+                pull_number: pr.number,
+                per_page: 100,
+              });
+              const unexpected = files
+                .flatMap((file) => [file.filename, file.previous_filename])
+                .filter((name) => name && !ALLOWED_FILES.has(name));
+              if (unexpected.length > 0) {
+                return disarm(
+                  'PR changes files outside the collector allow-list: ' +
+                    unexpected.slice(0, 10).join(', '),
+                );
+              }
             }
             const held = pr.labels.some((label) => label.name === 'hold');
-            if (held) {
-              if (!pr.auto_merge) return core.info('Held, auto-merge already off.');
-              await github.graphql(
-                'mutation($id: ID!) { disablePullRequestAutoMerge(input: { pullRequestId: $id }) { clientMutationId } }',
-                { id: pr.node_id },
-              );
-              return core.info('Held, auto-merge disabled.');
-            }
+            if (held) return disarm('held.');
             if (pr.auto_merge) return core.info('Auto-merge already on.');
             // GitHub refuses to arm a PR that can already merge, e.g. when
             // `hold` comes off after CI went green. Merge that one directly.

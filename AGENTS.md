@@ -77,7 +77,7 @@ the build.
 
 Policai is an Australian AI policy tracker. It keeps a curated register of AI policy, regulation, governance and court guidance across federal, state and territory jurisdictions, and an automated "developments" feed of newly detected policy activity.
 
-**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`. At build time `scripts/bundle-data.mjs` writes `data/` and `public/data/` to an asset the Worker reads. Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on Argus and opens a collection PR that auto-merges once checks pass. There is no runtime database, no auth, and no admin dashboard.
+**Git is the database.** All canonical data is JSON committed to this repository (`public/data/`, `data/`). The deployed site only reads that data. [policai.org](https://policai.org) runs on the Cloudflare Worker `policai`. At build time `scripts/bundle-data.mjs` writes `data/` and `public/data/` to an asset the Worker reads. Workers Builds redeploys on every push to `main` that changes more than `apps/probono/`, so a data commit is public once its build finishes. Collection runs daily on Argus and opens a collection PR that merges once the maintainer approves it and checks pass. There is no runtime database, no auth, and no admin dashboard.
 
 ## Tech Stack
 
@@ -587,13 +587,19 @@ Clef needs no key: it talks only to Ollama on `127.0.0.1:11434`. The retired clo
 
 ## Pull requests and review
 
-A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day, in case one landed before it ran. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves or pushes. When its review of an open PR's current head names no blockers, it squash-merges that PR pinned to the reviewed head SHA, but only once CI is green and the PR is not a draft, not held, and not waiting on a date, an event or the maintainer. A blocker it finds on a merged PR gets a "Post-merge review" issue.
+Every PR into `main` is opened by `l0cka-bot`, reviewed by the maintainer (`l0cka`), and merges by itself once the maintainer approves it and CI is green (ruleset "require-approval", no bypass). Merging deploys: policai.org and a2j.policai.org through Workers Builds, the Pro Bono worker through the Argus host dispatcher. GitHub never lets an author approve their own PR, so never open a PR as the maintainer's account.
 
-- Only collection PRs (`automation/collection-*`) arm GitHub auto-merge (`.github/workflows/auto-merge.yml`), and only while every changed file is one of the collector's four output files; the check re-runs on every push. Every other PR merges only after a `claude-pr-review` on its current head names no blockers, either by the routine or by the thread that owns it, so nothing lands unreviewed.
+- **Opening a PR.** Push the branch, then dispatch `.github/workflows/open-pr.yml` on `main` with inputs `head` (the branch), `title`, `body`, and optionally `draft` and `hold` (GitHub MCP `actions_run_trigger` with `run_workflow`, or `gh workflow run open-pr.yml -f head=... -f title=... -f body=...`). It opens the PR as `l0cka-bot`, assigns the maintainer and requests their review; dispatching it again updates the open PR's title and body. Then find the PR by its head branch and subscribe to it. Do not call `create_pull_request` or `gh pr create`.
+- The collector and Signal open their PRs with `l0cka-bot` tokens. As a fallback, `.github/workflows/bot-pr.yml` closes any PR still opened as `l0cka` and reopens it under `l0cka-bot`, with a "Moved to #N" comment on the original; follow that number.
+
+A Claude routine reviews every non-draft PR once per head commit, and also reviews PRs merged in the last day. It posts `COMMENT` reviews that name blockers only, and each one carries a `<!-- claude-pr-review: <head sha> -->` marker. It never approves, merges or pushes. A blocker it finds on a merged PR gets a "Post-merge review" issue.
+
+- `.github/workflows/auto-merge.yml` arms squash auto-merge on every non-draft `l0cka-bot` PR without the `hold` label, so a PR merges once the maintainer approves it and the "Protect main" checks pass. A collection PR (`automation/collection-*`) stays disarmed if it changes anything beyond the collector's four output files; the check re-runs on every push. A push after approval dismisses the approval.
+- Put `hold` on a PR that must not merge even after approval (gated on a date or event), and draft a PR that is not ready.
 - A `claude-pr-review` review with blockers is work: fix every blocker it names, in one push. Its "No blockers" review needs no reply.
 - When a review is posted, address it before merging: fix every blocker it names; for a non-blocking note, fix it once if the fix is cheap, or reply on the thread with the reason and resolve it.
 - Never push only because of a note you have already seen or handled. Batch fixes into one push.
-- Never post an approving review. Merging needs the required checks green and every review thread resolved.
+- Never post an approving review, and never merge a PR yourself. Merging needs the maintainer's approval, the required checks green and every review thread resolved.
 
 ## Documentation Standard
 

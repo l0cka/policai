@@ -1,0 +1,73 @@
+name: Reopen as l0cka-bot
+
+# Fallback for open-pr.yml. The "require-approval" ruleset needs the
+# maintainer's approving review on every PR into main, and GitHub never lets
+# an author approve their own PR. A PR opened as the maintainer's account
+# (`l0cka`) by mistake is closed and reopened under `l0cka-bot`, which the
+# maintainer can approve, with a link from the original to the new one.
+#
+# pull_request_target runs this file from main and never checks out PR code.
+# Without the POLICAI_BOT_TOKEN secret it does nothing.
+on:
+  pull_request_target:
+    branches:
+      - main
+    types: [opened]
+
+permissions: {}
+
+concurrency:
+  group: bot-pr-${{ github.event.pull_request.head.ref }}
+
+jobs:
+  reopen:
+    name: reopen as l0cka-bot
+    if: ${{ github.event.pull_request.user.login == 'l0cka' && github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: [self-hosted, linux, argus]
+
+    steps:
+      - name: Reopen the PR under l0cka-bot
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
+        env:
+          HAS_BOT_TOKEN: ${{ secrets.POLICAI_BOT_TOKEN != '' }}
+        with:
+          github-token: ${{ secrets.POLICAI_BOT_TOKEN || github.token }}
+          script: |
+            if (process.env.HAS_BOT_TOKEN !== 'true') {
+              return core.info('POLICAI_BOT_TOKEN is not set; leaving the PR as it is.');
+            }
+            const { data: pr } = await github.rest.pulls.get({
+              ...context.repo,
+              pull_number: context.payload.pull_request.number,
+            });
+            if (pr.state !== 'open') return core.info(`#${pr.number} is already closed.`);
+
+            await github.rest.pulls.update({ ...context.repo, pull_number: pr.number, state: 'closed' });
+            let moved;
+            try {
+              ({ data: moved } = await github.rest.pulls.create({
+                ...context.repo,
+                head: pr.head.ref,
+                base: pr.base.ref,
+                title: pr.title,
+                body: `${pr.body ?? ''}\n\n_Reopened from #${pr.number} under l0cka-bot so the maintainer can approve it._`,
+                draft: pr.draft,
+                maintainer_can_modify: true,
+              }));
+            } catch (error) {
+              await github.rest.pulls.update({ ...context.repo, pull_number: pr.number, state: 'open' });
+              throw error;
+            }
+
+            const labels = pr.labels.map((label) => label.name);
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({ ...context.repo, issue_number: moved.number, labels });
+            }
+            await github.rest.issues.addAssignees({ ...context.repo, issue_number: moved.number, assignees: ['l0cka'] });
+            await github.rest.pulls.requestReviewers({ ...context.repo, pull_number: moved.number, reviewers: ['l0cka'] });
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: pr.number,
+              body: `Moved to #${moved.number} so it can be approved. Follow that PR from here.`,
+            });
+            core.info(`#${pr.number} reopened as #${moved.number}.`);
