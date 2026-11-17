@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { FollowControl } from '@/components/follow-control';
+import { feedForFollow } from '@/lib/feeds';
 import type { LabelledFollow } from '@/lib/next-step';
 
 export function KeepTrack({
@@ -9,6 +10,7 @@ export function KeepTrack({
   follows: LabelledFollow[];
   feed: { href: string; label: string };
 }) {
+  const scopedFeeds = follows.flatMap(({ follow }) => feedForFollow(follow) ?? []);
   return (
     <section aria-labelledby="keep-track" className="mt-8 max-w-[44rem] border-t border-[var(--rule-heavy)] pt-5">
       <h2 id="keep-track" className="section-title">
@@ -28,11 +30,20 @@ export function KeepTrack({
           ))}
         </div>
       ) : null}
-      <p className="mt-3 text-sm">
-        <a href={feed.href} className="text-primary underline underline-offset-4">
-          {feed.label}
-        </a>
-      </p>
+      <ul aria-label="Feeds" className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm">
+        <li>
+          <a href={feed.href} className="inline-flex min-h-11 items-center text-primary underline underline-offset-4">
+            {feed.label}
+          </a>
+        </li>
+        {scopedFeeds.map((scoped) => (
+          <li key={scoped.atom}>
+            <a href={scoped.atom} className="inline-flex min-h-11 items-center text-primary underline underline-offset-4">
+              {scoped.label} feed
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

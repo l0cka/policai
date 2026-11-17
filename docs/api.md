@@ -163,6 +163,38 @@ The public site lists these feeds and the JSON endpoints under
 [Machine feeds and API](https://policai.org/methodology#machine-feeds) on
 `/methodology`, with a short index on `/status`.
 
+### Scoped feeds
+
+Each jurisdiction and each register theme has its own feed, in Atom and in
+[JSON Feed 1.1](https://www.jsonfeed.org/version/1.1/):
+
+| Feed | Paths | Items |
+| --- | --- | --- |
+| Jurisdiction | `/feeds/jurisdiction/<jurisdiction>/feed.xml` and `/feed.json` | Public developments for that jurisdiction, newest detection first |
+| Theme | `/feeds/theme/<theme>/feed.xml` and `/feed.json` | Public register records on that theme, most recently updated first |
+
+`<jurisdiction>` is one of `federal`, `nsw`, `vic`, `qld`, `wa`, `sa`, `tas`,
+`act`, `nt`. `<theme>` is a key of `THEMES` in `src/lib/themes.ts`. Any other
+key returns `404`. Each feed holds at most 40 items and can be empty.
+
+Developments carry no themes, so a theme feed lists register records, not
+developments. In a jurisdiction feed an item links the official page and names
+the Policai entry as its related link; a machine detection carries the category
+(Atom) or tag (JSON) `Needs review`, and an editor-verified one `Verified`. In a
+theme feed an item links the Policai record and names the official source as
+its related link. JSON Feed puts the related link in `external_url`.
+
+`src/lib/feeds.ts` builds every feed, `/feed.xml` included, from one item shape
+and renders it as Atom or JSON. The routes read only `getDevelopments()` and
+`getPolicies()`, the public projections, so dismissed developments and
+withheld, unverified or trashed records never appear;
+`src/app/feeds/scoped-feeds.test.ts` holds that through the real projection.
+All feeds are prerendered at build time, so they change when a push to `main`
+or the nightly rebuild deploys the site. `/following` and the "Keep track"
+block on a record or analysis piece link the feed for each followed
+jurisdiction and theme. Follows stay in the browser; a feed URL carries no
+reader identity.
+
 ## Public MCP server
 
 The public MCP server uses the public API. It does not read editorial files and does not accept an admin token.
