@@ -7,7 +7,6 @@ import FirstContactWebMcp from './first-contact-webmcp';
 import { getPool } from '../lib/db';
 import { getLastHealthyAt, getRadarSourceStats, headerStatus, type SourceHealthCounts } from '../lib/health-data';
 import './globals.css';
-import './editorial.css';
 import { auDate } from '../lib/au-date';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TITLE, SITE_URL, pageMetadata, siteJsonLd } from '../lib/site-meta';
 

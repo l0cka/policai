@@ -90,17 +90,13 @@ describe('sector map accessibility', () => {
 
 describe('hero search focus ring', () => {
   it('is consolidated on :focus-visible with the shared tokens', async () => {
-    const editorial = await readApp('editorial.css');
-    const visible = editorial.match(/\.hero-search input:focus-visible\s*\{[^}]*\}/);
-    assert.ok(visible, ':focus-visible rule exists in editorial.css');
+    const css = await readApp('globals.css');
+    const visible = css.match(/\.hero-search input:focus-visible\s*\{[^}]*\}/);
+    assert.ok(visible, ':focus-visible rule exists in globals.css');
     assert.match(visible[0], /--focus-ring-width/);
     assert.match(visible[0], /--focus-ring-color/);
-    const focusRule = editorial.match(/\.hero-search input:focus\s*\{[^}]*\}/);
-    assert.ok(focusRule);
-    assert.doesNotMatch(focusRule[0], /outline/);
-    const globals = await readApp('globals.css');
-    const globalsFocus = globals.match(/\.hero-search input:focus\s*\{[^}]*\}/);
-    assert.ok(globalsFocus);
-    assert.doesNotMatch(globalsFocus[0], /outline:/);
+    const focusRules = [...css.matchAll(/\.hero-search input:focus\s*\{[^}]*\}/g)];
+    assert.equal(focusRules.length, 1, 'one .hero-search input:focus rule');
+    assert.doesNotMatch(focusRules[0][0], /outline/);
   });
 });
