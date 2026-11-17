@@ -62,22 +62,8 @@ const STATE_LABEL_POINTS: Record<string, [number, number]> = {
   ACT: [149.0, -35.5],
 };
 
-const CATEGORY_COLORS: Record<'light' | 'dark', Record<string, string>> = {
-  dark: {
-    legal_aid: '#65d2b4',
-    clc: '#e7b96c',
-    wls: '#f5a0c8',
-    atsils: '#b89aff',
-    fvpls: '#fb923c',
-  },
-  light: {
-    legal_aid: '#146b5a',
-    clc: '#b7791f',
-    wls: '#be185d',
-    atsils: '#6d28d9',
-    fvpls: '#c2410c',
-  },
-};
+const CATEGORIES = ['legal_aid', 'clc', 'wls', 'atsils', 'fvpls'] as const;
+const FALLBACK_CATEGORY = 'clc';
 
 function themeNow(): 'light' | 'dark' {
   const forced = document.documentElement.getAttribute('data-theme');
@@ -109,23 +95,21 @@ function orgsToGeoJSON(orgs: MapOrg[]): GeoJSON.FeatureCollection {
   };
 }
 
-function categoryMatch(theme: 'light' | 'dark'): maplibregl.ExpressionSpecification {
-  const palette = CATEGORY_COLORS[theme];
-  return [
+function categoryMatch(): maplibregl.ExpressionSpecification {
+  const probe = document.body.appendChild(document.createElement('span'));
+  probe.style.transition = 'none';
+  const resolve = (category: string) => {
+    probe.style.color = `var(--cat-${category})`;
+    return getComputedStyle(probe).color;
+  };
+  const expression = [
     'match',
     ['get', 'category'],
-    'legal_aid',
-    palette.legal_aid,
-    'clc',
-    palette.clc,
-    'wls',
-    palette.wls,
-    'atsils',
-    palette.atsils,
-    'fvpls',
-    palette.fvpls,
-    palette.clc,
-  ] as maplibregl.ExpressionSpecification;
+    ...CATEGORIES.flatMap((category) => [category, resolve(category)]),
+    resolve(FALLBACK_CATEGORY),
+  ];
+  probe.remove();
+  return expression as maplibregl.ExpressionSpecification;
 }
 
 export default function SectorMapView({
@@ -223,6 +207,7 @@ export default function SectorMapView({
       const ink = theme === 'dark' ? '#edf2f7' : '#10213a';
       const trust = theme === 'dark' ? '#65d2b4' : '#146b5a';
       const muted = theme === 'dark' ? '#a7b2c3' : '#526176';
+      const categoryColor = categoryMatch();
 
       map.addSource('states', { type: 'geojson', data: '/data/australia-states.geojson' });
       map.addLayer({
@@ -282,7 +267,7 @@ export default function SectorMapView({
         source: 'orgs',
         filter: ['!', ['has', 'point_count']],
         paint: {
-          'circle-color': categoryMatch(theme),
+          'circle-color': categoryColor,
           'circle-radius': 6,
           'circle-stroke-color': halo,
           'circle-stroke-width': 1.5,
@@ -295,7 +280,7 @@ export default function SectorMapView({
         source: 'orgs',
         filter: ['all', ['!', ['has', 'point_count']], ['==', ['get', 'name'], propsRef.current.selectedName]],
         paint: {
-          'circle-color': categoryMatch(theme),
+          'circle-color': categoryColor,
           'circle-radius': 9,
           'circle-stroke-color': trust,
           'circle-stroke-width': 2,
@@ -326,6 +311,9 @@ export default function SectorMapView({
     };
 
     map.on('style.load', addOverlays);
+    map.setMissingStyleImageResolver((id) => {
+      map.addImage(id, { width: 1, height: 1, data: new Uint8Array(4) });
+    });
 
     // One click handler; the topmost relevant feature wins, so selecting an
     // organisation never also reselects the state beneath it.
