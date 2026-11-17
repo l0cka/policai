@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { getArticles, getPolicyById, getPolicies, getRuleScopes, getSiteReuse } from '@/lib/data-service';
 import { reuseForUrl } from '@/lib/watch-coverage/site-reuse';
 import { getPublicCourtRequirements, toShownRequirement } from '@/lib/court-requirements';
+import { CiteThisRecord } from '@/components/related/cite-this-record';
 import { CitedInAnalysis } from '@/components/related/cited-in-analysis';
 import { KeepTrack } from '@/components/related/keep-track';
 import { RelatedInstruments } from '@/components/related/related-instruments';
 import { WhoThisAppliesTo } from '@/components/related/who-this-applies-to';
+import { citeRecord } from '@/lib/cite';
 import { followsForRecord } from '@/lib/next-step';
 import { relatedInstruments } from '@/lib/related-policies';
 import { LegislativeProgress } from '@/components/legislation/legislative-progress';
@@ -106,6 +108,7 @@ export default async function PolicyDetailPage({ params }: { params: Promise<{ i
             <WhoThisAppliesTo scope={scopes.find((scope) => scope.policyId === policy.id)} />
             <CitedInAnalysis articles={analyses} />
             <RelatedInstruments items={relatedInstruments(policy, publicPolicies)} />
+            <CiteThisRecord {...citeRecord(policy)} />
             <KeepTrack follows={followsForRecord(policy)} feed={{ href: '/feed.xml', label: 'New developments by RSS' }} />
           </>
         }

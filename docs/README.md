@@ -13,6 +13,7 @@ This directory holds the project-facing documentation that should stay in sync w
 - [Amalgamation record](./amalgamation.md) — how Pro Bono Radar was imported and cut over (completed 23 September 2026).
 - [Collector hosting](./collector-argus.md) — where scheduled collection runs; retrieval and classification behaviour is in collector.md.
 - [Authoritative refactor tracker](./refactor-authoritative-policai.md) — baseline findings, workstreams, and completion gates.
+- [Citing a record](./citations.md) — the suggested citation on `/policies/[id]`: its patterns per policy type, what is approximate, and how to check it.
 - [This week](./this-week.md) — how `/this-week` picks its window and items on both sites.
 - [Research interface](./research-interface.md) — register and A2J interface architecture and their shared boundaries.
 - [Design direction](./design-direction.md) and [editorial index](./ui-editorial-index.md) — the visual identity and where it goes next.
