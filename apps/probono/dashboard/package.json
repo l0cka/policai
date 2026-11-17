@@ -25,12 +25,16 @@
       "postcss": "8.5.23"
     },
     "@node-minify/core": {
-      "glob": "10.5.0"
+      "glob": "^14.0.2"
+    },
+    "@opennextjs/cloudflare": {
+      "glob": "^14.0.2"
     }
   },
   "dependencyOverrideNotes": {
     "next>postcss": "Next 15.5.28 pins vulnerable PostCSS 8.4.31. Use same-major 8.5.23 to fix GHSA-qx2v-qp2m-jg93, GHSA-6g55-p6wh-862q, GHSA-fxqj-rqcc-2cmp and GHSA-r28c-9q8g-f849. Scoped to Next only; remove once Next declares a patched PostCSS. Sharp and Nanoid are updated within upstream ranges in package-lock.json, without overrides.",
-    "@node-minify/core>glob": "@node-minify/core 9.0.2 (via @opennextjs/aws) pins glob 10.3.3, affected by GHSA-5j98-mcp5-4vw2. Use same-major 10.5.0. Scoped to @node-minify/core only; remove once @opennextjs/aws ships a patched @node-minify/core."
+    "@node-minify/core>glob": "@node-minify/core 9.0.2 (via @opennextjs/aws) pins glob 10.3.3, affected by GHSA-5j98-mcp5-4vw2 and GHSA-3g3m-2fjr-6pw4. Use glob ^14.0.2, which keeps the globSync API it calls. Scoped to @node-minify/core only; remove once @opennextjs/aws ships a @node-minify/core that declares a patched glob.",
+    "@opennextjs/cloudflare>glob": "@opennextjs/cloudflare 1.20.14 declares glob ^13.0.6. Every glob before 14.0.2 is affected by GHSA-3g3m-2fjr-6pw4 and pulls minimatch before 11.0.1 (GHSA-g3hv-75wg-m249). glob 14 keeps the glob and globSync API it calls. Scoped to @opennextjs/cloudflare only; remove once it declares glob ^14.0.2."
   },
   "devDependencies": {
     "@types/node": "^22.5.0",
