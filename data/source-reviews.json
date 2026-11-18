@@ -41632,5 +41632,103 @@
       "status": "detected"
     },
     "updatedAt": "2026-11-12T19:30:36.269Z"
+  },
+  {
+    "id": "source-review-dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+    "sourceUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+    "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-17T19:30:30.396Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Parliament of Tasmania — current bills (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "tas",
+      "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "retrievedAt": "2026-11-17T19:30:30.396Z",
+      "contentType": "text/html",
+      "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "publishedAt": "2026-11-17",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "data-centre-safeguards-bill-2026-54-of-2026",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "description": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "jurisdiction": "tas",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-17",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-17",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+            "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+            "retrievedAt": "2026-11-17T19:30:30.396Z",
+            "contentType": "text/html",
+            "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+            "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+            "publishedAt": "2026-11-17",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "content": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "aiSummary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-17T19:30:30.396Z",
+      "updatedAt": "2026-11-17T19:30:30.396Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "sourceId": "tas-parliament-bills",
+      "sourceName": "Parliament of Tasmania — current bills",
+      "jurisdiction": "tas",
+      "publishedAt": "2026-11-17",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-17T19:30:30.396Z",
+      "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v5",
+        "assessedAt": "2026-11-17T19:30:30.396Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+          "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+          "retrievedAt": "2026-11-17T19:30:30.396Z",
+          "contentType": "text/html",
+          "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+          "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+          "publishedAt": "2026-11-17",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-17T19:30:30.396Z"
   }
 ]
