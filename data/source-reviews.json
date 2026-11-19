@@ -1,5 +1,75 @@
 [
   {
+    "id": "source-review-dev-senate-opens-inquiry-into-artificial-intelligenc-8pus32",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+    "title": "Senate opens inquiry into artificial intelligence and data centres",
+    "entryKind": "timeline_event",
+    "targetTimelineEventId": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+    "targetTimelineRevisionHash": "093cbad6ec529a4b602b8e2f5f87fb143774fa9c7d16971caae5d7f3e8906c5a",
+    "sourceVersionSequence": 16,
+    "status": "pending_review",
+    "discoveredAt": "2026-11-19T19:30:25.733Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current. Re-verify the existing timeline event before treating it as current. Detected by Senate inquiry — artificial intelligence and data centres (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "retrievedAt": "2026-11-19T19:30:25.733Z",
+      "contentType": "text/html",
+      "contentHash": "e2cdf6f4d433bdd1e0573ec09a88f356b51b079f8a91703e925e50524bb36a18",
+      "title": "Senate opens inquiry into artificial intelligence and data centres"
+    },
+    "proposedRecord": {
+      "id": "tl-2026-05-13-senate-ai-data-centres-inquiry",
+      "date": "2026-05-13",
+      "datePrecision": "day",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "description": "The Senate inquiry covers AI and data-centre regulation, government deals, and community, industry, energy, water and environmental impacts. Submissions closed on 1 September 2026. On 20 October 2026 the committee tabled a progress report moving its reporting date to 23 March 2027.",
+      "type": "announcement",
+      "jurisdiction": "federal",
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P"
+    },
+    "linkedDevelopment": {
+      "id": "dev-senate-opens-inquiry-into-artificial-intelligenc-8pus32",
+      "title": "Senate opens inquiry into artificial intelligence and data centres",
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+      "sourceId": "senate-ai-data-centres",
+      "sourceName": "Senate inquiry — artificial intelligence and data centres",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-11-19T19:30:25.733Z",
+      "summary": "The official source content for \"Senate opens inquiry into artificial intelligence and data centres\" changed. Editorial re-verification is required before the timeline event can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-11-19T19:30:25.733Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/AIdatacentres48P",
+          "retrievedAt": "2026-11-19T19:30:25.733Z",
+          "contentType": "text/html",
+          "contentHash": "e2cdf6f4d433bdd1e0573ec09a88f356b51b079f8a91703e925e50524bb36a18",
+          "title": "Senate opens inquiry into artificial intelligence and data centres"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-19T19:30:25.733Z"
+  },
+  {
     "id": "source-review-9baf131d-d381-4eef-9a23-17903b941eac",
     "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
     "title": "Artificial Intelligence Assurance Framework",
@@ -41632,5 +41702,103 @@
       "status": "detected"
     },
     "updatedAt": "2026-11-12T19:30:36.269Z"
+  },
+  {
+    "id": "source-review-dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+    "sourceUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+    "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-17T19:30:30.396Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Parliament of Tasmania — current bills (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "tas",
+      "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "retrievedAt": "2026-11-17T19:30:30.396Z",
+      "contentType": "text/html",
+      "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "publishedAt": "2026-11-17",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "data-centre-safeguards-bill-2026-54-of-2026",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "description": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "jurisdiction": "tas",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-17",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-17",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+            "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+            "retrievedAt": "2026-11-17T19:30:30.396Z",
+            "contentType": "text/html",
+            "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+            "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+            "publishedAt": "2026-11-17",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "content": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "aiSummary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-17T19:30:30.396Z",
+      "updatedAt": "2026-11-17T19:30:30.396Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "sourceId": "tas-parliament-bills",
+      "sourceName": "Parliament of Tasmania — current bills",
+      "jurisdiction": "tas",
+      "publishedAt": "2026-11-17",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-17T19:30:30.396Z",
+      "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v5",
+        "assessedAt": "2026-11-17T19:30:30.396Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+          "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+          "retrievedAt": "2026-11-17T19:30:30.396Z",
+          "contentType": "text/html",
+          "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+          "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+          "publishedAt": "2026-11-17",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-17T19:30:30.396Z"
   }
 ]
