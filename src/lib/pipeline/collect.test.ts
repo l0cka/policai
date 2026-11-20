@@ -2142,6 +2142,133 @@ describe('collect', () => {
     ).toEqual([]);
   });
 
+  describe('a tracked page that alternates between two readings (#749)', () => {
+    const PAGE_A =
+      '<html><body><main><h1>Senate inquiry</h1><p>The committee will report by 23 March 2027.</p></main></body></html>';
+    const PAGE_B =
+      '<html><body><main><h1>Senate inquiry</h1><p>The committee will report by 23 March 2027.</p><p>Hearing program</p></main></body></html>';
+    const trackedEvent = buildTimelineEvent({
+      id: 'tracked-alternating-event',
+      title: 'Senate inquiry into AI and data centres',
+      description: 'A Senate committee inquiry with a reporting date.',
+      sourceUrl: DOCUMENT_SOURCE.url,
+      verification: {
+        status: 'verified',
+        checkedAt: '2026-07-01T00:00:00.000Z',
+        checkedBy: 'reviewer',
+        method: 'manual',
+        source: { url: DOCUMENT_SOURCE.url, contentHash: 'a'.repeat(64) },
+      },
+    });
+
+    interface Main {
+      state: WatchState;
+      reviews: SourceReview[];
+      developments: Awaited<ReturnType<typeof collect>>['developments'];
+    }
+
+    const run = async (main: Main, page: string, day: string, replayedReviewIds: string[] = []) => {
+      const result = await collect({
+        sources: [DOCUMENT_SOURCE],
+        state: main.state,
+        existingDevelopments: main.developments,
+        trackedUrls: [DOCUMENT_SOURCE.url],
+        trackedTimelineEvents: [trackedEvent],
+        sourceReviews: main.reviews,
+        replayedReviewIds,
+        fetchImpl: fakeFetch({ [DOCUMENT_SOURCE.url]: page }),
+        now: () => new Date(`${day}T00:00:00.000Z`),
+      });
+      const next: Main = {
+        state: result.state,
+        reviews: [
+          ...main.reviews.filter((review) => !result.retractedReviewIds.includes(review.id)),
+          ...result.reviewCandidates.filter(
+            (candidate) => !main.reviews.some((review) => review.id === candidate.id),
+          ),
+        ],
+        developments: [...main.developments, ...result.developments],
+      };
+      return { result, next };
+    };
+
+    const twoReadings = async () => {
+      const first = await run(
+        { state: emptyWatchState(), reviews: [], developments: [] },
+        PAGE_A,
+        '2026-07-22',
+      );
+      const second = await run(first.next, PAGE_B, '2026-07-29');
+      expect(second.next.reviews.map((review) => review.sourceVersionSequence)).toEqual([1, 2]);
+      return second.next;
+    };
+
+    it('stages each reading once while its reviews are pending', async () => {
+      const main = await twoReadings();
+
+      const back = await run(main, PAGE_A, '2026-08-05');
+      expect(back.result.reviewCandidates).toEqual([]);
+      expect(back.result.developments).toEqual([]);
+
+      const again = await run(back.next, PAGE_B, '2026-08-12');
+      expect(again.result.reviewCandidates).toEqual([]);
+      expect(again.result.developments).toEqual([]);
+      expect(again.next.reviews.map((review) => review.sourceVersionSequence)).toEqual([1, 2]);
+    });
+
+    it('stages a returning reading when no review of the source is pending', async () => {
+      const main = await twoReadings();
+      const rejected: Main = {
+        ...main,
+        reviews: main.reviews.map((review) => ({
+          ...review,
+          status: 'rejected' as const,
+          rejectionReason: 'No material change',
+        })),
+      };
+
+      const back = await run(rejected, PAGE_A, '2026-08-05');
+      expect(back.result.reviewCandidates).toEqual([
+        expect.objectContaining({ sourceVersionSequence: 3 }),
+      ]);
+    });
+
+    it('retracts a replayed review that re-staged an already staged reading', async () => {
+      const main = await twoReadings();
+      const [firstReview] = main.reviews;
+      const [firstKey, firstEntry] = Object.entries(main.state.seen).find(
+        ([, entry]) => entry.candidate?.changeFingerprint?.endsWith(':1'),
+      ) as [string, SeenCandidate];
+      const fingerprint = (firstEntry.candidate?.changeFingerprint as string).replace(/:1$/, ':3');
+      const replayKey = firstKey.replace(/:1$/, ':3');
+      const replayed: SourceReview = {
+        ...firstReview,
+        id: 'source-review-replayed-restage',
+        sourceVersionSequence: 3,
+      };
+      const withReplay: Main = {
+        ...main,
+        state: {
+          ...main.state,
+          seen: {
+            ...main.state.seen,
+            [replayKey]: {
+              ...firstEntry,
+              status: 'awaiting_review',
+              candidate: { ...(firstEntry.candidate as NonNullable<SeenCandidate['candidate']>), changeFingerprint: fingerprint },
+            },
+          },
+        },
+        reviews: [...main.reviews, replayed],
+      };
+
+      const next = await run(withReplay, PAGE_B, '2026-08-05', [replayed.id]);
+      expect(next.result.retractedReviewIds).toEqual([replayed.id]);
+      expect(next.result.state.seen[replayKey]).toBeUndefined();
+      expect(next.result.reviewCandidates).toEqual([]);
+    });
+  });
+
   it('stages re-verification instead of silently baselining a verified policy without a fingerprint', async () => {
     const trackedPolicy = buildPolicy({
       id: 'tracked-document-without-baseline',
