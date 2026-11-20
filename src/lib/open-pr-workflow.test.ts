@@ -1,5 +1,6 @@
 /* @vitest-environment node */
 
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import yaml from "js-yaml";
@@ -7,7 +8,16 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 type Workflow = {
 	on: { workflow_dispatch: { inputs: Record<string, unknown> } };
-	jobs: { open: { steps: { with: { script: string; "github-token": string } }[] } };
+	jobs: {
+		open: {
+			steps: {
+				uses?: string;
+				run?: string;
+				env?: Record<string, string>;
+				with?: { script: string; "github-token": string };
+			}[];
+		};
+	};
 };
 
 const workflow = yaml.load(
@@ -16,12 +26,22 @@ const workflow = yaml.load(
 		"utf8",
 	),
 ) as Workflow;
-const step = workflow.jobs.open.steps[0];
+const [guard, step] = workflow.jobs.open.steps as [
+	(typeof workflow.jobs.open.steps)[number],
+	{ with: { script: string; "github-token": string } },
+];
 const AsyncFunction = Object.getPrototypeOf(async () => {})
 	.constructor as new (
 	...args: string[]
 ) => (...args: unknown[]) => Promise<unknown>;
 const run = new AsyncFunction("github", "context", "core", step.with.script);
+
+function runGuard(token: string) {
+	return spawnSync("bash", ["-c", guard.run ?? ""], {
+		env: { ...process.env, BOT_TOKEN: token },
+		encoding: "utf8",
+	});
+}
 
 const context = { repo: { owner: "l0cka", repo: "policai" } };
 
@@ -72,6 +92,15 @@ describe("open PR workflow", () => {
 		expect(Object.keys(workflow.on.workflow_dispatch.inputs)).toEqual(
 			expect.arrayContaining(["head", "title", "body", "draft", "hold"]),
 		);
+	});
+
+	it("fails with a named error before github-script when the bot token is missing", () => {
+		expect(guard.env?.BOT_TOKEN).toBe("${{ secrets.POLICAI_BOT_TOKEN }}");
+		const missing = runGuard("");
+		expect(missing.status).toBe(1);
+		expect(missing.stdout).toContain("::error title=POLICAI_BOT_TOKEN is not set::");
+		const present = runGuard("token");
+		expect(present.status).toBe(0);
 	});
 
 	it("opens a PR and asks the maintainer to review it", async () => {

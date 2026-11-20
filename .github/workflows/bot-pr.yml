@@ -7,7 +7,8 @@ name: Reopen as l0cka-bot
 # maintainer can approve, with a link from the original to the new one.
 #
 # pull_request_target runs this file from main and never checks out PR code.
-# Without the POLICAI_BOT_TOKEN secret it does nothing.
+# Without the POLICAI_BOT_TOKEN secret it fails, because a PR left under the
+# maintainer's account can never be approved.
 on:
   pull_request_target:
     branches:
@@ -34,7 +35,10 @@ jobs:
           github-token: ${{ secrets.POLICAI_BOT_TOKEN || github.token }}
           script: |
             if (process.env.HAS_BOT_TOKEN !== 'true') {
-              return core.info('POLICAI_BOT_TOKEN is not set; leaving the PR as it is.');
+              return core.setFailed(
+                `POLICAI_BOT_TOKEN is not set, so #${context.payload.pull_request.number} stays under l0cka and cannot be approved. ` +
+                  'Add an l0cka-bot token as the repository Actions secret POLICAI_BOT_TOKEN.',
+              );
             }
             const { data: pr } = await github.rest.pulls.get({
               ...context.repo,
