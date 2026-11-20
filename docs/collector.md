@@ -186,6 +186,20 @@ the July OVIC fingerprints as an earlier scheme's hash of the current reading,
 as the 2026-11-11 run did. A weekly document source is read on every run while one of its
 versions awaits review, so a retraction, a reversion or a further change is
 seen the next day instead of up to six days later.
+
+A page can alternate between readings. From 2026-11-05 the APH page for the
+Senate AI and data centres inquiry read as one of two fingerprints
+(`e4248268…`, `e2cdf6f4…`) in turn, neither the timeline event's verified
+capture. A new version used to be opened whenever the reading differed from the
+latest version only, so each flip after sequence 13 staged another review
+(sequence 14 in #723, replayed with 15 in #748 and #766, then 16 in #783; #749). While a collector review of
+the source is pending above its published baseline (the highest approved or
+published sequence), a reading that matches a version staged since that
+baseline now reuses that version and stages nothing. A pending review replayed
+from the outbox that re-stages such a reading is retracted, like a verified
+unchanged reading above, and its version leaves `seen`. With no review pending,
+or after an editor publishes a later version, a returning reading stages as
+before.
 An unreadable changed version that later returns to the verified baseline also
 creates a new sequenced `baseline_reversion` review. This prevents the obsolete
 changed-version review from withholding a valid baseline forever while still
