@@ -15,7 +15,7 @@
   "dependencies": {
     "@opennextjs/cloudflare": "^1.20.14",
     "maplibre-gl": "^6.4.1",
-    "next": "^15.5.28",
+    "next": "^15.5.29",
     "pg": "^8.12.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
