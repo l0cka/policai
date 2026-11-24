@@ -3456,8 +3456,7 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record."
     }
-  }
-,
+  },
   {
     "id": "tl-2026-11-10-pmc-rapid-review-ai-recommendations",
     "date": "2026-11-10",
@@ -3500,6 +3499,25 @@
         "publishedAtPrecision": "day"
       },
       "notes": "Unverified timeline draft from the Policai Signal handoff of 10 November 2026 (Inky Quill). The Prime Minister's media release is dated Tuesday 10 November 2026. Not fingerprinted and not marked verified. Linked proposed record australian-ai-standards-frontier-safety-obligations-2026 is also needs_review."
+    }
+  },
+  {
+    "id": "tl-2026-11-24-joint-select-committee-ai-final-report",
+    "date": "2026-11-24",
+    "datePrecision": "day",
+    "title": "Joint Select Committee on AI tables its final report, Artificial Intelligence – the Australian way",
+    "description": "The Joint Select Committee on Artificial Intelligence tabled its final report, Artificial Intelligence – the Australian way, on 24 November 2026, ahead of its 30 November reporting date. The report makes 46 recommendations to the Australian Government. They include an ongoing Parliamentary Joint Standing Committee on AI, additional funding for the AI Safety Institute, a proportionate, risk-based framework of standards for developing and deploying AI systems with compliance and penalty mechanisms, timely incident reporting and independent evaluation and auditing for frontier labs, a licensing framework to enforce the AI Infrastructure Standards, and a stronger copyright framework that makes it easier and fairer for Australian rights holders and creators to be paid when their work is used to train AI. The report carries additional comments from Kate Chaney MP and a dissenting report from Senator David Pocock. These are recommendations to the government, not adopted policy.",
+    "type": "milestone",
+    "jurisdiction": "federal",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence/Report",
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.aph.gov.au/Parliamentary_Business/Committees/Joint/Artificial_Intelligence/ArtificialIntelligence/Report",
+        "title": "Report: Artificial Intelligence – the Australian way",
+        "publisher": "Parliament of Australia"
+      },
+      "notes": "Unverified timeline draft from the Policai Signal watch of 25 November 2026 (Inky Quill). The official report page (read 25 Nov 2026) lists 46 recommendations, additional comments from Ms Kate Chaney MP and a dissenting report from Senator David Pocock, and dates the report November 2026. The 24 November tabling date is from House Votes and Proceedings No 96 of 24 November 2026 (item 7) and same-day coverage; confirm it against the Votes and Proceedings before verifying. aph.gov.au refuses curl (403) but serves browser-style fetches. Not fingerprinted and not marked verified."
     }
   }
 ]
