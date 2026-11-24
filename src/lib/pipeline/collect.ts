@@ -1768,6 +1768,346 @@ async function processCandidate(
   }
 }
 
+interface SourceRun {
+  state: WatchState;
+  now: Date;
+  nowIso: string;
+  log: (message: string) => void;
+  gate: HostGate;
+  fetchImpl: CollectOptions['fetchImpl'];
+  browserFetchImpl: CollectOptions['browserFetchImpl'];
+  scoreRelevance: CollectOptions['scoreRelevance'];
+  force: CollectOptions['force'];
+  maxItemsPerSource: number;
+  minScoreForDevelopment: number;
+  minScoreForReview: number;
+  sourceReviews: readonly SourceReview[];
+  replayedReviewIds: ReadonlySet<string>;
+  trackedPoliciesByUrl: ReadonlyMap<string, Policy>;
+  trackedTimelineEventsByUrl: ReadonlyMap<string, TimelineEvent>;
+  trackedChangeTarget: CandidateRun['trackedChangeTarget'];
+  knownPublishedUrls: Set<string>;
+  knownHeadlineKeys: Set<string>;
+  existingDevelopmentsById: Map<string, Development>;
+  existingReviewsById: Map<string, SourceReview>;
+  developments: Development[];
+  reviewCandidates: SourceReview[];
+  retractedReviewIds: string[];
+  errors: string[];
+}
+
+async function collectSource(
+  source: WatchSource,
+  sourceRun: SourceRun,
+): Promise<SourceRunResult> {
+  const {
+    state,
+    now,
+    nowIso,
+    log,
+    gate,
+    fetchImpl,
+    browserFetchImpl,
+    scoreRelevance,
+    force,
+    maxItemsPerSource,
+    minScoreForDevelopment,
+    minScoreForReview,
+    sourceReviews,
+    replayedReviewIds,
+    trackedPoliciesByUrl,
+    trackedTimelineEventsByUrl,
+    trackedChangeTarget,
+    knownPublishedUrls,
+    knownHeadlineKeys,
+    existingDevelopmentsById,
+    existingReviewsById,
+    developments,
+    reviewCandidates,
+    retractedReviewIds,
+    errors,
+  } = sourceRun;
+  const startedAt = Date.now();
+  const identityState = identityExceptionState(source, now);
+  const ladder = retrievalLadder({
+    source,
+    now,
+    gate,
+    fetchImpl,
+    browserFetchImpl,
+    log,
+  });
+  let pending = pendingCandidatesForSource(state, source.id);
+  for (const candidate of pending) {
+    if (!isAllowedSourceHost(candidate.url)) {
+      delete state.seen[candidateStateKey(candidate)];
+      log(
+        `[collect] ${source.id}: discarded unsafe pending URL ${candidate.url}`,
+      );
+    }
+  }
+  pending = pending.filter((candidate) =>
+    isAllowedSourceHost(candidate.url),
+  );
+  const due = force || isSourceDue(source, state, now);
+
+  if (!due && pending.length === 0) {
+    log(`[collect] ${source.id}: not due yet, skipping`);
+    return sourceResult(
+      source.id,
+      'skipped',
+      nowIso,
+      startedAt,
+      null,
+      0,
+      0,
+      undefined,
+      false,
+    );
+  }
+
+  let sourceRetrieval: RetrievedSource | null = null;
+  let directDocument:
+    | Awaited<ReturnType<typeof extractRetrievedDocument>>
+    | null = null;
+  let discovered: Candidate[] = [];
+  let itemCount: number | null = null;
+  let candidateCount = 0;
+  let newCandidateCount = 0;
+  let deferSourceSuccess = false;
+  const sourceErrors: string[] = [];
+  let failure: ReturnType<typeof rowFailure> | null = null;
+  const skippedLinked = new Map<string, SkippedLinked>();
+  const noteSkipped = (skipped: readonly SkippedLinked[] | undefined) => {
+    for (const entry of skipped ?? []) {
+      const url = publicFailureUrl(entry.url);
+      if (url) skippedLinked.set(url, { ...entry, url });
+    }
+  };
+
+  const exceptionUntil = source.identityException?.until;
+  if (identityState === 'active') {
+    log(
+      `[collect] ${source.id}: identity exception until ${exceptionUntil}; presenting a plain browser user agent (E24)`,
+    );
+  } else if (identityState === 'expired') {
+    log(
+      `[collect] ${source.id}: identity exception expired on ${exceptionUntil}; presenting the declared Policai identity`,
+    );
+  }
+
+
+  if (due) {
+    try {
+      const indexAttempt = await ladder.index();
+      sourceRetrieval = indexAttempt.retrieval;
+      noteSkipped(sourceRetrieval.skippedLinked);
+      const indexExtraction = indexAttempt.extracted;
+      if (source.kind === 'document') {
+        itemCount = 1;
+        const reading = await readDocumentSource(
+          source,
+          sourceRetrieval,
+          state,
+          nowIso,
+          trackedPoliciesByUrl,
+          trackedTimelineEventsByUrl,
+          sourceReviews,
+          replayedReviewIds,
+        );
+        retractedReviewIds.push(...reading.retractedReviewIds);
+        discovered = reading.discovered;
+        directDocument = reading.directDocument;
+        deferSourceSuccess = reading.deferSourceSuccess;
+        if (reading.staged) {
+          developments.push(reading.staged.development);
+          reviewCandidates.push(reading.staged.review);
+        }
+      } else {
+        if (!indexExtraction) {
+          throw new Error('Index source retrieval produced no extraction');
+        }
+        itemCount = indexExtraction.itemCount;
+        const minimumItemCount =
+          source.minimumItemCount ?? (indexExtraction.feedValid ? 0 : 1);
+        if (itemCount < minimumItemCount) {
+          throw new Error(
+            minimumItemCount === 1
+              ? 'Source returned no usable index or feed items'
+              : `Source returned ${itemCount} usable items; at least ${minimumItemCount} are required`,
+          );
+        }
+        discovered = indexExtraction.candidates;
+      }
+
+      const unsafeCandidateCount = discovered.filter(
+        (candidate) => !isAllowedSourceHost(candidate.url),
+      ).length;
+      if (unsafeCandidateCount > 0) {
+        log(
+          `[collect] ${source.id}: ignored ${unsafeCandidateCount} candidate URL${unsafeCandidateCount === 1 ? '' : 's'} outside the official-source allow-list`,
+        );
+      }
+      discovered = discovered.filter((candidate) =>
+        isAllowedSourceHost(candidate.url),
+      );
+      candidateCount = discovered.length;
+      if (source.kind === 'document') {
+        const terminalDocumentFailures = discovered.filter(
+          (candidate) =>
+            state.seen[candidateStateKey(candidate)]?.status === 'failed',
+        );
+        if (terminalDocumentFailures.length > 0) {
+          const message = `${source.id}: ${terminalDocumentFailures.length} document version${terminalDocumentFailures.length === 1 ? '' : 's'} remain unreadable after retry exhaustion; manual review is required`;
+          sourceErrors.push(message);
+          errors.push(message);
+          deferSourceSuccess = true;
+          const [firstFailure] = terminalDocumentFailures;
+          failure ??= rowFailure(
+            state.seen[candidateStateKey(firstFailure)]?.lastError,
+            firstFailure.url,
+          );
+          log(`[collect] FAILED ${message}`);
+        }
+      }
+      const fresh = discovered
+        .filter((candidate) => {
+          const key = candidateStateKey(candidate);
+          return (
+            !isTrackedCandidate(candidate, knownPublishedUrls) &&
+            !knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? '') &&
+            !state.seen[key]
+          );
+        });
+
+      const seeding =
+        source.admittedAt !== undefined &&
+        source.kind !== 'document' &&
+        !state.lastCheckedBySource[source.id];
+      for (const candidate of fresh) {
+        markPending(state, candidate, source, nowIso);
+        if (seeding) {
+          markCandidateComplete(state, candidate, 'processed', nowIso);
+        } else {
+          newCandidateCount++;
+        }
+      }
+      if (seeding && fresh.length > 0) {
+        log(
+          `[collect] ${source.id}: first check; seeded ${fresh.length} current item${fresh.length === 1 ? '' : 's'} as seen without developments: ${fresh.map((candidate) => candidate.url).join(', ')}`,
+        );
+      }
+      discovered = seeding ? [] : fresh;
+      if (!deferSourceSuccess && sourceErrors.length === 0) {
+        state.lastCheckedBySource[source.id] = nowIso;
+      }
+    } catch (error) {
+      const message = `${source.id}: ${
+        error instanceof Error ? error.message : String(error)
+      }`;
+      sourceErrors.push(message);
+      errors.push(message);
+      failure ??= rowFailure(error, source.url);
+      log(`[collect] FAILED ${message}`);
+    }
+  }
+
+  for (const candidate of pending) {
+    if (
+      isTrackedCandidate(candidate, knownPublishedUrls) ||
+      knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? '')
+    ) {
+      markCandidateComplete(state, candidate, 'dismissed', nowIso);
+    }
+  }
+  const candidates = selectCandidatesForRun(
+    pending.filter(
+      (candidate) =>
+        state.seen[candidateStateKey(candidate)]?.status === 'pending' &&
+        !isTrackedCandidate(candidate, knownPublishedUrls) &&
+        !knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? ''),
+    ),
+    discovered,
+    maxItemsPerSource,
+  );
+  log(
+    `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
+  );
+
+  const scoredCandidates = candidates.filter(
+    (candidate) => !trackedChangeTarget(candidate),
+  );
+  const modelScoresById: Map<string, number> | null =
+    scoreRelevance && !source.bodyRelevance
+      ? await scoreRelevance(
+          scoredCandidates.map((candidate) => ({
+            id: candidateStateKey(candidate),
+            title: candidate.title,
+            text: candidate.text,
+            sourceName: source.name,
+          })),
+        )
+      : null;
+  for (const candidate of modelScoresById ? scoredCandidates : []) {
+    const score = modelScoresById?.get(candidateStateKey(candidate));
+    if (score !== undefined) {
+      log(`[collect] ${source.id}: model score ${score.toFixed(2)} for "${candidate.title}"`);
+    }
+  }
+
+  const run: CandidateRun = {
+    source,
+    state,
+    nowIso,
+    log,
+    ladder,
+    noteSkipped,
+    trackedChangeTarget,
+    sourceRetrieval,
+    directDocument,
+    modelScoresById,
+    developments,
+    reviewCandidates,
+    knownHeadlineKeys,
+    knownPublishedUrls,
+    existingReviewsById,
+    existingDevelopmentsById,
+    minScoreForDevelopment,
+    minScoreForReview,
+    candidateCount,
+    newCandidateCount,
+    candidateFailureCount: 0,
+    failure,
+  };
+  for (const candidate of candidates) {
+    await processCandidate(candidate, run);
+  }
+
+  if (run.candidateFailureCount > 0) {
+    const message = `${source.id}: ${run.candidateFailureCount} candidate retrieval failure${
+      run.candidateFailureCount === 1 ? '' : 's'
+    }`;
+    sourceErrors.push(message);
+    errors.push(message);
+  }
+  return {
+    ...sourceResult(
+      source.id,
+      sourceErrors.length > 0 ? 'error' : 'success',
+      nowIso,
+      startedAt,
+      itemCount,
+      run.candidateCount,
+      run.newCandidateCount,
+      sourceErrors.length > 0 ? sourceErrors.join('; ') : undefined,
+      due,
+    ),
+    ...(identityState === 'none' ? {} : { identityException: identityState }),
+    ...(run.failure ?? {}),
+    ...(skippedLinked.size > 0 ? { skippedLinked: [...skippedLinked.values()] } : {}),
+  };
+}
+
 /**
  * Run one collection pass over the watch sources.
  *
@@ -1858,295 +2198,36 @@ export async function collect(options: CollectOptions): Promise<CollectResult> {
   const errors: string[] = [];
   const sourceResults: SourceRunResult[] = [];
 
+  const sourceRun: SourceRun = {
+    state,
+    now,
+    nowIso,
+    log,
+    gate,
+    fetchImpl,
+    browserFetchImpl: options.browserFetchImpl,
+    scoreRelevance,
+    force: options.force,
+    maxItemsPerSource,
+    minScoreForDevelopment,
+    minScoreForReview,
+    sourceReviews: options.sourceReviews ?? [],
+    replayedReviewIds,
+    trackedPoliciesByUrl,
+    trackedTimelineEventsByUrl,
+    trackedChangeTarget,
+    knownPublishedUrls,
+    knownHeadlineKeys,
+    existingDevelopmentsById,
+    existingReviewsById,
+    developments,
+    reviewCandidates,
+    retractedReviewIds,
+    errors,
+  };
   for (const source of sources) {
     await options.recycleBrowser?.();
-    const startedAt = Date.now();
-    // E24: every path declares the Policai identity unless the source's
-    // time-boxed exception is still current; an expired one is ignored.
-    const identityState = identityExceptionState(source, now);
-    const ladder = retrievalLadder({
-      source,
-      now,
-      gate,
-      fetchImpl,
-      browserFetchImpl: options.browserFetchImpl,
-      log,
-    });
-    let pending = pendingCandidatesForSource(state, source.id);
-    for (const candidate of pending) {
-      if (!isAllowedSourceHost(candidate.url)) {
-        delete state.seen[candidateStateKey(candidate)];
-        log(
-          `[collect] ${source.id}: discarded unsafe pending URL ${candidate.url}`,
-        );
-      }
-    }
-    pending = pending.filter((candidate) =>
-      isAllowedSourceHost(candidate.url),
-    );
-    const due = options.force || isSourceDue(source, state, now);
-
-    if (!due && pending.length === 0) {
-      log(`[collect] ${source.id}: not due yet, skipping`);
-      sourceResults.push(
-        sourceResult(
-          source.id,
-          'skipped',
-          nowIso,
-          startedAt,
-          null,
-          0,
-          0,
-          undefined,
-          false,
-        ),
-      );
-      continue;
-    }
-
-    let sourceRetrieval: RetrievedSource | null = null;
-    let directDocument:
-      | Awaited<ReturnType<typeof extractRetrievedDocument>>
-      | null = null;
-    let discovered: Candidate[] = [];
-    let itemCount: number | null = null;
-    let candidateCount = 0;
-    let newCandidateCount = 0;
-    let deferSourceSuccess = false;
-    const sourceErrors: string[] = [];
-    let failure: ReturnType<typeof rowFailure> | null = null;
-    const skippedLinked = new Map<string, SkippedLinked>();
-    const noteSkipped = (skipped: readonly SkippedLinked[] | undefined) => {
-      for (const entry of skipped ?? []) {
-        const url = publicFailureUrl(entry.url);
-        if (url) skippedLinked.set(url, { ...entry, url });
-      }
-    };
-
-    const exceptionUntil = source.identityException?.until;
-    if (identityState === 'active') {
-      log(
-        `[collect] ${source.id}: identity exception until ${exceptionUntil}; presenting a plain browser user agent (E24)`,
-      );
-    } else if (identityState === 'expired') {
-      log(
-        `[collect] ${source.id}: identity exception expired on ${exceptionUntil}; presenting the declared Policai identity`,
-      );
-    }
-
-
-    if (due) {
-      try {
-        const indexAttempt = await ladder.index();
-        sourceRetrieval = indexAttempt.retrieval;
-        noteSkipped(sourceRetrieval.skippedLinked);
-        const indexExtraction = indexAttempt.extracted;
-        if (source.kind === 'document') {
-          itemCount = 1;
-          const reading = await readDocumentSource(
-            source,
-            sourceRetrieval,
-            state,
-            nowIso,
-            trackedPoliciesByUrl,
-            trackedTimelineEventsByUrl,
-            options.sourceReviews ?? [],
-            replayedReviewIds,
-          );
-          retractedReviewIds.push(...reading.retractedReviewIds);
-          discovered = reading.discovered;
-          directDocument = reading.directDocument;
-          deferSourceSuccess = reading.deferSourceSuccess;
-          if (reading.staged) {
-            developments.push(reading.staged.development);
-            reviewCandidates.push(reading.staged.review);
-          }
-        } else {
-          if (!indexExtraction) {
-            throw new Error('Index source retrieval produced no extraction');
-          }
-          itemCount = indexExtraction.itemCount;
-          const minimumItemCount =
-            source.minimumItemCount ?? (indexExtraction.feedValid ? 0 : 1);
-          if (itemCount < minimumItemCount) {
-            throw new Error(
-              minimumItemCount === 1
-                ? 'Source returned no usable index or feed items'
-                : `Source returned ${itemCount} usable items; at least ${minimumItemCount} are required`,
-            );
-          }
-          discovered = indexExtraction.candidates;
-        }
-
-        const unsafeCandidateCount = discovered.filter(
-          (candidate) => !isAllowedSourceHost(candidate.url),
-        ).length;
-        if (unsafeCandidateCount > 0) {
-          log(
-            `[collect] ${source.id}: ignored ${unsafeCandidateCount} candidate URL${unsafeCandidateCount === 1 ? '' : 's'} outside the official-source allow-list`,
-          );
-        }
-        discovered = discovered.filter((candidate) =>
-          isAllowedSourceHost(candidate.url),
-        );
-        candidateCount = discovered.length;
-        if (source.kind === 'document') {
-          const terminalDocumentFailures = discovered.filter(
-            (candidate) =>
-              state.seen[candidateStateKey(candidate)]?.status === 'failed',
-          );
-          if (terminalDocumentFailures.length > 0) {
-            const message = `${source.id}: ${terminalDocumentFailures.length} document version${terminalDocumentFailures.length === 1 ? '' : 's'} remain unreadable after retry exhaustion; manual review is required`;
-            sourceErrors.push(message);
-            errors.push(message);
-            deferSourceSuccess = true;
-            const [firstFailure] = terminalDocumentFailures;
-            failure ??= rowFailure(
-              state.seen[candidateStateKey(firstFailure)]?.lastError,
-              firstFailure.url,
-            );
-            log(`[collect] FAILED ${message}`);
-          }
-        }
-        const fresh = discovered
-          .filter((candidate) => {
-            const key = candidateStateKey(candidate);
-            return (
-              !isTrackedCandidate(candidate, knownPublishedUrls) &&
-              !knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? '') &&
-              !state.seen[key]
-            );
-          });
-
-        // An admitted index or feed's first completed check finds back
-        // catalogue, so it only records those items as seen; developments
-        // start from the second check. Documents baseline on their own.
-        const seeding =
-          source.admittedAt !== undefined &&
-          source.kind !== 'document' &&
-          !state.lastCheckedBySource[source.id];
-        for (const candidate of fresh) {
-          markPending(state, candidate, source, nowIso);
-          if (seeding) {
-            markCandidateComplete(state, candidate, 'processed', nowIso);
-          } else {
-            newCandidateCount++;
-          }
-        }
-        if (seeding && fresh.length > 0) {
-          log(
-            `[collect] ${source.id}: first check; seeded ${fresh.length} current item${fresh.length === 1 ? '' : 's'} as seen without developments: ${fresh.map((candidate) => candidate.url).join(', ')}`,
-          );
-        }
-        discovered = seeding ? [] : fresh;
-        if (!deferSourceSuccess && sourceErrors.length === 0) {
-          state.lastCheckedBySource[source.id] = nowIso;
-        }
-      } catch (error) {
-        const message = `${source.id}: ${
-          error instanceof Error ? error.message : String(error)
-        }`;
-        sourceErrors.push(message);
-        errors.push(message);
-        failure ??= rowFailure(error, source.url);
-        log(`[collect] FAILED ${message}`);
-      }
-    }
-
-    for (const candidate of pending) {
-      if (
-        isTrackedCandidate(candidate, knownPublishedUrls) ||
-        knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? '')
-      ) {
-        markCandidateComplete(state, candidate, 'dismissed', nowIso);
-      }
-    }
-    const candidates = selectCandidatesForRun(
-      pending.filter(
-        (candidate) =>
-          state.seen[candidateStateKey(candidate)]?.status === 'pending' &&
-          !isTrackedCandidate(candidate, knownPublishedUrls) &&
-          !knownHeadlineKeys.has(candidateHeadlineKey(candidate, nowIso) ?? ''),
-      ),
-      discovered,
-      maxItemsPerSource,
-    );
-    log(
-      `[collect] ${source.id}: ${candidateCount} candidates, ${newCandidateCount} new, ${pending.length} pending`,
-    );
-
-    const scoredCandidates = candidates.filter(
-      (candidate) => !trackedChangeTarget(candidate),
-    );
-    const modelScoresById: Map<string, number> | null =
-      scoreRelevance && !source.bodyRelevance
-        ? await scoreRelevance(
-            scoredCandidates.map((candidate) => ({
-              id: candidateStateKey(candidate),
-              title: candidate.title,
-              text: candidate.text,
-              sourceName: source.name,
-            })),
-          )
-        : null;
-    for (const candidate of modelScoresById ? scoredCandidates : []) {
-      const score = modelScoresById?.get(candidateStateKey(candidate));
-      if (score !== undefined) {
-        log(`[collect] ${source.id}: model score ${score.toFixed(2)} for "${candidate.title}"`);
-      }
-    }
-
-    const run: CandidateRun = {
-      source,
-      state,
-      nowIso,
-      log,
-      ladder,
-      noteSkipped,
-      trackedChangeTarget,
-      sourceRetrieval,
-      directDocument,
-      modelScoresById,
-      developments,
-      reviewCandidates,
-      knownHeadlineKeys,
-      knownPublishedUrls,
-      existingReviewsById,
-      existingDevelopmentsById,
-      minScoreForDevelopment,
-      minScoreForReview,
-      candidateCount,
-      newCandidateCount,
-      candidateFailureCount: 0,
-      failure,
-    };
-    for (const candidate of candidates) {
-      await processCandidate(candidate, run);
-    }
-
-    if (run.candidateFailureCount > 0) {
-      const message = `${source.id}: ${run.candidateFailureCount} candidate retrieval failure${
-        run.candidateFailureCount === 1 ? '' : 's'
-      }`;
-      sourceErrors.push(message);
-      errors.push(message);
-    }
-    sourceResults.push({
-      ...sourceResult(
-        source.id,
-        sourceErrors.length > 0 ? 'error' : 'success',
-        nowIso,
-        startedAt,
-        itemCount,
-        run.candidateCount,
-        run.newCandidateCount,
-        sourceErrors.length > 0 ? sourceErrors.join('; ') : undefined,
-        due,
-      ),
-      ...(identityState === 'none' ? {} : { identityException: identityState }),
-      ...(run.failure ?? {}),
-      ...(skippedLinked.size > 0 ? { skippedLinked: [...skippedLinked.values()] } : {}),
-    });
+    sourceResults.push(await collectSource(source, sourceRun));
   }
 
   state.hosts = gate.hosts();
