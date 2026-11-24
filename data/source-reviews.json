@@ -1,5 +1,542 @@
 [
   {
+    "id": "source-review-dev-australia-singapore-cooperation-on-artificial-in-s05ma2",
+    "sourceUrl": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+    "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-24T19:30:32.539Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Prime Minister of Australia — media (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "federal",
+      "summary": "Listen On the occasion of the 11th Singapore-Australia Annual Leaders’ Meeting, the Prime Ministers of Australia and Singapore underscored their shared commitment to deepen cooperation on Artificial Intelligence (AI) to further strengthen the Australia–Singapore Comprehensive Strategic Partnership 2.0.Leaders welcomed the inaugural Australia–Singapore Cyber and Digital Senior Officials’ Dialogue held in July 2026 and reaffirmed cooperation under the 2024 Memorandum of Understanding (MoU) on Artificial Intelligence Cooperation and the refreshed 2026 MoU on Cyber Security Cooperation.Leaders rec",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+      "finalUrl": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+      "retrievedAt": "2026-11-24T19:30:32.539Z",
+      "contentType": "text/html",
+      "contentHash": "a177ce2a62d4eb33bcbb016f84b5131d029b7abb7b2a39a6571999a6d7bc4c40",
+      "etag": "\"1795534506\"",
+      "lastModified": "Tue, 24 Nov 2026 15:35:06 GMT",
+      "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+      "publishedAt": "2026-11-24",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "australia-singapore-cooperation-on-artificial-intelligence",
+      "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+      "description": "Listen On the occasion of the 11th Singapore-Australia Annual Leaders’ Meeting, the Prime Ministers of Australia and Singapore underscored their shared commitment to deepen cooperation on Artificial Intelligence (AI) to further strengthen the Australia–Singapore Comprehensive Strategic Partnership 2.0.Leaders welcomed the inaugural Australia–Singapore Cyber and Digital Senior Officials’ Dialogue held in July 2026 and reaffirmed cooperation under the 2024 Memorandum of Understanding (MoU) on Artificial Intelligence Cooperation and the refreshed 2026 MoU on Cyber Security Cooperation.Leaders rec",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-24",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-24",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+            "finalUrl": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+            "retrievedAt": "2026-11-24T19:30:32.539Z",
+            "contentType": "text/html",
+            "contentHash": "a177ce2a62d4eb33bcbb016f84b5131d029b7abb7b2a39a6571999a6d7bc4c40",
+            "etag": "\"1795534506\"",
+            "lastModified": "Tue, 24 Nov 2026 15:35:06 GMT",
+            "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+            "publishedAt": "2026-11-24",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+      "content": "Listen On the occasion of the 11th Singapore-Australia Annual Leaders’ Meeting, the Prime Ministers of Australia and Singapore underscored their shared commitment to deepen cooperation on Artificial Intelligence (AI) to further strengthen the Australia–Singapore Comprehensive Strategic Partnership 2.0.Leaders welcomed the inaugural Australia–Singapore Cyber and Digital Senior Officials’ Dialogue held in July 2026 and reaffirmed cooperation under the 2024 Memorandum of Understanding (MoU) on Artificial Intelligence Cooperation and the refreshed 2026 MoU on Cyber Security Cooperation.Leaders rec",
+      "aiSummary": "Listen On the occasion of the 11th Singapore-Australia Annual Leaders’ Meeting, the Prime Ministers of Australia and Singapore underscored their shared commitment to deepen cooperation on Artificial Intelligence (AI) to further strengthen the Australia–Singapore Comprehensive Strategic Partnership 2.0.Leaders welcomed the inaugural Australia–Singapore Cyber and Digital Senior Officials’ Dialogue held in July 2026 and reaffirmed cooperation under the 2024 Memorandum of Understanding (MoU) on Artificial Intelligence Cooperation and the refreshed 2026 MoU on Cyber Security Cooperation.Leaders rec",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-24T19:30:32.539Z",
+      "updatedAt": "2026-11-24T19:30:32.539Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-australia-singapore-cooperation-on-artificial-in-s05ma2",
+      "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+      "url": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+      "sourceId": "pm-media",
+      "sourceName": "Prime Minister of Australia — media",
+      "jurisdiction": "federal",
+      "publishedAt": "2026-11-24",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-24T19:30:32.539Z",
+      "summary": "Listen On the occasion of the 11th Singapore-Australia Annual Leaders’ Meeting, the Prime Ministers of Australia and Singapore underscored their shared commitment to deepen cooperation on Artificial Intelligence (AI) to further strengthen the Australia–Singapore Comprehensive Strategic Partnership 2.0.Leaders welcomed the inaugural Australia–Singapore Cyber and Digital Senior Officials’ Dialogue held in July 2026 and reaffirmed cooperation under the 2024 Memorandum of Understanding (MoU) on Artificial Intelligence Cooperation and the refreshed 2026 MoU on Cyber Security Cooperation.Leaders rec",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v5",
+        "assessedAt": "2026-11-24T19:30:32.539Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+          "finalUrl": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+          "retrievedAt": "2026-11-24T19:30:32.539Z",
+          "contentType": "text/html",
+          "contentHash": "a177ce2a62d4eb33bcbb016f84b5131d029b7abb7b2a39a6571999a6d7bc4c40",
+          "etag": "\"1795534506\"",
+          "lastModified": "Tue, 24 Nov 2026 15:35:06 GMT",
+          "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+          "publishedAt": "2026-11-24",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-24T19:30:32.539Z"
+  },
+  {
+    "id": "source-review-follow-federal-online-safety-amendment-digital-duty-of-care-bill-2026-dae584419df6df71",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "targetPolicyBaseRevisionHash": "2c8d13365dc8f27ff8859496b741394b38a221f2e764460114c27894f79abb29",
+    "status": "rejected",
+    "discoveredAt": "2026-11-20T19:33:27.137Z",
+    "createdBy": "collector",
+    "notes": "Online Safety Amendment (Digital Duty of Care) Bill 2026: Senate Environment and Communications Legislation Committee reported on 20 November 2026. Detected by the follow watch track:federal-online-safety-amendment-digital-duty-of-care-bill-2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Online Safety Amendment (Digital Duty of Care) Bill 2026: Senate Environment and Communications Legislation Committee reported on 20 November 2026.",
+      "tags": [
+        "digital duty of care",
+        "online safety",
+        "generative AI",
+        "bill",
+        "Parliament"
+      ],
+      "agencies": [
+        "Parliament of Australia",
+        "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+      "retrievedAt": "2026-11-20T19:33:42.060Z",
+      "contentType": "text/html",
+      "contentHash": "a037e1cd4b8f1e321a792650a96072991ffd61423deaf2e5d0c15b5dda54e7ad",
+      "title": "Bill home page"
+    },
+    "proposedRecord": {
+      "id": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+      "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+      "description": "Proposed federal bill. The House of Representatives agreed to the third reading on 28 October 2026, with amendments: the bill home page records that 15 government amendments and 8 crossbench amendments were agreed that day. It would place a digital duty of care on online services, including services that generate material using AI. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
+      "jurisdiction": "federal",
+      "type": "legislation",
+      "status": "proposed",
+      "effectiveDate": "2026-10-15",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-10-15",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+            "retrievedAt": "2026-11-05T02:11:55.127Z",
+            "contentType": "text/html",
+            "contentHash": "ce61339ed67cbb14bdd0fbd32ccfa39908ad71e52d276ca2ccdb37849ffd97a5",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-05T02:11:55.127Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+              "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
+              "characterCount": 5793
+            },
+            "reviewedDate": {
+              "date": "2026-10-15",
+              "precision": "day",
+              "reviewedAt": "2026-11-05T22:01:48.258Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
+            }
+          }
+        },
+        {
+          "type": "scheduled_review",
+          "date": "2026-11-20",
+          "precision": "day",
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+            "retrievedAt": "2026-10-22T05:57:12.034Z",
+            "contentType": "text/html",
+            "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:57:12.034Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
+              "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
+              "characterCount": 4768
+            },
+            "reviewedDate": {
+              "date": "2026-11-20",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T05:57:12.064Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The captured bill home page notes \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Parliament of Australia",
+        "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
+      ],
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+      "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. On 28 October 2026 the bill home page records that the second reading was agreed, that consideration in detail agreed 15 government amendments and 8 crossbench amendments, and that the third reading was agreed. Status remains proposed: the register has no separate before-Parliament status, and the bill is not an Act. The same page's Status field still reads \"Before Reps\" and it shows no Senate progress table. The page records referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. Divisions listed on the bill home page for 28 October 2026 include the question that the amendments moved by Ms Chaney be agreed to. The sheet linked from that page (Kate Chaney MP) proposes inserting paragraph 25E(1)(da), \"material or conduct that simulates emotional intimacy and encourages or fosters a child's dependence on it in place of human relationships\". The third-reading PDF was not readable in this capture, so that sentence is the circulated sheet, not a quotation from the text as agreed. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications). The Minister announced introduction on 15 October 2026. The department has a page on the digital duty of care.",
+      "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026. The House agreed to the third reading on 28 October 2026, with amendments. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
+      "tags": [
+        "digital duty of care",
+        "online safety",
+        "generative AI",
+        "bill",
+        "Parliament"
+      ],
+      "themes": [
+        "online-safety",
+        "generative-ai",
+        "risk-assurance",
+        "ai-governance"
+      ],
+      "createdAt": "2026-10-17T09:00:00.000Z",
+      "updatedAt": "2026-11-20T19:33:27.137Z",
+      "legislative": {
+        "kind": "bill",
+        "ref": {
+          "register": "aph",
+          "billId": "r7553"
+        },
+        "origin": "government",
+        "events": [
+          {
+            "date": "2026-10-15",
+            "precision": "day",
+            "event": {
+              "kind": "introduced",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-10-15",
+            "precision": "day",
+            "event": {
+              "kind": "referred",
+              "committee": "Senate Environment and Communications Legislation Committee",
+              "inquiryUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P",
+              "reportDue": "2026-11-20"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-10-28",
+            "precision": "day",
+            "event": {
+              "kind": "passed",
+              "chamber": "lower",
+              "withAmendments": true
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-11-20",
+            "precision": "day",
+            "event": {
+              "kind": "reported",
+              "committee": "Senate Environment and Communications Legislation Committee",
+              "reportUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          }
+        ]
+      }
+    },
+    "legislativeUpdate": {
+      "added": [
+        {
+          "date": "2026-11-20",
+          "precision": "day",
+          "event": {
+            "kind": "reported",
+            "committee": "Senate Environment and Communications Legislation Committee",
+            "reportUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Bill home page"
+          }
+        }
+      ],
+      "unrecognised": []
+    },
+    "updatedAt": "2026-11-24T19:33:09.234Z",
+    "rejectionReason": "Superseded by source-review-follow-federal-online-safety-amendment-digital-duty-of-care-bill-2026-015d6d3cb39408b7: the register now shows a different stage update."
+  },
+  {
+    "id": "source-review-follow-federal-online-safety-amendment-digital-duty-of-care-bill-2026-015d6d3cb39408b7",
+    "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+    "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+    "entryKind": "policy",
+    "targetPolicyId": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+    "targetPolicyBaseRevisionHash": "2c8d13365dc8f27ff8859496b741394b38a221f2e764460114c27894f79abb29",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-24T19:33:09.234Z",
+    "createdBy": "collector",
+    "notes": "Online Safety Amendment (Digital Duty of Care) Bill 2026: Senate Environment and Communications Legislation Committee reported on 20 November 2026. The page also shows \"Committee of the Whole debate\" on 24 November 2026, which has no lifecycle meaning yet; read the page. Detected by the follow watch track:federal-online-safety-amendment-digital-duty-of-care-bill-2026.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "legislation",
+      "suggestedJurisdiction": "federal",
+      "summary": "Online Safety Amendment (Digital Duty of Care) Bill 2026: Senate Environment and Communications Legislation Committee reported on 20 November 2026. The page also shows \"Committee of the Whole debate\" on 24 November 2026, which has no lifecycle meaning yet; read the page.",
+      "tags": [
+        "digital duty of care",
+        "online safety",
+        "generative AI",
+        "bill",
+        "Parliament"
+      ],
+      "agencies": [
+        "Parliament of Australia",
+        "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+      "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+      "retrievedAt": "2026-11-24T19:33:32.765Z",
+      "contentType": "text/html",
+      "contentHash": "c48f474d0d5500fa137ef317e48e349c808afbcde96d12ccba80c8a368a2860a",
+      "title": "Bill home page"
+    },
+    "proposedRecord": {
+      "id": "federal-online-safety-amendment-digital-duty-of-care-bill-2026",
+      "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+      "description": "Proposed federal bill. The House of Representatives agreed to the third reading on 28 October 2026, with amendments: the bill home page records that 15 government amendments and 8 crossbench amendments were agreed that day. It would place a digital duty of care on online services, including services that generate material using AI. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
+      "jurisdiction": "federal",
+      "type": "legislation",
+      "status": "proposed",
+      "effectiveDate": "2026-10-15",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-10-15",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026",
+            "retrievedAt": "2026-11-05T02:11:55.127Z",
+            "contentType": "text/html",
+            "contentHash": "ce61339ed67cbb14bdd0fbd32ccfa39908ad71e52d276ca2ccdb37849ffd97a5",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-11-05T02:11:55.127Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Captured 5 Nov 2026 by Claude (agent) at Daniel Alkurdi's request through the collector's headless Chromium fetcher sending the Policai identity (APH answers plain HTTP with a WAF 403). HTML-only bill home page; text is the page body without navigation.",
+              "pageContentHash": "770d93c309dd7ad88d615fd8a63883ceb01cff6b554abf261e6f6a8d5e18df0f",
+              "characterCount": 5793
+            },
+            "reviewedDate": {
+              "date": "2026-10-15",
+              "precision": "day",
+              "reviewedAt": "2026-11-05T22:01:48.258Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "Rechecked 5 Nov 2026: the bill home page Progress table shows 'Introduced and read a first time 15 Oct 2026' in the House of Representatives. Unchanged from the verified record."
+            }
+          }
+        },
+        {
+          "type": "scheduled_review",
+          "date": "2026-11-20",
+          "precision": "day",
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "finalUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Online Safety Amendment (Digital Duty of Care) Bill 2026 – Parliament of Australia",
+            "retrievedAt": "2026-10-22T05:57:12.034Z",
+            "contentType": "text/html",
+            "contentHash": "ee4cd1fa2283818ac255e27ec0cd8b39eec6667da7c614d7138b8b85be232612",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-22T05:57:12.034Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture of the APH bill home page for r7553 with the Policai collector identity; APH refuses plain HTTP clients. Staged by Claude (agent) for Daniel Alkurdi as a re-verification of the hidden draft.",
+              "pageContentHash": "3bd30c6d8e60fe4dbda1daf776c976b0bab1990120cea1c801fc3cfbf3b272bf",
+              "characterCount": 4768
+            },
+            "reviewedDate": {
+              "date": "2026-11-20",
+              "precision": "day",
+              "reviewedAt": "2026-10-22T05:57:12.064Z",
+              "reviewedBy": "Claude (agent)",
+              "notes": "The captured bill home page notes \"Referred to Committee (15/10/2026): Senate Environment and Communications Legislation Committee; Report due 20/11/2026\"."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Parliament of Australia",
+        "Department of Infrastructure, Transport, Regional Development, Communications and the Arts"
+      ],
+      "sourceUrl": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+      "content": "The Online Safety Amendment (Digital Duty of Care) Bill 2026 was introduced and read a first time in the House of Representatives on 15 October 2026, and the second reading was moved that day. On 28 October 2026 the bill home page records that the second reading was agreed, that consideration in detail agreed 15 government amendments and 8 crossbench amendments, and that the third reading was agreed. Status remains proposed: the register has no separate before-Parliament status, and the bill is not an Act. The same page's Status field still reads \"Before Reps\" and it shows no Senate progress table. The page records referral on 15 October 2026 to the Senate Environment and Communications Legislation Committee, with a report due on 20 November 2026. That reporting date is stored as scheduled_review because the register has no committee-report date type. It is the committee's reporting date, not a statutory review of an Act. Divisions listed on the bill home page for 28 October 2026 include the question that the amendments moved by Ms Chaney be agreed to. The sheet linked from that page (Kate Chaney MP) proposes inserting paragraph 25E(1)(da), \"material or conduct that simulates emotional intimacy and encourages or fosters a child's dependence on it in place of human relationships\". The third-reading PDF was not readable in this capture, so that sentence is the circulated sheet, not a quotation from the text as agreed. As described in the approved 11–17 October 2026 signal, the bill covers services that generate material using AI (s 25B(1)(h)), requires yearly risk assessments, and in Schedule 3 would repeal the online-safety industry codes and standards 12 months after Royal Assent. Those codes remain in force on esafety-genai-industry-codes. An exposure draft was released for targeted consultation on 8 September 2026 (Minister for Communications). The Minister announced introduction on 15 October 2026. The department has a page on the digital duty of care.",
+      "aiSummary": "Proposed Online Safety Amendment (Digital Duty of Care) Bill 2026. The House agreed to the third reading on 28 October 2026, with amendments. It is not law. The Senate Environment and Communications Legislation Committee is still due to report on 20 November 2026.",
+      "tags": [
+        "digital duty of care",
+        "online safety",
+        "generative AI",
+        "bill",
+        "Parliament"
+      ],
+      "themes": [
+        "online-safety",
+        "generative-ai",
+        "risk-assurance",
+        "ai-governance"
+      ],
+      "createdAt": "2026-10-17T09:00:00.000Z",
+      "updatedAt": "2026-11-24T19:33:09.234Z",
+      "legislative": {
+        "kind": "bill",
+        "ref": {
+          "register": "aph",
+          "billId": "r7553"
+        },
+        "origin": "government",
+        "events": [
+          {
+            "date": "2026-10-15",
+            "precision": "day",
+            "event": {
+              "kind": "introduced",
+              "chamber": "lower"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-10-15",
+            "precision": "day",
+            "event": {
+              "kind": "referred",
+              "committee": "Senate Environment and Communications Legislation Committee",
+              "inquiryUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P",
+              "reportDue": "2026-11-20"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-10-28",
+            "precision": "day",
+            "event": {
+              "kind": "passed",
+              "chamber": "lower",
+              "withAmendments": true
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          },
+          {
+            "date": "2026-11-20",
+            "precision": "day",
+            "event": {
+              "kind": "reported",
+              "committee": "Senate Environment and Communications Legislation Committee",
+              "reportUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P"
+            },
+            "source": {
+              "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+              "title": "Bill home page"
+            }
+          }
+        ]
+      }
+    },
+    "legislativeUpdate": {
+      "added": [
+        {
+          "date": "2026-11-20",
+          "precision": "day",
+          "event": {
+            "kind": "reported",
+            "committee": "Senate Environment and Communications Legislation Committee",
+            "reportUrl": "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Environment_and_Communications/DigitalDutyofCare48P"
+          },
+          "source": {
+            "url": "https://www.aph.gov.au/Parliamentary_Business/Bills_Legislation/Bills_Search_Results/Result?bId=r7553",
+            "title": "Bill home page"
+          }
+        }
+      ],
+      "unrecognised": [
+        {
+          "chamber": "upper",
+          "stage": "Committee of the Whole debate",
+          "date": "2026-11-24"
+        }
+      ]
+    },
+    "updatedAt": "2026-11-24T19:33:09.234Z"
+  },
+  {
     "id": "source-review-9baf131d-d381-4eef-9a23-17903b941eac",
     "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
     "title": "Artificial Intelligence Assurance Framework",
@@ -41492,5 +42029,247 @@
       "notes": "New proposed record for the draft DEWR Best Practice Guide on the Adoption of AI in the Workplace. Status stays proposed while the draft is out for consultation. Not verified."
     },
     "updatedAt": "2026-11-12T05:40:00.000Z"
+  },
+  {
+    "id": "source-review-dev-rapid-review-into-australian-government-arrangem-1hss5x2",
+    "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "entryKind": "policy",
+    "targetPolicyId": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+    "targetPolicyBaseRevisionHash": "7834060b8e83130fb609be4f4c8b81a1aee66c47f4846611038287b38ec250f1",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-20T19:30:22.940Z",
+    "createdBy": "collector",
+    "notes": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current. Re-verify the existing register record before restoring it to public reads. Detected by PM&C — Rapid review into AI-driven cyber incident arrangements (heuristic assessment).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 1,
+      "suggestedType": "policy",
+      "suggestedJurisdiction": "federal",
+      "summary": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "terms of reference",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ]
+    },
+    "sourceEvidence": {
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "retrievedAt": "2026-11-20T19:30:22.940Z",
+      "contentType": "text/html",
+      "contentHash": "df31df0ca7f0e5dbfa3e3147acb6985560e64c860965227c3a5dda394df1fde4",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+    },
+    "proposedRecord": {
+      "id": "pmc-rapid-review-ai-driven-cyber-incident-2026",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "description": "PM&C-led rapid review, announced with formal terms of reference on 24 September 2026, of whether Australia's legislative, governance and information-sharing arrangements are fit for purpose for cyber incidents involving AI.",
+      "jurisdiction": "federal",
+      "type": "policy",
+      "status": "proposed",
+      "effectiveDate": "2026-09-24",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-09-24",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+            "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+            "retrievedAt": "2026-10-26T12:48:03Z",
+            "contentType": "text/html",
+            "contentHash": "72e04c0756d8b67c3f4238504bf48220ac63e8c1281e0f60791f219631430391",
+            "linkedDocuments": [],
+            "browserCapture": {
+              "method": "browser",
+              "capturedAt": "2026-10-26T12:48:03Z",
+              "capturedBy": "Claude (agent)",
+              "requestedBy": "Daniel Alkurdi",
+              "notes": "Headless Chromium capture with the Policai/1.0 collector identity on Argus, 26 October 2026, for Daniel Alkurdi's review of pending developments. Main-content text of the rendered page; the terms of reference page was read in the same session and its five recommendation areas match the record content.",
+              "pageContentHash": "fd6266d22d832d97a54851e9353a99b21169cd317a891ed80f1f5cc79bc1b6ad",
+              "characterCount": 1616
+            },
+            "reviewedDate": {
+              "date": "2026-09-24",
+              "precision": "day",
+              "reviewedAt": "2026-10-27T08:01:01.423Z",
+              "reviewedBy": "Daniel Alkurdi",
+              "notes": "The review page states \"On 24 September 2026, the Prime Minister, the Hon Anthony Albanese MP, announced a rapid review\", and its resources list shows \"Terms of Reference – Rapid review into Australian Government arrangements for an AI-driven cyber incident Thursday 24 September 2026\"."
+            }
+          }
+        }
+      ],
+      "agencies": [
+        "Department of the Prime Minister and Cabinet",
+        "National Cyber Security Coordinator",
+        "Australian Signals Directorate",
+        "Australian AI Safety Institute",
+        "Services Australia"
+      ],
+      "sourceUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "content": "On 24 September 2026 the Prime Minister announced a Department of the Prime Minister and Cabinet (PM&C)-led rapid review of whether existing legislative, governance and information-sharing arrangements are fit for purpose to prepare for and respond to cyber incidents involving artificial intelligence. PM&C published formal terms of reference the same day (https://www.pmc.gov.au/resources/terms-reference-rapid-review-australian-government-arrangements-ai-driven-cyber-incident; release date Thursday 24 September 2026). The review page states that PM&C leads the review in collaboration with the National Cyber Security Coordinator, the Australian Signals Directorate, the Australian AI Safety Institute and Services Australia. Per the terms of reference, recommendations scope covers: reporting requirements relating to AI-driven cyber incidents, AI-identified cyber vulnerabilities and cyber-related AI safety incidents (including obligations, thresholds, pathways and systems); Commonwealth governance and information-sharing arrangements for managing incidents involving AI (including roles, responsibilities and escalation pathways); engagement and information-sharing obligations of AI firms (including notification requirements and cooperation arrangements during incidents); the adequacy of existing system and legislative, regulatory and enforcement frameworks in deterring AI-driven cyber incidents (including whether current offences, liabilities, penalties and enforcement mechanisms are sufficient and effective); and mechanisms to strengthen networks and systems of government departments and agencies against AI vulnerabilities. PM&C states the review will also inform Australia's AI Standards and international work on safety incident reporting. The Prime Minister's disclosure of the underlying OpenAI / Medicare statistics portal incident is recorded separately as timeline event tl-2026-09-24-pm-discloses-openai-medicare-portal-access. This record is the government rapid review with published terms of reference; it is not a completed instrument and it is not OpenAI's later company taskforce.",
+      "aiSummary": "PM&C-led rapid review announced 24 September 2026 with published terms of reference on whether legislative, governance and information-sharing arrangements are fit for AI-driven cyber incidents; recommendations to inform Australia's AI Standards.",
+      "tags": [
+        "rapid review",
+        "PM&C",
+        "cyber security",
+        "AI incident reporting",
+        "terms of reference",
+        "OpenAI",
+        "Medicare portal"
+      ],
+      "themes": [
+        "cyber-security",
+        "ai-governance",
+        "risk-assurance",
+        "standards",
+        "agentic-ai"
+      ],
+      "createdAt": "2026-10-20T05:20:00.000Z",
+      "updatedAt": "2026-11-20T19:30:22.940Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-rapid-review-into-australian-government-arrangem-1hss5x2",
+      "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+      "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+      "sourceId": "pmc-rapid-review-ai-cyber",
+      "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
+      "jurisdiction": "federal",
+      "detectedAt": "2026-11-20T19:30:22.940Z",
+      "summary": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current.",
+      "relevanceScore": 1,
+      "classification": "heuristic",
+      "assessment": {
+        "method": "heuristic",
+        "promptVersion": "source-hash-change-v1",
+        "assessedAt": "2026-11-20T19:30:22.940Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+          "retrievedAt": "2026-11-20T19:30:22.940Z",
+          "contentType": "text/html",
+          "contentHash": "df31df0ca7f0e5dbfa3e3147acb6985560e64c860965227c3a5dda394df1fde4",
+          "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+        }
+      },
+      "status": "detected"
+    },
+    "sourceVersionSequence": 3,
+    "updatedAt": "2026-11-20T19:30:22.940Z"
+  },
+  {
+    "id": "source-review-dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+    "sourceUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+    "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-17T19:30:30.396Z",
+    "createdBy": "collector",
+    "notes": "Detected by the collector from Parliament of Tasmania — current bills (score 0.65, ai).",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": null,
+      "suggestedJurisdiction": "tas",
+      "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "tags": [],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "retrievedAt": "2026-11-17T19:30:30.396Z",
+      "contentType": "text/html",
+      "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "publishedAt": "2026-11-17",
+      "publishedAtPrecision": "day"
+    },
+    "proposedRecord": {
+      "id": "data-centre-safeguards-bill-2026-54-of-2026",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "description": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "jurisdiction": "tas",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-11-17",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-11-17",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+            "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+            "retrievedAt": "2026-11-17T19:30:30.396Z",
+            "contentType": "text/html",
+            "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+            "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+            "publishedAt": "2026-11-17",
+            "publishedAtPrecision": "day"
+          }
+        }
+      ],
+      "agencies": [],
+      "sourceUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "content": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "aiSummary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "tags": [],
+      "themes": [],
+      "createdAt": "2026-11-17T19:30:30.396Z",
+      "updatedAt": "2026-11-17T19:30:30.396Z"
+    },
+    "linkedDevelopment": {
+      "id": "dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+      "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+      "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+      "sourceId": "tas-parliament-bills",
+      "sourceName": "Parliament of Tasmania — current bills",
+      "jurisdiction": "tas",
+      "publishedAt": "2026-11-17",
+      "publishedAtPrecision": "day",
+      "detectedAt": "2026-11-17T19:30:30.396Z",
+      "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+      "relevanceScore": 0.65,
+      "classification": "ai",
+      "assessment": {
+        "method": "ai",
+        "promptVersion": "clef-noul-v5",
+        "assessedAt": "2026-11-17T19:30:30.396Z"
+      },
+      "verification": {
+        "status": "needs_review",
+        "source": {
+          "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+          "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+          "retrievedAt": "2026-11-17T19:30:30.396Z",
+          "contentType": "text/html",
+          "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+          "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+          "publishedAt": "2026-11-17",
+          "publishedAtPrecision": "day"
+        }
+      },
+      "status": "detected"
+    },
+    "updatedAt": "2026-11-17T19:30:30.396Z"
   }
 ]
