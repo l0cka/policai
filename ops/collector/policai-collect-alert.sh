@@ -13,6 +13,10 @@ run = json.load(open(sys.argv[1]))
 for key in ('run_id', 'phase', 'exit_code', 'message', 'evidence', 'pr'):
     if run.get(key) not in (None, ''):
         print(f'{key}: {run[key]}')
+if run.get('collect_reason'):
+    print('collect_reason:')
+    for line in run['collect_reason']:
+        print(line)
 PY
 )
 LOG=$(journalctl --user -u policai-collect.service -n 20 --no-pager -o cat 2>/dev/null || echo "journal unavailable")
