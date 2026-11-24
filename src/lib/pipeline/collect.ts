@@ -1197,6 +1197,119 @@ function retractTransitionsOfVerifiedReading(
 }
 
 /**
+ * The highest version above the source's published baseline that the
+ * collector already staged for a reading, while a collector review of the
+ * source is still pending. `transitionForDocumentHash` compares a reading
+ * with the latest version only, so a page that alternates between two
+ * readings (#749: the APH inquiry page flips between two fingerprints) would
+ * otherwise open a new version, and a new review, on every flip. Returns null
+ * when no review is pending, so a reading that returns after an editor
+ * published a later version still stages.
+ */
+function stagedVersionOfReading(
+  state: WatchState,
+  sourceId: string,
+  reviews: readonly SourceReview[],
+  isReading: (hash: string) => boolean,
+  belowVersion = Number.POSITIVE_INFINITY,
+): { contentHash: string; changeCount: number } | null {
+  const versioned = reviews.filter(
+    (review) =>
+      review.linkedDevelopment?.sourceId === sourceId &&
+      typeof review.sourceVersionSequence === 'number',
+  );
+  const baseline = Math.max(
+    0,
+    ...versioned
+      .filter(
+        (review) => review.status === 'approved' || review.status === 'published',
+      )
+      .map((review) => review.sourceVersionSequence as number),
+  );
+  const reviewPending = versioned.some(
+    (review) =>
+      review.status === 'pending_review' &&
+      review.createdBy === 'collector' &&
+      (review.sourceVersionSequence as number) > baseline,
+  );
+  if (!reviewPending) return null;
+  let staged: { contentHash: string; changeCount: number } | null = null;
+  for (const entry of Object.values(state.seen)) {
+    if (entry.sourceId !== sourceId) continue;
+    const parsed = parseChangeFingerprint(entry.candidate?.changeFingerprint);
+    if (
+      parsed &&
+      parsed.changeCount > baseline &&
+      parsed.changeCount < belowVersion &&
+      isReading(parsed.contentHash) &&
+      (!staged || parsed.changeCount > staged.changeCount)
+    ) {
+      staged = parsed;
+    }
+  }
+  return staged;
+}
+
+/**
+ * Pending collector reviews replayed from the outbox that re-stage a reading
+ * an earlier version of the same source already staged, while another review
+ * of the source is pending. Their versions leave `seen`, and the CLI drops
+ * them and their developments from the outbox replay.
+ */
+function retractRestagedReadings(
+  state: WatchState,
+  sourceId: string,
+  reviews: readonly SourceReview[],
+  replayedReviewIds: ReadonlySet<string>,
+): string[] {
+  const retracted: string[] = [];
+  for (const review of reviews) {
+    const version = review.sourceVersionSequence;
+    if (
+      !replayedReviewIds.has(review.id) ||
+      review.status !== 'pending_review' ||
+      review.createdBy !== 'collector' ||
+      review.linkedDevelopment?.sourceId !== sourceId ||
+      typeof version !== 'number'
+    ) {
+      continue;
+    }
+    const ownKeys = Object.entries(state.seen)
+      .filter(
+        ([, entry]) =>
+          entry.sourceId === sourceId &&
+          parseChangeFingerprint(entry.candidate?.changeFingerprint)
+            ?.changeCount === version,
+      )
+      .map(([key]) => key);
+    const readingHashes = new Set([
+      review.sourceEvidence.contentHash,
+      ...ownKeys.map(
+        (key) =>
+          parseChangeFingerprint(state.seen[key].candidate?.changeFingerprint)
+            ?.contentHash,
+      ),
+    ]);
+    const others = reviews.filter(
+      (other) => other.id !== review.id && !retracted.includes(other.id),
+    );
+    if (
+      stagedVersionOfReading(
+        state,
+        sourceId,
+        others,
+        (hash) => readingHashes.has(hash),
+        version,
+      )
+    ) {
+      for (const key of ownKeys) delete state.seen[key];
+      retracted.push(review.id);
+    }
+  }
+  return retracted;
+}
+
+/**
  * Compares a document source's current reading with its snapshot and the
  * tracked record's verified fingerprint, and advances the snapshot and
  * version transitions in `state`.
@@ -1221,6 +1334,19 @@ async function readDocumentSource(
   const reading = sourceRetrieval;
   const isCurrentReading = (hash: string | undefined) =>
     matchesRetrievedContent(reading, hash);
+  const trackedPolicy = trackedPoliciesByUrl.get(
+    sourceUrlIdentity(source.url),
+  );
+  const trackedTimelineEvent = trackedTimelineEventsByUrl.get(
+    sourceUrlIdentity(source.url),
+  );
+  const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
+  const restagedReviewIds = trackedRecord
+    ? retractRestagedReadings(state, source.id, reviews, replayedReviewIds)
+    : [];
+  const liveReviews = restagedReviewIds.length
+    ? reviews.filter((review) => !restagedReviewIds.includes(review.id))
+    : reviews;
   const isThisReading = (
     hash: string | undefined,
     snapshot: SourceSnapshot | undefined,
@@ -1242,16 +1368,9 @@ async function readDocumentSource(
     )
       ? latestTransition.contentHash
       : contentHash;
-  const trackedPolicy = trackedPoliciesByUrl.get(
-    sourceUrlIdentity(source.url),
-  );
-  const trackedTimelineEvent = trackedTimelineEventsByUrl.get(
-    sourceUrlIdentity(source.url),
-  );
   const canonicalContentHash = trackedPolicy
     ? trackedPolicy.verification.source.contentHash
     : trackedTimelineEvent?.verification.source.contentHash;
-  const trackedRecord = trackedPolicy ?? trackedTimelineEvent;
   const verifiedAt = trackedRecord?.verification.source.retrievedAt;
   const heldSince = readingHeldSince(
     state,
@@ -1265,7 +1384,7 @@ async function readDocumentSource(
     isCurrentReading(previous?.contentHash) &&
     Date.parse(verifiedAt) >= Date.parse(heldSince)
       ? changeReviewsOfReadingSince(
-          reviews,
+          liveReviews,
           source,
           verifiedAt,
           isCurrentReading,
@@ -1275,9 +1394,12 @@ async function readDocumentSource(
     verifiedAt !== undefined &&
     stagedSinceVerified !== null &&
     stagedSinceVerified.every((review) => replayedReviewIds.has(review.id));
-  const retractedReviewIds = verifiedReading
-    ? stagedSinceVerified.map((review) => review.id)
-    : [];
+  const retractedReviewIds = [
+    ...restagedReviewIds,
+    ...(verifiedReading
+      ? stagedSinceVerified.map((review) => review.id)
+      : []),
+  ];
   if (verifiedReading) {
     retractTransitionsOfVerifiedReading(
       state,
@@ -1321,11 +1443,24 @@ async function readDocumentSource(
   }
 
   if (trackedRecord && reviewReason) {
-    const transition = transitionForDocumentHash(
+    let transition = transitionForDocumentHash(
       state,
       source.id,
       readingHash,
     );
+    let stagedHash = readingHash;
+    const earlier = transition.isNew
+      ? stagedVersionOfReading(
+          state,
+          source.id,
+          liveReviews,
+          (hash) => hash === readingHash || isCurrentReading(hash),
+        )
+      : null;
+    if (earlier) {
+      transition = { changeCount: earlier.changeCount, isNew: false };
+      stagedHash = earlier.contentHash;
+    }
     if (transition.isNew) {
       supersedeOlderDocumentCandidates(
         state,
@@ -1339,7 +1474,7 @@ async function readDocumentSource(
           trackedPolicy,
           source,
           sourceRetrieval.evidence,
-          readingHash,
+          stagedHash,
           transition.changeCount,
           nowIso,
           reviewReason,
@@ -1348,7 +1483,7 @@ async function readDocumentSource(
           trackedTimelineEvent as TimelineEvent,
           source,
           sourceRetrieval.evidence,
-          readingHash,
+          stagedHash,
           transition.changeCount,
           nowIso,
           reviewReason,

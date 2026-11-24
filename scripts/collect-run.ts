@@ -293,7 +293,7 @@ export async function runCollection(run: CollectionRun): Promise<void> {
   );
   if (retracted.length > 0) {
     console.log(
-      `[collect] Outbox: retracted ${retracted.length} change reviews for sources verified unchanged: ` +
+      `[collect] Outbox: retracted ${retracted.length} change reviews for sources verified unchanged or readings already staged: ` +
         retracted.map((review) => review.id).join(', '),
     );
   }
