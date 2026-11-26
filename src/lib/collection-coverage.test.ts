@@ -162,7 +162,11 @@ describe('publicAutomaticCollectionMeta', () => {
     const projected = publicAutomaticCollectionMeta(committed, WATCH_SOURCES);
 
     expect(projected).toEqual(committed);
-    for (const sourceId of ['accc-rss', 'wa-ai-policy']) {
+    const manualIds = WATCH_SOURCES.filter(
+      (source) => source.enabled && source.automation !== 'automatic',
+    ).map((source) => source.id);
+    expect(manualIds).toContain('wa-ai-policy');
+    for (const sourceId of manualIds) {
       expect(committed.collector.lastRunSources).not.toContain(sourceId);
       expect(
         committed.collector.sourceResults.some(
