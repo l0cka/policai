@@ -1,5 +1,137 @@
 [
   {
+    "id": "dev-new-guidance-on-open-weight-ai-models-1qxdwx",
+    "title": "New guidance on open-weight AI models",
+    "url": "https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models?ref=search",
+    "sourceId": "cyber-news",
+    "sourceName": "Australian Cyber Security Centre — news",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-11-05",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-26T19:32:29.295Z",
+    "summary": "Listen full_coverage News New guidance on open-weight AI models Published 05 Nov 2026 Last reviewed 05 Nov 2026 | print Print page Print page email Email or share link chevron_right Print or share chevron_right Print page ASD’s ACSC has released two new publications to help organisations make informed decisions about adopting and operating open-weight AI models:Open-weight AI models: Opportunities and cyber security risks explains what open-weight AI models are, the benefits they can provide, and the cyber security and supply chain risks that arise from the public release of model weights.Sele",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v5",
+      "assessedAt": "2026-11-26T19:32:29.295Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models?ref=search",
+        "finalUrl": "https://www.cyber.gov.au/news/new-guidance-on-open-weight-ai-models?ref=search",
+        "retrievedAt": "2026-11-26T19:32:29.295Z",
+        "contentType": "text/html",
+        "contentHash": "2b64328fcc82ed8ca475e2a5f17662d118e68abd32aae9086ced39519b189f8b",
+        "etag": "\"1795680789\"",
+        "lastModified": "Thu, 26 Nov 2026 08:13:09 GMT",
+        "title": "New guidance on open-weight AI models",
+        "publishedAt": "2026-11-05",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-australia-singapore-cooperation-on-artificial-in-s05ma2",
+    "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+    "url": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+    "sourceId": "pm-media",
+    "sourceName": "Prime Minister of Australia — media",
+    "jurisdiction": "federal",
+    "publishedAt": "2026-11-24",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-24T19:30:32.539Z",
+    "summary": "Listen On the occasion of the 11th Singapore-Australia Annual Leaders’ Meeting, the Prime Ministers of Australia and Singapore underscored their shared commitment to deepen cooperation on Artificial Intelligence (AI) to further strengthen the Australia–Singapore Comprehensive Strategic Partnership 2.0.Leaders welcomed the inaugural Australia–Singapore Cyber and Digital Senior Officials’ Dialogue held in July 2026 and reaffirmed cooperation under the 2024 Memorandum of Understanding (MoU) on Artificial Intelligence Cooperation and the refreshed 2026 MoU on Cyber Security Cooperation.Leaders rec",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v5",
+      "assessedAt": "2026-11-24T19:30:32.539Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+        "finalUrl": "https://www.pm.gov.au/media/australia-singapore-cooperation-artificial-intelligence",
+        "retrievedAt": "2026-11-24T19:30:32.539Z",
+        "contentType": "text/html",
+        "contentHash": "a177ce2a62d4eb33bcbb016f84b5131d029b7abb7b2a39a6571999a6d7bc4c40",
+        "etag": "\"1795534506\"",
+        "lastModified": "Tue, 24 Nov 2026 15:35:06 GMT",
+        "title": "Australia-Singapore Cooperation on Artificial Intelligence",
+        "publishedAt": "2026-11-24",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-rapid-review-into-australian-government-arrangem-1hss5x2",
+    "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
+    "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+    "sourceId": "pmc-rapid-review-ai-cyber",
+    "sourceName": "PM&C — Rapid review into AI-driven cyber incident arrangements",
+    "jurisdiction": "federal",
+    "detectedAt": "2026-11-20T19:30:22.940Z",
+    "summary": "The official source content for \"Rapid review into Australian Government arrangements for an AI-driven cyber incident\" changed. Editorial re-verification is required before the register record can be treated as current.",
+    "relevanceScore": 1,
+    "classification": "heuristic",
+    "assessment": {
+      "method": "heuristic",
+      "promptVersion": "source-hash-change-v1",
+      "assessedAt": "2026-11-20T19:30:22.940Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "finalUrl": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
+        "retrievedAt": "2026-11-20T19:30:22.940Z",
+        "contentType": "text/html",
+        "contentHash": "df31df0ca7f0e5dbfa3e3147acb6985560e64c860965227c3a5dda394df1fde4",
+        "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident"
+      }
+    },
+    "status": "detected"
+  },
+  {
+    "id": "dev-data-centre-safeguards-bill-2026-54-of-2026-1ev3lxd",
+    "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+    "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+    "sourceId": "tas-parliament-bills",
+    "sourceName": "Parliament of Tasmania — current bills",
+    "jurisdiction": "tas",
+    "publishedAt": "2026-11-17",
+    "publishedAtPrecision": "day",
+    "detectedAt": "2026-11-17T19:30:30.396Z",
+    "summary": "Data Centre Safeguards Bill 2026 (54 of 2026) Last updated: 17 Nov 2026 Introduced by: Peter George MP Bill first introduced in the 52nd Parliament, 1st Session. House of Assembly - stage Date passed Legislative Council - stage Date passed First reading 17/11/2026 First reading Resumed Resumed 2nd Reading moved * 2nd Reading moved * 2nd Reading Agreed 2nd Reading committed Committee Committee Reported Reported Amended # Amended # Third reading Third reading Negatived Negatived LC amendments agreed to Act Royal Assent Related Documents Text of Bill as introduced Clause notes Fact sheet Note:Dat",
+    "relevanceScore": 0.65,
+    "classification": "ai",
+    "assessment": {
+      "method": "ai",
+      "promptVersion": "clef-noul-v5",
+      "assessedAt": "2026-11-17T19:30:30.396Z"
+    },
+    "verification": {
+      "status": "needs_review",
+      "source": {
+        "url": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+        "finalUrl": "https://www.parliament.tas.gov.au/bills/bills2026/data-centre-safeguards-bill-2026-54-of-2026",
+        "retrievedAt": "2026-11-17T19:30:30.396Z",
+        "contentType": "text/html",
+        "contentHash": "1baa44c02f654484f9abff8075dca2e54e7d9a645c639e3fcbfbdb2f780330e4",
+        "title": "Data Centre Safeguards Bill 2026 (54 of 2026)",
+        "publishedAt": "2026-11-17",
+        "publishedAtPrecision": "day"
+      }
+    },
+    "status": "detected"
+  },
+  {
     "id": "dev-rapid-review-into-australian-government-arrangem-ot2vmd",
     "title": "Rapid review into Australian Government arrangements for an AI-driven cyber incident",
     "url": "https://www.pmc.gov.au/domestic-policy/rapid-review-australian-government-arrangements-ai-driven-cyber-incident",
