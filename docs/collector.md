@@ -1127,6 +1127,15 @@ refused the collector, or was verified from a browser capture that a plain
 read cannot compare is never batched. Dismissed developments and the DTA
 framework's policy are never batched either.
 
+`propose` and `npm run audit:register` read sources through the HostGate
+(`createRegisterAuditGate` in `src/lib/register-audit.ts`): robots.txt, a
+2 s gap per host, and each host's records one at a time (up to 4 hosts at
+once). A host whose watch source is decided `identity_refused`, or that is
+listed in `AUDIT_REFUSED_HOSTS` with its evidence, is not requested, and its
+records are reported for full review. When a host does not answer, after the
+one retry, the rest of that host's records in the run are reported as not
+requested, so a host that holds the connection open costs one timeout per run.
+
 Commit the proposal and send Daniel each approve link. After he signs:
 
 ```bash

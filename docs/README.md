@@ -17,6 +17,7 @@ This directory holds the project-facing documentation that should stay in sync w
 - [This week](./this-week.md) — how `/this-week` picks its window and items on both sites.
 - [Research interface](./research-interface.md) — register and A2J interface architecture and their shared boundaries.
 - [Design direction](./design-direction.md) and [editorial index](./ui-editorial-index.md) — the visual identity and where it goes next.
+- [Re-confirm sweep, 26 Nov 2026](./reports/2026-11-26-reconfirm-sweep/README.md) — why most January 2027 records could not be batched, and the review plan to sign them before 4 January.
 - [WebMCP research note](./research/webmcp.md) — status of WebMCP and the scope Policai would expose.
 - [Network relationship explorer concept](./design/policai-network-concept-02.md) — retired design for the old `/network` force graph, replaced by the coverage map (#302); kept for history.
 

@@ -1,9 +1,13 @@
 import {
+  isGateError,
   matchesRetrievedContent,
   retrieveSource,
   SourceFetchError,
   type RetrievedSource,
 } from '@/lib/pipeline/fetch';
+import { hostOf, type Host } from '@/lib/pipeline/host';
+import { createHostGate, robotsFetcher, type HostGate } from '@/lib/pipeline/host-gate';
+import { refusedHosts, WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { sourceUrlIdentity } from '@/lib/source-url';
 import type {
   LinkedDocumentEvidence,
@@ -48,6 +52,8 @@ interface RegisterAuditOptions {
   env?: Record<string, string | undefined>;
   /** Injectable backoff clock, primarily for tests. */
   sleep?: (milliseconds: number) => Promise<void>;
+  /** Paces each host, applies robots.txt and refuses hosts decided refused. */
+  gate?: HostGate;
 }
 
 interface EvidenceComparison {
@@ -192,6 +198,39 @@ const auditSleep = (milliseconds: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
 
 /**
+ * Register-record hosts that refuse the declared Policai identity but host no
+ * watch source decided `identity_refused`. The audit does not request them;
+ * their records go to full review. Remove an entry when a gated audit reads
+ * the host again.
+ */
+export const AUDIT_REFUSED_HOSTS: Readonly<Record<string, string>> = {
+  'www.anao.gov.au':
+    'register audit 2026-11-26: HTTP/2 stream reset and no HTTP/1.1 response for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
+  'www.fcfcoa.gov.au':
+    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
+  'www.finance.gov.au':
+    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
+  'www.ag.gov.au':
+    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
+  'www.inslm.gov.au':
+    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
+};
+
+/** The gate a register audit on the collector host runs through. */
+export function createRegisterAuditGate(): HostGate {
+  const refused = new Map<Host, string>(refusedHosts(WATCH_SOURCES));
+  for (const host of Object.keys(AUDIT_REFUSED_HOSTS))
+    if (!refused.has(host as Host)) refused.set(host as Host, 'AUDIT_REFUSED_HOSTS');
+  return createHostGate({
+    hosts: {},
+    refused,
+    fetchRobots: robotsFetcher(),
+    now: Date.now,
+    sleep: auditSleep,
+  });
+}
+
+/**
  * Run one retrieval attempt, retrying exactly once for transient failures
  * (timeouts, DNS/socket errors, HTTP 408/429/5xx). Non-retryable errors —
  * HTTP 403, bot challenges, destination mismatches, and other client errors —
@@ -262,6 +301,7 @@ export async function auditRegister(
         // injected retrievers — including test fake fetches — retry identically.
         attempts: 1,
         timeoutMs: options.timeoutMs ?? resolved!.timeoutMs,
+        gate: options.gate,
       }));
   const retryDelayMs =
     options.retryDelayMs ?? resolved?.retryDelayMs ?? AUDIT_REGISTER_DEFAULT_RETRY_DELAY_MS;
@@ -272,36 +312,36 @@ export async function auditRegister(
       (!options.sourceId || policy.id === options.sourceId),
   );
 
-  return mapWithConcurrency(
-    auditable,
-    options.concurrency ?? 4,
-    async (policy) => {
-      try {
-        const retrieved = await retrieveWithAuditRetry(
-          retrieve,
-          policy.sourceUrl,
-          retryDelayMs,
-          options.sleep,
-        );
-        const completedAt = now().toISOString();
-        const retrievedAt = retrieved.evidence.retrievedAt;
-        const checkedAt =
-          retrievedAt &&
-          Number.isFinite(new Date(retrievedAt).getTime()) &&
-          new Date(retrievedAt).getTime() > new Date(completedAt).getTime()
-            ? retrievedAt
-            : completedAt;
-        const previousHash = policy.verification.source.contentHash;
-        const comparison = previousHash
-          ? compareRegisterSourceEvidence(
-              policy.verification.source,
-              retrieved,
-            )
-          : null;
-        const status: RegisterAuditStatus = comparison
-          ? comparison.status
-          : 'baseline_missing';
-        return {
+  const auditOne = async (
+    policy: AuditableRecord,
+  ): Promise<{ result: RegisterAuditResult; error?: unknown }> => {
+    try {
+      const retrieved = await retrieveWithAuditRetry(
+        retrieve,
+        policy.sourceUrl,
+        retryDelayMs,
+        options.sleep,
+      );
+      const completedAt = now().toISOString();
+      const retrievedAt = retrieved.evidence.retrievedAt;
+      const checkedAt =
+        retrievedAt &&
+        Number.isFinite(new Date(retrievedAt).getTime()) &&
+        new Date(retrievedAt).getTime() > new Date(completedAt).getTime()
+          ? retrievedAt
+          : completedAt;
+      const previousHash = policy.verification.source.contentHash;
+      const comparison = previousHash
+        ? compareRegisterSourceEvidence(
+            policy.verification.source,
+            retrieved,
+          )
+        : null;
+      const status: RegisterAuditStatus = comparison
+        ? comparison.status
+        : 'baseline_missing';
+      return {
+        result: {
           policyId: policy.id,
           title: policy.title,
           sourceUrl: policy.sourceUrl,
@@ -311,17 +351,20 @@ export async function auditRegister(
           currentEvidence: retrieved.evidence,
           comparisonBasis: comparison?.basis,
           error: comparison?.error,
-        };
-      } catch (error) {
-        const checkedAt = now().toISOString();
-        const httpStatus =
-          error instanceof SourceFetchError ? error.status : undefined;
-        const sourceMissing =
-          httpStatus === 404 ||
-          httpStatus === 410 ||
-          (error instanceof SourceFetchError &&
-            error.code === 'destination_mismatch');
-        return {
+        },
+      };
+    } catch (error) {
+      const checkedAt = now().toISOString();
+      const httpStatus =
+        error instanceof SourceFetchError ? error.status : undefined;
+      const sourceMissing =
+        httpStatus === 404 ||
+        httpStatus === 410 ||
+        (error instanceof SourceFetchError &&
+          error.code === 'destination_mismatch');
+      return {
+        error,
+        result: {
           policyId: policy.id,
           title: policy.title,
           sourceUrl: policy.sourceUrl,
@@ -329,9 +372,55 @@ export async function auditRegister(
           checkedAt,
           httpStatus,
           error: error instanceof Error ? error.message : String(error),
-        };
+        },
+      };
+    }
+  };
+
+  // One host's records run in order, so the gate paces each host and a host
+  // that stops answering costs one timeout per audit, not one per record.
+  const byHost = new Map<string, number[]>();
+  auditable.forEach((policy, index) => {
+    const host = URL.canParse(policy.sourceUrl)
+      ? hostOf(new URL(policy.sourceUrl))
+      : policy.sourceUrl;
+    byHost.set(host, [...(byHost.get(host) ?? []), index]);
+  });
+  const results = new Array<RegisterAuditResult>(auditable.length);
+  await mapWithConcurrency(
+    [...byHost],
+    options.concurrency ?? 4,
+    async ([host, indexes]) => {
+      let unanswered = false;
+      for (const index of indexes) {
+        const policy = auditable[index];
+        if (unanswered) {
+          results[index] = {
+            policyId: policy.id,
+            title: policy.title,
+            sourceUrl: policy.sourceUrl,
+            status: 'retrieval_failed',
+            checkedAt: now().toISOString(),
+            error: `${host} did not answer earlier in this audit; ${policy.sourceUrl} not requested`,
+          };
+          continue;
+        }
+        const { result, error } = await auditOne(policy);
+        results[index] = result;
+        unanswered = hostDidNotAnswer(error);
       }
     },
+  );
+  return results;
+}
+
+/** A timeout or socket failure that survived the retry, not an HTTP answer or a gate decision. */
+function hostDidNotAnswer(error: unknown): boolean {
+  return (
+    error instanceof SourceFetchError &&
+    error.retryable &&
+    error.status === undefined &&
+    !isGateError(error)
   );
 }
 

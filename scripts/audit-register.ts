@@ -5,6 +5,7 @@ import { readJsonFile, writeJsonFile } from '../src/lib/file-store';
 import {
   applyRegisterAuditEvidence,
   auditRegister,
+  createRegisterAuditGate,
   registerAuditRetrievalOptions,
 } from '../src/lib/register-audit';
 import type { Policy } from '../src/types';
@@ -42,6 +43,7 @@ async function runAudit(options: Options) {
   const results = await auditRegister(policies, {
     sourceId: options.sourceId,
     ...retrieval,
+    gate: createRegisterAuditGate(),
   });
   const counts = {
     unchanged: results.filter((result) => result.status === 'unchanged').length,
