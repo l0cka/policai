@@ -119,10 +119,10 @@ describe('collection CLI write path', () => {
   it('does not write a manual source failure into automatic coverage', async () => {
     const manual: WatchSource = {
       ...SOURCE,
-      id: 'homeaffairs-media-releases',
-      name: 'Home Affairs — media releases',
+      id: 'aph-bills-digests',
+      name: 'Parliamentary Library — bills digests',
       automation: buildManualDecision(),
-      url: 'https://www.example.gov.au/homeaffairs',
+      url: 'https://www.example.gov.au/aph-digests',
     };
     const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
@@ -150,12 +150,12 @@ describe('collection CLI write path', () => {
     });
 
     const written = readJson<CollectionMeta>('public', 'data', 'meta.json');
-    expect(written.collector.lastRunSources).not.toContain('homeaffairs-media-releases');
-    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/homeaffairs-media-releases: HTTP 403/);
+    expect(written.collector.lastRunSources).not.toContain('aph-bills-digests');
+    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/aph-bills-digests: HTTP 403/);
     expect(publicAutomaticCollectionMeta(written, WATCH_SOURCES)).toEqual(written);
     expect(
       written.collector.sourceResults.some(
-        (result) => result.sourceId === 'homeaffairs-media-releases' && result.coverageEligible !== false,
+        (result) => result.sourceId === 'aph-bills-digests' && result.coverageEligible !== false,
       ),
     ).toBe(false);
   });
