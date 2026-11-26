@@ -155,14 +155,18 @@ describe('publicAutomaticCollectionMeta', () => {
     expect(publicAutomaticCollectionMeta(recorded, CATALOG)).toBe(recorded);
   });
 
-  it('commits public meta with no coverage-eligible manual failure', () => {
+  it('commits public meta with no coverage-eligible result for a manual source', () => {
     const committed = JSON.parse(
       readFileSync(join(process.cwd(), 'public', 'data', 'meta.json'), 'utf8'),
     ) as CollectionMeta;
     const projected = publicAutomaticCollectionMeta(committed, WATCH_SOURCES);
 
     expect(projected).toEqual(committed);
-    for (const sourceId of ['accc-rss', 'wa-ai-policy']) {
+    const manualIds = WATCH_SOURCES.filter(
+      (source) => source.automation !== 'automatic',
+    ).map((source) => source.id);
+    expect(manualIds).toContain('wa-ai-policy');
+    for (const sourceId of manualIds) {
       expect(committed.collector.lastRunSources).not.toContain(sourceId);
       expect(
         committed.collector.sourceResults.some(
