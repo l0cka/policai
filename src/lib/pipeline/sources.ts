@@ -574,23 +574,19 @@ export const WATCH_SOURCES: WatchSource[] = [
   },
   {
     id: 'homeaffairs-media-releases',
-    name: 'Department of Home Affairs — media releases',
+    name: 'Department of Home Affairs — news',
     bodyId: 'homeaffairs',
     jurisdiction: 'federal',
     category: 'government',
-    url: 'https://www.homeaffairs.gov.au/news-media/media-releases',
+    url: 'https://www.homeaffairs.gov.au/news-media/archive',
     kind: 'html-index',
     schedule: 'weekly',
     enabled: true,
-    automation: {
-      mode: 'manual',
-      because: 'bot_blocked',
-      decision: 'manual',
-      since: '2026-10-22',
-      decidedBy: 'Daniel',
-      evidence:
-        'The host and its robots.txt return an Akamai “Access Denied” 403 to the declared Policai identity (probed from Argus 2026-10-22). Decided 2026-10-22: tracked by hand.',
-    },
+    automation: 'automatic',
+    fetchStrategy: 'browser',
+    admittedAt: '2026-11-26',
+    notes:
+      'The media-releases page returns 404 since the site moved its news to /news-media/archive (SharePoint; the list renders in the browser). With the scheme-free identity of 26 Nov 2026 the host answers HTTP 200; the old Akamai 403 is gone.',
   },
   {
     id: 'afp-publications',

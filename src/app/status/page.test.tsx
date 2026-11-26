@@ -185,7 +185,7 @@ it('names the automatic sources failing since the last passing run, longest firs
       consecutiveFailures: 1,
       lastFailureClass: 'timeout',
     },
-    'homeaffairs-media-releases': {
+    'aph-bills-digests': {
       lastSuccessAt: null,
       firstFailureAt: '2026-09-01T08:00:00.000Z',
       consecutiveFailures: 9,
