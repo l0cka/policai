@@ -19,6 +19,7 @@ import {
   type ReconfirmLedger,
 } from '../src/lib/register-reconfirm';
 import { approvalPageUrl, readEditorPasskeys } from '../src/lib/editor-approval';
+import { createRegisterAuditGate } from '../src/lib/register-audit';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const LEDGER_FILE = path.join(DATA_DIR, 'reconfirmations.json');
@@ -116,6 +117,7 @@ async function propose(options: CliValues<typeof COMMANDS.propose>) {
     batchSize,
     excludeIds,
     sourceUrl: store.sourceUrl,
+    audit: { gate: createRegisterAuditGate() },
   });
 
   console.log(`reconfirm: ${candidates.length} ${kind} records due within ${dueWithinDays} days`);

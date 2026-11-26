@@ -41,15 +41,14 @@ async function readDataFile(tree: string, file: DataFile): Promise<unknown> {
 
 async function stateAt(tree: string, mustHave: ReadonlySet<DataFile> = new Set()) {
   const present = new Set<DataFile>();
+  const missing = new Set<DataFile>();
   const read = async <T>(file: DataFile, fallback: T): Promise<T> => {
     const value = await readDataFile(tree, file);
     if (value !== undefined) {
       present.add(file);
       return value as T;
     }
-    if (mustHave.has(file)) {
-      throw new Error(`${file} is missing from the pull request but present in the base revision`);
-    }
+    if (mustHave.has(file)) missing.add(file);
     return fallback;
   };
   const [passkeys, sourceReviews, ledger, policies, timeline, developments] = await Promise.all([
@@ -60,6 +59,12 @@ async function stateAt(tree: string, mustHave: ReadonlySet<DataFile> = new Set()
     read<TimelineEvent[]>(DATA_FILES.timeline, []),
     read<Development[]>(DATA_FILES.developments, []),
   ]);
+  const absent = Object.values(DATA_FILES).filter((file) => missing.has(file));
+  if (absent.length > 0) {
+    throw new Error(
+      absent.map((file) => `${file} is missing from the pull request but present in the base revision`).join('\n'),
+    );
+  }
   const state: SignedRecordState = {
     passkeys,
     sourceReviews,

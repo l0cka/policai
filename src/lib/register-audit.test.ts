@@ -4,9 +4,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { buildPolicy } from '@/test/factories';
 import { retrieveSource, SourceFetchError } from '@/lib/pipeline/fetch';
 import { validatePolicies } from '@/lib/validate-data';
+import type { Host } from '@/lib/pipeline/host';
+import { createHostGate } from '@/lib/pipeline/host-gate';
 import {
   applyRegisterAuditEvidence,
+  AUDIT_REFUSED_HOSTS,
   auditRegister,
+  createRegisterAuditGate,
   registerAuditRetrievalOptions,
 } from './register-audit';
 
@@ -749,5 +753,82 @@ describe('register audit retrieval retry', () => {
     } finally {
       spy.mockRestore();
     }
+  });
+});
+
+describe('register audit host pacing', () => {
+  const at = (id: string, sourceUrl: string) => buildPolicy({ id, sourceUrl });
+  const fixedNow = () => new Date('2026-11-26T00:00:00.000Z');
+
+  it('requests one host at a time and stops requesting a host that did not answer', async () => {
+    const records = [
+      at('slow-1', 'https://slow.gov.au/a'),
+      at('fast-1', 'https://fast.gov.au/a'),
+      at('slow-2', 'https://slow.gov.au/b'),
+      at('fast-2', 'https://fast.gov.au/b'),
+      at('slow-3', 'https://slow.gov.au/c'),
+    ];
+    const requested: string[] = [];
+    const inFlight = new Map<string, number>();
+    let overlapped = false;
+    const results = await auditRegister(records, {
+      concurrency: 4,
+      retrieve: async (url) => {
+        const host = new URL(url).host;
+        requested.push(url);
+        inFlight.set(host, (inFlight.get(host) ?? 0) + 1);
+        if (inFlight.get(host)! > 1) overlapped = true;
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        inFlight.set(host, inFlight.get(host)! - 1);
+        if (host === 'slow.gov.au') throw new SourceFetchError('Timed out after 45000ms', { retryable: true });
+        throw new SourceFetchError('HTTP 403', { status: 403, retryable: false });
+      },
+      sleep: async () => undefined,
+      now: fixedNow,
+    });
+
+    expect(overlapped).toBe(false);
+    expect(requested.filter((url) => url.includes('slow.gov.au'))).toEqual([
+      'https://slow.gov.au/a',
+      'https://slow.gov.au/a',
+    ]);
+    expect(requested.filter((url) => url.includes('fast.gov.au'))).toEqual([
+      'https://fast.gov.au/a',
+      'https://fast.gov.au/b',
+    ]);
+    expect(results.map((result) => result.policyId)).toEqual(records.map((record) => record.id));
+    expect(results[2]).toMatchObject({
+      status: 'retrieval_failed',
+      error: 'slow.gov.au did not answer earlier in this audit; https://slow.gov.au/b not requested',
+    });
+    expect(results[3]).toMatchObject({ status: 'retrieval_failed', httpStatus: 403 });
+  });
+
+  it('reports a record on a host the gate refuses without requesting it', async () => {
+    const gate = createHostGate({
+      hosts: {},
+      refused: new Map([['refused.gov.au' as Host, 'refused-source']]),
+      fetchRobots: async () => null,
+      now: Date.now,
+      sleep: async () => undefined,
+    });
+    const fetchImpl = vi.fn<(input: string) => Promise<Response>>();
+    const results = await auditRegister([at('refused', 'https://refused.gov.au/policy')], {
+      retrieve: (url) =>
+        retrieveSourceForAudit(url, { fetchImpl: fetchImpl as unknown as typeof fetch, gate, attempts: 1 }),
+      now: fixedNow,
+    });
+
+    expect(fetchImpl).not.toHaveBeenCalled();
+    expect(results[0]).toMatchObject({
+      status: 'retrieval_failed',
+      error: 'https://refused.gov.au/policy is on a host decided refused by refused-source; not requested',
+    });
+  });
+
+  it('refuses the collector identity_refused hosts and the audit-only refused hosts', async () => {
+    const gate = createRegisterAuditGate();
+    for (const host of ['www.cyber.gov.au', ...Object.keys(AUDIT_REFUSED_HOSTS)])
+      expect(await gate.admit(new URL(`https://${host}/policy`))).toMatchObject({ kind: 'decided_block' });
   });
 });

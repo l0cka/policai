@@ -223,6 +223,10 @@ describe('scripts/check-signed-records.ts', () => {
       expect(result.stderr).toContain('data/policies.json is missing from the pull request');
       expect(result.status).toBe(1);
     }
+    expect(check(base, relinked).stderr).toContain(
+      'data/editor-passkeys.json is missing from the pull request but present in the base revision\n' +
+        'data/policies.json is missing from the pull request but present in the base revision',
+    );
   }, 60_000);
 
   it('passes a pull request that adds a data file the base does not have yet', () => {
