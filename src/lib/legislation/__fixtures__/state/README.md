@@ -2,7 +2,7 @@
 
 Raw response bodies saved verbatim on 22 October 2026 (Australia/Sydney) for the
 state extractors. Every request used the collector identity
-`Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))` over plain HTTP,
+`Mozilla/5.0 (compatible; Policai/1.0 (+policai.org))` over plain HTTP,
 after checking the host's robots.txt. Rows marked "browser" were fetched with
 the collector's own `createBrowserFetch`, because the host refuses plain HTTP.
 

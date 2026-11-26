@@ -86,14 +86,14 @@ Policai is an Australian AI policy tracker. It keeps a curated register of AI po
 - **Styling:** Tailwind CSS 4 with CSS variables; shadcn/ui (New York) on Radix
 - **Data:** public-safe JSON in `public/data/`; editorial and collector JSON in
   `data/`, all canonical and versioned
-- **Retrieval:** plain HTTP first; self-hosted Firecrawl for `html-index` listing pages and candidate pages, falling back to headless Chromium (Playwright); RSS, register and document sources never read their own page through Firecrawl. Every path sends the collector identity `Policai/1.0 (+https://policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below) and passes through one `HostGate` (`src/lib/pipeline/host-gate.ts`: robots.txt, a 2 s gap per host, `Retry-After`, a per-run breaker; docs/collector.md "Politeness"). Firecrawl `map` and `crawl` are not used.
+- **Retrieval:** plain HTTP first; self-hosted Firecrawl for `html-index` listing pages and candidate pages, falling back to headless Chromium (Playwright); RSS, register and document sources never read their own page through Firecrawl. Every path sends the collector identity `Policai/1.0 (+policai.org)` (`src/lib/pipeline/identity.ts`; see Collector identity below) and passes through one `HostGate` (`src/lib/pipeline/host-gate.ts`: robots.txt, a 2 s gap per host, `Retry-After`, a per-run breaker; docs/collector.md "Politeness"). Firecrawl `map` and `crawl` are not used.
 - **Analysis:** keyword heuristic by default; the local `clef-flash` model on Argus (`src/lib/pipeline/clef-classify.ts`) when `USE_CLEF_CLASSIFIER=1` and the GPU and model are available, with keyword rules as the fallback. Confidence limits are under Developments in Data Model & Flow.
 - **Scraping:** Cheerio
 - **Testing:** Vitest (+ Testing Library)
 - **Hosting:** Cloudflare Workers through OpenNext (`npm run build:cloudflare`, `wrangler.jsonc`)
 - **Automation:** a daily scheduled collector run on Argus
 
-**Collector identity:** The collector identifies itself as `Policai/1.0 (+https://policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. No source carries an identity exception. Granting one needs Daniel's approval.
+**Collector identity:** The collector identifies itself as `Policai/1.0 (+policai.org)` on every retrieval path. A refusal of that identity is a block we respect: the source moves to manual tracking. No source carries an identity exception. Granting one needs Daniel's approval.
 
 ## Commands
 

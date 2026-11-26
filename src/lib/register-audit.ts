@@ -5,7 +5,7 @@ import {
   SourceFetchError,
   type RetrievedSource,
 } from '@/lib/pipeline/fetch';
-import { hostOf, type Host } from '@/lib/pipeline/host';
+import { hostOf } from '@/lib/pipeline/host';
 import { createHostGate, robotsFetcher, type HostGate } from '@/lib/pipeline/host-gate';
 import { refusedHosts, WATCH_SOURCES } from '@/lib/pipeline/sources';
 import { sourceUrlIdentity } from '@/lib/source-url';
@@ -197,33 +197,11 @@ export function registerAuditRetrievalOptions(
 const auditSleep = (milliseconds: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
 
-/**
- * Register-record hosts that refuse the declared Policai identity but host no
- * watch source decided `identity_refused`. The audit does not request them;
- * their records go to full review. Remove an entry when a gated audit reads
- * the host again.
- */
-export const AUDIT_REFUSED_HOSTS: Readonly<Record<string, string>> = {
-  'www.anao.gov.au':
-    'register audit 2026-11-26: HTTP/2 stream reset and no HTTP/1.1 response for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
-  'www.fcfcoa.gov.au':
-    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
-  'www.finance.gov.au':
-    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
-  'www.ag.gov.au':
-    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
-  'www.inslm.gov.au':
-    'register audit 2026-11-26: no HTTP/1.1 response within 15 s for the declared Policai identity; a plain curl user agent got HTTP 200 from Argus',
-};
-
 /** The gate a register audit on the collector host runs through. */
 export function createRegisterAuditGate(): HostGate {
-  const refused = new Map<Host, string>(refusedHosts(WATCH_SOURCES));
-  for (const host of Object.keys(AUDIT_REFUSED_HOSTS))
-    if (!refused.has(host as Host)) refused.set(host as Host, 'AUDIT_REFUSED_HOSTS');
   return createHostGate({
     hosts: {},
-    refused,
+    refused: refusedHosts(WATCH_SOURCES),
     fetchRobots: robotsFetcher(),
     now: Date.now,
     sleep: auditSleep,

@@ -15,11 +15,11 @@ beforeEach(() => {
   });
   vi.mocked(getBodies).mockResolvedValue([
     {
-      id: 'asd',
-      name: 'Australian Signals Directorate',
+      id: 'homeaffairs',
+      name: 'Department of Home Affairs',
       jurisdiction: 'federal',
       tier: 'A',
-      hosts: ['www.cyber.gov.au'],
+      hosts: ['www.homeaffairs.gov.au'],
       scope: { status: 'unassessed' },
     },
   ] as unknown as Awaited<ReturnType<typeof getBodies>>);
@@ -30,10 +30,10 @@ it('lists each refusing source with its body, how it refuses and what Policai do
   render(await RefusalsPage());
   expect(screen.getByRole('heading', { level: 1, name: 'Sites that refuse Policai' })).toBeInTheDocument();
   const federal = screen.getByRole('region', { name: 'Sites that refuse Policai, Federal' });
-  const row = within(federal).getByText('www.cyber.gov.au').closest('tr');
-  expect(row).toHaveTextContent('Australian Signals Directorate');
+  const row = within(federal).getByText('www.homeaffairs.gov.au').closest('tr');
+  expect(row).toHaveTextContent('Department of Home Affairs');
   expect(row).toHaveTextContent('Tier A');
-  expect(row).toHaveTextContent('Refuses the declared identity');
-  expect(row).toHaveTextContent('7 Oct 2026');
+  expect(row).toHaveTextContent('Blocks automated access');
+  expect(row).toHaveTextContent('22 Oct 2026');
   expect(row).toHaveTextContent('Checked by hand');
 });

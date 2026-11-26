@@ -17,7 +17,7 @@ const EXCEPTION = { until: '2026-10-21', reason: 'allow-list request pending' };
 
 describe('collector identity', () => {
   it('uses one identity token for every retrieval path', () => {
-    expect(COLLECTOR_IDENTITY_TOKEN).toBe('Policai/1.0 (+https://policai.org)');
+    expect(COLLECTOR_IDENTITY_TOKEN).toBe('Policai/1.0 (+policai.org)');
     expect(COLLECTOR_USER_AGENT).toBe(
       `Mozilla/5.0 (compatible; ${COLLECTOR_IDENTITY_TOKEN})`,
     );
@@ -26,7 +26,7 @@ describe('collector identity', () => {
   it('appends the identity token to the Chrome user agent by default', () => {
     const userAgent = browserUserAgent('149.0.0.0');
     expect(userAgent).toMatch(
-      /^Mozilla\/5\.0 \(.+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) Chrome\/149\.0\.0\.0 Safari\/537\.36 Policai\/1\.0 \(\+https:\/\/policai\.org\)$/,
+      /^Mozilla\/5\.0 \(.+\) AppleWebKit\/537\.36 \(KHTML, like Gecko\) Chrome\/149\.0\.0\.0 Safari\/537\.36 Policai\/1\.0 \(\+policai\.org\)$/,
     );
     expect(userAgent).not.toContain('Headless');
   });

@@ -110,7 +110,7 @@ describe("ingestArticleImage", () => {
 		expect(url).toBe(URL_OK);
 		const userAgent = new Headers(init?.headers).get("user-agent");
 		expect(userAgent).toBe(COLLECTOR_USER_AGENT);
-		expect(userAgent).toContain("Policai/1.0 (+https://policai.org)");
+		expect(userAgent).toContain("Policai/1.0 (+policai.org)");
 	});
 
 	it("applies EXIF orientation before measuring and encoding", async () => {
