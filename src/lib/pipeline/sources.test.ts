@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { isAllowedSourceHost, sourceIdentityUrls, sourceUrlsEqual } from '@/lib/source-url';
 import { buildManualDecision } from '@/test/factories';
 import type { Policy } from '@/types';
-import { WATCH_SOURCES, getAutomaticSources, getManualSources, refusedHosts } from './sources';
+import { WATCH_SOURCES, getAutomaticSources, refusedHosts } from './sources';
 
 const STATE_LEGISLATION_SOURCES: Record<string, string> = {
   'vic-legislation-whats-new': 'vic',
@@ -87,35 +87,20 @@ describe('WATCH_SOURCES', () => {
     }
   });
 
-  it('tracks cyber.gov.au by hand and never fetches it automatically', () => {
-    const cyberSources = WATCH_SOURCES.filter(
-      (source) => new URL(source.url).hostname === 'www.cyber.gov.au',
-    );
-    expect(cyberSources.map((source) => source.id)).toEqual(['cyber-news']);
-    const [source] = cyberSources;
-    expect(source.url).toBe('https://www.cyber.gov.au/news');
-    expect(source.automation).toMatchObject({ mode: 'manual', because: 'identity_refused' });
-    expect(source.fetchStrategy).toBeUndefined();
-    expect(getManualSources().map((s) => s.id)).toContain('cyber-news');
-    expect(getAutomaticSources().map((s) => s.id)).not.toContain('cyber-news');
-  });
-
   it('derives refused hosts from identity_refused decisions only', () => {
-    expect(Object.fromEntries(refusedHosts(WATCH_SOURCES))).toEqual({
-      'www.industry.gov.au': 'industry-ai-publications',
-      'www.minister.industry.gov.au': 'industry-ministers-media',
-      'www.dta.gov.au': 'dta-media',
-      'www.digital.gov.au': 'digital-gov-ai',
-      'ministers.ag.gov.au': 'agd-ministers-media',
-      'www.cyber.gov.au': 'cyber-news',
-      'www.apsc.gov.au': 'apsc-latest-news',
-      'www.accc.gov.au': 'accc-rss',
-      'www.acma.gov.au': 'acma-media',
-      'www.esafety.gov.au': 'esafety-media',
-      'www.ai.gov.au': 'naic-news',
-      'www.teqsa.gov.au': 'teqsa-news',
-      'www.art.gov.au': 'art-practice-directions',
+    const at = (id: string, url: string, automation: (typeof WATCH_SOURCES)[number]['automation']) => ({
+      ...WATCH_SOURCES[0],
+      id,
+      url,
+      automation,
     });
+    const sources = [
+      at('refused-first', 'https://refused.gov.au/a', buildManualDecision({ because: 'identity_refused' })),
+      at('refused-second', 'https://refused.gov.au/b', buildManualDecision({ because: 'identity_refused' })),
+      at('bot-blocked', 'https://walled.gov.au/', buildManualDecision({ because: 'bot_blocked' })),
+      at('automatic', 'https://open.gov.au/', 'automatic'),
+    ];
+    expect(Object.fromEntries(refusedHosts(sources))).toEqual({ 'refused.gov.au': 'refused-first' });
   });
 
   it('skips an identity_refused source whose url does not parse', () => {

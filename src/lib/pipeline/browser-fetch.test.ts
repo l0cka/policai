@@ -409,7 +409,7 @@ describe('createBrowserFetch', () => {
     expect(userAgent).toContain('Chrome/149.0.0.0');
     expect(userAgent).not.toContain('Headless');
     expect(userAgent).toMatch(
-      /Safari\/537\.36 Policai\/1\.0 \(\+https:\/\/policai\.org\)$/,
+      /Safari\/537\.36 Policai\/1\.0 \(\+policai\.org\)$/,
     );
     expect(state.contextOptions[0]?.serviceWorkers).toBe('block');
     expect(state.contextOptions[0]?.proxy?.server).toBe(
@@ -457,7 +457,7 @@ describe('createBrowserFetch', () => {
         ...(identity ? { identity } : {}),
       });
       const userAgent = state.contextOptions[0]?.userAgent ?? '';
-      expect(userAgent.endsWith('Policai/1.0 (+https://policai.org)')).toBe(
+      expect(userAgent.endsWith('Policai/1.0 (+policai.org)')).toBe(
         expectsToken,
       );
     }

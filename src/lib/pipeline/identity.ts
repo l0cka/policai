@@ -7,7 +7,7 @@ import { WATCH_SOURCES, type WatchSource } from './sources';
  * source that refuses it is treated as blocked and moves to manual tracking;
  * the only opt-out is a time-boxed `identityException` on the source.
  */
-export const COLLECTOR_IDENTITY_TOKEN = 'Policai/1.0 (+https://policai.org)';
+export const COLLECTOR_IDENTITY_TOKEN = 'Policai/1.0 (+policai.org)';
 
 /** Plain HTTP user agent (Node fetch and the HTTP/1.1 fallback). */
 export const COLLECTOR_USER_AGENT = `Mozilla/5.0 (compatible; ${COLLECTOR_IDENTITY_TOKEN})`;

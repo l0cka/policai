@@ -119,7 +119,7 @@ describe('scrapeWithFirecrawl', () => {
     };
     expect(body.url).toBe('https://example.test/');
     expect(body.headers?.['User-Agent']).toMatch(
-      /Chrome\/[\d.]+ Safari\/537\.36 Policai\/1\.0 \(\+https:\/\/policai\.org\)$/,
+      /Chrome\/[\d.]+ Safari\/537\.36 Policai\/1\.0 \(\+policai\.org\)$/,
     );
   });
 

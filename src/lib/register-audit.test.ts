@@ -8,9 +8,7 @@ import type { Host } from '@/lib/pipeline/host';
 import { createHostGate } from '@/lib/pipeline/host-gate';
 import {
   applyRegisterAuditEvidence,
-  AUDIT_REFUSED_HOSTS,
   auditRegister,
-  createRegisterAuditGate,
   registerAuditRetrievalOptions,
 } from './register-audit';
 
@@ -826,9 +824,4 @@ describe('register audit host pacing', () => {
     });
   });
 
-  it('refuses the collector identity_refused hosts and the audit-only refused hosts', async () => {
-    const gate = createRegisterAuditGate();
-    for (const host of ['www.cyber.gov.au', ...Object.keys(AUDIT_REFUSED_HOSTS)])
-      expect(await gate.admit(new URL(`https://${host}/policy`))).toMatchObject({ kind: 'decided_block' });
-  });
 });

@@ -2164,9 +2164,9 @@ describe("data-service file store", () => {
 			lastReviewedAt: null,
 			collector: {
 				runCount: 80,
-				lastRunSources: ["pm-media", "accc-rss", "wa-ai-policy"],
+				lastRunSources: ["pm-media", "homeaffairs-media-releases", "wa-ai-policy"],
 				lastRunErrors: [
-					"accc-rss: HTTP 403",
+					"homeaffairs-media-releases: HTTP 403",
 					"wa-ai-policy: net::ERR_HTTP2_PROTOCOL_ERROR",
 				],
 				health: "degraded",
@@ -2189,7 +2189,7 @@ describe("data-service file store", () => {
 						newCandidateCount: 0,
 					},
 					{
-						sourceId: "accc-rss",
+						sourceId: "homeaffairs-media-releases",
 						status: "error",
 						coverageEligible: true,
 						checkedAt: "2026-10-17T19:33:37.076Z",
@@ -2197,7 +2197,7 @@ describe("data-service file store", () => {
 						itemCount: null,
 						candidateCount: 0,
 						newCandidateCount: 0,
-						error: "accc-rss: HTTP 403",
+						error: "homeaffairs-media-releases: HTTP 403",
 					},
 					{
 						sourceId: "wa-ai-policy",
@@ -2218,7 +2218,7 @@ describe("data-service file store", () => {
 		const meta = await getCollectionMeta();
 
 		expect(meta.collector.health).toBe("healthy");
-		expect(meta.collector.lastRunSources).not.toContain("accc-rss");
+		expect(meta.collector.lastRunSources).not.toContain("homeaffairs-media-releases");
 		expect(meta.collector.lastRunSources).not.toContain("wa-ai-policy");
 		expect(meta.collector.failedSourceCount).toBe(0);
 		expect(meta.collector.dueSourceCount).toBe(

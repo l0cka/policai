@@ -119,10 +119,10 @@ describe('collection CLI write path', () => {
   it('does not write a manual source failure into automatic coverage', async () => {
     const manual: WatchSource = {
       ...SOURCE,
-      id: 'accc-rss',
-      name: 'ACCC — media releases',
+      id: 'homeaffairs-media-releases',
+      name: 'Home Affairs — media releases',
       automation: buildManualDecision(),
-      url: 'https://www.example.gov.au/accc',
+      url: 'https://www.example.gov.au/homeaffairs',
     };
     const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
@@ -150,44 +150,16 @@ describe('collection CLI write path', () => {
     });
 
     const written = readJson<CollectionMeta>('public', 'data', 'meta.json');
-    expect(written.collector.lastRunSources).not.toContain('accc-rss');
-    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/accc-rss: HTTP 403/);
-    // dta-media is an unreviewed manual source: /status shows it, but it
-    // adds no run error and does not degrade health.
-    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/dta-media: unchecked/);
+    expect(written.collector.lastRunSources).not.toContain('homeaffairs-media-releases');
+    expect(written.collector.lastRunErrors.join('\n')).not.toMatch(/homeaffairs-media-releases: HTTP 403/);
     expect(publicAutomaticCollectionMeta(written, WATCH_SOURCES)).toEqual(written);
     expect(
       written.collector.sourceResults.some(
-        (result) => result.sourceId === 'accc-rss' && result.coverageEligible !== false,
+        (result) => result.sourceId === 'homeaffairs-media-releases' && result.coverageEligible !== false,
       ),
     ).toBe(false);
   });
 
-  it('installs the refused hosts from the catalog decisions on the default gate', async () => {
-    const requested: string[] = [];
-    const fetchImpl = vi.fn(async (input: RequestInfo | URL) => {
-      requested.push(String(input));
-      return new Response('', { status: 404 });
-    }) as unknown as typeof fetch;
-
-    await runCollection({
-      rootDir,
-      sources: [
-        { ...SOURCE, id: 'accc-probe', url: 'https://www.accc.gov.au/rss' },
-        { ...SOURCE, id: 'cyber-probe', url: 'https://www.cyber.gov.au/rss' },
-      ],
-      dryRun: true,
-      fetchImpl,
-      now: () => new Date('2026-07-10T00:00:00.000Z'),
-    });
-
-    expect(requested.map((url) => new URL(url).host)).not.toEqual(
-      expect.arrayContaining(['www.accc.gov.au']),
-    );
-    expect(requested.map((url) => new URL(url).host)).not.toEqual(
-      expect.arrayContaining(['www.cyber.gov.au']),
-    );
-  });
   it('follows a proposed bill on every run and an Act weekly, and stages new stages without touching the register', async () => {
     const billUrl = aphBillPage('r7249');
     const actUrl = aphBillPage('r7001');

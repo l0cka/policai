@@ -524,26 +524,35 @@ fetch after idle takes longer (around 17.5 seconds observed) than a warm one.
 
 ### Collector identity
 
-The collector identifies itself as `Policai/1.0 (+https://policai.org)`
-on every retrieval path. A refusal of that identity is a block we respect: the
-source moves to manual tracking. No source carries an identity exception.
+The collector identifies itself as `Policai/1.0 (+policai.org)` on every
+retrieval path. A refusal of that identity is a block we respect: the source
+moves to manual tracking. No source carries an identity exception.
 The E24 exception, which let 16 Commonwealth sources present a plain browser
 UA while an allow-list request was pending, expired at 2026-10-21 00:00 AEDT
 and was removed after the first collection run on or after that date (#162).
 `npm run report:e24` lists what a run did with those 16 sources
 ([scripts/README.md](../scripts/README.md#e24-reportts)).
 
+Token change (Daniel, 26 November 2026): until then the token was
+`Policai/1.0 (+https://policai.org)`. Akamai-fronted federal hosts refuse a
+User-Agent that contains `https://`. They reset the HTTP/2 stream, or hold
+an HTTP/1.1 connection open with no response. That is why 14 sources were
+marked `identity_refused` after E24 expired. A gated comparison of both tokens
+over all 103 source and record hosts on 26 November found no host that
+accepted the old token and refused the new one. 21 hosts answered plain HTTP
+only with the new token, and 15 answered the browser only with the new token.
+The 14 sources returned to automatic collection.
+[token-comparison.md](./reports/2026-11-26-reconfirm-sweep/token-comparison.md) holds the evidence. Server-log or
+WAF rules that match `Policai/1.0` still match.
+
 How each path presents it (`src/lib/pipeline/identity.ts` holds the token):
 
 - Plain HTTP (Node fetch and the HTTP/1.1 fallback):
-  `Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))`, for every
-  source, including one with an exception. Format change: before E24 this string
-  was `Mozilla/5.0 (compatible; Policai/1.0; +https://policai.org)`, so
-  server-log or WAF rules that match the old string exactly need updating;
-  rules that match `Policai/1.0` still match.
+  `Mozilla/5.0 (compatible; Policai/1.0 (+policai.org))`, for every
+  source, including one with an exception.
 - Headless browser: the reduced Chrome UA of the launched build with the
   token appended, e.g. `... Chrome/149.0.0.0 Safari/537.36 Policai/1.0
-  (+https://policai.org)`. Never `HeadlessChrome`.
+  (+policai.org)`. Never `HeadlessChrome`.
 - Firecrawl: the scrape request sends `headers: { "User-Agent": ... }` with
   the same Chrome-plus-token string (Chrome version from
   `REFERENCE_CHROME_VERSION`, because Firecrawl's renderer does not report
@@ -598,7 +607,7 @@ and tags each exception source's line with
 `identityNote` in `--json`). Source retirement is a separate editorial approval:
 remove the exception after allow-listing, or move a still-refusing source to
 manual tracking. The collector never automatically changes canonical source
-status; `cyber-news` remains manual without an exception.
+status.
 
 A manual source is current for 8 days after its last hand review, whatever its
 nominal `daily` or `weekly` cadence, matching the weekly manual-source routine
@@ -1130,9 +1139,8 @@ framework's policy are never batched either.
 `propose` and `npm run audit:register` read sources through the HostGate
 (`createRegisterAuditGate` in `src/lib/register-audit.ts`): robots.txt, a
 2 s gap per host, and each host's records one at a time (up to 4 hosts at
-once). A host whose watch source is decided `identity_refused`, or that is
-listed in `AUDIT_REFUSED_HOSTS` with its evidence, is not requested, and its
-records are reported for full review. When a host does not answer, after the
+once). A host whose watch source is decided `identity_refused` is not
+requested, and its records are reported for full review. When a host does not answer, after the
 one retry, the rest of that host's records in the run are reported as not
 requested, so a host that holds the connection open costs one timeout per run.
 
@@ -1576,7 +1584,8 @@ a fingerprint baseline.
   the committed `public/data/meta.json`). `accc-rss` (HTTP 403 from the host's
   access-denied page) and `wa-ai-policy` (the linked finance.gov.au framework
   PDF resets the connection) were moved for this reason (#304, #389); each
-  decision's `evidence` carries the measurements.
+  decision's `evidence` carries the measurements. `accc-rss` returned to
+  automatic collection with the token change of 26 November 2026.
 - **Adding a source or directory record** — give it the `bodyId` of its
   publishing body in `data/bodies.json`. A body has an id, name,
   jurisdiction, tier (`A`, `B` or `C`), the hosts it publishes on, and a

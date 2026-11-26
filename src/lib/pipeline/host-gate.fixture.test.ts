@@ -112,7 +112,7 @@ describe('HostGate against a loopback fixture server', () => {
       retrieveSource(`${ORIGIN}/private/ai-three`, { fetchImpl, gate, hashLinkedDocuments: false }),
     ).rejects.toMatchObject({ code: 'gate_refused', message: expect.stringContaining('disallowed by robots.txt') });
     expect(fixture.hits.map((hit) => hit.path)).toEqual(['/robots.txt', '/news']);
-    expect(fixture.hits[0].userAgent).toBe('Mozilla/5.0 (compatible; Policai/1.0 (+https://policai.org))');
+    expect(fixture.hits[0].userAgent).toBe('Mozilla/5.0 (compatible; Policai/1.0 (+policai.org))');
     expect(gate.hosts()[hostOf(new URL(ORIGIN))]?.robots).toMatchObject({ status: 'parsed', disallow: ['/private'] });
   });
 
