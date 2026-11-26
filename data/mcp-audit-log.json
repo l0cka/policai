@@ -1,5 +1,69 @@
 [
   {
+    "id": "mcp-audit-28f65e79-ed1a-4888-9203-bab348c3f50f",
+    "createdAt": "2026-11-26T07:17:59.328Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-7e1c0eb8-eb25-4fed-bf67-b05ce88304de",
+    "createdAt": "2026-11-26T07:16:33.955Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-f7715c5f-7a15-44df-83e1-cc47723fbd22",
+    "createdAt": "2026-11-26T07:16:33.953Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-e97075e3-75aa-4aaf-b77c-f332d61e0a12",
+    "createdAt": "2026-11-26T07:16:33.951Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-fcb86677-6f3c-4a41-bafb-947643a5429b",
+    "createdAt": "2026-11-26T07:16:33.949Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-6510cefb-98b3-4a05-8a01-9702a0ca5754",
+    "createdAt": "2026-11-26T07:16:33.946Z",
+    "actor": "local-mcp-admin",
+    "toolName": "record_manual_source_review",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-75673cb7-8fed-4e1d-89d9-d6e6a691cfbb",
+    "createdAt": "2026-11-26T07:16:01.493Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-eb0d07a5-ff30-40ef-8562-3b81b641a3f8",
+    "createdAt": "2026-11-26T07:15:46.635Z",
+    "actor": "local-mcp-admin",
+    "toolName": "propose_source_decision",
+    "status": "success"
+  },
+  {
+    "id": "mcp-audit-a6b9cd80-e008-49d7-ac10-6f05e7c7cf05",
+    "createdAt": "2026-11-26T07:14:54.166Z",
+    "actor": "local-mcp-admin",
+    "toolName": "stage_source_url",
+    "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+    "status": "success"
+  },
+  {
     "id": "mcp-audit-58214847-3280-4610-8684-270e64d78597",
     "createdAt": "2026-11-13T01:53:44.934Z",
     "actor": "local-mcp-admin",
@@ -3618,73 +3682,6 @@
     "actor": "local-mcp-admin",
     "toolName": "stage_source_capture",
     "sourceUrl": "https://www.anao.gov.au/work/performance-audit/artificial-intelligence-use-ip-australia",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-77f84a4c-6372-47b8-b9cd-a7bec4956d5f",
-    "createdAt": "2026-07-20T10:05:51.993Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-614fd520-eb5d-4948-9258-1893042a9cf3",
-    "createdAt": "2026-07-20T10:05:51.985Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.cyber.gov.au/about-us/view-all-content/news/new-joint-guidance-provides-mitigations-for-cautious-adoption-of-agentic-ai",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-4a41f856-f96b-4fe6-8f11-5d7367db1e9a",
-    "createdAt": "2026-07-20T10:05:51.977Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-32bc798b-4d85-446e-b69b-e1b7bebba9a2",
-    "createdAt": "2026-07-20T10:05:51.969Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/charlton/media/australia-and-uk-partner-strengthen-ai-safety-and-security",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-f9209419-5c1d-4232-b374-d4be02a8d0a2",
-    "createdAt": "2026-07-20T10:05:51.960Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-da01b872-65f5-4436-903e-f00408ef20ca",
-    "createdAt": "2026-07-20T10:05:51.951Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-microsoft",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-448d9034-9e8c-4930-9f21-1e2ad938a945",
-    "createdAt": "2026-07-20T10:05:51.942Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-e4925a53-e67f-4da4-8e2b-435b45fe4ccb",
-    "createdAt": "2026-07-20T10:05:51.933Z",
-    "actor": "local-mcp-admin",
-    "toolName": "stage_source_capture",
-    "sourceUrl": "https://www.minister.industry.gov.au/t-ayres/media/new-agreement-ai-collaboration-anthropic",
-    "status": "success"
-  },
-  {
-    "id": "mcp-audit-8a73ad6f-663b-403c-bcf6-787232dd45bb",
-    "createdAt": "2026-07-20T10:05:51.925Z",
-    "actor": "local-mcp-admin",
-    "toolName": "approve_staged_source",
     "status": "success"
   }
 ]

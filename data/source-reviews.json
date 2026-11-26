@@ -1,5 +1,155 @@
 [
   {
+    "id": "source-review-c278eb69-c2c9-4488-bce4-c3d926b08d53",
+    "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+    "title": "Guidance for AI proof of concept to scale",
+    "entryKind": "policy",
+    "status": "pending_review",
+    "discoveredAt": "2026-11-26T07:14:54.138Z",
+    "createdBy": "local-mcp-admin",
+    "notes": "Found missing during the 26 Nov 2026 manual source check of digital-gov-ai (DTA AI in government hub links it). Read over plain HTTP with the declared Policai identity through the collector HostGate. The page states only \"LAST UPDATED: 11 Mar 2026\"; its PDF sits in a 2026-03 upload folder but robots.txt disallows the PDF path for Policai, so the first-publication day is not verified.",
+    "analysis": {
+      "isRelevant": true,
+      "relevanceScore": 0.65,
+      "suggestedType": "guideline",
+      "suggestedJurisdiction": "federal",
+      "summary": "[Document 1: Guidance for AI proof of concept to scale] Guidance for AI proof of concept to scaleBenefits realisation for AI occurs through enterprise integration and not through disparate AI experimentation alone. Technical and organisational shifts are required to break down the biggest barriers of scaling up AI for business, enterprise or wider use.This guidance assists Australian Government agencies to move beyond isolated artificial intelligence (AI) experiments and achieve meaningful business AI adoption, ensuring that AI delivers value and is embedded responsibly within government…",
+      "tags": [
+        "procurement",
+        "public-sector"
+      ],
+      "agencies": []
+    },
+    "sourceEvidence": {
+      "url": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+      "finalUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+      "retrievedAt": "2026-11-26T07:14:53.268Z",
+      "contentType": "text/html",
+      "contentHash": "689681e0fb24c01c6140152a4dc8abc733cb9ebe373b1fda758317fcf68fd0b8",
+      "etag": "\"1795472815\"",
+      "lastModified": "Mon, 23 Nov 2026 22:26:55 GMT",
+      "linkedDocuments": [
+        {
+          "url": "https://www.digital.gov.au/sites/default/files/documents/2026-03/AI%20PoC%20to%20Scale%20Guidance.pdf",
+          "finalUrl": "https://www.digital.gov.au/sites/default/files/documents/2026-03/AI%20PoC%20to%20Scale%20Guidance.pdf",
+          "retrievedAt": "2026-11-26T07:14:53.553Z",
+          "contentType": "application/pdf",
+          "contentHash": "799b1738a86f285d880f568be23a0687141b501526b4859667538c29ce579144",
+          "etag": "\"69af561d-88917\"",
+          "lastModified": "Mon, 09 Mar 2026 23:22:05 GMT"
+        }
+      ],
+      "title": "Guidance for AI proof of concept to scale"
+    },
+    "proposedRecord": {
+      "id": "dta-ai-proof-of-concept-to-scale-guidance",
+      "title": "Guidance for AI proof of concept to scale",
+      "description": "Digital Transformation Agency guidance that helps Australian Government agencies move AI from isolated experiments and proofs of concept to enterprise-wide adoption. It covers transition stages and dimensions, common challenges and mitigations, six example scenarios, and appendices on AI readiness, evaluation, procurement and mapping to the AI technical standard. It complements existing government AI frameworks and standards. The page shows it was last updated on 11 March 2026; it does not state a first publication day.",
+      "jurisdiction": "federal",
+      "type": "guideline",
+      "status": "active",
+      "effectiveDate": "2026-03-11",
+      "dates": [
+        {
+          "type": "published",
+          "date": "2026-03-11",
+          "precision": "day",
+          "primary": true,
+          "source": {
+            "url": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+            "finalUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+            "title": "Guidance for AI proof of concept to scale | digital.gov.au",
+            "retrievedAt": "2026-11-26T07:14:14.702Z",
+            "contentType": "text/html",
+            "contentHash": "c618ff118a1495c6163176ad22e65c6dd22a1a343f083b3257043658fb347884"
+          }
+        }
+      ],
+      "agencies": [
+        "Digital Transformation Agency"
+      ],
+      "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+      "aiSummary": "DTA guidance for Australian Government agencies on scaling AI beyond proofs of concept into enterprise use, with readiness, evaluation and procurement appendices mapped to the AI technical standard. The page is marked last updated 11 March 2026.",
+      "tags": [
+        "proof of concept",
+        "AI adoption",
+        "scaling AI",
+        "public sector",
+        "DTA"
+      ],
+      "themes": [
+        "public-sector",
+        "strategy-adoption",
+        "ai-governance",
+        "procurement-supply"
+      ],
+      "createdAt": "2026-11-26T07:20:00.000Z"
+    },
+    "updatedAt": "2026-11-26T07:17:59.305Z",
+    "proposal": {
+      "proposedBy": "Claude (agent)",
+      "proposedRecord": {
+        "id": "dta-ai-proof-of-concept-to-scale-guidance",
+        "title": "Guidance for AI proof of concept to scale",
+        "description": "Digital Transformation Agency guidance that helps Australian Government agencies move AI from isolated experiments and proofs of concept to enterprise-wide adoption. It covers transition stages and dimensions, common challenges and mitigations, six example scenarios, and appendices on AI readiness, evaluation, procurement and mapping to the AI technical standard. It complements existing government AI frameworks and standards. The page shows it was last updated on 11 March 2026; it does not state a first publication day.",
+        "jurisdiction": "federal",
+        "type": "guideline",
+        "status": "active",
+        "effectiveDate": "2026-03-11",
+        "dates": [
+          {
+            "type": "published",
+            "date": "2026-03-11",
+            "precision": "day",
+            "primary": true,
+            "source": {
+              "url": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+              "finalUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+              "title": "Guidance for AI proof of concept to scale | digital.gov.au",
+              "retrievedAt": "2026-11-26T07:14:53.268Z",
+              "contentType": "text/html",
+              "contentHash": "689681e0fb24c01c6140152a4dc8abc733cb9ebe373b1fda758317fcf68fd0b8",
+              "reviewedDate": {
+                "date": "2026-03-11",
+                "precision": "day",
+                "reviewedAt": "2026-11-26T07:25:00.000Z",
+                "reviewedBy": "Claude (agent)",
+                "notes": "The page text reads \"LAST UPDATED: 11 Mar 2026\" and exposes no date metadata. The linked PDF sits in the 2026-03 upload folder and its server Last-Modified is 9 Mar 2026, so no version before March 2026 was found. Recorded as the publication date; the editor should confirm that the last-updated stamp is the first release."
+              }
+            }
+          }
+        ],
+        "agencies": [
+          "Digital Transformation Agency"
+        ],
+        "sourceUrl": "https://www.digital.gov.au/policy/ai/AI-POC-to-scale",
+        "aiSummary": "DTA guidance for Australian Government agencies on scaling AI beyond proofs of concept into enterprise use, with readiness, evaluation and procurement appendices mapped to the AI technical standard. The page is marked last updated 11 March 2026.",
+        "tags": [
+          "proof of concept",
+          "AI adoption",
+          "scaling AI",
+          "public sector",
+          "DTA"
+        ],
+        "themes": [
+          "public-sector",
+          "strategy-adoption",
+          "ai-governance",
+          "procurement-supply"
+        ],
+        "createdAt": "2026-11-26T07:14:54.138Z",
+        "content": "The Digital Transformation Agency page https://www.digital.gov.au/policy/ai/AI-POC-to-scale publishes the Guidance for AI proof of concept to scale. It says benefits from AI come through enterprise integration rather than disparate experimentation, and that the guidance helps Australian Government agencies move beyond isolated AI experiments to business AI adoption that is embedded responsibly in government operations and services. It is designed to complement existing Australian Government frameworks and standards, with a flexible approach agencies adapt to their context. Sections cover context and principles, AI transition stages and dimensions, common challenges and mitigation options, lessons from the challenges, and six common scenarios. Appendices give an AI readiness checklist for sponsors, managers and practitioners (Appendix 1), AI evaluation (Appendix 2), informing procurement (Appendix 3) and a mapping of dimensions to the Technical standard for government use of AI (Appendix 4). A PDF version is linked from the page. The page is marked \"LAST UPDATED: 11 Mar 2026\" and states no earlier publication day."
+      },
+      "reviewedDate": {
+        "date": "2026-03-11",
+        "precision": "day",
+        "notes": "The page text reads \"LAST UPDATED: 11 Mar 2026\" and exposes no date metadata. The linked PDF sits in the 2026-03 upload folder and its server Last-Modified is 9 Mar 2026, so no version before March 2026 was found. Recorded as the publication date; the editor should confirm that the last-updated stamp is the first release."
+      },
+      "notes": "Staged from the 26 Nov 2026 manual source check; requested by Daniel Alkurdi.",
+      "proposedAt": "2026-11-26T07:17:59.305Z"
+    }
+  },
+  {
     "id": "source-review-9baf131d-d381-4eef-9a23-17903b941eac",
     "sourceUrl": "https://dcdd.nt.gov.au/publications/artificial-intelligence-assurance-framework",
     "title": "Artificial Intelligence Assurance Framework",

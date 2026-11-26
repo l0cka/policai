@@ -1,6 +1,79 @@
 {
   "manualReviews": [
     {
+      "sourceId": "sa-office-for-ai",
+      "status": "checked",
+      "reviewedAt": "2026-11-26T07:16:33.955Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://www.ai.sa.gov.au/",
+        "title": "Office for Artificial Intelligence",
+        "publisher": "Office for AI, South Australia",
+        "finalUrl": "https://www.ai.sa.gov.au/",
+        "retrievedAt": "2026-11-26T07:10:29.044Z",
+        "contentType": "text/html"
+      },
+      "notes": "Plain HTTP read with the declared Policai identity through the collector HostGate: HTTP 200 (the host answered the collector this time). The home page features the Royal Commission into Artificial Intelligence from 1 October 2026, already on the timeline as tl-2026-10-08-sa-royal-commission-into-ai, plus the policies and guidelines library and the Proof of Value Program; no other new AI instrument since 1 Aug 2026. Nothing staged."
+    },
+    {
+      "sourceId": "inslm-annual-reports",
+      "status": "checked",
+      "reviewedAt": "2026-11-26T07:16:33.953Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://www.inslm.gov.au/reviews-reports/annual-reports",
+        "finalUrl": "https://www.inslm.gov.au/reviews-reports/annual-reports",
+        "title": "Annual Reports",
+        "publisher": "Independent National Security Legislation Monitor",
+        "retrievedAt": "2026-11-26T07:10:26.752Z",
+        "contentType": "text/html"
+      },
+      "notes": "Plain HTTP read with the declared Policai identity through the collector HostGate: HTTP 200 (the host answered the collector this time). The page lists the Annual Report 2025-26 as the newest; its AI scoping is already on the timeline as tl-2026-10-08-inslm-annual-report-2025-26-ai-scoping. No other report since 1 Aug 2026. Nothing staged."
+    },
+    {
+      "sourceId": "wa-ai-policy",
+      "status": "checked",
+      "reviewedAt": "2026-11-26T07:16:33.951Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "finalUrl": "https://www.wa.gov.au/government/publications/wa-government-artificial-intelligence-policy-and-assurance-framework",
+        "title": "WA Government Artificial Intelligence Policy and Assurance Framework",
+        "publisher": "Office of Digital Government",
+        "retrievedAt": "2026-11-26T07:10:22.047Z",
+        "contentType": "text/html"
+      },
+      "notes": "Plain HTTP read with the declared Policai identity through the collector HostGate: HTTP 200. The page shows first published 5 March 2024 and last updated 25 August 2026, and still links AI Policy v2 (ai_policyv2.pdf, 2025-07 folder) and the self-assessment template; no new instrument. The register record wa-ai-policy-assurance-framework was last reviewed on 1 Nov 2026, after that update. Nothing staged."
+    },
+    {
+      "sourceId": "sa-legislation-whats-new",
+      "status": "checked",
+      "reviewedAt": "2026-11-26T07:16:33.949Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://www.legislation.sa.gov.au/whats-new",
+        "finalUrl": "https://www.legislation.sa.gov.au/whats-new",
+        "title": "What's new? | South Australian Legislation",
+        "publisher": "South Australian Legislation",
+        "retrievedAt": "2026-11-26T07:10:19.980Z",
+        "contentType": "text/html"
+      },
+      "notes": "Plain HTTP with the declared Policai identity returned the page, but the collector retriever rejects it as an index linking more than 8 documents, so one one-off read went through the self-hosted Argus Firecrawl scrape (Chrome UA plus the Policai token): success. Since 1 Aug 2026 there are 8 fortnightly What's New editions (14 Aug to 20 Nov); each PDF was read once over plain HTTP (HTTP 200) and none mentions artificial intelligence, AI, automated decisions, algorithms, deepfakes or generative or synthetic content. Nothing staged."
+    },
+    {
+      "sourceId": "nsw-legislation",
+      "status": "source_unavailable",
+      "reviewedAt": "2026-11-26T07:16:33.945Z",
+      "reviewedBy": "Claude (agent)",
+      "evidence": {
+        "url": "https://legislation.nsw.gov.au/",
+        "finalUrl": "https://legislation.nsw.gov.au/",
+        "title": "Just a moment...",
+        "retrievedAt": "2026-11-26T07:13:41.360Z"
+      },
+      "notes": "Three one-off reads with the declared Policai identity, all refused: plain HTTP through the collector HostGate got HTTP 403; the self-hosted Argus Firecrawl scrape (Chrome UA plus the Policai token) failed with Firecrawl HTTP 500; one headless Chromium read with the same UA got HTTP 403 and the Cloudflare \"Just a moment...\" challenge. No content was read, so NSW AI bills or instruments since 1 Aug 2026 were not reviewed. Nothing staged."
+    },
+    {
       "sourceId": "aph-hansard-bill-debates",
       "status": "checked",
       "reviewedAt": "2026-11-04T00:34:37Z",
@@ -23,18 +96,6 @@
         "retrievedAt": "2026-11-04T00:34:37Z"
       },
       "notes": "One-off read authorised by Daniel Alkurdi on 4 Nov 2026 through the self-hosted Argus Firecrawl scrape (basic proxy, no stealth), after the plain HTTP read with the Policai identity was refused. HTTP 200, application/rss+xml, bills digests for 2026. From 1 Aug onward the only AI-adjacent digest is the Online Safety Amendment (Digital Duty of Care) Bill 2026 (23 Oct), already tracked on the register. No new AI bill digest. Nothing staged."
-    },
-    {
-      "sourceId": "sa-office-for-ai",
-      "status": "checked",
-      "reviewedAt": "2026-07-16T10:15:00.000Z",
-      "reviewedBy": "Policai editorial source review",
-      "evidence": {
-        "url": "https://www.ai.sa.gov.au/",
-        "title": "Office for AI",
-        "publisher": "Government of South Australia"
-      },
-      "notes": "Reviewed the Office for AI site. The AI-strategy consultation status and dates were reconciled in the register."
     }
   ]
 }
