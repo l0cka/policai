@@ -3870,7 +3870,7 @@
     "effectiveDate": "2024-12-01",
     "lastReviewedAt": "2026-10-16T08:58:16.496Z",
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
         "finalUrl": "https://digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
@@ -3891,7 +3891,8 @@
       "checkedAt": "2026-10-16T08:58:16.496Z",
       "checkedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
       "method": "manual",
-      "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716."
+      "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716. Register audit confirmed that the official source no longer resolves to the requested official document (Source URL must be HTTPS on an allow-listed official host) at 2026-11-25T23:55:43.528Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-25T23:55:43.528Z"
     }
   },
   {
@@ -3954,7 +3955,7 @@
     "effectiveDate": "2024-12-01",
     "lastReviewedAt": "2026-10-16T00:00:00.000Z",
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
         "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
@@ -3982,7 +3983,8 @@
       "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161). Register audit confirmed that the official source no longer resolves to the requested official document (Source URL must be HTTPS on an allow-listed official host) at 2026-11-25T23:55:43.570Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-25T23:55:43.570Z"
     }
   },
   {
@@ -4332,7 +4334,8 @@
       "checkedAt": "2026-10-16T08:58:16.036Z",
       "checkedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
       "method": "manual",
-      "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716."
+      "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716.",
+      "lastSourceAuditAt": "2026-11-25T23:55:46.937Z"
     }
   },
   {
@@ -5398,7 +5401,7 @@
       "checkedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
       "method": "manual",
       "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716.",
-      "lastSourceAuditAt": "2026-07-16T10:00:09.335Z"
+      "lastSourceAuditAt": "2026-11-25T23:58:01.570Z"
     },
     "dates": [
       {
@@ -5900,7 +5903,8 @@
       "checkedAt": "2026-10-16T08:58:14.486Z",
       "checkedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
       "method": "manual",
-      "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716."
+      "notes": "Approved and published as staged under EDITORIAL APPROVE 2c2ebd9736e3f3f1e4e8f66c210a65110d820e95 (https://github.com/l0cka/policai/pull/186#issuecomment-6211855300); publish route https://github.com/l0cka/policai/pull/186#issuecomment-6211896716.",
+      "lastSourceAuditAt": "2026-11-25T23:58:04.104Z"
     },
     "dates": [
       {
@@ -6707,7 +6711,8 @@
       "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Replaced the obsolete justice.nsw.gov.au URL with the current official PDF and checked the issue, commencement and substantive requirements. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+      "notes": "Replaced the obsolete justice.nsw.gov.au URL with the current official PDF and checked the issue, commencement and substantive requirements. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161).",
+      "lastSourceAuditAt": "2026-11-25T23:58:06.376Z"
     },
     "dates": [
       {
@@ -7007,7 +7012,8 @@
       "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Policai Developer source re-read (issue 161)",
       "method": "manual",
-      "notes": "Replaced a dead landing-page URL with the primary PDF and removed unsupported claims that the direction requires general AI-use disclosure for affidavits and expert reports. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161)."
+      "notes": "Replaced a dead landing-page URL with the primary PDF and removed unsupported claims that the direction requires general AI-use disclosure for affidavits and expert reports. Re-read against the live source on 2026-10-16; title, content, dates and status still match (issue 161).",
+      "lastSourceAuditAt": "2026-11-25T23:58:08.212Z"
     },
     "dates": [
       {

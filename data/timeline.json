@@ -1437,7 +1437,8 @@
       "checkedAt": "2026-10-20T01:03:39.241Z",
       "checkedBy": "Daniel Alkurdi (Cursor-assisted re-verification)",
       "method": "manual",
-      "notes": "Editorial re-verification on 20 October 2026 per Daniel Alkurdi: clear the stale radar badge for projected development dev-2026-07-15-australian-ai-standards-office-of-ai. No new Office of AI or Australian AI Standards register instrument was invented from the media release alone."
+      "notes": "Editorial re-verification on 20 October 2026 per Daniel Alkurdi: clear the stale radar badge for projected development dev-2026-07-15-australian-ai-standards-office-of-ai. No new Office of AI or Australian AI Standards register instrument was invented from the media release alone.",
+      "lastSourceAuditAt": "2026-11-26T00:01:56.928Z"
     }
   },
   {
@@ -3456,8 +3457,7 @@
       "method": "manual",
       "notes": "Approved by Daniel Alkurdi with a passkey on policai.org (batch 2026-11-08-2, proposal 6031 8302 7545 9963). Proposed by Claude (agent). Supplies reviewed-date evidence for the 4 November 2026 event date; no change to the proposed record."
     }
-  }
-,
+  },
   {
     "id": "tl-2026-11-10-pmc-rapid-review-ai-recommendations",
     "date": "2026-11-10",

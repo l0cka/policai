@@ -955,7 +955,8 @@
       "checkedAt": "2026-10-06T23:09:42.833Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi on the oaic-transparency editorial lane. Both OAIC sources were retrieved read-only over plain HTTPS and fingerprinted: the cited fact sheet (the instrument) and the media-centre announcement that carries the publication date. The fact sheet states the obligation comes into effect on 10 December 2026; the announcement states 'Published: 30 September 2026'."
+      "notes": "Approved by Daniel Alkurdi on the oaic-transparency editorial lane. Both OAIC sources were retrieved read-only over plain HTTPS and fingerprinted: the cited fact sheet (the instrument) and the media-centre announcement that carries the publication date. The fact sheet states the obligation comes into effect on 10 December 2026; the announcement states 'Published: 30 September 2026'.",
+      "lastSourceAuditAt": "2026-11-26T00:07:03.258Z"
     },
     "status": "promoted",
     "relatedPolicyId": "oaic-app-1-7-adm-transparency-guidance"
@@ -3908,7 +3909,7 @@
       "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
         "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/identifying-ai",
@@ -3936,7 +3937,8 @@
       "checkedAt": "2026-10-16T08:58:16.496Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching). Register audit confirmed that the official source no longer resolves to the requested official document (Source URL must be HTTPS on an allow-listed official host) at 2026-11-26T00:08:34.204Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-26T00:08:34.204Z"
     },
     "publishedAt": "2024-12-01",
     "publishedAtPrecision": "month",
@@ -3960,7 +3962,7 @@
       "promptVersion": "editorial-review-v1"
     },
     "verification": {
-      "status": "verified",
+      "status": "stale",
       "source": {
         "url": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
         "finalUrl": "https://www.digital.nsw.gov.au/policy/artificial-intelligence/nsw-artificial-intelligence-assessment-framework/responsibilities",
@@ -3988,7 +3990,8 @@
       "checkedAt": "2026-10-16T00:00:00.000Z",
       "checkedBy": "Daniel Alkurdi",
       "method": "manual",
-      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching)."
+      "notes": "Approved by Daniel Alkurdi after browser review of the official source, source identity, record summary and primary date on 19 July 2026. Development verification re-stamped 2026-10-20 to match the linked register policy re-check on 2026-10-16 (radar freshness; keep watching). Register audit confirmed that the official source no longer resolves to the requested official document (Source URL must be HTTPS on an allow-listed official host) at 2026-11-26T00:08:34.248Z; editorial re-verification is required.",
+      "lastSourceAuditAt": "2026-11-26T00:08:34.248Z"
     },
     "publishedAt": "2024-12-01",
     "publishedAtPrecision": "month",

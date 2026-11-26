@@ -477,6 +477,83 @@
           }
         }
       }
+    },
+    {
+      "id": "2026-11-25-1",
+      "proposedAt": "2026-11-25T23:54:10.739Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "policyId": "wa-ai-governance-toolkit",
+          "title": "Artificial Intelligence governance toolkit for WA public sector entities",
+          "verifiedAt": "2026-10-16T08:58:16.036Z",
+          "verifiedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
+          "contentHash": "14146211a95e393485b21f61711c0ae58c9c6f7c617f2e4ae6af855c43202e57",
+          "auditedAt": "2026-11-25T23:55:46.937Z"
+        },
+        {
+          "policyId": "automated-decision-making-ai-regulation-issues-paper",
+          "title": "Positioning Australia as a leader in digital economy regulation — Automated Decision Making and AI Regulation",
+          "verifiedAt": "2026-10-16T08:58:16.224Z",
+          "verifiedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
+          "contentHash": "449f18e3e29ac523efcb5f83658a9e49def8ce96faf76c9de8a3f1cf009feb22",
+          "auditedAt": "2026-11-25T23:58:01.570Z"
+        },
+        {
+          "policyId": "queensland-foundational-ai-risk-assessment-guideline",
+          "title": "Foundational artificial intelligence risk assessment guideline",
+          "verifiedAt": "2026-10-16T08:58:14.486Z",
+          "verifiedBy": "Policai Developer Agent (executing EDITORIAL APPROVE on PR #186)",
+          "contentHash": "de40b17f5916ff8369ca0e4c1e13db5259ce95ede4aef31db45435f1af78a961",
+          "auditedAt": "2026-11-25T23:58:04.104Z"
+        },
+        {
+          "policyId": "nsw-supreme-court-sc-gen-23",
+          "title": "SC Gen 23 — Use of Artificial Intelligence in Court Proceedings",
+          "verifiedAt": "2026-10-16T00:00:00.000Z",
+          "verifiedBy": "Policai Developer source re-read (issue 161)",
+          "contentHash": "8e87e71ecfcd9d3ada6cd1cf3ec8b3abd36e9dd2f51e68cc5c649db6eb01bbab",
+          "auditedAt": "2026-11-25T23:58:06.376Z"
+        },
+        {
+          "policyId": "qld-supreme-court-ai-practice-direction",
+          "title": "Practice Direction 5 of 2025 - Accuracy of References in Submissions",
+          "verifiedAt": "2026-10-16T00:00:00.000Z",
+          "verifiedBy": "Policai Developer source re-read (issue 161)",
+          "contentHash": "400251380baf927c289d6c8e974b5d330b160904260f47b968670ccabc4b8a72",
+          "auditedAt": "2026-11-25T23:58:08.212Z"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-1",
+      "proposedAt": "2026-11-26T00:01:56.707Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "timelineEventId": "tl-2026-07-15-australian-ai-standards-office-of-ai",
+          "title": "Government announces Australian AI Standards and establishes Office of AI",
+          "verifiedAt": "2026-10-20T01:03:39.241Z",
+          "verifiedBy": "Daniel Alkurdi (Cursor-assisted re-verification)",
+          "contentHash": "1076b4e03c580fca40abf7b22d2483203b495e5c5b4cb8c38279143dbaaf0c80",
+          "auditedAt": "2026-11-26T00:01:56.928Z"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-26-2",
+      "proposedAt": "2026-11-26T00:07:03.120Z",
+      "proposedBy": "Claude (agent)",
+      "entries": [
+        {
+          "developmentId": "dev-new-resources-on-transparency-for-use-of-ai-and--68u2j7",
+          "title": "OAIC guidance on APP 1.7–1.9 transparency for automated decision-making",
+          "verifiedAt": "2026-10-06T23:09:42.833Z",
+          "verifiedBy": "Daniel Alkurdi",
+          "contentHash": "a6b01db6ba23d8d261250dce50d26bcfdd3ba994a9d822786fa20b63aa0dc206",
+          "auditedAt": "2026-11-26T00:07:03.258Z"
+        }
+      ]
     }
   ]
 }
